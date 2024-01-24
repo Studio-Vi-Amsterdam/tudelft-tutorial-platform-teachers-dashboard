@@ -1,0 +1,63 @@
+.sidebar-icon{
+    filter: invert(52%) sepia(28%) saturate(246%) hue-rotate(168deg) brightness(89%) contrast(93%);
+}
+
+.sidebar-item:hover .sidebar-icon, .sidebar-item.active .sidebar-icon {
+    filter: invert(53%) sepia(95%) saturate(742%) hue-rotate(119deg) brightness(100%) contrast(95%);
+}
+.sidebar-item:hover p , .sidebar-item.active p{
+    color:#1B1C19;
+}
+
+input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+textarea:focus {
+    outline: none;
+    box-shadow: none;
+}
+select:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.menu-icon:hover{
+    filter: invert(53%) sepia(95%) saturate(742%) hue-rotate(119deg) brightness(100%) contrast(95%);
+}
+
+input[type='radio'] {
+    accent-color: green;
+}
+
+.searchWrapper{
+    border:none!important;
+    padding:0px!important;
+}
+
+.highlightOption,.chip, .selected,.option:hover {
+    background:#06D7A0!important;
+    color:#FFF;
+}
+
+.option input[type='checkbox'],input[type='checkbox']{
+    accent-color: green;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.green-icon{
+    filter: invert(76%) sepia(39%) saturate(5374%) hue-rotate(116deg) brightness(97%) contrast(95%);
+}
+.red-icon{
+    filter: invert(59%) sepia(94%) saturate(959%) hue-rotate(318deg) brightness(101%) contrast(101%);
+}
