@@ -1,5 +1,5 @@
-import './App.css';
-import 'react-toastify/dist/ReactToastify.css';
+import './App.scss';
+import Header from './components/Header/Header';
 
 function App() {
     return <div></div>;
