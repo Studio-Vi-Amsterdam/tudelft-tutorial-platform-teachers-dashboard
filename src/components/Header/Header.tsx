@@ -10,48 +10,35 @@ const Header = () => {
             setPathname(location.pathname);
         }
     }, [location]);
-    useEffect(() => {
-        pathname &&
-            console.log(
-                pathname.split('/').find((item) => item === 'dashboard')
-            );
-    }, [pathname]);
     return (
-        <header className="container mx-auto flex flex-row items-center justify-between py-5">
-            {pathname &&
-            pathname.split('/').find((item) => item === 'dashboard') ? (
-                <h1 className="flex text-2xl font-bold leading-[30px] -tracking-6 ">
-                    <p onClick={() => navigate('/')} className="cursor-pointer">
-                        DigiPedia{' '}
-                    </p>
-                    <span className="ml-1 font-normal text-primary-skyBlue">
-                        Dashboard
-                    </span>
-                </h1>
-            ) : (
-                <h1 className="flex text-2xl font-bold leading-[30px] -tracking-6 ">
-                    Digi<span className="text-primary-skyBlue">Pedia</span>
-                </h1>
-            )}
+        <header className="z-50  bg-white py-5">
+            <div className="container mx-auto flex flex-row items-center justify-between">
+                {pathname && (
+                    <h1 className="flex text-2xl font-bold leading-[30px] -tracking-6 ">
+                        <p
+                            onClick={() => navigate('/')}
+                            className="cursor-pointer"
+                        >
+                            DigiPedia{' '}
+                        </p>
+                        <span className="ml-1 font-normal text-primary-skyBlue">
+                            Dashboard
+                        </span>
+                    </h1>
+                )}
 
-            {pathname &&
-                pathname.split('/').find((item) => item === 'dashboard') && (
+                {pathname && (
                     <nav className="flex flex-row items-center">
                         <ul className="flex flex-row [&>li>button]:relative [&>li>button]:text-base [&>li>button]:transition-all [&>li>button]:duration-300 [&>li>button]:before:absolute [&>li>button]:before:-bottom-[6px] [&>li>button]:before:h-[2px] [&>li>button]:before:w-full [&>li>button]:before:transition-all [&>li>button]:before:duration-300 [&>li]:cursor-pointer [&>li]:px-8">
                             <li>
                                 <button
-                                    onClick={() =>
-                                        navigate('dashboard/my-tutorials')
-                                    }
+                                    onClick={() => navigate('dashboard')}
                                     className={`${
                                         pathname
                                             .split('/')
-                                            .find(
-                                                (item) =>
-                                                    item === 'my-tutorials'
-                                            )
-                                            ? 'text-primary before:bg-black'
-                                            : 'text-tertiary-grey-dim before:bg-transparent'
+                                            .find((item) => item === 'media')
+                                            ? 'text-tertiary-grey-dim before:bg-transparent'
+                                            : 'text-primary before:bg-black'
                                     }`}
                                 >
                                     My Tutorials
@@ -72,11 +59,12 @@ const Header = () => {
                                 </button>
                             </li>
                         </ul>
-                        <div className="ml-10 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-900 text-white">
+                        <div className="ml-10 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-secondary-navy text-white">
                             ML
                         </div>
                     </nav>
                 )}
+            </div>
         </header>
     );
 };

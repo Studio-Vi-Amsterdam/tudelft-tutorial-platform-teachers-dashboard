@@ -10,6 +10,8 @@ import './index.scss';
 import reportWebVitals from './reportWebVitals';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import Dashboard from './components/Dashboard/Dashboard';
+import BlogEditor from './components/BlogEditor/BlogEditor';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -18,23 +20,19 @@ root.render(
     <>
         <Router>
             <Header />
-            <main className="flex-auto">
-                <Routes>
-                    <Route path="/" Component={() => <div>Landing</div>} />
-                    <Route
-                        path="/dashboard"
-                        element={<Navigate to={`/dashboard/my-tutorials`} />}
-                    />
-                    <Route
-                        path="/dashboard/my-tutorials"
-                        Component={() => <div>My Tutorials</div>}
-                    />
-                    <Route
-                        path="/dashboard/media"
-                        Component={() => <div>Media</div>}
-                    />
-                </Routes>
-            </main>
+
+            <Routes>
+                <Route path="/" element={<Navigate to={`/dashboard`} />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route
+                    path="/dashboard/my-tutorials"
+                    Component={() => <BlogEditor />}
+                />
+                <Route
+                    path="/dashboard/media"
+                    Component={() => <main className="flex-auto">Media</main>}
+                />
+            </Routes>
             <Footer />
         </Router>
     </>
