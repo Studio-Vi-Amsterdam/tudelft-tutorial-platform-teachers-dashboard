@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from 'src/components/common/Button/Button';
 import {
     Dialog,
     DialogContent,
@@ -7,11 +9,15 @@ import {
     DialogTitle,
     DialogTrigger,
 } from 'src/components/ui/Dialog';
+import { setPageType } from 'src/redux/features/editorSlice';
+import { useAppDispatch } from 'src/redux/hooks';
 
 const AddNewTutorialButton = () => {
     const [activeButton, setActiveButton] = useState<string | undefined>(
         undefined
     );
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const buttons: Array<string> = [
         'Course Page',
         'Subject Page',
@@ -27,16 +33,17 @@ const AddNewTutorialButton = () => {
     };
 
     const handleSubmit = () => {
-        console.log("Navigate to page with '" + activeButton + "' template");
+        dispatch(setPageType(activeButton));
+        navigate('/dashboard/my-tutorials');
     };
 
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <button className="flex flex-row gap-x-6 rounded-[4px] bg-primary-skyBlue px-6 py-3 text-white">
-                    <div className="text-2xl leading-6">+</div>
-                    <p className="text-base">Create new tutorial</p>
-                </button>
+                <Button>
+                    <div>+</div>
+                    <p>Create new tutorial</p>
+                </Button>
             </DialogTrigger>
             <DialogContent className="bg-white sm:max-w-md">
                 <DialogHeader>
@@ -58,13 +65,9 @@ const AddNewTutorialButton = () => {
                     ))}
                 </div>
                 <DialogFooter>
-                    <button
-                        disabled={!activeButton}
-                        onClick={handleSubmit}
-                        className="flex flex-row gap-x-6 rounded-[4px] bg-primary-skyBlue px-6 py-3 text-white transition-colors duration-200 disabled:bg-tertiary-skyBlue-20"
-                    >
-                        <p className="text-base">Start</p>
-                    </button>
+                    <Button onClick={handleSubmit} disabled={!activeButton}>
+                        <p>Start</p>
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
