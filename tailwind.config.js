@@ -34,6 +34,7 @@ module.exports = {
                 subtext: 'var(--subtext)',
                 background: 'hsl(var(--background))',
                 foreground: 'hsl(var(--foreground))',
+                inputBorder: 'var(--input-border)',
                 primary: {
                     DEFAULT: 'hsl(var(--primary))',
                     foreground: 'hsl(var(--primary-foreground))',
@@ -86,6 +87,9 @@ module.exports = {
                     seasalt: 'var(--seasalt)',
                     aliceBlue: 'var(--alice-blue)',
                 },
+            },
+            backgroundImage: {
+                lamp: "url('assets/lamp.svg')",
             },
             fontSize: {
                 h2: ['44px', '48px'],

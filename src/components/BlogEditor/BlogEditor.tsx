@@ -1,49 +1,31 @@
 import React from 'react';
 
+import { useAppSelector } from 'src/redux/hooks';
+import { RootState } from 'src/redux/store';
+import TutorialButtonsSection from './TutorialButtonsSection/TutorialButtonsSection';
+import TutorialTopSection from './TutorialTopSection/TutorialTopSection';
+
 const BlogEditor = () => {
-    // The prototype of add tutorial page where user can add or edit tutorial
+    const tutorialTitle = useAppSelector(
+        (state: RootState) => state.editor.tutorialTop.title
+    );
+
     return (
         <main className="container mx-auto flex flex-auto flex-row justify-between">
             <div className="relative w-1/4 text-white">
-                sidebar
+                <p>Index</p>
+                <div className="flex flex-col">
+                    <h1>
+                        {tutorialTitle.replaceAll('\\s+', '') === ''
+                            ? 'Tutorial Title'
+                            : tutorialTitle}
+                    </h1>
+                </div>
                 <div className="absolute right-0 top-0 -z-10 h-full w-[300%] bg-secondary-navy"></div>
             </div>
             <div className="flex w-3/4 flex-col items-start pl-4">
-                <div>Title</div>
-                <div>TextField</div>
-                <div>Div 3</div>
-                <div>Div 4</div>
-                <div>Div 5</div>
-                <div>Title</div>
-                <div>TextField</div>
-                <div>Div 3</div>
-                <div>Div 4</div>
-                <div>Div 5</div>
-                <div>Title</div>
-                <div>TextField</div>
-                <div>Div 3</div>
-                <div>Div 4</div>
-                <div>Div 5</div>
-                <div>Title</div>
-                <div>TextField</div>
-                <div>Div 3</div>
-                <div>Div 4</div>
-                <div>Div 5</div>
-                <div>Title</div>
-                <div>TextField</div>
-                <div>Div 3</div>
-                <div>Div 4</div>
-                <div>Div 5</div>
-                <div>Title</div>
-                <div>TextField</div>
-                <div>Div 3</div>
-                <div>Div 4</div>
-                <div>Div 5</div>
-                <div>Title</div>
-                <div>TextField</div>
-                <div>Div 3</div>
-                <div>Div 4</div>
-                <div>Div 5</div>
+                <TutorialButtonsSection />
+                <TutorialTopSection tutorialTitle={tutorialTitle} />
             </div>
         </main>
     );

@@ -12,12 +12,14 @@ import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Dashboard from './components/Dashboard/Dashboard';
 import BlogEditor from './components/BlogEditor/BlogEditor';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 root.render(
-    <>
+    <Provider store={store}>
         <Router>
             <Header />
 
@@ -35,7 +37,7 @@ root.render(
             </Routes>
             <Footer />
         </Router>
-    </>
+    </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

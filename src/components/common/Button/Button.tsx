@@ -14,16 +14,18 @@ const buttonVariants = cva(
                 destructive:
                     'bg-destructive text-destructive-foreground hover:bg-destructive/90',
                 outline:
-                    'border-primary-skyBlue bg-primary-white text-primary-skyBlue disabled:border-tertiary-skyBlue-20 disabled:text-tertiary-skyBlue-20',
+                    'border-primary-skyBlue bg-transparent text-primary-skyBlue disabled:border-tertiary-skyBlue-20 disabled:text-tertiary-skyBlue-20',
                 secondary:
                     'bg-secondary text-secondary-foreground hover:bg-secondary/80',
                 ghost: 'hover:bg-accent hover:text-accent-foreground',
                 link: 'text-primary underline-offset-4 hover:underline',
+                elements:
+                    'w-44 text-left bg-tertiary-skyBlue-10 text-primary-skyBlue pl-6 pr-2 border-primary-skyBlue text-md',
             },
             size: {
                 default: '',
                 sm: 'h-9 rounded-md px-3',
-                lg: 'h-11 rounded-md px-8',
+                lg: 'px-10',
                 icon: 'h-10 w-10',
             },
         },
