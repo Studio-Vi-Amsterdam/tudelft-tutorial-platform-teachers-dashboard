@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { useAppSelector } from 'src/redux/hooks';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
 import TutorialTopSection from './TutorialTopSection';
 import TutorialButtonsSection from './TutorialButtonsSection';
+import AddChapterSection from './AddChapterSection';
 
 const BlogEditor = () => {
     const tutorialTitle = useAppSelector(
         (state: RootState) => state.editor.tutorialTop.title
     );
+    const chapters = useAppSelector(
+        (state: RootState) => state.editor.chapters
+    );
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        console.log(chapters);
+    }, [chapters]);
 
     return (
         <main className="container mx-auto flex flex-auto flex-row justify-between">
@@ -26,6 +36,7 @@ const BlogEditor = () => {
             <div className="flex w-3/4 flex-col items-start pl-4">
                 <TutorialButtonsSection />
                 <TutorialTopSection tutorialTitle={tutorialTitle} />
+                <AddChapterSection />
             </div>
         </main>
     );

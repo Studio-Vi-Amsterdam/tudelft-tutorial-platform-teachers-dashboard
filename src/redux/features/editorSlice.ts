@@ -1,6 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { EditorState, TutorialTopElementsObject } from 'src/types/types';
+import {
+    EditorState,
+    LayoutChapterType,
+    TutorialTopElementsObject,
+} from 'src/types/types';
 
 const initialState: EditorState = {
     pageType: undefined,
@@ -79,6 +83,43 @@ export const editorSlice = createSlice({
                     action.payload.infobox;
             }
         },
+        addBlankChapter: (state, action: PayloadAction<LayoutChapterType>) => {
+            if (action.payload === '1 column') {
+                state.chapters = [
+                    ...state.chapters,
+                    {
+                        layout: action.payload,
+                        title: '',
+                        text: '',
+                        elements: [],
+                    },
+                ];
+            } else {
+                if (action.payload.split(' ')[0] === 'video') {
+                    state.chapters = [
+                        ...state.chapters,
+                        {
+                            layout: action.payload,
+                            title: '',
+                            text: '',
+                            video: '',
+                            elements: [],
+                        },
+                    ];
+                } else if (action.payload.split(' ')[0] === 'image') {
+                    state.chapters = [
+                        ...state.chapters,
+                        {
+                            layout: action.payload,
+                            title: '',
+                            text: '',
+                            image: '',
+                            elements: [],
+                        },
+                    ];
+                }
+            }
+        },
     },
 });
 
@@ -89,6 +130,7 @@ export const {
     addTutorialElements,
     setElementText,
     setElementInfobox,
+    addBlankChapter,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;

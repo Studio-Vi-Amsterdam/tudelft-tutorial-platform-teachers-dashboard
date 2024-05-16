@@ -90,6 +90,7 @@ module.exports = {
             },
             backgroundImage: {
                 lamp: "url('assets/lamp.svg')",
+                play: "url('assets/play.svg')",
             },
             fontSize: {
                 h2: ['44px', '48px'],

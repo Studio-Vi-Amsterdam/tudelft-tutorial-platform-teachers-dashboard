@@ -19,6 +19,7 @@ const buttonVariants = cva(
                     'bg-secondary text-secondary-foreground hover:bg-secondary/80',
                 ghost: 'hover:bg-accent hover:text-accent-foreground',
                 link: 'text-primary underline-offset-4 hover:underline',
+                dashed: 'flex flex-row justify-center items-center border-dashed border-[2px] border-bg-tertiary-grey-stone bg-background-seasalt text-tertiary-grey-dim',
                 elements:
                     'w-44 text-left bg-tertiary-skyBlue-10 text-primary-skyBlue pl-6 pr-2 border-primary-skyBlue text-md',
             },

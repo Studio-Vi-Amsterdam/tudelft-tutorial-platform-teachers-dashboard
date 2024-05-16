@@ -68,7 +68,7 @@ export interface SubchapterInterface {
     elements: [] | ChapterElementsObject[];
 }
 
-type LayoutChapterType =
+export type LayoutChapterType =
     | '1 column'
     | 'image left'
     | 'image right'
@@ -79,6 +79,8 @@ export interface ChapterInterface {
     layout: LayoutChapterType;
     title: string;
     text: string;
+    video?: string;
+    image?: string;
     elements: [] | ChapterElementsObject[];
     subchapters?: SubchapterInterface[] | [];
 }
