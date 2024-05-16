@@ -2,8 +2,8 @@ import React from 'react';
 
 import { useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
-import TutorialButtonsSection from './TutorialButtonsSection/TutorialButtonsSection';
-import TutorialTopSection from './TutorialTopSection/TutorialTopSection';
+import TutorialTopSection from './TutorialTopSection';
+import TutorialButtonsSection from './TutorialButtonsSection';
 
 const BlogEditor = () => {
     const tutorialTitle = useAppSelector(

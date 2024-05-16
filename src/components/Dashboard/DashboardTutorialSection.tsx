@@ -1,5 +1,5 @@
-import DashboardCard from '../DashboardCard/DashboardCard';
-import { DashboardSectionProps } from '../types';
+import { DashboardSectionProps } from 'src/types/types';
+import DashboardCard from './DashboardCard';
 
 const DashboardTutorialSection = (props: DashboardSectionProps) => {
     const { items, heading } = props;

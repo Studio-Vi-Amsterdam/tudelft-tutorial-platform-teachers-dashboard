@@ -1,12 +1,12 @@
-import React from 'react';
-import TestEditor from '../TestEditor';
-import { Button } from 'src/components/common/Button/Button';
-import { ChapterElementsObject } from 'src/redux/features/types';
+import React, { useEffect, useRef } from 'react';
+import { Button } from 'src/components/ui/Button';
 import { useAppDispatch } from 'src/redux/hooks';
 import {
     setElementInfobox,
     setElementText,
 } from 'src/redux/features/editorSlice';
+import BundledEditor from './BundledEditor';
+import { ChapterElementsObject } from 'src/types/types';
 
 interface ElementsBlockProps {
     elements: Array<ChapterElementsObject>;
@@ -35,28 +35,55 @@ const ElementsBlock = (props: ElementsBlockProps) => {
             dispatch(setElementInfobox({ block, index, infobox: value }));
         }
     };
+
+    useEffect(() => {
+        console.log(elements);
+    }, [elements]);
+
     return (
-        <div className="flex w-full flex-col">
+        <div className="flex w-full flex-col gap-y-6">
             {elements.map((element, index) => (
                 <div className="w-full" key={index}>
                     {element?.text !== undefined && (
-                        <TestEditor
-                            key={index}
+                        <BundledEditor
                             value={element.text}
-                            handleChange={handleTextElementChange}
                             block={block}
                             index={index}
-                            placeholder="Text"
+                            handleChange={handleTextElementChange}
+                            init={{
+                                menubar: false,
+                                plugins: [
+                                    'table',
+                                    'lists',
+                                    'link',
+                                    'code',
+                                    'autoresize',
+                                    'command',
+                                ],
+
+                                toolbar:
+                                    'bullist numlist link code table command',
+                            }}
                         />
                     )}
                     {element?.infobox !== undefined && (
-                        <TestEditor
-                            key={index}
+                        <BundledEditor
                             value={element.infobox}
-                            handleChange={handleInfoboxElementChange}
                             block={block}
                             index={index}
-                            placeholder="Infobox"
+                            handleChange={handleInfoboxElementChange}
+                            init={{
+                                menubar: false,
+                                plugins: [
+                                    'table',
+                                    'lists',
+                                    'link',
+                                    'autoresize',
+                                    'command',
+                                ],
+
+                                toolbar: 'bullist numlist link table',
+                            }}
                         />
                     )}
                     {element?.image !== undefined && (

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { EditorState, TutorialTopElementsObject } from './types';
+import { EditorState, TutorialTopElementsObject } from 'src/types/types';
 
 const initialState: EditorState = {
     pageType: undefined,

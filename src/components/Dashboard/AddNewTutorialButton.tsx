@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'src/components/common/Button/Button';
+import { Button } from 'src/components/ui/Button';
 import {
     Dialog,
     DialogContent,

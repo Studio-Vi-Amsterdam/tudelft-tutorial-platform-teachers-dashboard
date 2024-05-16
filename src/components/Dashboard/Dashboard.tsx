@@ -1,6 +1,6 @@
-import { HardcodeTestDataInterface } from './types';
-import DashboardTutorialSection from './DashboardTutorialSection/DashboardTutorialSection';
-import AddNewTutorialButton from './Buttons/AddNewTutorialButton';
+import DashboardTutorialSection from './DashboardTutorialSection';
+import AddNewTutorialButton from './AddNewTutorialButton';
+import { HardcodeTestDataInterface } from 'src/types/types';
 
 const Dashboard = () => {
     const hardcodeTestData: HardcodeTestDataInterface = {

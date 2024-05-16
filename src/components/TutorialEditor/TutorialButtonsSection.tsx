@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'src/components/common/Button/Button';
+import { Button } from 'src/components/ui/Button';
 
 const TutorialButtonsSection = () => {
     return (

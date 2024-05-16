@@ -8,10 +8,10 @@ import {
 } from 'react-router-dom';
 import './index.scss';
 import reportWebVitals from './reportWebVitals';
-import Header from './components/Header/Header';
-import Footer from './components/Footer/Footer';
+import Header from './components/static/Header';
+import Footer from './components/static/Footer';
 import Dashboard from './components/Dashboard/Dashboard';
-import BlogEditor from './components/BlogEditor/BlogEditor';
+import BlogEditor from './components/TutorialEditor/TutorialEditor';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 

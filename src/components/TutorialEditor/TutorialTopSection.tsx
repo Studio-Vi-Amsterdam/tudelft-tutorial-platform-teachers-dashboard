@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import EditorLabel from 'src/components/common/EditorLabel';
-import TextInput from 'src/components/common/TextInput';
-import TestEditor from '../TestEditor';
-import Tip from 'src/components/common/Tip';
+import EditorLabel from 'src/components/ui/EditorLabel';
+import TextInput from 'src/components/ui/TextInput';
+import Tip from 'src/components/ui/Tip';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import {
     addTutorialElements,
@@ -10,8 +9,9 @@ import {
     setTutorialTitle,
 } from 'src/redux/features/editorSlice';
 import { RootState } from 'src/redux/store';
-import AddElementBlock from '../AddElementBlock/AddElementBlock';
-import ElementsBlock from '../ElementsBlock/ElementsBlock';
+import AddElementBlock from './AddElementBlock';
+import ElementsBlock from './ElementsBlock';
+import BundledEditor from './BundledEditor';
 
 interface TutorialTopSectionProps {
     tutorialTitle: string;
@@ -62,10 +62,27 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
                 placeholder="Tutorial title"
                 headingType="h1"
             />
-            <TestEditor
+            {/* <TestEditor
                 handleChange={handleTutorialDescriptionInputChange}
                 value={tutorialDescription}
                 placeholder="Write the course description with the learning outcomes here."
+            /> */}
+            <BundledEditor
+                value={tutorialDescription}
+                handleChange={handleTutorialDescriptionInputChange}
+                init={{
+                    menubar: false,
+                    plugins: [
+                        'table',
+                        'lists',
+                        'link',
+                        'code',
+                        'autoresize',
+                        'command',
+                    ],
+
+                    toolbar: 'bullist numlist link code table command',
+                }}
             />
             <Tip>
                 <p>

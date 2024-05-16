@@ -1,5 +1,5 @@
 import { localFormatDate } from 'src/lib/localFormatDate';
-import { TutorialCard } from '../types';
+import { TutorialCard } from 'src/types/types';
 
 interface DashboardCardProps {
     item: TutorialCard;
@@ -32,13 +32,13 @@ const DashboardCard = (props: DashboardCardProps) => {
                 <h4 className="text-xl leading-8">{item.name}</h4>
                 <div className="flex flex-col gap-y-2 pb-16 [&>div]:flex [&>div]:flex-row">
                     <div>
-                        <p className="w-20 text-left text-primary-subtext">
+                        <p className="text-primary-subtext w-20 text-left">
                             Published
                         </p>
                         {localFormatDate(item.published)}
                     </div>
                     <div>
-                        <p className="w-20 text-left text-primary-subtext">
+                        <p className="text-primary-subtext w-20 text-left">
                             Last Edit
                         </p>
                         {localFormatDate(item.lastEdit)}
