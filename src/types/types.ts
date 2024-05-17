@@ -12,6 +12,30 @@ export interface DashboardSectionProps {
     heading: string;
 }
 
+interface ElementActionBase {
+    block: string;
+    index: number;
+    nestedIndex?: number;
+}
+
+export interface ElementTextActionInterface extends ElementActionBase {
+    text: string;
+}
+
+export interface ElementInfoboxActionInterface extends ElementActionBase {
+    infobox: string;
+}
+
+export interface ChapterTextFieldActionInterface {
+    chapterIndex: number;
+    text: string;
+}
+
+export interface AddChapterElementInterface {
+    val: TutorialTopElementsObject;
+    chapterIndex: number;
+}
+
 interface OnboardingInterface {
     name: string;
     text: string;

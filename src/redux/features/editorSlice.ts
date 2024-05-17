@@ -1,7 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import {
+    AddChapterElementInterface,
+    ChapterTextFieldActionInterface,
     EditorState,
+    ElementInfoboxActionInterface,
+    ElementTextActionInterface,
     LayoutChapterType,
     TutorialTopElementsObject,
 } from 'src/types/types';
@@ -59,12 +63,7 @@ export const editorSlice = createSlice({
         },
         setElementText: (
             state,
-            action: PayloadAction<{
-                block: string;
-                index: number;
-                text: string;
-                nestedIndex?: number;
-            }>
+            action: PayloadAction<ElementTextActionInterface>
         ) => {
             if (action.payload.block === 'tutorialElements') {
                 state.tutorialTop.elements[action.payload.index].text =
@@ -80,12 +79,7 @@ export const editorSlice = createSlice({
         },
         setElementInfobox: (
             state,
-            action: PayloadAction<{
-                block: string;
-                index: number;
-                infobox: string;
-                nestedIndex?: number;
-            }>
+            action: PayloadAction<ElementInfoboxActionInterface>
         ) => {
             if (action.payload.block === 'tutorialElements') {
                 state.tutorialTop.elements[action.payload.index].infobox =
@@ -141,24 +135,21 @@ export const editorSlice = createSlice({
         },
         setChapterText: (
             state,
-            action: PayloadAction<{ chapterIndex: number; text: string }>
+            action: PayloadAction<ChapterTextFieldActionInterface>
         ) => {
             state.chapters[action.payload.chapterIndex].text =
                 action.payload.text;
         },
         setChapterTitle: (
             state,
-            action: PayloadAction<{ chapterIndex: number; text: string }>
+            action: PayloadAction<ChapterTextFieldActionInterface>
         ) => {
             state.chapters[action.payload.chapterIndex].title =
                 action.payload.text;
         },
         addChapterElement: (
             state,
-            action: PayloadAction<{
-                val: TutorialTopElementsObject;
-                chapterIndex: number;
-            }>
+            action: PayloadAction<AddChapterElementInterface>
         ) => {
             state.chapters[action.payload.chapterIndex].elements = [
                 ...state.chapters[action.payload.chapterIndex].elements,
