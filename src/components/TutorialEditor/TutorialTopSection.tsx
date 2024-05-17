@@ -12,6 +12,7 @@ import { RootState } from 'src/redux/store';
 import AddElementBlock from './AddElementBlock';
 import ElementsBlock from './ElementsBlock';
 import BundledEditor from './BundledEditor';
+import { AddElementsType } from 'src/types/types';
 
 interface TutorialTopSectionProps {
     tutorialTitle: string;
@@ -40,7 +41,13 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
         dispatch(setTutorialDescription(value));
     };
 
-    const tutorialElements = ['text', 'infobox', 'image', 'video'];
+    const tutorialElements: AddElementsType[] = [
+        'text',
+        'infobox',
+        'image',
+        'video',
+        'file',
+    ];
     const handleAddTutorialElement = (value: string): void => {
         const payload: any = {};
 
@@ -62,11 +69,6 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
                 placeholder="Tutorial title"
                 headingType="h1"
             />
-            {/* <TestEditor
-                handleChange={handleTutorialDescriptionInputChange}
-                value={tutorialDescription}
-                placeholder="Write the course description with the learning outcomes here."
-            /> */}
             <BundledEditor
                 value={tutorialDescription}
                 handleChange={handleTutorialDescriptionInputChange}

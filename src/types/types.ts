@@ -5,6 +5,8 @@ export interface TutorialCard {
     lastEdit: Date;
 }
 
+export type AddElementsType = 'text' | 'infobox' | 'image' | 'video' | 'file';
+
 export interface DashboardSectionProps {
     items: Array<TutorialCard>;
     heading: string;

@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
 import TutorialTopSection from './TutorialTopSection';
 import TutorialButtonsSection from './TutorialButtonsSection';
 import AddChapterSection from './AddChapterSection';
+import { ChapterInterface } from 'src/types/types';
+import ChapterSection from './ChapterSection';
 
 const BlogEditor = () => {
     const tutorialTitle = useAppSelector(
@@ -13,8 +15,6 @@ const BlogEditor = () => {
     const chapters = useAppSelector(
         (state: RootState) => state.editor.chapters
     );
-
-    const dispatch = useAppDispatch();
 
     useEffect(() => {
         console.log(chapters);
@@ -36,6 +36,15 @@ const BlogEditor = () => {
             <div className="flex w-3/4 flex-col items-start pl-4">
                 <TutorialButtonsSection />
                 <TutorialTopSection tutorialTitle={tutorialTitle} />
+                {chapters.length > 0 &&
+                    chapters.map((chapter: ChapterInterface, index: number) => (
+                        <ChapterSection
+                            key={index}
+                            chapter={chapter}
+                            index={index}
+                        />
+                    ))}
+
                 <AddChapterSection />
             </div>
         </main>

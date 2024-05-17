@@ -63,11 +63,19 @@ export const editorSlice = createSlice({
                 block: string;
                 index: number;
                 text: string;
+                nestedIndex?: number;
             }>
         ) => {
             if (action.payload.block === 'tutorialElements') {
                 state.tutorialTop.elements[action.payload.index].text =
                     action.payload.text;
+            } else if (
+                action.payload.block === 'chapterElements' &&
+                action.payload.nestedIndex !== undefined
+            ) {
+                state.chapters[action.payload.nestedIndex].elements[
+                    action.payload.index
+                ].text = action.payload.text;
             }
         },
         setElementInfobox: (
@@ -76,11 +84,19 @@ export const editorSlice = createSlice({
                 block: string;
                 index: number;
                 infobox: string;
+                nestedIndex?: number;
             }>
         ) => {
             if (action.payload.block === 'tutorialElements') {
                 state.tutorialTop.elements[action.payload.index].infobox =
                     action.payload.infobox;
+            } else if (
+                action.payload.block === 'chapterElements' &&
+                action.payload.nestedIndex !== undefined
+            ) {
+                state.chapters[action.payload.nestedIndex].elements[
+                    action.payload.index
+                ].infobox = action.payload.infobox;
             }
         },
         addBlankChapter: (state, action: PayloadAction<LayoutChapterType>) => {
@@ -92,6 +108,7 @@ export const editorSlice = createSlice({
                         title: '',
                         text: '',
                         elements: [],
+                        subchapters: [],
                     },
                 ];
             } else {
@@ -104,6 +121,7 @@ export const editorSlice = createSlice({
                             text: '',
                             video: '',
                             elements: [],
+                            subchapters: [],
                         },
                     ];
                 } else if (action.payload.split(' ')[0] === 'image') {
@@ -115,10 +133,37 @@ export const editorSlice = createSlice({
                             text: '',
                             image: '',
                             elements: [],
+                            subchapters: [],
                         },
                     ];
                 }
             }
+        },
+        setChapterText: (
+            state,
+            action: PayloadAction<{ chapterIndex: number; text: string }>
+        ) => {
+            state.chapters[action.payload.chapterIndex].text =
+                action.payload.text;
+        },
+        setChapterTitle: (
+            state,
+            action: PayloadAction<{ chapterIndex: number; text: string }>
+        ) => {
+            state.chapters[action.payload.chapterIndex].title =
+                action.payload.text;
+        },
+        addChapterElement: (
+            state,
+            action: PayloadAction<{
+                val: TutorialTopElementsObject;
+                chapterIndex: number;
+            }>
+        ) => {
+            state.chapters[action.payload.chapterIndex].elements = [
+                ...state.chapters[action.payload.chapterIndex].elements,
+                action.payload.val,
+            ];
         },
     },
 });
@@ -131,6 +176,9 @@ export const {
     setElementText,
     setElementInfobox,
     addBlankChapter,
+    setChapterText,
+    setChapterTitle,
+    addChapterElement,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;

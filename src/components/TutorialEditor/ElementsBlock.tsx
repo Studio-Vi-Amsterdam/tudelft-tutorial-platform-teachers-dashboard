@@ -11,10 +11,11 @@ import { ChapterElementsObject } from 'src/types/types';
 interface ElementsBlockProps {
     elements: Array<ChapterElementsObject>;
     block: string;
+    chapterIndex?: number;
 }
 
 const ElementsBlock = (props: ElementsBlockProps) => {
-    const { elements, block } = props;
+    const { elements, block, chapterIndex } = props;
     const dispatch = useAppDispatch();
     const handleTextElementChange = (
         value: string,
@@ -22,7 +23,14 @@ const ElementsBlock = (props: ElementsBlockProps) => {
         block?: string
     ): void => {
         if (block !== undefined && index !== undefined) {
-            dispatch(setElementText({ block, index, text: value }));
+            dispatch(
+                setElementText({
+                    block,
+                    index,
+                    text: value,
+                    nestedIndex: chapterIndex,
+                })
+            );
         }
     };
 
@@ -32,7 +40,14 @@ const ElementsBlock = (props: ElementsBlockProps) => {
         block?: string
     ): void => {
         if (block !== undefined && index !== undefined) {
-            dispatch(setElementInfobox({ block, index, infobox: value }));
+            dispatch(
+                setElementInfobox({
+                    block,
+                    index,
+                    infobox: value,
+                    nestedIndex: chapterIndex,
+                })
+            );
         }
     };
 

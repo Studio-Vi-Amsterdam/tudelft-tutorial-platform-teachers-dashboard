@@ -5,7 +5,8 @@ interface AddElementBlockProps {
     elements: Array<string>;
     setAddElementsActive: (value: boolean) => void;
     addElementsActive: boolean;
-    handleAddElement: (value: string) => void;
+    handleAddElement: (value: string, index?: number) => void;
+    index?: number;
 }
 
 const AddElementBlock = (props: AddElementBlockProps) => {
@@ -40,7 +41,7 @@ const AddElementBlock = (props: AddElementBlockProps) => {
                         <Button
                             variant={'elements'}
                             key={index}
-                            onClick={() => handleAddElement(el)}
+                            onClick={() => handleAddElement(el, props?.index)}
                         >
                             <p className="capitalize">{el}</p>
                         </Button>
