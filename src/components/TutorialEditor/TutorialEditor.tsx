@@ -16,10 +16,6 @@ const BlogEditor = () => {
         (state: RootState) => state.editor.chapters
     );
 
-    useEffect(() => {
-        console.log(chapters);
-    }, [chapters]);
-
     return (
         <main className="container mx-auto flex flex-auto flex-row justify-between">
             <div className="relative w-1/4 text-white">

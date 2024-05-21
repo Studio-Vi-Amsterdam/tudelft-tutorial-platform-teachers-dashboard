@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'src/components/ui/Button';
 import { useAppDispatch } from 'src/redux/hooks';
 import {
@@ -12,11 +12,13 @@ interface ElementsBlockProps {
     elements: Array<ChapterElementsObject>;
     block: string;
     chapterIndex?: number;
+    subchapterIndex?: number;
 }
 
 const ElementsBlock = (props: ElementsBlockProps) => {
-    const { elements, block, chapterIndex } = props;
+    const { elements, block, chapterIndex, subchapterIndex } = props;
     const dispatch = useAppDispatch();
+
     const handleTextElementChange = (
         value: string,
         index?: number,
@@ -29,6 +31,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                     index,
                     text: value,
                     nestedIndex: chapterIndex,
+                    subchapterIndex: subchapterIndex,
                 })
             );
         }
@@ -46,14 +49,11 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                     index,
                     infobox: value,
                     nestedIndex: chapterIndex,
+                    subchapterIndex: subchapterIndex,
                 })
             );
         }
     };
-
-    useEffect(() => {
-        console.log(elements);
-    }, [elements]);
 
     return (
         <div className="flex w-full flex-col gap-y-6">

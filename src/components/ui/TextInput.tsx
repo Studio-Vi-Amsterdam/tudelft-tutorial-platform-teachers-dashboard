@@ -2,10 +2,15 @@ import React from 'react';
 
 interface TextInputProps {
     value: string;
-    handleChange: (value: string, index?: number) => void;
+    handleChange: (
+        value: string,
+        index?: number,
+        subchapterIndex?: number
+    ) => void;
     placeholder: string;
     headingType?: string;
     index?: number;
+    subchapterIndex?: number;
 }
 
 const TextInput = (props: TextInputProps) => {
@@ -39,7 +44,11 @@ const TextInput = (props: TextInputProps) => {
                 value={props.value}
                 placeholder={props.placeholder}
                 onChange={(e) =>
-                    props.handleChange(e.target.value, props?.index)
+                    props.handleChange(
+                        e.target.value,
+                        props?.index,
+                        props?.subchapterIndex
+                    )
                 }
             />
             {props?.headingType && (

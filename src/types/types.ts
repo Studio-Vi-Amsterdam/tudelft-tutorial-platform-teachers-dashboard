@@ -16,6 +16,7 @@ interface ElementActionBase {
     block: string;
     index: number;
     nestedIndex?: number;
+    subchapterIndex?: number;
 }
 
 export interface ElementTextActionInterface extends ElementActionBase {
@@ -31,9 +32,19 @@ export interface ChapterTextFieldActionInterface {
     text: string;
 }
 
+export interface SubchapterTextFieldActionInterface
+    extends ChapterTextFieldActionInterface {
+    subchapterIndex: number;
+}
+
 export interface AddChapterElementInterface {
     val: TutorialTopElementsObject;
     chapterIndex: number;
+}
+
+export interface AddSubchapterElementInterface
+    extends AddChapterElementInterface {
+    subchapterIndex: number;
 }
 
 interface OnboardingInterface {
@@ -88,12 +99,6 @@ export interface ChapterElementsObject {
     h5pElement?: string;
 }
 
-export interface SubchapterInterface {
-    title: string;
-    titleType: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-    elements: [] | ChapterElementsObject[];
-}
-
 export type LayoutChapterType =
     | '1 column'
     | 'image left'
@@ -101,14 +106,24 @@ export type LayoutChapterType =
     | 'video left'
     | 'video right';
 
-export interface ChapterInterface {
+export type BlankSubchapterActionInterface = {
+    chapterType: LayoutChapterType;
+    chapterIndex: number;
+};
+
+interface ChapterBase {
     layout: LayoutChapterType;
     title: string;
     text: string;
     video?: string;
     image?: string;
     elements: [] | ChapterElementsObject[];
-    subchapters?: SubchapterInterface[] | [];
+}
+
+export interface SubchapterInterface extends ChapterBase {}
+
+export interface ChapterInterface extends ChapterBase {
+    subchapters: SubchapterInterface[] | [];
 }
 
 export type PageTypeType = string | undefined;

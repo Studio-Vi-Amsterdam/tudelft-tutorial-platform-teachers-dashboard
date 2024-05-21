@@ -87,14 +87,30 @@ export default function BundledEditor(props: any) {
     });
     return (
         <>
-            <Editor
-                licenseKey="gpl"
-                value={props.value}
-                onEditorChange={(newValue) =>
-                    props.handleChange(newValue, props?.index, props?.block)
-                }
-                {...props}
-            />
+            {props?.subchapter && props.subchapter === true ? (
+                <Editor
+                    licenseKey="gpl"
+                    value={props.value}
+                    onEditorChange={(newValue) =>
+                        props.handleChange(
+                            newValue,
+                            props?.index,
+                            props?.subchapterIndex
+                        )
+                    }
+                    {...props}
+                />
+            ) : (
+                <Editor
+                    licenseKey="gpl"
+                    value={props.value}
+                    onEditorChange={(newValue) =>
+                        props.handleChange(newValue, props?.index, props?.block)
+                    }
+                    {...props}
+                />
+            )}
+
             <CommandDialog
                 commandDialog={commandDialog}
                 handleSubmitCommand={handleSubmitCommand}

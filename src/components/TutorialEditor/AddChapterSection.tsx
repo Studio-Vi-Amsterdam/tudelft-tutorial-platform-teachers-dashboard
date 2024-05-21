@@ -3,9 +3,17 @@ import EditorLabel from '../ui/EditorLabel';
 import { LayoutChapterType } from 'src/types/types';
 import { Button } from '../ui/Button';
 import { useAppDispatch } from 'src/redux/hooks';
-import { addBlankChapter } from 'src/redux/features/editorSlice';
+import {
+    addBlankChapter,
+    addBlankSubchapter,
+} from 'src/redux/features/editorSlice';
 
-const AddChapterSection = () => {
+interface AddChapterSectionProps {
+    chapterIndex?: number;
+    isSubchapter?: boolean;
+}
+
+const AddChapterSection = (props: AddChapterSectionProps) => {
     const [isChapterCreating, setIsChapterCreating] = useState<boolean>(false);
     const [isAddChapterButtonShow, setIsAddChapterButtonShow] =
         useState<boolean>(true);
@@ -28,14 +36,31 @@ const AddChapterSection = () => {
     const createChapter = (layoutType: LayoutChapterType) => {
         setIsChapterCreating(false);
         setIsAddChapterButtonShow(true);
-        dispatch(addBlankChapter(layoutType));
+        if (props.isSubchapter && props.chapterIndex !== undefined) {
+            dispatch(
+                addBlankSubchapter({
+                    chapterIndex: props.chapterIndex,
+                    chapterType: layoutType,
+                })
+            );
+        } else {
+            dispatch(addBlankChapter(layoutType));
+        }
     };
 
     return (
-        <section className="relative flex w-full flex-col gap-y-6 py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver">
-            <EditorLabel>
-                This section is a chapter of your tutorial.
-            </EditorLabel>
+        <section
+            className={`${
+                props.isSubchapter
+                    ? ''
+                    : ' py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver'
+            } relative flex w-full flex-col gap-y-6 `}
+        >
+            {!props.isSubchapter && (
+                <EditorLabel>
+                    This section is a chapter of your tutorial.
+                </EditorLabel>
+            )}
             {isChapterCreating && (
                 <div className="flex flex-col gap-y-4 rounded-[8px] border-[2px] border-dashed border-tertiary-grey-dim py-6">
                     <h4 className="text-center">Choose layout</h4>
@@ -93,7 +118,7 @@ const AddChapterSection = () => {
             {isAddChapterButtonShow && (
                 <Button variant={'dashed'} onClick={showChooseLayoutBlock}>
                     <div>+</div>
-                    <p>Add chapter</p>
+                    <p>Add {props.isSubchapter ? 'subchapter' : 'chapter'}</p>
                 </Button>
             )}
         </section>

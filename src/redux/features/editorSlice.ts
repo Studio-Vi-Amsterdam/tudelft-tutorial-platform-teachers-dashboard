@@ -2,11 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import {
     AddChapterElementInterface,
+    AddSubchapterElementInterface,
+    BlankSubchapterActionInterface,
     ChapterTextFieldActionInterface,
     EditorState,
     ElementInfoboxActionInterface,
     ElementTextActionInterface,
     LayoutChapterType,
+    SubchapterTextFieldActionInterface,
     TutorialTopElementsObject,
 } from 'src/types/types';
 
@@ -75,6 +78,14 @@ export const editorSlice = createSlice({
                 state.chapters[action.payload.nestedIndex].elements[
                     action.payload.index
                 ].text = action.payload.text;
+            } else if (
+                action.payload.block === 'subchapterElements' &&
+                action.payload.nestedIndex !== undefined &&
+                action.payload.subchapterIndex !== undefined
+            ) {
+                state.chapters[action.payload.nestedIndex].subchapters[
+                    action.payload.subchapterIndex
+                ].elements[action.payload.index].text = action.payload.text;
             }
         },
         setElementInfobox: (
@@ -91,6 +102,15 @@ export const editorSlice = createSlice({
                 state.chapters[action.payload.nestedIndex].elements[
                     action.payload.index
                 ].infobox = action.payload.infobox;
+            } else if (
+                action.payload.block === 'subchapterElements' &&
+                action.payload.nestedIndex !== undefined &&
+                action.payload.subchapterIndex !== undefined
+            ) {
+                state.chapters[action.payload.nestedIndex].subchapters[
+                    action.payload.subchapterIndex
+                ].elements[action.payload.index].infobox =
+                    action.payload.infobox;
             }
         },
         addBlankChapter: (state, action: PayloadAction<LayoutChapterType>) => {
@@ -133,6 +153,51 @@ export const editorSlice = createSlice({
                 }
             }
         },
+        addBlankSubchapter: (
+            state,
+            action: PayloadAction<BlankSubchapterActionInterface>
+        ) => {
+            if (action.payload.chapterType === '1 column') {
+                state.chapters[action.payload.chapterIndex].subchapters = [
+                    ...(state.chapters[action.payload.chapterIndex]
+                        .subchapters || []),
+                    {
+                        layout: action.payload.chapterType,
+                        title: '',
+                        text: '',
+                        elements: [],
+                    },
+                ];
+            } else {
+                if (action.payload.chapterType.split(' ')[0] === 'video') {
+                    state.chapters[action.payload.chapterIndex].subchapters = [
+                        ...(state.chapters[action.payload.chapterIndex]
+                            .subchapters || []),
+                        {
+                            layout: action.payload.chapterType,
+                            title: '',
+                            text: '',
+                            video: '',
+                            elements: [],
+                        },
+                    ];
+                } else if (
+                    action.payload.chapterType.split(' ')[0] === 'image'
+                ) {
+                    state.chapters[action.payload.chapterIndex].subchapters = [
+                        ...(state.chapters[action.payload.chapterIndex]
+                            .subchapters || []),
+                        {
+                            layout: action.payload.chapterType,
+                            title: '',
+                            text: '',
+                            image: '',
+                            elements: [],
+                        },
+                    ];
+                }
+            }
+        },
         setChapterText: (
             state,
             action: PayloadAction<ChapterTextFieldActionInterface>
@@ -147,12 +212,41 @@ export const editorSlice = createSlice({
             state.chapters[action.payload.chapterIndex].title =
                 action.payload.text;
         },
+        setSubchapterTitle: (
+            state,
+            action: PayloadAction<SubchapterTextFieldActionInterface>
+        ) => {
+            state.chapters[action.payload.chapterIndex].subchapters[
+                action.payload.subchapterIndex
+            ].title = action.payload.text;
+        },
+        setSubchapterText: (
+            state,
+            action: PayloadAction<SubchapterTextFieldActionInterface>
+        ) => {
+            state.chapters[action.payload.chapterIndex].subchapters[
+                action.payload.subchapterIndex
+            ].text = action.payload.text;
+        },
         addChapterElement: (
             state,
             action: PayloadAction<AddChapterElementInterface>
         ) => {
             state.chapters[action.payload.chapterIndex].elements = [
                 ...state.chapters[action.payload.chapterIndex].elements,
+                action.payload.val,
+            ];
+        },
+        addSubchapterElement: (
+            state,
+            action: PayloadAction<AddSubchapterElementInterface>
+        ) => {
+            state.chapters[action.payload.chapterIndex].subchapters[
+                action.payload.subchapterIndex
+            ].elements = [
+                ...state.chapters[action.payload.chapterIndex].subchapters[
+                    action.payload.subchapterIndex
+                ].elements,
                 action.payload.val,
             ];
         },
@@ -169,7 +263,11 @@ export const {
     addBlankChapter,
     setChapterText,
     setChapterTitle,
+    setSubchapterTitle,
+    setSubchapterText,
     addChapterElement,
+    addSubchapterElement,
+    addBlankSubchapter,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;
