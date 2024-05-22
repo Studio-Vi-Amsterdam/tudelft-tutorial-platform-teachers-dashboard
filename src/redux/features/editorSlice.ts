@@ -24,7 +24,7 @@ const initialState: EditorState = {
     chapters: [],
     tutorialBottom: {
         title: '',
-        titleType: '',
+        titleType: 'h2',
         text: '',
     },
     belongs: {
@@ -250,6 +250,12 @@ export const editorSlice = createSlice({
                 action.payload.val,
             ];
         },
+        setTutorialBottomTitle: (state, action: PayloadAction<string>) => {
+            state.tutorialBottom.title = action.payload;
+        },
+        setTutorialBottomText: (state, action: PayloadAction<string>) => {
+            state.tutorialBottom.text = action.payload;
+        },
     },
 });
 
@@ -268,6 +274,8 @@ export const {
     addChapterElement,
     addSubchapterElement,
     addBlankSubchapter,
+    setTutorialBottomTitle,
+    setTutorialBottomText,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;

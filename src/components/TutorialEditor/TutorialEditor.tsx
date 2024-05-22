@@ -8,6 +8,7 @@ import AddChapterSection from './AddChapterSection';
 import { ChapterInterface } from 'src/types/types';
 import ChapterSection from './ChapterSection';
 import EditorSidebar from './EditorSidebar';
+import TutorialBottomSection from './TutorialBottomSection';
 
 const BlogEditor = () => {
     const tutorialTitle = useAppSelector(
@@ -33,6 +34,7 @@ const BlogEditor = () => {
                     ))}
 
                 <AddChapterSection />
+                <TutorialBottomSection />
             </div>
         </main>
     );

@@ -154,7 +154,7 @@ export interface EditorState {
     pageType: PageTypeType;
     tutorialTop: TutorialTopInterface;
     chapters: ChapterInterface[] | [];
-    tutorialBottom?: TutorialBottomInterface | undefined;
+    tutorialBottom: TutorialBottomInterface;
     belongs: EditorBelongsInterface;
     responsible: TutorialResponsibleInterface;
 }
