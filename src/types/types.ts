@@ -37,6 +37,11 @@ export interface SubchapterTextFieldActionInterface
     subchapterIndex: number;
 }
 
+export interface MoveChapterInterface {
+    index: number;
+    moveTo: 'up' | 'down';
+}
+
 export interface AddChapterElementInterface {
     val: TutorialTopElementsObject;
     chapterIndex: number;

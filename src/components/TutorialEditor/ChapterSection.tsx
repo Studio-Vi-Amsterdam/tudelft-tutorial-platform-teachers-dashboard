@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import EditorLabel from '../ui/EditorLabel';
-import TextInput from '../ui/TextInput';
 import { AddElementsType, ChapterInterface } from 'src/types/types';
 import { useAppDispatch } from 'src/redux/hooks';
 import {
@@ -11,13 +10,10 @@ import {
     setSubchapterText,
     setSubchapterTitle,
 } from 'src/redux/features/editorSlice';
-import BundledEditor from './BundledEditor';
-import { Button } from '../ui/Button';
-import ElementsBlock from './ElementsBlock';
-import AddElementBlock from './AddElementBlock';
 import AddChapterSection from './AddChapterSection';
 import ChapterContent from './ChapterContent';
 import SubchapterContent from './SubchapterContent';
+import ChapterMenu from './ChapterMenu';
 
 interface ChapterSectionProps {
     chapter: ChapterInterface;
@@ -26,7 +22,6 @@ interface ChapterSectionProps {
 
 const ChapterSection = (props: ChapterSectionProps) => {
     const { chapter, index } = props;
-
     const [addElementsActive, setAddElementsActive] = useState<boolean>(false);
     const [addSubchapterElementsActive, setAddSubchapterElementsActive] =
         useState<boolean>(false);
@@ -116,6 +111,7 @@ const ChapterSection = (props: ChapterSectionProps) => {
             <EditorLabel>
                 This section is a chapter of your tutorial.
             </EditorLabel>
+            <ChapterMenu index={index} />
             <ChapterContent
                 addElementsActive={addElementsActive}
                 chapter={chapter}

@@ -91,6 +91,11 @@ module.exports = {
             backgroundImage: {
                 lamp: "url('assets/lamp.svg')",
                 play: "url('assets/play.svg')",
+                arrow: "url('assets/arrow.svg')",
+                duplicate: "url('assets/duplicate.svg')",
+                delete: "url('assets/delete.svg')",
+                cross: "url('assets/cross.svg')",
+                elipsis: "url('assets/elipsis.svg')",
             },
             fontSize: {
                 h2: ['44px', '48px'],

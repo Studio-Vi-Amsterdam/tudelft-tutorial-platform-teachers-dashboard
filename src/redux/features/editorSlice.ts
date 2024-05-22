@@ -9,6 +9,7 @@ import {
     ElementInfoboxActionInterface,
     ElementTextActionInterface,
     LayoutChapterType,
+    MoveChapterInterface,
     SubchapterTextFieldActionInterface,
     TutorialTopElementsObject,
 } from 'src/types/types';
@@ -256,6 +257,35 @@ export const editorSlice = createSlice({
         setTutorialBottomText: (state, action: PayloadAction<string>) => {
             state.tutorialBottom.text = action.payload;
         },
+        moveChapter: (state, action: PayloadAction<MoveChapterInterface>) => {
+            const newPos = action.payload.moveTo;
+            const index = action.payload.index;
+            const newIndex = newPos === 'up' ? index - 1 : index + 1;
+            if (newPos === 'up' && index > 0) {
+                [state.chapters[newIndex], state.chapters[index]] = [
+                    state.chapters[index],
+                    state.chapters[newIndex],
+                ];
+            } else if (newPos === 'down' && index < state.chapters.length - 1) {
+                [state.chapters[index], state.chapters[newIndex]] = [
+                    state.chapters[newIndex],
+                    state.chapters[index],
+                ];
+            }
+        },
+        duplicateChapter: (state, action: PayloadAction<number>) => {
+            const index = action.payload;
+            if (index >= 0 && index < state.chapters.length) {
+                const newChapter = { ...state.chapters[index] };
+                state.chapters.splice(index + 1, 0, newChapter);
+            }
+        },
+        deleteChapter: (state, action: PayloadAction<number>) => {
+            const index = action.payload;
+            if (index >= 0 && index < state.chapters.length) {
+                state.chapters.splice(index, 1);
+            }
+        },
     },
 });
 
@@ -276,6 +306,9 @@ export const {
     addBlankSubchapter,
     setTutorialBottomTitle,
     setTutorialBottomText,
+    moveChapter,
+    duplicateChapter,
+    deleteChapter,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;
