@@ -5,12 +5,15 @@ import {
     AddSubchapterElementInterface,
     BlankSubchapterActionInterface,
     ChapterTextFieldActionInterface,
+    EditorBelongsInterface,
     EditorState,
     ElementInfoboxActionInterface,
     ElementTextActionInterface,
     LayoutChapterType,
     MoveChapterInterface,
     SubchapterTextFieldActionInterface,
+    TutorialMetaObject,
+    TutorialResponsibleInterface,
     TutorialTopElementsObject,
 } from 'src/types/types';
 
@@ -28,18 +31,76 @@ const initialState: EditorState = {
         titleType: 'h2',
         text: '',
     },
-    belongs: {
-        primary: '',
-        version: '',
-        primarySubject: '',
-        secondarySubject: '',
-        level: '',
-        keywords: [],
-        image: '',
-    },
-    responsible: {
-        teacher: '',
-        faculty: '',
+    meta: {
+        belongs: {
+            primary: {
+                required: true,
+                list: ['Windows 10', 'Office 365', 'VS Code', 'Figma'],
+                value: '',
+                fieldTitle: 'Primary software used',
+            },
+            version: {
+                required: true,
+                value: '',
+                fieldTitle: 'Software version',
+            },
+            primarySubject: {
+                required: true,
+                list: [
+                    'Mathematics',
+                    'Web-programing',
+                    'Web-design',
+                    'Physics',
+                ],
+                value: '',
+                fieldTitle: 'Primary Subject',
+            },
+            secondarySubject: {
+                required: false,
+                list: [
+                    'Mathematics',
+                    'Web-programing',
+                    'Web-design',
+                    'Physics',
+                ],
+                value: '',
+                fieldTitle: 'Secondary Subject',
+            },
+            level: {
+                required: true,
+                list: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'],
+                value: '',
+                fieldTitle: 'Level',
+            },
+            keywords: {
+                required: true,
+                list: [],
+                value: '',
+                fieldTitle: 'Keywords',
+            },
+            image: {
+                required: false,
+                value: '',
+                fieldTitle: 'Featured image',
+            },
+        },
+        responsible: {
+            teacher: {
+                required: true,
+                value: '',
+                fieldTitle: 'Teacher',
+            },
+            faculty: {
+                required: true,
+                list: [
+                    'Computer Engeneering',
+                    'Computer Science',
+                    'Automation',
+                ],
+                value: '',
+                fieldTitle: 'Faculty',
+            },
+        },
     },
 };
 
@@ -286,6 +347,42 @@ export const editorSlice = createSlice({
                 state.chapters.splice(index, 1);
             }
         },
+        changeMetaField: (
+            state,
+            action: PayloadAction<{
+                value: string;
+                objectName: keyof TutorialMetaObject;
+                belongsKeyName?: keyof EditorBelongsInterface;
+                responsibleKeyName?: keyof TutorialResponsibleInterface;
+            }>
+        ) => {
+            if (
+                action.payload.objectName === 'belongs' &&
+                action.payload.belongsKeyName
+            ) {
+                state.meta.belongs[action.payload.belongsKeyName].value =
+                    action.payload.value;
+            } else if (
+                action.payload.objectName === 'responsible' &&
+                action.payload.responsibleKeyName
+            ) {
+                state.meta.responsible[
+                    action.payload.responsibleKeyName
+                ].value = action.payload.value;
+            }
+        },
+        addKeywordsToList: (state, action: PayloadAction<string>) => {
+            state.meta.belongs.keywords.list = [
+                ...state.meta.belongs.keywords.list,
+                action.payload,
+            ];
+        },
+        deleteKeyword: (state, action: PayloadAction<string>) => {
+            state.meta.belongs.keywords.list =
+                state.meta.belongs.keywords.list.filter(
+                    (item) => item !== action.payload
+                );
+        },
     },
 });
 
@@ -309,6 +406,9 @@ export const {
     moveChapter,
     duplicateChapter,
     deleteChapter,
+    changeMetaField,
+    addKeywordsToList,
+    deleteKeyword,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;

@@ -81,9 +81,10 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
                         'code',
                         'autoresize',
                         'command',
+                        'term',
                     ],
 
-                    toolbar: 'bullist numlist link code table command',
+                    toolbar: 'bullist numlist link code table command term',
                 }}
             />
             <Tip>

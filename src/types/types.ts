@@ -85,6 +85,14 @@ export interface CommandDialogInterface {
     separator: '' | 'arrow' | 'plus';
 }
 
+export interface TermDialogInterface {
+    isOpen: boolean;
+    editor: any;
+    term: string;
+    select: string[] | null;
+    explanation: string;
+}
+
 export interface TutorialTopElementsObject {
     text?: string;
     infobox?: string;
@@ -140,19 +148,37 @@ interface TutorialTopInterface {
     elements: [] | TutorialTopElementsObject[];
 }
 
-interface EditorBelongsInterface {
-    primary: string; //here must be hardcoded values for select
-    version: string; //here must be hardcoded values for select
-    primarySubject: string; //here must be hardcoded values for select
-    secondarySubject?: string; //here must be hardcoded values for select
-    level: string; //here must be hardcoded values for select
-    keywords: [] | string[];
-    image: string; //here must be hardcoded values for select
+interface MetaFieldParentInterface {
+    required: boolean;
+    value: string;
+    fieldTitle: string;
+    list?: string[] | [];
 }
 
-interface TutorialResponsibleInterface {
-    teacher: string;
-    faculty: string; //here must be hardcoded values for select
+interface MetaFieldListInterface extends MetaFieldParentInterface {
+    list: string[] | [];
+}
+
+export type ObjectNameType = 'belongs' | 'responsible';
+
+export interface EditorBelongsInterface {
+    primary: MetaFieldListInterface;
+    version: MetaFieldParentInterface;
+    primarySubject: MetaFieldListInterface;
+    secondarySubject: MetaFieldListInterface;
+    level: MetaFieldListInterface;
+    keywords: MetaFieldListInterface;
+    image: MetaFieldParentInterface;
+}
+
+export interface TutorialResponsibleInterface {
+    teacher: MetaFieldParentInterface;
+    faculty: MetaFieldListInterface;
+}
+
+export interface TutorialMetaObject {
+    belongs: EditorBelongsInterface;
+    responsible: TutorialResponsibleInterface;
 }
 
 export interface EditorState {
@@ -160,6 +186,5 @@ export interface EditorState {
     tutorialTop: TutorialTopInterface;
     chapters: ChapterInterface[] | [];
     tutorialBottom: TutorialBottomInterface;
-    belongs: EditorBelongsInterface;
-    responsible: TutorialResponsibleInterface;
+    meta: TutorialMetaObject;
 }

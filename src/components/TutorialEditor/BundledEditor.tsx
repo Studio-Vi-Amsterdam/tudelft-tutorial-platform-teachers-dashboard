@@ -1,6 +1,6 @@
 import { Editor } from '@tinymce/tinymce-react';
 import { useState } from 'react';
-import { CommandDialogInterface } from 'src/types/types';
+import { CommandDialogInterface, TermDialogInterface } from 'src/types/types';
 import CommandDialog from './CommandDialog';
 import tinymce from 'tinymce/tinymce';
 
@@ -42,6 +42,7 @@ import 'tinymce/plugins/wordcount';
 import 'tinymce/plugins/emoticons/js/emojis';
 import 'tinymce/skins/content/default/content';
 import 'tinymce/skins/ui/oxide/content';
+import TermDialog from './TermDialog';
 
 export default function BundledEditor(props: any) {
     const [commandDialog, setCommandDialog] = useState<CommandDialogInterface>({
@@ -50,8 +51,32 @@ export default function BundledEditor(props: any) {
         fields: ['', '', ''],
         separator: '',
     });
+    const [termDialog, setTermDialog] = useState<TermDialogInterface>({
+        isOpen: false,
+        editor: undefined,
+        term: '',
+        select: null,
+        explanation: '',
+    });
     const setCommandDialogOpened = (val: boolean) => {
         setCommandDialog({ ...commandDialog, isOpen: val });
+    };
+
+    const setTermDialogOpened = (val: boolean) => {
+        setTermDialog({ ...termDialog, isOpen: val });
+    };
+
+    const handleSubmitTerm = () => {
+        termDialog.editor.insertContent(
+            ` term:{termin:'${termDialog.term}', explanation:'${termDialog.explanation}'}`
+        );
+        setTermDialog({
+            isOpen: false,
+            editor: undefined,
+            term: '',
+            select: null,
+            explanation: '',
+        });
     };
 
     const handleSubmitCommand = () => {
@@ -85,6 +110,20 @@ export default function BundledEditor(props: any) {
             },
         });
     });
+    tinymce.PluginManager.add('term', (editor, url) => {
+        const openDialog = () =>
+            setTermDialog({
+                ...termDialog,
+                isOpen: true,
+                editor: editor,
+            });
+        editor.ui.registry.addButton('term', {
+            text: 'term',
+            onAction: () => {
+                openDialog();
+            },
+        });
+    });
     return (
         <>
             {props?.subchapter && props.subchapter === true ? (
@@ -110,7 +149,12 @@ export default function BundledEditor(props: any) {
                     {...props}
                 />
             )}
-
+            <TermDialog
+                termDialog={termDialog}
+                handleSubmitTerm={handleSubmitTerm}
+                setTermDialog={setTermDialog}
+                setTermDialogOpened={setTermDialogOpened}
+            />
             <CommandDialog
                 commandDialog={commandDialog}
                 handleSubmitCommand={handleSubmitCommand}
