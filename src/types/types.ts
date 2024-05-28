@@ -40,6 +40,7 @@ export interface SubchapterTextFieldActionInterface
 export interface MoveChapterInterface {
     index: number;
     moveTo: 'up' | 'down';
+    parentIndex?: number;
 }
 
 export interface AddChapterElementInterface {

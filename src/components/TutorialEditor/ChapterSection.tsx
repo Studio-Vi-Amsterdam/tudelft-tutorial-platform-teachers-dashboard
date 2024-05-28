@@ -5,6 +5,9 @@ import { useAppDispatch } from 'src/redux/hooks';
 import {
     addChapterElement,
     addSubchapterElement,
+    deleteChapter,
+    duplicateChapter,
+    moveChapter,
     setChapterText,
     setChapterTitle,
     setSubchapterText,
@@ -111,7 +114,12 @@ const ChapterSection = (props: ChapterSectionProps) => {
             <EditorLabel>
                 This section is a chapter of your tutorial.
             </EditorLabel>
-            <ChapterMenu index={index} />
+            <ChapterMenu
+                index={index}
+                moveChapter={moveChapter}
+                deleteChapter={deleteChapter}
+                duplicateChapter={duplicateChapter}
+            />
             <ChapterContent
                 addElementsActive={addElementsActive}
                 chapter={chapter}

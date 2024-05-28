@@ -6,6 +6,12 @@ import BundledEditor from './BundledEditor';
 import { Button } from '../ui/Button';
 import ElementsBlock from './ElementsBlock';
 import AddElementBlock from './AddElementBlock';
+import ChapterMenu from './ChapterMenu';
+import {
+    deleteChapter,
+    duplicateChapter,
+    moveChapter,
+} from 'src/redux/features/editorSlice';
 
 interface SubchapterContentProps {
     subchapters: SubchapterInterface[];
@@ -56,6 +62,13 @@ const SubchapterContent = (props: SubchapterContentProps) => {
                         This section is a subchapter to chapter{' '}
                         {`${chapterTitle && `"${chapterTitle}"`}`}.
                     </EditorLabel>
+                    <ChapterMenu
+                        index={subchapterIndex}
+                        moveChapter={moveChapter}
+                        deleteChapter={deleteChapter}
+                        duplicateChapter={duplicateChapter}
+                        parentIndex={chapterIndex}
+                    />
                     <TextInput
                         placeholder="Subchapter title"
                         headingType="h3"

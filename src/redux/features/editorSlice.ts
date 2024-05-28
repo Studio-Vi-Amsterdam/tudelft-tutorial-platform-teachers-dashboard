@@ -321,30 +321,90 @@ export const editorSlice = createSlice({
         moveChapter: (state, action: PayloadAction<MoveChapterInterface>) => {
             const newPos = action.payload.moveTo;
             const index = action.payload.index;
+            const parentIndex = action.payload.parentIndex;
             const newIndex = newPos === 'up' ? index - 1 : index + 1;
-            if (newPos === 'up' && index > 0) {
-                [state.chapters[newIndex], state.chapters[index]] = [
-                    state.chapters[index],
-                    state.chapters[newIndex],
-                ];
-            } else if (newPos === 'down' && index < state.chapters.length - 1) {
-                [state.chapters[index], state.chapters[newIndex]] = [
-                    state.chapters[newIndex],
-                    state.chapters[index],
-                ];
+            if (!parentIndex) {
+                if (newPos === 'up' && index > 0) {
+                    [state.chapters[newIndex], state.chapters[index]] = [
+                        state.chapters[index],
+                        state.chapters[newIndex],
+                    ];
+                } else if (
+                    newPos === 'down' &&
+                    index < state.chapters.length - 1
+                ) {
+                    [state.chapters[index], state.chapters[newIndex]] = [
+                        state.chapters[newIndex],
+                        state.chapters[index],
+                    ];
+                }
+            } else {
+                if (newPos === 'up' && index > 0) {
+                    [
+                        state.chapters[parentIndex].subchapters[newIndex],
+                        state.chapters[parentIndex].subchapters[index],
+                    ] = [
+                        state.chapters[parentIndex].subchapters[index],
+                        state.chapters[parentIndex].subchapters[newIndex],
+                    ];
+                } else if (
+                    newPos === 'down' &&
+                    index < state.chapters[parentIndex].subchapters.length - 1
+                ) {
+                    [
+                        state.chapters[parentIndex].subchapters[index],
+                        state.chapters[parentIndex].subchapters[newIndex],
+                    ] = [
+                        state.chapters[parentIndex].subchapters[newIndex],
+                        state.chapters[parentIndex].subchapters[index],
+                    ];
+                }
             }
         },
-        duplicateChapter: (state, action: PayloadAction<number>) => {
-            const index = action.payload;
-            if (index >= 0 && index < state.chapters.length) {
-                const newChapter = { ...state.chapters[index] };
-                state.chapters.splice(index + 1, 0, newChapter);
+        duplicateChapter: (
+            state,
+            action: PayloadAction<{ index: number; parentIndex?: number }>
+        ) => {
+            const index = action.payload.index;
+            const parentIndex = action.payload.parentIndex;
+            if (!parentIndex) {
+                if (index >= 0 && index < state.chapters.length) {
+                    const newChapter = { ...state.chapters[index] };
+                    state.chapters.splice(index + 1, 0, newChapter);
+                }
+            } else {
+                if (
+                    index >= 0 &&
+                    index < state.chapters[parentIndex].subchapters.length
+                ) {
+                    const newChapter = {
+                        ...state.chapters[parentIndex].subchapters[index],
+                    };
+                    state.chapters[parentIndex].subchapters.splice(
+                        index + 1,
+                        0,
+                        newChapter
+                    );
+                }
             }
         },
-        deleteChapter: (state, action: PayloadAction<number>) => {
-            const index = action.payload;
-            if (index >= 0 && index < state.chapters.length) {
-                state.chapters.splice(index, 1);
+        deleteChapter: (
+            state,
+            action: PayloadAction<{ index: number; parentIndex?: number }>
+        ) => {
+            const index = action.payload.index;
+            const parentIndex = action.payload.parentIndex;
+            if (!parentIndex) {
+                if (index >= 0 && index < state.chapters.length) {
+                    state.chapters.splice(index, 1);
+                }
+            } else {
+                if (
+                    index >= 0 &&
+                    index < state.chapters[parentIndex].subchapters.length
+                ) {
+                    state.chapters[parentIndex].subchapters.splice(index, 1);
+                }
             }
         },
         changeMetaField: (

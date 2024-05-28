@@ -1,3 +1,4 @@
+import { UnknownAction } from '@reduxjs/toolkit';
 import React, { useEffect, useState } from 'react';
 import {
     deleteChapter,
@@ -7,8 +8,23 @@ import {
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
 
+interface MoveChapterArgs {
+    index: number;
+    moveTo: 'up' | 'down';
+    parentIndex?: number;
+}
+
+interface DuplicateDeleteChapterArgs {
+    index: number;
+    parentIndex?: number;
+}
+
 interface ChapterMenuProps {
     index: number;
+    moveChapter: (arg0: MoveChapterArgs) => UnknownAction;
+    duplicateChapter: (arg0: DuplicateDeleteChapterArgs) => UnknownAction;
+    deleteChapter: (arg0: DuplicateDeleteChapterArgs) => UnknownAction;
+    parentIndex?: number;
 }
 
 const ChapterMenu = (props: ChapterMenuProps) => {
@@ -41,19 +57,41 @@ const ChapterMenu = (props: ChapterMenuProps) => {
     const dispatch = useAppDispatch();
 
     const moveChapterUp = () => {
-        dispatch(moveChapter({ index: index, moveTo: 'up' }));
+        dispatch(
+            props.moveChapter({
+                index: index,
+                moveTo: 'up',
+                parentIndex: props?.parentIndex,
+            })
+        );
     };
 
     const moveChapterDown = () => {
-        dispatch(moveChapter({ index: index, moveTo: 'down' }));
+        dispatch(
+            props.moveChapter({
+                index: index,
+                moveTo: 'down',
+                parentIndex: props?.parentIndex,
+            })
+        );
     };
 
     const handleDuplicateChapter = () => {
-        dispatch(duplicateChapter(index));
+        dispatch(
+            props.duplicateChapter({
+                index: index,
+                parentIndex: props?.parentIndex,
+            })
+        );
     };
 
     const handleDeleteChapter = () => {
-        dispatch(deleteChapter(index));
+        dispatch(
+            props.deleteChapter({
+                index: index,
+                parentIndex: props?.parentIndex,
+            })
+        );
     };
 
     return (
