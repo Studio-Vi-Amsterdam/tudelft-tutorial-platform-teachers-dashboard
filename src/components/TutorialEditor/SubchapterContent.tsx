@@ -12,6 +12,7 @@ import {
     duplicateChapter,
     moveChapter,
 } from 'src/redux/features/editorSlice';
+import AddMediaElement from './AddMediaElement';
 
 interface SubchapterContentProps {
     subchapters: SubchapterInterface[];
@@ -118,24 +119,26 @@ const SubchapterContent = (props: SubchapterContentProps) => {
                         {subchapter.layout !== '1 column' && (
                             <div className="w-1/2">
                                 <div className="flex w-full flex-col gap-y-2">
-                                    <div className="flex w-full items-center justify-center bg-tertiary-grey-silver py-16">
-                                        <Button variant={'outline'}>
-                                            <div>+</div>
-                                            <p>
-                                                Select{' '}
-                                                {
-                                                    subchapter.layout.split(
-                                                        ' '
-                                                    )[0]
-                                                }{' '}
-                                                from media library
-                                            </p>
-                                        </Button>
-                                    </div>
-                                    <div className="flex flex-row">
-                                        <input type="checkbox" />
-                                        <p>Show subtitles</p>
-                                    </div>
+                                    {subchapter.layout.split(' ')[0] ===
+                                        'video' && (
+                                        <AddMediaElement
+                                            block="subchapterMedia"
+                                            chapterIndex={chapterIndex}
+                                            mediaType={'video'}
+                                            listIndex={undefined}
+                                            subchapterIndex={subchapterIndex}
+                                        />
+                                    )}
+                                    {subchapter.layout.split(' ')[0] ===
+                                        'image' && (
+                                        <AddMediaElement
+                                            block="subchapterMedia"
+                                            chapterIndex={chapterIndex}
+                                            mediaType={'image'}
+                                            listIndex={undefined}
+                                            subchapterIndex={subchapterIndex}
+                                        />
+                                    )}
                                 </div>
                             </div>
                         )}

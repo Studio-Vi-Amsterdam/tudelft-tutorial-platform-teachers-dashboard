@@ -7,8 +7,10 @@ import {
     ChapterTextFieldActionInterface,
     EditorBelongsInterface,
     EditorState,
+    ElementImageActionInterface,
     ElementInfoboxActionInterface,
     ElementTextActionInterface,
+    ElementVideoActionInterface,
     LayoutChapterType,
     MoveChapterInterface,
     SubchapterTextFieldActionInterface,
@@ -130,11 +132,15 @@ export const editorSlice = createSlice({
             state,
             action: PayloadAction<ElementTextActionInterface>
         ) => {
-            if (action.payload.block === 'tutorialElements') {
+            if (
+                action.payload.block === 'tutorialElements' &&
+                action.payload.index !== undefined
+            ) {
                 state.tutorialTop.elements[action.payload.index].text =
                     action.payload.text;
             } else if (
                 action.payload.block === 'chapterElements' &&
+                action.payload.index !== undefined &&
                 action.payload.nestedIndex !== undefined
             ) {
                 state.chapters[action.payload.nestedIndex].elements[
@@ -142,6 +148,7 @@ export const editorSlice = createSlice({
                 ].text = action.payload.text;
             } else if (
                 action.payload.block === 'subchapterElements' &&
+                action.payload.index !== undefined &&
                 action.payload.nestedIndex !== undefined &&
                 action.payload.subchapterIndex !== undefined
             ) {
@@ -154,11 +161,15 @@ export const editorSlice = createSlice({
             state,
             action: PayloadAction<ElementInfoboxActionInterface>
         ) => {
-            if (action.payload.block === 'tutorialElements') {
+            if (
+                action.payload.block === 'tutorialElements' &&
+                action.payload.index !== undefined
+            ) {
                 state.tutorialTop.elements[action.payload.index].infobox =
                     action.payload.infobox;
             } else if (
                 action.payload.block === 'chapterElements' &&
+                action.payload.index !== undefined &&
                 action.payload.nestedIndex !== undefined
             ) {
                 state.chapters[action.payload.nestedIndex].elements[
@@ -166,6 +177,7 @@ export const editorSlice = createSlice({
                 ].infobox = action.payload.infobox;
             } else if (
                 action.payload.block === 'subchapterElements' &&
+                action.payload.index !== undefined &&
                 action.payload.nestedIndex !== undefined &&
                 action.payload.subchapterIndex !== undefined
             ) {
@@ -173,6 +185,92 @@ export const editorSlice = createSlice({
                     action.payload.subchapterIndex
                 ].elements[action.payload.index].infobox =
                     action.payload.infobox;
+            }
+        },
+        setElementImage: (
+            state,
+            action: PayloadAction<ElementImageActionInterface>
+        ) => {
+            if (
+                action.payload.block === 'tutorialElements' &&
+                action.payload.index !== undefined
+            ) {
+                state.tutorialTop.elements[action.payload.index].image =
+                    action.payload.image;
+            } else if (
+                action.payload.block === 'chapterElements' &&
+                action.payload.index !== undefined &&
+                action.payload.nestedIndex !== undefined
+            ) {
+                state.chapters[action.payload.nestedIndex].elements[
+                    action.payload.index
+                ].image = action.payload.image;
+            } else if (
+                action.payload.block === 'subchapterElements' &&
+                action.payload.index !== undefined &&
+                action.payload.nestedIndex !== undefined &&
+                action.payload.subchapterIndex !== undefined
+            ) {
+                state.chapters[action.payload.nestedIndex].subchapters[
+                    action.payload.subchapterIndex
+                ].elements[action.payload.index].image = action.payload.image;
+            } else if (
+                action.payload.block === 'chapterMedia' &&
+                action.payload.nestedIndex !== undefined
+            ) {
+                state.chapters[action.payload.nestedIndex].image =
+                    action.payload.image;
+            } else if (
+                action.payload.block === 'subchapterMedia' &&
+                action.payload.nestedIndex !== undefined &&
+                action.payload.subchapterIndex !== undefined
+            ) {
+                state.chapters[action.payload.nestedIndex].subchapters[
+                    action.payload.subchapterIndex
+                ].image = action.payload.image;
+            }
+        },
+        setElementVideo: (
+            state,
+            action: PayloadAction<ElementVideoActionInterface>
+        ) => {
+            if (
+                action.payload.block === 'tutorialElements' &&
+                action.payload.index !== undefined
+            ) {
+                state.tutorialTop.elements[action.payload.index].video =
+                    action.payload.video;
+            } else if (
+                action.payload.block === 'chapterElements' &&
+                action.payload.index !== undefined &&
+                action.payload.nestedIndex !== undefined
+            ) {
+                state.chapters[action.payload.nestedIndex].elements[
+                    action.payload.index
+                ].video = action.payload.video;
+            } else if (
+                action.payload.block === 'subchapterElements' &&
+                action.payload.index !== undefined &&
+                action.payload.nestedIndex !== undefined &&
+                action.payload.subchapterIndex !== undefined
+            ) {
+                state.chapters[action.payload.nestedIndex].subchapters[
+                    action.payload.subchapterIndex
+                ].elements[action.payload.index].video = action.payload.video;
+            } else if (
+                action.payload.block === 'chapterMedia' &&
+                action.payload.nestedIndex !== undefined
+            ) {
+                state.chapters[action.payload.nestedIndex].video =
+                    action.payload.video;
+            } else if (
+                action.payload.block === 'subchapterMedia' &&
+                action.payload.nestedIndex !== undefined &&
+                action.payload.subchapterIndex !== undefined
+            ) {
+                state.chapters[action.payload.nestedIndex].subchapters[
+                    action.payload.subchapterIndex
+                ].video = action.payload.video;
             }
         },
         addBlankChapter: (state, action: PayloadAction<LayoutChapterType>) => {
@@ -195,7 +293,13 @@ export const editorSlice = createSlice({
                             layout: action.payload,
                             title: '',
                             text: '',
-                            video: '',
+                            video: {
+                                format: '',
+                                link: '',
+                                publishDate: '',
+                                title: '',
+                                type: 'video',
+                            },
                             elements: [],
                             subchapters: [],
                         },
@@ -207,7 +311,13 @@ export const editorSlice = createSlice({
                             layout: action.payload,
                             title: '',
                             text: '',
-                            image: '',
+                            image: {
+                                format: '',
+                                link: '',
+                                publishDate: '',
+                                title: '',
+                                type: 'image',
+                            },
                             elements: [],
                             subchapters: [],
                         },
@@ -239,7 +349,13 @@ export const editorSlice = createSlice({
                             layout: action.payload.chapterType,
                             title: '',
                             text: '',
-                            video: '',
+                            video: {
+                                format: '',
+                                link: '',
+                                publishDate: '',
+                                title: '',
+                                type: 'video',
+                            },
                             elements: [],
                         },
                     ];
@@ -253,7 +369,13 @@ export const editorSlice = createSlice({
                             layout: action.payload.chapterType,
                             title: '',
                             text: '',
-                            image: '',
+                            image: {
+                                format: '',
+                                link: '',
+                                publishDate: '',
+                                title: '',
+                                type: 'image',
+                            },
                             elements: [],
                         },
                     ];
@@ -469,6 +591,8 @@ export const {
     changeMetaField,
     addKeywordsToList,
     deleteKeyword,
+    setElementImage,
+    setElementVideo,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;

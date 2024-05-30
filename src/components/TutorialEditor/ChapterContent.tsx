@@ -5,6 +5,7 @@ import BundledEditor from './BundledEditor';
 import { Button } from '../ui/Button';
 import ElementsBlock from './ElementsBlock';
 import AddElementBlock from './AddElementBlock';
+import AddMediaElement from './AddMediaElement';
 
 interface ChapterContentProps {
     chapter: ChapterInterface;
@@ -72,21 +73,24 @@ const ChapterContent = (props: ChapterContentProps) => {
                 </div>
                 {chapter.layout !== '1 column' && (
                     <div className="w-1/2">
-                        <div className="flex w-full flex-col gap-y-2">
-                            <div className="flex w-full items-center justify-center bg-tertiary-grey-silver py-16">
-                                <Button variant={'outline'}>
-                                    <div>+</div>
-                                    <p>
-                                        Select {chapter.layout.split(' ')[0]}{' '}
-                                        from media library
-                                    </p>
-                                </Button>
-                            </div>
-                            <div className="flex flex-row">
-                                <input type="checkbox" />
-                                <p>Show subtitles</p>
-                            </div>
-                        </div>
+                        {chapter.layout.split(' ')[0] === 'video' && (
+                            <AddMediaElement
+                                block="chapterMedia"
+                                chapterIndex={chapterIndex}
+                                mediaType={'video'}
+                                listIndex={undefined}
+                                subchapterIndex={undefined}
+                            />
+                        )}
+                        {chapter.layout.split(' ')[0] === 'image' && (
+                            <AddMediaElement
+                                block="chapterMedia"
+                                chapterIndex={chapterIndex}
+                                mediaType={'image'}
+                                listIndex={undefined}
+                                subchapterIndex={undefined}
+                            />
+                        )}
                     </div>
                 )}
             </div>

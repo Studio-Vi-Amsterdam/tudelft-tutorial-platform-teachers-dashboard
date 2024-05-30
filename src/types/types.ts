@@ -14,9 +14,17 @@ export interface DashboardSectionProps {
 
 interface ElementActionBase {
     block: string;
-    index: number;
+    index: number | undefined;
     nestedIndex?: number;
     subchapterIndex?: number;
+}
+
+export interface MediaObjectInterface {
+    link: string;
+    type: MediaVariantType;
+    format: string;
+    title: string;
+    publishDate: string;
 }
 
 export interface ElementTextActionInterface extends ElementActionBase {
@@ -25,6 +33,14 @@ export interface ElementTextActionInterface extends ElementActionBase {
 
 export interface ElementInfoboxActionInterface extends ElementActionBase {
     infobox: string;
+}
+
+export interface ElementImageActionInterface extends ElementActionBase {
+    image: MediaObjectInterface;
+}
+
+export interface ElementVideoActionInterface extends ElementActionBase {
+    video: MediaObjectInterface;
 }
 
 export interface ChapterTextFieldActionInterface {
@@ -97,16 +113,16 @@ export interface TermDialogInterface {
 export interface TutorialTopElementsObject {
     text?: string;
     infobox?: string;
-    image?: string;
-    video?: string;
+    image?: MediaObjectInterface;
+    video?: MediaObjectInterface;
     file?: ElementsFileInterface;
 }
 
 export interface ChapterElementsObject {
     text?: string;
     infobox?: string;
-    image?: string;
-    video?: string;
+    image?: MediaObjectInterface;
+    video?: MediaObjectInterface;
     tutorialCard?: string;
     file?: ElementsFileInterface;
     quiz?: string;
@@ -129,8 +145,8 @@ interface ChapterBase {
     layout: LayoutChapterType;
     title: string;
     text: string;
-    video?: string;
-    image?: string;
+    video?: MediaObjectInterface;
+    image?: MediaObjectInterface;
     elements: [] | ChapterElementsObject[];
 }
 
@@ -161,6 +177,7 @@ interface MetaFieldListInterface extends MetaFieldParentInterface {
 }
 
 export type ObjectNameType = 'belongs' | 'responsible';
+export type MediaVariantType = 'image' | 'video';
 
 export interface EditorBelongsInterface {
     primary: MetaFieldListInterface;
@@ -188,4 +205,22 @@ export interface EditorState {
     chapters: ChapterInterface[] | [];
     tutorialBottom: TutorialBottomInterface;
     meta: TutorialMetaObject;
+}
+
+export interface MediaState {
+    media: MediaObjectInterface[] | [];
+}
+
+export interface GalleryViewProps {
+    currentItems: MediaObjectInterface[];
+    selectedMedia: MediaObjectInterface | undefined;
+    handleSelectMedia: (arg0: MediaObjectInterface) => void;
+}
+
+export interface AddMediaElementProps {
+    mediaType: MediaVariantType;
+    listIndex: number | undefined;
+    block: string;
+    chapterIndex: number | undefined;
+    subchapterIndex: number | undefined;
 }
