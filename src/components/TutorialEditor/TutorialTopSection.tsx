@@ -74,6 +74,7 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
                 handleChange={handleTutorialDescriptionInputChange}
                 init={{
                     menubar: false,
+                    resize: true,
                     plugins: [
                         'table',
                         'lists',

@@ -6,6 +6,7 @@ import { Button } from '../ui/Button';
 import ElementsBlock from './ElementsBlock';
 import AddElementBlock from './AddElementBlock';
 import AddMediaElement from './AddMediaElement';
+import ExtendedBundledEditor from './ExtendedBundledEditor';
 
 interface ChapterContentProps {
     chapter: ChapterInterface;
@@ -52,23 +53,12 @@ const ChapterContent = (props: ChapterContentProps) => {
                         chapter.layout === '1 column' ? ' w-full' : ' w-1/2 '
                     }`}
                 >
-                    <BundledEditor
+                    <ExtendedBundledEditor
+                        handleInputChange={handleChapterTextInputChange}
+                        chapterIndex={chapterIndex}
                         value={chapter.text}
-                        index={chapterIndex}
-                        handleChange={handleChapterTextInputChange}
-                        init={{
-                            menubar: false,
-                            plugins: [
-                                'table',
-                                'lists',
-                                'link',
-                                'code',
-                                'autoresize',
-                                'command',
-                            ],
-
-                            toolbar: 'bullist numlist link code table command',
-                        }}
+                        subchapter={false}
+                        subchapterIndex={undefined}
                     />
                 </div>
                 {chapter.layout !== '1 column' && (
@@ -94,22 +84,20 @@ const ChapterContent = (props: ChapterContentProps) => {
                     </div>
                 )}
             </div>
-            {chapter.layout === '1 column' && (
-                <ElementsBlock
-                    elements={chapter.elements}
-                    block="chapterElements"
-                    chapterIndex={chapterIndex}
-                />
-            )}
-            {chapter.layout === '1 column' && (
-                <AddElementBlock
-                    addElementsActive={addElementsActive}
-                    setAddElementsActive={setAddElementsActive}
-                    handleAddElement={handleAddElement}
-                    elements={elements}
-                    index={chapterIndex}
-                />
-            )}
+
+            <ElementsBlock
+                elements={chapter.elements}
+                block="chapterElements"
+                chapterIndex={chapterIndex}
+            />
+
+            <AddElementBlock
+                addElementsActive={addElementsActive}
+                setAddElementsActive={setAddElementsActive}
+                handleAddElement={handleAddElement}
+                elements={elements}
+                index={chapterIndex}
+            />
         </>
     );
 };

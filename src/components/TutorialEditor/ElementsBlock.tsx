@@ -8,6 +8,8 @@ import {
 import BundledEditor from './BundledEditor';
 import { ChapterElementsObject } from 'src/types/types';
 import AddMediaElement from './AddMediaElement';
+import ExtendedBundledEditor from './ExtendedBundledEditor';
+import ReducedBundledEditor from './ReducedBundledEditor';
 
 interface ElementsBlockProps {
     elements: Array<ChapterElementsObject>;
@@ -61,45 +63,21 @@ const ElementsBlock = (props: ElementsBlockProps) => {
             {elements.map((element, index) => (
                 <div className="w-full" key={index}>
                     {element?.text !== undefined && (
-                        <BundledEditor
+                        <ExtendedBundledEditor
                             value={element.text}
                             block={block}
-                            index={index}
-                            handleChange={handleTextElementChange}
-                            init={{
-                                menubar: false,
-                                plugins: [
-                                    'table',
-                                    'lists',
-                                    'link',
-                                    'code',
-                                    'autoresize',
-                                    'command',
-                                ],
-
-                                toolbar:
-                                    'bullist numlist link code table command',
-                            }}
+                            chapterIndex={index}
+                            handleTextChange={handleTextElementChange}
+                            subchapter={false}
                         />
                     )}
                     {element?.infobox !== undefined && (
-                        <BundledEditor
+                        <ReducedBundledEditor
                             value={element.infobox}
                             block={block}
-                            index={index}
-                            handleChange={handleInfoboxElementChange}
-                            init={{
-                                menubar: false,
-                                plugins: [
-                                    'table',
-                                    'lists',
-                                    'link',
-                                    'autoresize',
-                                    'command',
-                                ],
-
-                                toolbar: 'bullist numlist link table',
-                            }}
+                            chapterIndex={index}
+                            handleTextChange={handleInfoboxElementChange}
+                            subchapter={false}
                         />
                     )}
                     {element?.image !== undefined && (

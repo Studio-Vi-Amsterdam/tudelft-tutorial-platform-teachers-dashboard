@@ -2,8 +2,6 @@ import React from 'react';
 import EditorLabel from '../ui/EditorLabel';
 import { AddElementsType, SubchapterInterface } from 'src/types/types';
 import TextInput from '../ui/TextInput';
-import BundledEditor from './BundledEditor';
-import { Button } from '../ui/Button';
 import ElementsBlock from './ElementsBlock';
 import AddElementBlock from './AddElementBlock';
 import ChapterMenu from './ChapterMenu';
@@ -13,6 +11,7 @@ import {
     moveChapter,
 } from 'src/redux/features/editorSlice';
 import AddMediaElement from './AddMediaElement';
+import ExtendedBundledEditor from './ExtendedBundledEditor';
 
 interface SubchapterContentProps {
     subchapters: SubchapterInterface[];
@@ -20,7 +19,7 @@ interface SubchapterContentProps {
     chapterIndex: number;
     handleChangeSubchapterTitle: (
         val: string,
-        index?: number,
+        index?: number | undefined,
         subchapterIndex?: number
     ) => void;
     handleSubchapterTextInputChange: (
@@ -94,26 +93,14 @@ const SubchapterContent = (props: SubchapterContentProps) => {
                                     : ' w-1/2 '
                             }`}
                         >
-                            <BundledEditor
-                                value={subchapter.text}
-                                index={chapterIndex}
-                                subchapterIndex={subchapterIndex}
-                                handleChange={handleSubchapterTextInputChange}
+                            <ExtendedBundledEditor
+                                handleInputChange={
+                                    handleSubchapterTextInputChange
+                                }
                                 subchapter={true}
-                                init={{
-                                    menubar: false,
-                                    plugins: [
-                                        'table',
-                                        'lists',
-                                        'link',
-                                        'code',
-                                        'autoresize',
-                                        'command',
-                                    ],
-
-                                    toolbar:
-                                        'bullist numlist link code table command',
-                                }}
+                                value={subchapter.text}
+                                chapterIndex={chapterIndex}
+                                subchapterIndex={subchapterIndex}
                             />
                         </div>
                         {subchapter.layout !== '1 column' && (
