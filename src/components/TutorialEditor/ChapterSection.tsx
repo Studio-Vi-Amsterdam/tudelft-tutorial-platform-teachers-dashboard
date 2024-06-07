@@ -25,7 +25,6 @@ interface ChapterSectionProps {
 
 const ChapterSection = (props: ChapterSectionProps) => {
     const { chapter, index } = props;
-    const [addElementsActive, setAddElementsActive] = useState<boolean>(false);
     const [addSubchapterElementsActive, setAddSubchapterElementsActive] =
         useState<boolean>(false);
 
@@ -79,7 +78,6 @@ const ChapterSection = (props: ChapterSectionProps) => {
 
         index !== undefined &&
             dispatch(addChapterElement({ val: payload, chapterIndex: index }));
-        setAddElementsActive(false);
     };
 
     const handleAddSubchapterElement = (
@@ -121,18 +119,14 @@ const ChapterSection = (props: ChapterSectionProps) => {
                 duplicateChapter={duplicateChapter}
             />
             <ChapterContent
-                addElementsActive={addElementsActive}
                 chapter={chapter}
                 elements={elements}
                 handleAddElement={handleAddElement}
                 handleChangeChapterTitle={handleChangeChapterTitle}
                 handleChapterTextInputChange={handleChapterTextInputChange}
-                setAddElementsActive={setAddElementsActive}
                 chapterIndex={index}
             />
             <SubchapterContent
-                addSubchapterElementsActive={addSubchapterElementsActive}
-                setAddSubchapterElementsActive={setAddSubchapterElementsActive}
                 chapterIndex={index}
                 chapterTitle={chapter.title}
                 elements={elements}

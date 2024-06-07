@@ -28,10 +28,6 @@ interface SubchapterContentProps {
         subchapterIndex: number
     ) => void;
     elements: AddElementsType[];
-    addSubchapterElementsActive: boolean;
-    setAddSubchapterElementsActive: React.Dispatch<
-        React.SetStateAction<boolean>
-    >;
     handleAddSubchapterElement: (
         val: string,
         index?: number,
@@ -47,8 +43,6 @@ const SubchapterContent = (props: SubchapterContentProps) => {
         handleChangeSubchapterTitle,
         handleSubchapterTextInputChange,
         elements,
-        addSubchapterElementsActive,
-        setAddSubchapterElementsActive,
         handleAddSubchapterElement,
     } = props;
     return (
@@ -140,10 +134,6 @@ const SubchapterContent = (props: SubchapterContentProps) => {
                     )}
                     {subchapter.layout === '1 column' && (
                         <AddElementBlock
-                            addElementsActive={addSubchapterElementsActive}
-                            setAddElementsActive={
-                                setAddSubchapterElementsActive
-                            }
                             handleAddElement={handleAddSubchapterElement}
                             elements={elements}
                             index={chapterIndex}

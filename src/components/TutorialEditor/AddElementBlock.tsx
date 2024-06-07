@@ -1,10 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from 'src/components/ui/Button';
 
 interface AddElementBlockProps {
     elements: Array<string>;
-    setAddElementsActive: (value: boolean) => void;
-    addElementsActive: boolean;
     handleAddElement: (
         value: string,
         index?: number,
@@ -15,13 +13,8 @@ interface AddElementBlockProps {
 }
 
 const AddElementBlock = (props: AddElementBlockProps) => {
-    const {
-        elements,
-        addElementsActive,
-        setAddElementsActive,
-        handleAddElement,
-        subchapterIndex,
-    } = props;
+    const [addElementsActive, setAddElementsActive] = useState<boolean>(false);
+    const { elements, subchapterIndex } = props;
 
     const handleAddTutorialElementClick = (): void => {
         if (addElementsActive) {
@@ -30,6 +23,12 @@ const AddElementBlock = (props: AddElementBlockProps) => {
             setAddElementsActive(true);
         }
     };
+
+    const handleAddElement = (el: string) => {
+        setAddElementsActive(false);
+        props.handleAddElement(el, props?.index, subchapterIndex);
+    };
+
     return (
         <div className="flex w-full flex-row gap-x-6">
             <div className="w-1/3">
@@ -47,13 +46,7 @@ const AddElementBlock = (props: AddElementBlockProps) => {
                         <Button
                             variant={'elements'}
                             key={index}
-                            onClick={() =>
-                                handleAddElement(
-                                    el,
-                                    props?.index,
-                                    subchapterIndex
-                                )
-                            }
+                            onClick={() => handleAddElement(el)}
                         >
                             <p className="capitalize">{el}</p>
                         </Button>

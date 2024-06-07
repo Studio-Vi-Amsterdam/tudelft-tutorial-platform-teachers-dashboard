@@ -13,8 +13,6 @@ interface ChapterContentProps {
     chapterIndex: number;
     handleChangeChapterTitle: (val: string, index?: number) => void;
     handleChapterTextInputChange: (val: string, index: number) => void;
-    addElementsActive: boolean;
-    setAddElementsActive: React.Dispatch<React.SetStateAction<boolean>>;
     handleAddElement: (val: string, index?: number) => void;
     elements: AddElementsType[];
 }
@@ -25,8 +23,6 @@ const ChapterContent = (props: ChapterContentProps) => {
         chapterIndex,
         handleChangeChapterTitle,
         handleChapterTextInputChange,
-        addElementsActive,
-        setAddElementsActive,
         handleAddElement,
         elements,
     } = props;
@@ -92,8 +88,6 @@ const ChapterContent = (props: ChapterContentProps) => {
             />
 
             <AddElementBlock
-                addElementsActive={addElementsActive}
-                setAddElementsActive={setAddElementsActive}
                 handleAddElement={handleAddElement}
                 elements={elements}
                 index={chapterIndex}

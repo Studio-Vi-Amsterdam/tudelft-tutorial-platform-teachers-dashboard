@@ -20,8 +20,6 @@ interface TutorialTopSectionProps {
 
 const TutorialTopSection = (props: TutorialTopSectionProps) => {
     const { tutorialTitle } = props;
-    const [addTutorialElementsActive, setAddTutorialElementsActive] =
-        useState<boolean>(false);
 
     const tutorialDescription = useAppSelector(
         (state: RootState) => state.editor.tutorialTop.description
@@ -54,7 +52,6 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
         payload[value] = '';
 
         dispatch(addTutorialElements(payload));
-        setAddTutorialElementsActive(false);
     };
 
     return (
@@ -104,8 +101,6 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
                 elements={tutorialStateElements}
             />
             <AddElementBlock
-                addElementsActive={addTutorialElementsActive}
-                setAddElementsActive={setAddTutorialElementsActive}
                 elements={tutorialElements}
                 handleAddElement={handleAddTutorialElement}
             />
