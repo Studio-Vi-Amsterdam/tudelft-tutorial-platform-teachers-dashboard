@@ -128,6 +128,40 @@ export const editorSlice = createSlice({
                 action.payload,
             ];
         },
+        deleteElement: (
+            state,
+            action: PayloadAction<{
+                block: string;
+                elementIndex: number;
+                chapterIndex: number | undefined;
+                subchapterIndex: number | undefined;
+            }>
+        ) => {
+            const { block, elementIndex, chapterIndex, subchapterIndex } =
+                action.payload;
+            if (block === 'tutorialElements') {
+                state.tutorialTop.elements = state.tutorialTop.elements.filter(
+                    (_, i) => i !== elementIndex
+                );
+            } else if (
+                block === 'chapterElements' &&
+                chapterIndex !== undefined
+            ) {
+                state.chapters[chapterIndex].elements = state.chapters[
+                    chapterIndex
+                ].elements.filter((_, i) => i !== elementIndex);
+            } else if (
+                block === 'subchapterElements' &&
+                chapterIndex !== undefined &&
+                subchapterIndex !== undefined
+            ) {
+                state.chapters[chapterIndex].subchapters[
+                    subchapterIndex
+                ].elements = state.chapters[chapterIndex].subchapters[
+                    subchapterIndex
+                ].elements.filter((_, i) => i !== elementIndex);
+            }
+        },
         setElementText: (
             state,
             action: PayloadAction<ElementTextActionInterface>
@@ -593,6 +627,7 @@ export const {
     deleteKeyword,
     setElementImage,
     setElementVideo,
+    deleteElement,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;

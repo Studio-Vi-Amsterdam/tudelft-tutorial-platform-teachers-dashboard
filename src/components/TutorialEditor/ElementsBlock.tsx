@@ -10,6 +10,7 @@ import { ChapterElementsObject } from 'src/types/types';
 import AddMediaElement from './AddMediaElement';
 import ExtendedBundledEditor from './ExtendedBundledEditor';
 import ReducedBundledEditor from './ReducedBundledEditor';
+import DeleteElementWraper from './DeleteElementWraper';
 
 interface ElementsBlockProps {
     elements: Array<ChapterElementsObject>;
@@ -63,40 +64,68 @@ const ElementsBlock = (props: ElementsBlockProps) => {
             {elements.map((element, index) => (
                 <div className="w-full" key={index}>
                     {element?.text !== undefined && (
-                        <ExtendedBundledEditor
-                            value={element.text}
+                        <DeleteElementWraper
                             block={block}
-                            chapterIndex={index}
-                            handleTextChange={handleTextElementChange}
-                            subchapter={false}
-                        />
+                            chapterIndex={props.chapterIndex}
+                            subchapterIndex={subchapterIndex}
+                            elementIndex={index}
+                        >
+                            <ExtendedBundledEditor
+                                value={element.text}
+                                block={block}
+                                chapterIndex={index}
+                                handleTextChange={handleTextElementChange}
+                                subchapter={false}
+                            />
+                        </DeleteElementWraper>
                     )}
                     {element?.infobox !== undefined && (
-                        <ReducedBundledEditor
-                            value={element.infobox}
+                        <DeleteElementWraper
                             block={block}
-                            chapterIndex={index}
-                            handleTextChange={handleInfoboxElementChange}
-                            subchapter={false}
-                        />
+                            chapterIndex={props.chapterIndex}
+                            subchapterIndex={subchapterIndex}
+                            elementIndex={index}
+                        >
+                            <ReducedBundledEditor
+                                value={element.infobox}
+                                block={block}
+                                chapterIndex={index}
+                                handleTextChange={handleInfoboxElementChange}
+                                subchapter={false}
+                            />
+                        </DeleteElementWraper>
                     )}
                     {element?.image !== undefined && (
-                        <AddMediaElement
-                            mediaType="image"
-                            block={props.block}
+                        <DeleteElementWraper
+                            block={block}
                             chapterIndex={props.chapterIndex}
-                            subchapterIndex={props.subchapterIndex}
-                            listIndex={index}
-                        />
+                            subchapterIndex={subchapterIndex}
+                            elementIndex={index}
+                        >
+                            <AddMediaElement
+                                mediaType="image"
+                                block={props.block}
+                                chapterIndex={props.chapterIndex}
+                                subchapterIndex={props.subchapterIndex}
+                                listIndex={index}
+                            />
+                        </DeleteElementWraper>
                     )}
                     {element?.video !== undefined && (
-                        <AddMediaElement
-                            mediaType="video"
-                            block={props.block}
+                        <DeleteElementWraper
+                            block={block}
                             chapterIndex={props.chapterIndex}
-                            subchapterIndex={props.subchapterIndex}
-                            listIndex={index}
-                        />
+                            subchapterIndex={subchapterIndex}
+                            elementIndex={index}
+                        >
+                            <AddMediaElement
+                                mediaType="video"
+                                block={props.block}
+                                chapterIndex={props.chapterIndex}
+                                subchapterIndex={props.subchapterIndex}
+                                listIndex={index}
+                            />
+                        </DeleteElementWraper>
                     )}
                     {element?.file !== undefined && (
                         <div className="flex w-full flex-col gap-y-2">

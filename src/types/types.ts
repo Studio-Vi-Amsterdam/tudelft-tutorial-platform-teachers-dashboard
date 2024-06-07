@@ -217,10 +217,13 @@ export interface GalleryViewProps {
     handleSelectMedia: (arg0: MediaObjectInterface) => void;
 }
 
-export interface AddMediaElementProps {
-    mediaType: MediaVariantType;
-    listIndex: number | undefined;
+export interface ElementProps {
     block: string;
     chapterIndex: number | undefined;
     subchapterIndex: number | undefined;
+}
+
+export interface AddMediaElementProps extends ElementProps {
+    mediaType: MediaVariantType;
+    listIndex: number | undefined;
 }
