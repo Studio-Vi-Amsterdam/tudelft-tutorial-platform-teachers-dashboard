@@ -110,6 +110,25 @@ export default function BundledEditor(props: any) {
             },
         });
     });
+
+    tinymce.PluginManager.add('mark', (editor) => {
+        editor.ui.registry.addButton('mark', {
+            icon: 'highlight-bg-color',
+            onAction: () =>
+                editor.execCommand('mceToggleFormat', false, 'mark'),
+        });
+
+        editor.ui.registry.addMenuItem('mark', {
+            icon: 'highlight-bg-color',
+            onAction: () =>
+                editor.execCommand('mceToggleFormat', false, 'mark'),
+        });
+
+        editor.on('init', () => {
+            editor.formatter.register('mark', { inline: 'mark' });
+        });
+    });
+
     tinymce.PluginManager.add('term', (editor, url) => {
         const openDialog = () =>
             setTermDialog({

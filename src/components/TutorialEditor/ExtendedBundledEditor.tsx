@@ -41,9 +41,10 @@ const ExtendedBundledEditor = (props: BundledEditorProps) => {
                     'autoresize',
                     'command',
                     'term',
+                    'mark',
                 ],
 
-                toolbar: 'bullist numlist link code table command term',
+                toolbar: 'bullist numlist link code table command term mark',
             }}
         />
     );
