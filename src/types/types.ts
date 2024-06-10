@@ -5,7 +5,15 @@ export interface TutorialCard {
     lastEdit: Date;
 }
 
-export type AddElementsType = 'text' | 'infobox' | 'image' | 'video' | 'file';
+export type AddElementsType =
+    | 'text'
+    | 'infobox'
+    | 'image'
+    | 'video'
+    | 'file'
+    | 'quiz'
+    | 'h5p element'
+    | 'tutorial cards';
 
 export interface DashboardSectionProps {
     items: Array<TutorialCard>;
@@ -41,6 +49,10 @@ export interface ElementImageActionInterface extends ElementActionBase {
 
 export interface ElementVideoActionInterface extends ElementActionBase {
     video: MediaObjectInterface;
+}
+
+export interface ElementQuizActionInterface extends ElementActionBase {
+    quiz: QuizElement;
 }
 
 export interface ChapterTextFieldActionInterface {
@@ -116,6 +128,18 @@ export interface TutorialTopElementsObject {
     image?: MediaObjectInterface;
     video?: MediaObjectInterface;
     file?: ElementsFileInterface;
+    quiz?: QuizElement;
+}
+
+export interface QuizAnswer {
+    answer: string;
+    isCorrect: '0' | '1';
+}
+
+export interface QuizElement {
+    question: string;
+    answers: QuizAnswer[];
+    answersCount: number;
 }
 
 export interface ChapterElementsObject {
@@ -125,7 +149,7 @@ export interface ChapterElementsObject {
     video?: MediaObjectInterface;
     tutorialCard?: string;
     file?: ElementsFileInterface;
-    quiz?: string;
+    quiz?: QuizElement;
     h5pElement?: string;
 }
 
@@ -226,4 +250,8 @@ export interface ElementProps {
 export interface AddMediaElementProps extends ElementProps {
     mediaType: MediaVariantType;
     listIndex: number | undefined;
+}
+
+export interface QuizElementProps extends ElementProps {
+    listIndex: number;
 }

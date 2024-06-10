@@ -75,9 +75,27 @@ const ChapterSection = (props: ChapterSectionProps) => {
         const payload: any = {};
 
         payload[val] = '';
-
-        index !== undefined &&
-            dispatch(addChapterElement({ val: payload, chapterIndex: index }));
+        if (val === 'quiz') {
+            payload[val] = {
+                question: '',
+                answers: [
+                    { answer: '', isCorrect: '1' },
+                    { answer: '', isCorrect: '0' },
+                    { answer: '', isCorrect: '0' },
+                    { answer: '', isCorrect: '0' },
+                ],
+                answersCount: 4,
+            };
+            index !== undefined &&
+                dispatch(
+                    addChapterElement({ val: payload, chapterIndex: index })
+                );
+        } else {
+            index !== undefined &&
+                dispatch(
+                    addChapterElement({ val: payload, chapterIndex: index })
+                );
+        }
     };
 
     const handleAddSubchapterElement = (
@@ -105,6 +123,8 @@ const ChapterSection = (props: ChapterSectionProps) => {
         'image',
         'video',
         'file',
+        'h5p element',
+        'quiz',
     ];
 
     return (

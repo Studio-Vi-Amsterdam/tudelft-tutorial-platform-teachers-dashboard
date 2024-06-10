@@ -11,6 +11,7 @@ import AddMediaElement from './AddMediaElement';
 import ExtendedBundledEditor from './ExtendedBundledEditor';
 import ReducedBundledEditor from './ReducedBundledEditor';
 import DeleteElementWraper from './DeleteElementWraper';
+import QuizElement from './QuizElement';
 
 interface ElementsBlockProps {
     elements: Array<ChapterElementsObject>;
@@ -140,6 +141,21 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                                 <p>Show subtitles</p>
                             </div>
                         </div>
+                    )}
+                    {element?.quiz !== undefined && (
+                        <DeleteElementWraper
+                            block={block}
+                            chapterIndex={props.chapterIndex}
+                            subchapterIndex={subchapterIndex}
+                            elementIndex={index}
+                        >
+                            <QuizElement
+                                block={props.block}
+                                chapterIndex={props.chapterIndex}
+                                subchapterIndex={props.subchapterIndex}
+                                listIndex={index}
+                            />
+                        </DeleteElementWraper>
                     )}
                 </div>
             ))}

@@ -9,10 +9,12 @@ import {
     EditorState,
     ElementImageActionInterface,
     ElementInfoboxActionInterface,
+    ElementQuizActionInterface,
     ElementTextActionInterface,
     ElementVideoActionInterface,
     LayoutChapterType,
     MoveChapterInterface,
+    QuizElement,
     SubchapterTextFieldActionInterface,
     TutorialMetaObject,
     TutorialResponsibleInterface,
@@ -305,6 +307,35 @@ export const editorSlice = createSlice({
                 state.chapters[action.payload.nestedIndex].subchapters[
                     action.payload.subchapterIndex
                 ].video = action.payload.video;
+            }
+        },
+        setElementQuiz: (
+            state,
+            action: PayloadAction<ElementQuizActionInterface>
+        ) => {
+            if (
+                action.payload.block === 'tutorialElements' &&
+                action.payload.index !== undefined
+            ) {
+                state.tutorialTop.elements[action.payload.index].quiz =
+                    action.payload.quiz;
+            } else if (
+                action.payload.block === 'chapterElements' &&
+                action.payload.index !== undefined &&
+                action.payload.nestedIndex !== undefined
+            ) {
+                state.chapters[action.payload.nestedIndex].elements[
+                    action.payload.index
+                ].quiz = action.payload.quiz;
+            } else if (
+                action.payload.block === 'subchapterElements' &&
+                action.payload.index !== undefined &&
+                action.payload.nestedIndex !== undefined &&
+                action.payload.subchapterIndex !== undefined
+            ) {
+                state.chapters[action.payload.nestedIndex].subchapters[
+                    action.payload.subchapterIndex
+                ].elements[action.payload.index].quiz = action.payload.quiz;
             }
         },
         addBlankChapter: (state, action: PayloadAction<LayoutChapterType>) => {
@@ -615,6 +646,7 @@ export const {
     setSubchapterTitle,
     setSubchapterText,
     addChapterElement,
+    setElementQuiz,
     addSubchapterElement,
     addBlankSubchapter,
     setTutorialBottomTitle,
