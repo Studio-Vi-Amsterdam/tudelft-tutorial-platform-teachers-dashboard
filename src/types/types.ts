@@ -55,6 +55,10 @@ export interface ElementQuizActionInterface extends ElementActionBase {
     quiz: QuizElement;
 }
 
+export interface ElementH5PActionInterface extends ElementActionBase {
+    h5pElement: h5pElementInterface;
+}
+
 export interface ChapterTextFieldActionInterface {
     chapterIndex: number;
     text: string;
@@ -129,6 +133,7 @@ export interface TutorialTopElementsObject {
     video?: MediaObjectInterface;
     file?: ElementsFileInterface;
     quiz?: QuizElement;
+    h5pElement?: h5pElementInterface;
 }
 
 export interface QuizAnswer {
@@ -142,6 +147,11 @@ export interface QuizElement {
     answersCount: number;
 }
 
+export interface h5pElementInterface {
+    value: string;
+    error: string;
+}
+
 export interface ChapterElementsObject {
     text?: string;
     infobox?: string;
@@ -150,7 +160,7 @@ export interface ChapterElementsObject {
     tutorialCard?: string;
     file?: ElementsFileInterface;
     quiz?: QuizElement;
-    h5pElement?: string;
+    h5pElement?: h5pElementInterface;
 }
 
 export type LayoutChapterType =

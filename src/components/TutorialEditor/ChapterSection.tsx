@@ -90,6 +90,15 @@ const ChapterSection = (props: ChapterSectionProps) => {
                 dispatch(
                     addChapterElement({ val: payload, chapterIndex: index })
                 );
+        } else if (val === 'h5p element') {
+            payload['h5pElement'] = {
+                value: '',
+                error: '',
+            };
+            index !== undefined &&
+                dispatch(
+                    addChapterElement({ val: payload, chapterIndex: index })
+                );
         } else {
             index !== undefined &&
                 dispatch(

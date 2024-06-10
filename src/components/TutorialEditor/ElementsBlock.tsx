@@ -12,6 +12,7 @@ import ExtendedBundledEditor from './ExtendedBundledEditor';
 import ReducedBundledEditor from './ReducedBundledEditor';
 import DeleteElementWraper from './DeleteElementWraper';
 import QuizElement from './QuizElement';
+import H5pElement from './H5pElement';
 
 interface ElementsBlockProps {
     elements: Array<ChapterElementsObject>;
@@ -150,6 +151,21 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                             elementIndex={index}
                         >
                             <QuizElement
+                                block={props.block}
+                                chapterIndex={props.chapterIndex}
+                                subchapterIndex={props.subchapterIndex}
+                                listIndex={index}
+                            />
+                        </DeleteElementWraper>
+                    )}
+                    {element?.h5pElement !== undefined && (
+                        <DeleteElementWraper
+                            block={block}
+                            chapterIndex={props.chapterIndex}
+                            subchapterIndex={subchapterIndex}
+                            elementIndex={index}
+                        >
+                            <H5pElement
                                 block={props.block}
                                 chapterIndex={props.chapterIndex}
                                 subchapterIndex={props.subchapterIndex}

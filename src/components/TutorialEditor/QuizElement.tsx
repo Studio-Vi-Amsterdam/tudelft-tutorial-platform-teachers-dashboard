@@ -23,12 +23,6 @@ const QuizElement = (props: QuizElementProps) => {
               ].elements[props.listIndex].quiz
     );
 
-    const state = useAppSelector((state: RootState) => state.editor);
-
-    useEffect(() => {
-        console.log(state);
-    }, [state]);
-
     const dispatch = useAppDispatch();
 
     const [localQuestion, setLocalQuestion] = useState<string>(

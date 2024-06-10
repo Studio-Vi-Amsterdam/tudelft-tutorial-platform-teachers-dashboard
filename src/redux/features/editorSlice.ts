@@ -7,6 +7,7 @@ import {
     ChapterTextFieldActionInterface,
     EditorBelongsInterface,
     EditorState,
+    ElementH5PActionInterface,
     ElementImageActionInterface,
     ElementInfoboxActionInterface,
     ElementQuizActionInterface,
@@ -338,6 +339,36 @@ export const editorSlice = createSlice({
                 ].elements[action.payload.index].quiz = action.payload.quiz;
             }
         },
+        setElementH5P: (
+            state,
+            action: PayloadAction<ElementH5PActionInterface>
+        ) => {
+            if (
+                action.payload.block === 'tutorialElements' &&
+                action.payload.index !== undefined
+            ) {
+                state.tutorialTop.elements[action.payload.index].h5pElement =
+                    action.payload.h5pElement;
+            } else if (
+                action.payload.block === 'chapterElements' &&
+                action.payload.index !== undefined &&
+                action.payload.nestedIndex !== undefined
+            ) {
+                state.chapters[action.payload.nestedIndex].elements[
+                    action.payload.index
+                ].h5pElement = action.payload.h5pElement;
+            } else if (
+                action.payload.block === 'subchapterElements' &&
+                action.payload.index !== undefined &&
+                action.payload.nestedIndex !== undefined &&
+                action.payload.subchapterIndex !== undefined
+            ) {
+                state.chapters[action.payload.nestedIndex].subchapters[
+                    action.payload.subchapterIndex
+                ].elements[action.payload.index].h5pElement =
+                    action.payload.h5pElement;
+            }
+        },
         addBlankChapter: (state, action: PayloadAction<LayoutChapterType>) => {
             if (action.payload === '1 column') {
                 state.chapters = [
@@ -660,6 +691,7 @@ export const {
     setElementImage,
     setElementVideo,
     deleteElement,
+    setElementH5P,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;
