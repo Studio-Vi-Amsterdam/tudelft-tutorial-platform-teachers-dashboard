@@ -7,6 +7,7 @@ import {
     ChapterTextFieldActionInterface,
     EditorBelongsInterface,
     EditorState,
+    ElementFileActionInterface,
     ElementH5PActionInterface,
     ElementImageActionInterface,
     ElementInfoboxActionInterface,
@@ -369,6 +370,35 @@ export const editorSlice = createSlice({
                     action.payload.h5pElement;
             }
         },
+        setFileElement: (
+            state,
+            action: PayloadAction<ElementFileActionInterface>
+        ) => {
+            if (
+                action.payload.block === 'tutorialElements' &&
+                action.payload.index !== undefined
+            ) {
+                state.tutorialTop.elements[action.payload.index].file =
+                    action.payload.file;
+            } else if (
+                action.payload.block === 'chapterElements' &&
+                action.payload.index !== undefined &&
+                action.payload.nestedIndex !== undefined
+            ) {
+                state.chapters[action.payload.nestedIndex].elements[
+                    action.payload.index
+                ].file = action.payload.file;
+            } else if (
+                action.payload.block === 'subchapterElements' &&
+                action.payload.index !== undefined &&
+                action.payload.nestedIndex !== undefined &&
+                action.payload.subchapterIndex !== undefined
+            ) {
+                state.chapters[action.payload.nestedIndex].subchapters[
+                    action.payload.subchapterIndex
+                ].elements[action.payload.index].file = action.payload.file;
+            }
+        },
         addBlankChapter: (state, action: PayloadAction<LayoutChapterType>) => {
             if (action.payload === '1 column') {
                 state.chapters = [
@@ -692,6 +722,7 @@ export const {
     setElementVideo,
     deleteElement,
     setElementH5P,
+    setFileElement,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;

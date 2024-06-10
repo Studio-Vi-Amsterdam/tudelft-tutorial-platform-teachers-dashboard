@@ -13,6 +13,8 @@ import ReducedBundledEditor from './ReducedBundledEditor';
 import DeleteElementWraper from './DeleteElementWraper';
 import QuizElement from './QuizElement';
 import H5pElement from './H5pElement';
+import Dropzone from 'react-dropzone';
+import FileElement from './FileElement';
 
 interface ElementsBlockProps {
     elements: Array<ChapterElementsObject>;
@@ -130,18 +132,20 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                         </DeleteElementWraper>
                     )}
                     {element?.file !== undefined && (
-                        <div className="flex w-full flex-col gap-y-2">
-                            <div className="flex w-full items-center justify-center bg-tertiary-grey-silver py-16">
-                                <Button variant={'outline'}>
-                                    <div>+</div>
-                                    <p>Select video from media library</p>
-                                </Button>
-                            </div>
-                            <div className="flex flex-row">
-                                <input type="checkbox" />
-                                <p>Show subtitles</p>
-                            </div>
-                        </div>
+                        <DeleteElementWraper
+                            block={block}
+                            chapterIndex={props.chapterIndex}
+                            subchapterIndex={subchapterIndex}
+                            elementIndex={index}
+                            styles="bg-white top-3 right-1 w-6 h-6"
+                        >
+                            <FileElement
+                                block={props.block}
+                                chapterIndex={props.chapterIndex}
+                                subchapterIndex={props.subchapterIndex}
+                                listIndex={index}
+                            />
+                        </DeleteElementWraper>
                     )}
                     {element?.quiz !== undefined && (
                         <DeleteElementWraper

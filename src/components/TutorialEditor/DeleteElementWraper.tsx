@@ -7,6 +7,7 @@ import { ElementProps } from 'src/types/types';
 interface DeleteElementWraperProps extends ElementProps {
     children: React.ReactNode;
     elementIndex: number;
+    styles?: string;
 }
 
 const DeleteElementWraper = (props: DeleteElementWraperProps) => {
@@ -45,7 +46,11 @@ const DeleteElementWraper = (props: DeleteElementWraperProps) => {
 
     return (
         <div className="relative h-full w-full">
-            <div className="absolute right-1 top-1 z-50 flex w-fit flex-row rounded-[20px] border bg-background-seasalt p-2">
+            <div
+                className={`${
+                    props.styles && props.styles
+                } absolute right-1 top-1 z-50 flex w-fit flex-row rounded-[20px] border bg-background-seasalt p-2`}
+            >
                 <div
                     className={`${
                         openedMenu

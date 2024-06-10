@@ -59,6 +59,10 @@ export interface ElementH5PActionInterface extends ElementActionBase {
     h5pElement: h5pElementInterface;
 }
 
+export interface ElementFileActionInterface extends ElementActionBase {
+    file: ElementsFileInterface;
+}
+
 export interface ChapterTextFieldActionInterface {
     chapterIndex: number;
     text: string;
@@ -92,8 +96,16 @@ interface OnboardingInterface {
     imgSrc: string;
 }
 
+export interface CustomFileInterface {
+    path: string;
+    name: string;
+    lastModified: number;
+    size: number;
+    type: string;
+}
+
 interface ElementsFileInterface {
-    file: string;
+    file: CustomFileInterface | null;
     title: string;
     description: string;
 }
