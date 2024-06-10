@@ -2,6 +2,8 @@ import { Editor } from '@tinymce/tinymce-react';
 import { useState } from 'react';
 import { CommandDialogInterface, TermDialogInterface } from 'src/types/types';
 import CommandDialog from './CommandDialog';
+import TermDialog from './TermDialog';
+
 import tinymce from 'tinymce/tinymce';
 
 // Required imports for Editor
@@ -42,7 +44,7 @@ import 'tinymce/plugins/wordcount';
 import 'tinymce/plugins/emoticons/js/emojis';
 import 'tinymce/skins/content/default/content';
 import 'tinymce/skins/ui/oxide/content';
-import TermDialog from './TermDialog';
+import '@codecogs/eqneditor-tinymce6';
 
 export default function BundledEditor(props: any) {
     const [commandDialog, setCommandDialog] = useState<CommandDialogInterface>({
@@ -58,6 +60,7 @@ export default function BundledEditor(props: any) {
         select: null,
         explanation: '',
     });
+
     const setCommandDialogOpened = (val: boolean) => {
         setCommandDialog({ ...commandDialog, isOpen: val });
     };
