@@ -28,7 +28,7 @@ const GalleryListView = (props: GalleryViewProps) => {
                         />
                         <div className="w-[calc(100%-600px)]">{item.title}</div>
                         <div className="w-44">
-                            {localFormatDate(new Date(item.publishDate))}
+                            {localFormatDate(item.publishDate)}
                         </div>
                         <div className="w-44">
                             {item.format.toLocaleUpperCase() + ' ' + item.type}

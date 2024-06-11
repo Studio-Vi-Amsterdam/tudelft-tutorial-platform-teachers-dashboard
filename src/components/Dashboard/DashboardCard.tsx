@@ -1,8 +1,8 @@
 import { localFormatDate } from 'src/lib/localFormatDate';
-import { TutorialCard } from 'src/types/types';
+import { DashboardPublishedInterface, TutorialCard } from 'src/types/types';
 
 interface DashboardCardProps {
-    item: TutorialCard;
+    item: DashboardPublishedInterface;
 }
 
 const DashboardCard = (props: DashboardCardProps) => {
@@ -29,19 +29,19 @@ const DashboardCard = (props: DashboardCardProps) => {
                 </div>
             </div>
             <div className="flex flex-col gap-y-6">
-                <h4 className="text-xl leading-8">{item.name}</h4>
+                <h4 className="text-xl leading-8">{item.title}</h4>
                 <div className="flex flex-col gap-y-2 pb-16 [&>div]:flex [&>div]:flex-row">
                     <div>
                         <p className="text-primary-subtext w-20 text-left">
                             Published
                         </p>
-                        {localFormatDate(item.published)}
+                        {localFormatDate(item.publish_date)}
                     </div>
                     <div>
                         <p className="text-primary-subtext w-20 text-left">
                             Last Edit
                         </p>
-                        {localFormatDate(item.lastEdit)}
+                        {'no data'}
                     </div>
                 </div>
             </div>

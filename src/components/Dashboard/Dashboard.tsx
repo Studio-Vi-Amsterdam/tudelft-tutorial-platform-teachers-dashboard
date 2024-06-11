@@ -1,6 +1,11 @@
 import DashboardTutorialSection from './DashboardTutorialSection';
 import AddNewTutorialButton from './AddNewTutorialButton';
 import { HardcodeTestDataInterface } from 'src/types/types';
+import { useEffect } from 'react';
+import { articlesAPI } from 'src/lib/api';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { setPublished } from 'src/redux/features/dashboardSlice';
+import { RootState } from 'src/redux/store';
 
 const Dashboard = () => {
     const hardcodeTestData: HardcodeTestDataInterface = {
@@ -85,6 +90,47 @@ const Dashboard = () => {
         ],
     };
 
+    const dispatch = useAppDispatch();
+    const published = useAppSelector(
+        (state: RootState) => state.dashboard.published
+    );
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [tutorialsResponse, coursesResponse, softwaresResponse] =
+                    await Promise.all([
+                        articlesAPI.getArticles('tutorials'),
+                        articlesAPI.getArticles('courses'),
+                        articlesAPI.getArticles('softwares'),
+                    ]);
+                const tutorials = tutorialsResponse.data.map((item: any) => ({
+                    ...item,
+                    type: 'tutorials' as const,
+                }));
+                const courses = coursesResponse.data.map((item: any) => ({
+                    ...item,
+                    type: 'courses' as const,
+                }));
+                const softwares = softwaresResponse.data.map((item: any) => ({
+                    ...item,
+                    type: 'softwares' as const,
+                }));
+                const allData = [...tutorials, ...courses, ...softwares];
+                allData.sort(
+                    (a, b) =>
+                        new Date(b.publish_date).getTime() -
+                        new Date(a.publish_date).getTime()
+                );
+                console.log(allData);
+
+                dispatch(setPublished(allData));
+            } catch (error) {
+                throw new Error(`Failed to fetch data: ${error}`);
+            }
+        };
+        fetchData();
+    }, []);
+
     return (
         <main className="container mx-auto mb-24 mt-20 flex flex-auto flex-col gap-y-16">
             <div className="flex flex-row items-center justify-between">
@@ -135,15 +181,15 @@ const Dashboard = () => {
             {hardcodeTestData.published && (
                 <DashboardTutorialSection
                     heading="My published tutorials"
-                    items={hardcodeTestData.published}
+                    items={published}
                 />
             )}
-            {hardcodeTestData.drafts && (
+            {/* {hardcodeTestData.drafts && (
                 <DashboardTutorialSection
                     heading="My drafts"
                     items={hardcodeTestData.drafts}
                 />
-            )}
+            )} */}
         </main>
     );
 };

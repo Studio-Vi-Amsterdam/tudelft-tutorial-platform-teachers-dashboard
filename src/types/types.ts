@@ -16,7 +16,7 @@ export type AddElementsType =
     | 'tutorial cards';
 
 export interface DashboardSectionProps {
-    items: Array<TutorialCard>;
+    items: DashboardPublishedInterface[];
     heading: string;
 }
 
@@ -286,4 +286,27 @@ export interface AddMediaElementProps extends ElementProps {
 
 export interface QuizElementProps extends ElementProps {
     listIndex: number;
+}
+
+export type ArtictesType = 'softwares' | 'courses' | 'tutorials';
+
+export interface DashboardDraftsInterface {
+    name: string;
+    text: string;
+    link: string;
+    imgSrc: string;
+}
+
+export interface DashboardPublishedInterface {
+    id: number;
+    featured_image: null | boolean | string;
+    publish_date: string;
+    title: string;
+    type: ArtictesType;
+}
+
+export interface DashboardInterface {
+    username: string;
+    drafts: DashboardDraftsInterface[] | [];
+    published: DashboardPublishedInterface[] | [];
 }
