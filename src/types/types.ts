@@ -310,3 +310,74 @@ export interface DashboardInterface {
     drafts: DashboardDraftsInterface[] | [];
     published: DashboardPublishedInterface[] | [];
 }
+
+export interface ResponseArticleInterface {
+    chapters?: [];
+    content?: [];
+    description?: string;
+    faculty?: [];
+    featured_image?: string;
+    id?: number;
+    keywords?: string[];
+    level?: string;
+    primary_software?: number;
+    primary_subject?: number | string;
+    publish_date?: string;
+    secondary_subject?: boolean | string | number;
+    software_version?: number[];
+    teachers?: [] | string[];
+    title?: string;
+    useful_links?: string;
+}
+
+export type ResponseBlockName =
+    | 'tu-delft-text'
+    | 'tu-delft-image'
+    | 'tu-delft-video'
+    | 'tu-delft-download'
+    | 'tu-delft-info-box'
+    | 'tu-delft-content-card'
+    | 'tu-delft-image-text'
+    | 'tu-delft-text-image'
+    | 'tu-delft-video-text'
+    | 'tu-delft-text-video'
+    | 'tu-delft-quiz'
+    | 'tu-delft-h5p';
+
+export type BoolString = '0' | '1';
+
+export interface ResponseContentBlock {
+    block_name: ResponseBlockName;
+    block_data: {
+        content?: string;
+        image?: number;
+        image_url?: string;
+        video?: number;
+        video_url?: string;
+        file?: number;
+        file_url?: string;
+        title?: string;
+        description?: string;
+        content_card_row_0_card_title?: string;
+        content_card_row_0_card_link?: number;
+        content_card_row_0_card_link_url?: string;
+        content_card_row_1_card_title?: string;
+        content_card_row_1_card_link?: number;
+        content_card_row_1_card_link_url?: string;
+        content_card_row_2_card_title?: string;
+        content_card_row_2_card_link_url?: string;
+        content_card_row_2_card_link?: number;
+        content_card_row?: number;
+        question?: string;
+        answers_0_answer?: string;
+        answers_0_is_correct?: BoolString;
+        answers_1_answer?: string;
+        answers_1_is_correct?: BoolString;
+        answers_2_answer?: string;
+        answers_2_is_correct?: BoolString;
+        answers_3_answer?: string;
+        answers_3_is_correct?: BoolString;
+        answers?: 4;
+        source?: string;
+    };
+}

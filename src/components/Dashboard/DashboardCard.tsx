@@ -1,4 +1,11 @@
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { articlesAPI, chaptersAPI } from 'src/lib/api';
 import { localFormatDate } from 'src/lib/localFormatDate';
+import { reducerParser } from 'src/lib/reducerParser';
+import { setNewState } from 'src/redux/features/editorSlice';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { RootState } from 'src/redux/store';
 import { DashboardPublishedInterface, TutorialCard } from 'src/types/types';
 
 interface DashboardCardProps {
@@ -7,6 +14,22 @@ interface DashboardCardProps {
 
 const DashboardCard = (props: DashboardCardProps) => {
     const { item } = props;
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
+    const state = useAppSelector((state: RootState) => state.editor);
+    const handleClickEdit = async () => {
+        const response = await articlesAPI
+            .getSingleArticle(item.type, item.id)
+            .then((res) => res.data);
+        console.log('article ', response);
+        const newObject = reducerParser.parseToReducer(response, item.type);
+        if (newObject) {
+            dispatch(setNewState(newObject));
+            navigate('my-tutorials');
+        }
+    };
+
     return (
         <div className="flex w-[calc(25%-18px)]  flex-col gap-y-4 rounded-[4px] bg-background-aliceBlue p-4">
             <div className="flex flex-row items-center justify-between">
@@ -17,7 +40,7 @@ const DashboardCard = (props: DashboardCardProps) => {
                     <button>
                         <img src="/img/dashboardCard/view.svg" alt="" />
                     </button>
-                    <button>
+                    <button onClick={handleClickEdit}>
                         <img src="/img/dashboardCard/edit.svg" alt="" />
                     </button>
                     <button>

@@ -152,6 +152,20 @@ export const editorSlice = createSlice({
     name: 'editor',
     initialState,
     reducers: {
+        setNewState: (
+            state,
+            action: PayloadAction<EditorState | undefined>
+        ) => {
+            if (action.payload === undefined) {
+                state = initialState;
+            } else {
+                state.chapters = action.payload.chapters;
+                state.meta = action.payload.meta;
+                state.pageType = action.payload.pageType;
+                state.tutorialBottom = action.payload.tutorialBottom;
+                state.tutorialTop = action.payload.tutorialTop;
+            }
+        },
         setTutorialTitle: (state, action: PayloadAction<string>) => {
             state.tutorialTop.title = action.payload;
         },
@@ -626,6 +640,7 @@ export const {
     deleteElement,
     setElementH5P,
     setFileElement,
+    setNewState,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;

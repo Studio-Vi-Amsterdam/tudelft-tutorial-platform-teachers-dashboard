@@ -10,6 +10,15 @@ export const articlesAPI = {
         return instance.get(`/${type}/`);
     },
     getSingleArticle(type: ArtictesType, id: number) {
-        return instance.get(`/${type}/single/?id=[${id}]`);
+        return instance.get(`/${type}/single/?id=${id}`);
+    },
+};
+
+export const chaptersAPI = {
+    getArticleChapters(parentId: number) {
+        return instance.get(`/chapters/id=${parentId}/`);
+    },
+    getSingleChapter(chapterId: number) {
+        return instance.get(`/chapters/single?id=${chapterId}`);
     },
 };
