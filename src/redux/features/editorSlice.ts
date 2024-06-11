@@ -7,6 +7,7 @@ import {
     ChapterTextFieldActionInterface,
     EditorBelongsInterface,
     EditorState,
+    Element,
     ElementFileActionInterface,
     ElementH5PActionInterface,
     ElementImageActionInterface,
@@ -110,6 +111,43 @@ const initialState: EditorState = {
     },
 };
 
+const setElementProperty = (
+    state: any,
+    action: PayloadAction<any>,
+    property: keyof Element
+) => {
+    const { block, index, nestedIndex, subchapterIndex, value } =
+        action.payload;
+
+    if (block === 'tutorialElements' && index !== undefined) {
+        state.tutorialTop.elements[index][property] = value;
+    } else if (
+        block === 'chapterElements' &&
+        index !== undefined &&
+        nestedIndex !== undefined
+    ) {
+        state.chapters[nestedIndex].elements[index][property] = value;
+    } else if (
+        block === 'subchapterElements' &&
+        index !== undefined &&
+        nestedIndex !== undefined &&
+        subchapterIndex !== undefined
+    ) {
+        state.chapters[nestedIndex].subchapters[subchapterIndex].elements[
+            index
+        ][property] = value;
+    } else if (block === 'chapterMedia' && nestedIndex !== undefined) {
+        state.chapters[nestedIndex][property] = value;
+    } else if (
+        block === 'subchapterMedia' &&
+        nestedIndex !== undefined &&
+        subchapterIndex !== undefined
+    ) {
+        state.chapters[nestedIndex].subchapters[subchapterIndex][property] =
+            value;
+    }
+};
+
 export const editorSlice = createSlice({
     name: 'editor',
     initialState,
@@ -166,238 +204,103 @@ export const editorSlice = createSlice({
                 ].elements.filter((_, i) => i !== elementIndex);
             }
         },
+
         setElementText: (
             state,
             action: PayloadAction<ElementTextActionInterface>
         ) => {
-            if (
-                action.payload.block === 'tutorialElements' &&
-                action.payload.index !== undefined
-            ) {
-                state.tutorialTop.elements[action.payload.index].text =
-                    action.payload.text;
-            } else if (
-                action.payload.block === 'chapterElements' &&
-                action.payload.index !== undefined &&
-                action.payload.nestedIndex !== undefined
-            ) {
-                state.chapters[action.payload.nestedIndex].elements[
-                    action.payload.index
-                ].text = action.payload.text;
-            } else if (
-                action.payload.block === 'subchapterElements' &&
-                action.payload.index !== undefined &&
-                action.payload.nestedIndex !== undefined &&
-                action.payload.subchapterIndex !== undefined
-            ) {
-                state.chapters[action.payload.nestedIndex].subchapters[
-                    action.payload.subchapterIndex
-                ].elements[action.payload.index].text = action.payload.text;
-            }
+            setElementProperty(
+                state,
+                {
+                    ...action,
+                    payload: { ...action.payload, value: action.payload.text },
+                },
+                'text'
+            );
         },
         setElementInfobox: (
             state,
             action: PayloadAction<ElementInfoboxActionInterface>
         ) => {
-            if (
-                action.payload.block === 'tutorialElements' &&
-                action.payload.index !== undefined
-            ) {
-                state.tutorialTop.elements[action.payload.index].infobox =
-                    action.payload.infobox;
-            } else if (
-                action.payload.block === 'chapterElements' &&
-                action.payload.index !== undefined &&
-                action.payload.nestedIndex !== undefined
-            ) {
-                state.chapters[action.payload.nestedIndex].elements[
-                    action.payload.index
-                ].infobox = action.payload.infobox;
-            } else if (
-                action.payload.block === 'subchapterElements' &&
-                action.payload.index !== undefined &&
-                action.payload.nestedIndex !== undefined &&
-                action.payload.subchapterIndex !== undefined
-            ) {
-                state.chapters[action.payload.nestedIndex].subchapters[
-                    action.payload.subchapterIndex
-                ].elements[action.payload.index].infobox =
-                    action.payload.infobox;
-            }
+            setElementProperty(
+                state,
+                {
+                    ...action,
+                    payload: {
+                        ...action.payload,
+                        value: action.payload.infobox,
+                    },
+                },
+                'infobox'
+            );
         },
         setElementImage: (
             state,
             action: PayloadAction<ElementImageActionInterface>
         ) => {
-            if (
-                action.payload.block === 'tutorialElements' &&
-                action.payload.index !== undefined
-            ) {
-                state.tutorialTop.elements[action.payload.index].image =
-                    action.payload.image;
-            } else if (
-                action.payload.block === 'chapterElements' &&
-                action.payload.index !== undefined &&
-                action.payload.nestedIndex !== undefined
-            ) {
-                state.chapters[action.payload.nestedIndex].elements[
-                    action.payload.index
-                ].image = action.payload.image;
-            } else if (
-                action.payload.block === 'subchapterElements' &&
-                action.payload.index !== undefined &&
-                action.payload.nestedIndex !== undefined &&
-                action.payload.subchapterIndex !== undefined
-            ) {
-                state.chapters[action.payload.nestedIndex].subchapters[
-                    action.payload.subchapterIndex
-                ].elements[action.payload.index].image = action.payload.image;
-            } else if (
-                action.payload.block === 'chapterMedia' &&
-                action.payload.nestedIndex !== undefined
-            ) {
-                state.chapters[action.payload.nestedIndex].image =
-                    action.payload.image;
-            } else if (
-                action.payload.block === 'subchapterMedia' &&
-                action.payload.nestedIndex !== undefined &&
-                action.payload.subchapterIndex !== undefined
-            ) {
-                state.chapters[action.payload.nestedIndex].subchapters[
-                    action.payload.subchapterIndex
-                ].image = action.payload.image;
-            }
+            setElementProperty(
+                state,
+                {
+                    ...action,
+                    payload: { ...action.payload, value: action.payload.image },
+                },
+                'image'
+            );
         },
         setElementVideo: (
             state,
             action: PayloadAction<ElementVideoActionInterface>
         ) => {
-            if (
-                action.payload.block === 'tutorialElements' &&
-                action.payload.index !== undefined
-            ) {
-                state.tutorialTop.elements[action.payload.index].video =
-                    action.payload.video;
-            } else if (
-                action.payload.block === 'chapterElements' &&
-                action.payload.index !== undefined &&
-                action.payload.nestedIndex !== undefined
-            ) {
-                state.chapters[action.payload.nestedIndex].elements[
-                    action.payload.index
-                ].video = action.payload.video;
-            } else if (
-                action.payload.block === 'subchapterElements' &&
-                action.payload.index !== undefined &&
-                action.payload.nestedIndex !== undefined &&
-                action.payload.subchapterIndex !== undefined
-            ) {
-                state.chapters[action.payload.nestedIndex].subchapters[
-                    action.payload.subchapterIndex
-                ].elements[action.payload.index].video = action.payload.video;
-            } else if (
-                action.payload.block === 'chapterMedia' &&
-                action.payload.nestedIndex !== undefined
-            ) {
-                state.chapters[action.payload.nestedIndex].video =
-                    action.payload.video;
-            } else if (
-                action.payload.block === 'subchapterMedia' &&
-                action.payload.nestedIndex !== undefined &&
-                action.payload.subchapterIndex !== undefined
-            ) {
-                state.chapters[action.payload.nestedIndex].subchapters[
-                    action.payload.subchapterIndex
-                ].video = action.payload.video;
-            }
+            setElementProperty(
+                state,
+                {
+                    ...action,
+                    payload: { ...action.payload, value: action.payload.video },
+                },
+                'video'
+            );
         },
         setElementQuiz: (
             state,
             action: PayloadAction<ElementQuizActionInterface>
         ) => {
-            if (
-                action.payload.block === 'tutorialElements' &&
-                action.payload.index !== undefined
-            ) {
-                state.tutorialTop.elements[action.payload.index].quiz =
-                    action.payload.quiz;
-            } else if (
-                action.payload.block === 'chapterElements' &&
-                action.payload.index !== undefined &&
-                action.payload.nestedIndex !== undefined
-            ) {
-                state.chapters[action.payload.nestedIndex].elements[
-                    action.payload.index
-                ].quiz = action.payload.quiz;
-            } else if (
-                action.payload.block === 'subchapterElements' &&
-                action.payload.index !== undefined &&
-                action.payload.nestedIndex !== undefined &&
-                action.payload.subchapterIndex !== undefined
-            ) {
-                state.chapters[action.payload.nestedIndex].subchapters[
-                    action.payload.subchapterIndex
-                ].elements[action.payload.index].quiz = action.payload.quiz;
-            }
+            setElementProperty(
+                state,
+                {
+                    ...action,
+                    payload: { ...action.payload, value: action.payload.quiz },
+                },
+                'quiz'
+            );
         },
         setElementH5P: (
             state,
             action: PayloadAction<ElementH5PActionInterface>
         ) => {
-            if (
-                action.payload.block === 'tutorialElements' &&
-                action.payload.index !== undefined
-            ) {
-                state.tutorialTop.elements[action.payload.index].h5pElement =
-                    action.payload.h5pElement;
-            } else if (
-                action.payload.block === 'chapterElements' &&
-                action.payload.index !== undefined &&
-                action.payload.nestedIndex !== undefined
-            ) {
-                state.chapters[action.payload.nestedIndex].elements[
-                    action.payload.index
-                ].h5pElement = action.payload.h5pElement;
-            } else if (
-                action.payload.block === 'subchapterElements' &&
-                action.payload.index !== undefined &&
-                action.payload.nestedIndex !== undefined &&
-                action.payload.subchapterIndex !== undefined
-            ) {
-                state.chapters[action.payload.nestedIndex].subchapters[
-                    action.payload.subchapterIndex
-                ].elements[action.payload.index].h5pElement =
-                    action.payload.h5pElement;
-            }
+            setElementProperty(
+                state,
+                {
+                    ...action,
+                    payload: {
+                        ...action.payload,
+                        value: action.payload.h5pElement,
+                    },
+                },
+                'h5pElement'
+            );
         },
         setFileElement: (
             state,
             action: PayloadAction<ElementFileActionInterface>
         ) => {
-            if (
-                action.payload.block === 'tutorialElements' &&
-                action.payload.index !== undefined
-            ) {
-                state.tutorialTop.elements[action.payload.index].file =
-                    action.payload.file;
-            } else if (
-                action.payload.block === 'chapterElements' &&
-                action.payload.index !== undefined &&
-                action.payload.nestedIndex !== undefined
-            ) {
-                state.chapters[action.payload.nestedIndex].elements[
-                    action.payload.index
-                ].file = action.payload.file;
-            } else if (
-                action.payload.block === 'subchapterElements' &&
-                action.payload.index !== undefined &&
-                action.payload.nestedIndex !== undefined &&
-                action.payload.subchapterIndex !== undefined
-            ) {
-                state.chapters[action.payload.nestedIndex].subchapters[
-                    action.payload.subchapterIndex
-                ].elements[action.payload.index].file = action.payload.file;
-            }
+            setElementProperty(
+                state,
+                {
+                    ...action,
+                    payload: { ...action.payload, value: action.payload.file },
+                },
+                'file'
+            );
         },
         addBlankChapter: (state, action: PayloadAction<LayoutChapterType>) => {
             if (action.payload === '1 column') {

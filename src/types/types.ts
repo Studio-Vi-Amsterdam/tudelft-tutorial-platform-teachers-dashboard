@@ -175,6 +175,16 @@ export interface ChapterElementsObject {
     h5pElement?: h5pElementInterface;
 }
 
+export interface Element {
+    text?: string;
+    infobox?: string;
+    image?: MediaObjectInterface;
+    video?: MediaObjectInterface;
+    quiz?: QuizElement;
+    h5pElement?: h5pElementInterface;
+    file?: ElementsFileInterface;
+}
+
 export type LayoutChapterType =
     | '1 column'
     | 'image left'
