@@ -99,11 +99,6 @@ const PickMediaDialog = (props: PickMediaDialogProps) => {
         setDialogOpened(false);
         setSelectedMedia(undefined);
     };
-    const store = useAppSelector((state: RootState) => state.editor);
-
-    useEffect(() => {
-        console.log(store);
-    }, [store]);
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 

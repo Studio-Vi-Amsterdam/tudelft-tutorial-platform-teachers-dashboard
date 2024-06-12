@@ -12,6 +12,9 @@ export const articlesAPI = {
     getSingleArticle(type: ArtictesType, id: number) {
         return instance.get(`/${type}/single/?id=${id}`);
     },
+    postArticle(type: ArtictesType, payload: any) {
+        return instance.post(`/${type}/create`, payload);
+    },
 };
 
 export const chaptersAPI = {

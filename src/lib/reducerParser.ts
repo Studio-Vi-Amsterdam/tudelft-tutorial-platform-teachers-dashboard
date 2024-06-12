@@ -35,16 +35,50 @@ const getExtendedChapters = async (
     }
 };
 
-/*
+const getFirstChapterElement = (chapter: ChapterInterface) => {
+    console.log('chapter: ', chapter);
 
-{ layout: LayoutChapterType; 
-  title: string; 
-  text: string | undefined; 
-  elements: TutorialTopElementsObject[]; 
-  video: { link: string | undefined; type: string; format: string; title: string; publishDate: string; } | undefined; 
-  image: { ...; } | undefined; }[]
-
-*/
+    if (chapter.layout === 'image left') {
+        return {
+            block_name: 'tu-delft-image-text',
+            block_data: {
+                image: 294 /* Hardcoded. Must be changed after Media resolve */,
+                content: chapter.text,
+            },
+        };
+    } else if (chapter.layout === 'image right') {
+        return {
+            block_name: 'tu-delft-text-image',
+            block_data: {
+                image: 294 /* Hardcoded. Must be changed after Media resolve */,
+                content: chapter.text,
+            },
+        };
+    } else if (chapter.layout === 'video left') {
+        return {
+            block_name: 'tu-delft-video-text',
+            block_data: {
+                video: 104 /* Hardcoded. Must be changed after Media resolve */,
+                content: chapter.text,
+            },
+        };
+    } else if (chapter.layout === 'video right') {
+        return {
+            block_name: 'tu-delft-text-video',
+            block_data: {
+                video: 104 /* Hardcoded. Must be changed after Media resolve */,
+                content: chapter.text,
+            },
+        };
+    } else {
+        return {
+            block_name: 'tu-delft-text',
+            block_data: {
+                content: chapter.text,
+            },
+        };
+    }
+};
 
 export const reducerParser = {
     async parseToReducer(
@@ -296,5 +330,121 @@ export const reducerParser = {
             },
         };
         return parsedObject;
+    },
+    parseFromReducer(editorState: EditorState, status: 'publish' | 'draft') {
+        const parseElementsToContent = (
+            elements: TutorialTopElementsObject[]
+        ) => {
+            const content = elements
+                .map((item) => {
+                    if (item.text) {
+                        return {
+                            block_name: 'tu-delft-text',
+                            block_data: {
+                                content: item.text,
+                            },
+                        };
+                    }
+                    if (item.infobox) {
+                        return {
+                            block_name: 'tu-delft-info-box',
+                            block_data: {
+                                content: item.infobox,
+                            },
+                        };
+                    }
+                    if (item.quiz) {
+                        return {
+                            block_name: 'tu-delft-quiz',
+                            block_data: {
+                                question: item.quiz.question,
+                                answers_0_answer: item.quiz.answers[0].answer,
+                                answers_0_is_correct:
+                                    item.quiz.answers[0].isCorrect,
+                                answers_1_answer: item.quiz.answers[1].answer,
+                                answers_1_is_correct:
+                                    item.quiz.answers[1].isCorrect,
+                                answers_2_answer: item.quiz.answers[2].answer,
+                                answers_2_is_correct:
+                                    item.quiz.answers[2].isCorrect,
+                                answers_3_answer: item.quiz.answers[3].answer,
+                                answers_3_is_correct:
+                                    item.quiz.answers[3].isCorrect,
+                                answers: item.quiz.answersCount,
+                            },
+                        };
+                    }
+                    if (item.h5pElement) {
+                        return {
+                            block_name: 'tu-delft-h5p',
+                            block_data: {
+                                source: item.h5pElement.value,
+                            },
+                        };
+                    }
+                    if (item.image) {
+                        return {
+                            block_name: 'tu-delft-image',
+                            block_data: {
+                                image: 294 /* Hardcoded. Must be changed after Media resolve */,
+                            },
+                        };
+                    }
+                    if (item.video) {
+                        return {
+                            block_name: 'tu-delft-video',
+                            block_data: {
+                                video: 104 /* Hardcoded. Must be changed after Media resolve */,
+                            },
+                        };
+                    }
+                    if (item.file) {
+                        return {
+                            block_name: 'tu-delft-download',
+                            block_data: {
+                                file: 212 /* Hardcoded. Must be changed after Media resolve */,
+                                title: item.file.title,
+                                description: item.file.description,
+                            },
+                        };
+                    }
+                    return null;
+                })
+                .filter(Boolean);
+            return content;
+        };
+        const parseChaptersToRequest = (chapters: ChapterInterface[]) => {
+            const content = chapters.map((chapter) => {
+                const els = parseElementsToContent(chapter.elements);
+                const firstEl = getFirstChapterElement(chapter);
+                return {
+                    title: chapter.title,
+                    content: [firstEl, ...els],
+                };
+            });
+            return content;
+        };
+        const newObject = {
+            status: status,
+            title: editorState.tutorialTop.title,
+            description: editorState.tutorialTop.description,
+            content:
+                editorState.tutorialTop.elements.length !== 0
+                    ? parseElementsToContent(editorState.tutorialTop.elements)
+                    : [],
+            useful_links: editorState.tutorialBottom.text,
+            primary_software: 270,
+            software_version: [3, 4],
+            primary_subject: 386,
+            secondary_subject: '',
+            level: 2,
+            faculty: editorState.meta.responsible.faculty.value,
+            keywords: editorState.meta.belongs.keywords.list,
+            teachers: editorState.meta.responsible.teacher.value.split(','),
+            chapters:
+                editorState.chapters &&
+                parseChaptersToRequest(editorState.chapters),
+        };
+        return newObject;
     },
 };

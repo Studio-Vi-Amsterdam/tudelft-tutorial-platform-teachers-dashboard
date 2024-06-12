@@ -146,6 +146,7 @@ export interface TutorialTopElementsObject {
     file?: ElementsFileInterface;
     quiz?: QuizElement;
     h5pElement?: h5pElementInterface;
+    tutorialCard?: string;
 }
 
 export interface QuizAnswer {
