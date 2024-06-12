@@ -311,8 +311,14 @@ export interface DashboardInterface {
     published: DashboardPublishedInterface[] | [];
 }
 
+export interface ResponseArticleChapterInterface {
+    id: number;
+    title: string;
+    permalink: string;
+}
+
 export interface ResponseArticleInterface {
-    chapters?: [];
+    chapters?: ResponseArticleChapterInterface[];
     content?: [];
     description?: string;
     faculty?: [];
@@ -328,6 +334,13 @@ export interface ResponseArticleInterface {
     teachers?: [] | string[];
     title?: string;
     useful_links?: string;
+}
+
+export interface ResponseChapterInterface {
+    id: number;
+    title: string;
+    content: ResponseContentBlock[];
+    belongs_to: boolean | number;
 }
 
 export type ResponseBlockName =

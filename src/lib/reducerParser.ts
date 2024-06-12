@@ -2,14 +2,52 @@ import {
     ArtictesType,
     BoolString,
     ChapterElementsObject,
+    ChapterInterface,
     EditorState,
+    LayoutChapterType,
+    ResponseArticleChapterInterface,
     ResponseArticleInterface,
+    ResponseChapterInterface,
     ResponseContentBlock,
     TutorialTopElementsObject,
 } from 'src/types/types';
+import { chaptersAPI } from './api';
+
+const getExtendedChapters = async (
+    chaptersData: ResponseArticleChapterInterface[] | { error: string }
+) => {
+    if (!Array.isArray(chaptersData)) {
+        console.error('Error response:', chaptersData.error);
+        return [];
+    } else {
+        const chapterPromises = chaptersData.map((chapter) =>
+            chaptersAPI
+                .getSingleChapter(chapter.id)
+                .then((res) => res.data.data)
+        );
+        try {
+            const chapters = await Promise.all(chapterPromises);
+            return chapters;
+        } catch (error) {
+            console.error('Error fetching chapters:', error);
+            return [];
+        }
+    }
+};
+
+/*
+
+{ layout: LayoutChapterType; 
+  title: string; 
+  text: string | undefined; 
+  elements: TutorialTopElementsObject[]; 
+  video: { link: string | undefined; type: string; format: string; title: string; publishDate: string; } | undefined; 
+  image: { ...; } | undefined; }[]
+
+*/
 
 export const reducerParser = {
-    parseToReducer(
+    async parseToReducer(
         response: ResponseArticleInterface,
         articleType: ArtictesType
     ) {
@@ -75,6 +113,18 @@ export const reducerParser = {
                                     publishDate: 'hardcode',
                                 },
                             };
+                        case 'tu-delft-video':
+                            return {
+                                image: {
+                                    link: block.block_data.video_url,
+                                    type: 'video',
+                                    format: 'test',
+                                    title: block.block_data.content
+                                        ? block.block_data.content
+                                        : '',
+                                    publishDate: 'hardcode',
+                                },
+                            };
                         default:
                             return null;
                     }
@@ -86,6 +136,69 @@ export const reducerParser = {
             ? parsedElements(response.content)
             : [];
 
+        const parseChapters = async (
+            responseChapters: ResponseArticleChapterInterface[]
+        ) => {
+            const extendedChapters = await getExtendedChapters(
+                responseChapters
+            );
+
+            const newChapters = extendedChapters.map(
+                (chapter: ResponseChapterInterface) => {
+                    const chapterLayout = (): LayoutChapterType => {
+                        switch (chapter.content[0].block_name) {
+                            case 'tu-delft-image-text':
+                                return 'image left';
+                            case 'tu-delft-text-image':
+                                return 'image right';
+                            case 'tu-delft-video-text':
+                                return 'video left';
+                            case 'tu-delft-text-video':
+                                return 'video right';
+                            default:
+                                return '1 column';
+                        }
+                    };
+                    const newChapter: ChapterInterface = {
+                        layout: chapterLayout(),
+                        title: chapter.title,
+                        text: chapter.content[0].block_data.content || '',
+                        elements: parsedElements(chapter.content),
+                        subchapters: [],
+                        video:
+                            chapterLayout() === 'video left' ||
+                            chapterLayout() === 'video right'
+                                ? {
+                                      link:
+                                          chapter.content[0].block_data
+                                              .video_url || '',
+                                      type: 'video',
+                                      format: 'test',
+                                      title: '',
+                                      publishDate: '',
+                                  }
+                                : undefined,
+                        image:
+                            chapterLayout() === 'image left' ||
+                            chapterLayout() === 'image right'
+                                ? {
+                                      link:
+                                          chapter.content[0].block_data
+                                              .image_url || '',
+                                      type: 'image',
+                                      format: 'test',
+                                      title: '',
+                                      publishDate: '',
+                                  }
+                                : undefined,
+                    };
+                    return newChapter;
+                }
+            );
+
+            return newChapters;
+        };
+
         const parsedObject: EditorState = {
             pageType: articleType,
             tutorialTop: {
@@ -94,7 +207,9 @@ export const reducerParser = {
                 description: response.description ? response.description : '',
                 elements: tutorialTopElements,
             },
-            chapters: [] /*There we should parse "chapters" */,
+            chapters: response.chapters
+                ? await parseChapters(response.chapters)
+                : [],
             tutorialBottom: {
                 title: 'Useful Links',
                 titleType: 'h2',

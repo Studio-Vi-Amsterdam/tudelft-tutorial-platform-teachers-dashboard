@@ -22,8 +22,10 @@ const DashboardCard = (props: DashboardCardProps) => {
         const response = await articlesAPI
             .getSingleArticle(item.type, item.id)
             .then((res) => res.data);
-        console.log('article ', response);
-        const newObject = reducerParser.parseToReducer(response, item.type);
+        const newObject = await reducerParser.parseToReducer(
+            response,
+            item.type
+        );
         if (newObject) {
             dispatch(setNewState(newObject));
             navigate('my-tutorials');
