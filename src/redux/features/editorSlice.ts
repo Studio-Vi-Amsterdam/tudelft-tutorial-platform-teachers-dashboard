@@ -157,7 +157,11 @@ export const editorSlice = createSlice({
             action: PayloadAction<EditorState | undefined>
         ) => {
             if (action.payload === undefined) {
-                state = initialState;
+                state.chapters = initialState.chapters;
+                state.meta = initialState.meta;
+                state.pageType = initialState.pageType;
+                state.tutorialBottom = initialState.tutorialBottom;
+                state.tutorialTop = initialState.tutorialTop;
             } else {
                 state.chapters = action.payload.chapters;
                 state.meta = action.payload.meta;

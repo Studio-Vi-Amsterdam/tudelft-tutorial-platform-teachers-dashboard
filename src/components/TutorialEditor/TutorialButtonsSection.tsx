@@ -1,24 +1,32 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { Button } from 'src/components/ui/Button';
 import { articlesAPI } from 'src/lib/api';
 import { reducerParser } from 'src/lib/reducerParser';
 import { useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
+import { ArtictesType } from 'src/types/types';
 
 const TutorialButtonsSection = () => {
     const tutorial = useAppSelector((state: RootState) => state.editor);
-
+    const params = new URLSearchParams(useLocation().search);
+    const articleType = params.get('type');
+    const articleId = params.get('id');
     const testClick = () => {
         const parsedObject = reducerParser.parseFromReducer(
             tutorial,
             'publish'
         );
-        try {
-            articlesAPI
-                .postArticle('tutorials', parsedObject)
-                .then((res) => console.log(res));
-        } catch (error) {
-            console.error(error);
+        if (articleType && articleId) {
+            if (articleId === 'new') {
+                try {
+                    articlesAPI
+                        .postArticle(articleType as ArtictesType, parsedObject)
+                        .then((res) => console.log(res));
+                } catch (error) {
+                    console.error(error);
+                }
+            }
         }
     };
     return (

@@ -21,9 +21,14 @@ export const dashboardSlice = createSlice({
         ) => {
             state.published = action.payload;
         },
+        deleteFromPublished: (state, action: PayloadAction<number>) => {
+            state.published = state.published.filter(
+                (item) => item.id !== action.payload
+            );
+        },
     },
 });
 
-export const { setPublished } = dashboardSlice.actions;
+export const { setPublished, deleteFromPublished } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;

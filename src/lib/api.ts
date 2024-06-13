@@ -15,6 +15,12 @@ export const articlesAPI = {
     postArticle(type: ArtictesType, payload: any) {
         return instance.post(`/${type}/create`, payload);
     },
+    deleteArticle(type: ArtictesType, id: number) {
+        const payload = {
+            id: id,
+        };
+        return instance.delete(`/${type}/single/delete`, { data: payload });
+    },
 };
 
 export const chaptersAPI = {

@@ -33,8 +33,13 @@ const AddNewTutorialButton = () => {
     };
 
     const handleSubmit = () => {
-        dispatch(setPageType(activeButton));
-        navigate('/dashboard/my-tutorials');
+        if (activeButton) {
+            navigate(
+                `/dashboard/my-tutorials?type=${
+                    activeButton.split(' ')[0].toLowerCase() + 's'
+                }&id=new`
+            );
+        }
     };
 
     return (
