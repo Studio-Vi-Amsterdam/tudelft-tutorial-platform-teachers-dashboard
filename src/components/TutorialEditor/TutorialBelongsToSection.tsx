@@ -9,12 +9,17 @@ import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
 import {
     addKeywordsToList,
+    addKeywordsToProposed,
     changeMetaField,
     deleteKeyword,
+    removeKeywordFromProposed,
 } from 'src/redux/features/editorSlice';
 import MetaInput from '../ui/MetaInput';
 import MetaSelect from '../ui/MetaSelect';
 import { Button } from '../ui/Button';
+import TextInput from '../ui/TextInput';
+import { Dialog, DialogContent, DialogFooter } from '../ui/Dialog';
+import { taxonomiesAPI } from 'src/lib/api';
 
 const TutorialBelongsToSection = () => {
     const [belongsKeys, setBelongsKeys] = useState<
@@ -41,6 +46,7 @@ const TutorialBelongsToSection = () => {
     ) => {
         if (value[value.length - 1] === ';') {
             dispatch(addKeywordsToList(value.split(';')[0]));
+            dispatch(removeKeywordFromProposed(value.split(';')[0]));
             dispatch(
                 changeMetaField({
                     value: '',
@@ -86,7 +92,45 @@ const TutorialBelongsToSection = () => {
 
     const deleteKeywordFromList = (keyword: string) => {
         dispatch(deleteKeyword(keyword));
+        dispatch(addKeywordsToProposed(keyword));
     };
+    const keywordsArr: string[] | [] = useAppSelector(
+        (state: RootState) => state.editor.meta.belongs.keywords.proposedList
+    );
+    useEffect(() => {
+        setDisplayedKeywords(keywordsArr);
+    }, [keywordsArr]);
+
+    const [displayedKeywords, setDisplayedKeywords] =
+        useState<string[]>(keywordsArr);
+
+    const [keywordsDropdownOpened, setKeywordsDropdownOpened] =
+        useState<boolean>(false);
+
+    const handleKeywordInputChange = (keyword: string) => {
+        dispatch(
+            changeMetaField({
+                value: keyword,
+                objectName: 'belongs',
+                belongsKeyName: 'keywords',
+            })
+        );
+        const newDisplayedValues = displayedKeywords
+            .filter((item) => item.startsWith(keyword))
+            .sort((a, b) => a.localeCompare(b));
+
+        if (keyword === '') {
+            setDisplayedKeywords(keywordsArr);
+        } else {
+            setDisplayedKeywords(newDisplayedValues);
+        }
+    };
+    const handleKeywordSelect = (val: string) => {
+        handleMetaInputKeywordsChange(val + ';', 'belongs', 'keywords');
+    };
+
+    const [addKeywordDialogOpened, setAddKeywordDialogOpened] =
+        useState<boolean>(false);
 
     useEffect(() => {
         if (belongsFields && responsibleFields) {
@@ -103,6 +147,20 @@ const TutorialBelongsToSection = () => {
         }
     }, []);
 
+    const [isKeywordPostFetching, setIsKeywordPostFetching] =
+        useState<boolean>(false);
+
+    const handleCreateNewKeyword = async (keyword: string) => {
+        setIsKeywordPostFetching(true);
+        const response = await taxonomiesAPI
+            .createKeyword(keyword)
+            .then((res) => res);
+        if (response.status === 200) {
+            setDisplayedKeywords([keyword, ...displayedKeywords]);
+            setIsKeywordPostFetching(false);
+            setAddKeywordDialogOpened(false);
+        }
+    };
     return (
         <section className="relative flex w-full flex-col gap-y-6 py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver">
             <EditorLabel>
@@ -125,18 +183,59 @@ const TutorialBelongsToSection = () => {
                                 }`}</div>
                                 <div className="w-9/12">
                                     {keyName === 'keywords' ? (
-                                        <MetaInput
-                                            handleChange={
-                                                handleMetaInputKeywordsChange
-                                            }
-                                            objectName="belongs"
-                                            placeholder={
-                                                belongsFields[keyName]
-                                                    .fieldTitle
-                                            }
-                                            value={belongsFields[keyName].value}
-                                            belongsKeyName={keyName}
-                                        />
+                                        <>
+                                            <div className="w-full">
+                                                <div className="relative mx-auto flex w-full flex-col gap-y-4 pt-4">
+                                                    <div className="absolute right-0 top-0">
+                                                        <Button
+                                                            variant={'default'}
+                                                            onClick={() =>
+                                                                setAddKeywordDialogOpened(
+                                                                    true
+                                                                )
+                                                            }
+                                                        >
+                                                            <div>+</div>
+                                                        </Button>
+                                                    </div>
+
+                                                    <input
+                                                        type="text"
+                                                        placeholder="search term"
+                                                        className="p-1"
+                                                        value={
+                                                            belongsFields[
+                                                                keyName
+                                                            ].value
+                                                        }
+                                                        onChange={(e) =>
+                                                            handleKeywordInputChange(
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                    />
+                                                    <div
+                                                        className={` flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-white px-2 pb-2 [&>button]:py-2`}
+                                                    >
+                                                        {displayedKeywords.map(
+                                                            (item, index) => (
+                                                                <button
+                                                                    className="w-full text-left hover:bg-tertiary-grey-silver"
+                                                                    key={index}
+                                                                    onClick={() =>
+                                                                        handleKeywordSelect(
+                                                                            item
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    {item}
+                                                                </button>
+                                                            )
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </>
                                     ) : keyName === 'image' ? (
                                         <Button variant={'outline'}>
                                             <div>+</div>
@@ -251,6 +350,48 @@ const TutorialBelongsToSection = () => {
                         </div>
                     ))}
             </div>
+            <Dialog
+                open={addKeywordDialogOpened}
+                onOpenChange={setAddKeywordDialogOpened}
+            >
+                <DialogContent className="bg-white">
+                    <EditorLabel>Create new keyword</EditorLabel>
+                    <TextInput
+                        placeholder="term"
+                        value={belongsFields.keywords.value}
+                        handleChange={(val: string) =>
+                            handleKeywordInputChange(val)
+                        }
+                    />
+                    {[
+                        ...belongsFields.keywords.list,
+                        ...belongsFields.keywords.proposedList,
+                    ].includes(belongsFields.keywords.value) && (
+                        <p className="text-red-500">
+                            This keyword already exists
+                        </p>
+                    )}
+                    <DialogFooter>
+                        <Button
+                            disabled={
+                                isKeywordPostFetching ||
+                                !belongsFields.keywords.value ||
+                                [
+                                    ...belongsFields.keywords.list,
+                                    ...belongsFields.keywords.proposedList,
+                                ].includes(belongsFields.keywords.value)
+                            }
+                            onClick={() =>
+                                handleCreateNewKeyword(
+                                    belongsFields.keywords.value
+                                )
+                            }
+                        >
+                            <p>{isKeywordPostFetching ? '...' : 'Create'}</p>
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </section>
     );
 };

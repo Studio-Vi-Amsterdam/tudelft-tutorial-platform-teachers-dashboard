@@ -9,9 +9,10 @@ import {
     ResponseArticleInterface,
     ResponseChapterInterface,
     ResponseContentBlock,
+    ResponseKeyword,
     TutorialTopElementsObject,
 } from 'src/types/types';
-import { chaptersAPI } from './api';
+import { chaptersAPI, taxonomiesAPI } from './api';
 
 const getExtendedChapters = async (
     chaptersData: ResponseArticleChapterInterface[] | { error: string }
@@ -36,8 +37,6 @@ const getExtendedChapters = async (
 };
 
 const getFirstChapterElement = (chapter: ChapterInterface) => {
-    console.log('chapter: ', chapter);
-
     if (chapter.layout === 'image left') {
         return {
             block_name: 'tu-delft-image-text',
@@ -85,6 +84,16 @@ export const reducerParser = {
         response: ResponseArticleInterface,
         articleType: ArtictesType
     ) {
+        const getKeywords = async () => {
+            return await taxonomiesAPI
+                .getKeywords()
+                .then(
+                    (res) =>
+                        res.data &&
+                        res.data.map((item: ResponseKeyword) => item.name)
+                );
+        };
+
         const parsedElements = (
             elements: ResponseContentBlock[]
         ): TutorialTopElementsObject[] => {
@@ -296,6 +305,7 @@ export const reducerParser = {
                         required: true,
                         list: response.keywords ? response.keywords : [],
                         value: '',
+                        proposedList: await getKeywords(),
                         fieldTitle: 'Keywords',
                     },
                     image: {

@@ -82,6 +82,7 @@ const initialState: EditorState = {
             keywords: {
                 required: true,
                 list: [],
+                proposedList: [],
                 value: '',
                 fieldTitle: 'Keywords',
             },
@@ -606,6 +607,21 @@ export const editorSlice = createSlice({
                 action.payload,
             ];
         },
+        removeKeywordFromProposed: (state, action: PayloadAction<string>) => {
+            state.meta.belongs.keywords.proposedList =
+                state.meta.belongs.keywords.proposedList.filter(
+                    (item) => item !== action.payload
+                );
+        },
+        addKeywordsToProposed: (state, action: PayloadAction<string>) => {
+            state.meta.belongs.keywords.proposedList = [
+                ...state.meta.belongs.keywords.proposedList,
+                action.payload,
+            ];
+        },
+        setKeywordsProposedList: (state, action: PayloadAction<string[]>) => {
+            state.meta.belongs.keywords.proposedList = action.payload;
+        },
         deleteKeyword: (state, action: PayloadAction<string>) => {
             state.meta.belongs.keywords.list =
                 state.meta.belongs.keywords.list.filter(
@@ -638,6 +654,8 @@ export const {
     deleteChapter,
     changeMetaField,
     addKeywordsToList,
+    addKeywordsToProposed,
+    setKeywordsProposedList,
     deleteKeyword,
     setElementImage,
     setElementVideo,
@@ -645,6 +663,7 @@ export const {
     setElementH5P,
     setFileElement,
     setNewState,
+    removeKeywordFromProposed,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;

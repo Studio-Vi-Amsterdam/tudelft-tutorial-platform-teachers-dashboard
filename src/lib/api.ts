@@ -31,3 +31,15 @@ export const chaptersAPI = {
         return instance.get(`/chapters/single?id=${chapterId}`);
     },
 };
+
+export const taxonomiesAPI = {
+    getKeywords() {
+        return instance.get(`/keywords/`);
+    },
+    createKeyword(keyword: string) {
+        const payload = {
+            keyword: keyword,
+        };
+        return instance.post(`/keywords/create`, payload);
+    },
+};

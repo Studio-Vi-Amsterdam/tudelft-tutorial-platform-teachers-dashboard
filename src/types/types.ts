@@ -233,6 +233,23 @@ interface MetaFieldListInterface extends MetaFieldParentInterface {
     list: string[] | [];
 }
 
+interface KeywordsInterface extends MetaFieldListInterface {
+    proposedList: string[] | [];
+}
+
+export interface ResponseKeyword {
+    term_id: number;
+    name: string;
+    slug: string;
+    term_group: number;
+    term_taxonomy_id: number;
+    taxonomy: string;
+    description: string;
+    parent: number;
+    count: number;
+    filter: string;
+}
+
 export type ObjectNameType = 'belongs' | 'responsible';
 export type MediaVariantType = 'image' | 'video';
 
@@ -242,7 +259,7 @@ export interface EditorBelongsInterface {
     primarySubject: MetaFieldListInterface;
     secondarySubject: MetaFieldListInterface;
     level: MetaFieldListInterface;
-    keywords: MetaFieldListInterface;
+    keywords: KeywordsInterface;
     image: MetaFieldParentInterface;
 }
 
