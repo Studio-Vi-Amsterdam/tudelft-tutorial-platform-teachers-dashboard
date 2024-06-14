@@ -210,6 +210,7 @@ interface ChapterBase {
 export interface SubchapterInterface extends ChapterBase {}
 
 export interface ChapterInterface extends ChapterBase {
+    id: number | undefined;
     subchapters: SubchapterInterface[] | [];
 }
 

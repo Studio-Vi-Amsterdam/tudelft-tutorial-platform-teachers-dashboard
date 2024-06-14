@@ -326,6 +326,7 @@ export const editorSlice = createSlice({
                 state.chapters = [
                     ...state.chapters,
                     {
+                        id: undefined,
                         layout: action.payload,
                         title: '',
                         text: '',
@@ -338,6 +339,7 @@ export const editorSlice = createSlice({
                     state.chapters = [
                         ...state.chapters,
                         {
+                            id: undefined,
                             layout: action.payload,
                             title: '',
                             text: '',
@@ -356,6 +358,7 @@ export const editorSlice = createSlice({
                     state.chapters = [
                         ...state.chapters,
                         {
+                            id: undefined,
                             layout: action.payload,
                             title: '',
                             text: '',

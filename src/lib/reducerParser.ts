@@ -203,6 +203,7 @@ export const reducerParser = {
                         }
                     };
                     const newChapter: ChapterInterface = {
+                        id: chapter.id,
                         layout: chapterLayout(),
                         title: chapter.title,
                         text: chapter.content[0].block_data.content || '',
@@ -432,6 +433,7 @@ export const reducerParser = {
                 const els = parseElementsToContent(chapter.elements);
                 const firstEl = getFirstChapterElement(chapter);
                 return {
+                    id: chapter.id ? chapter.id : undefined,
                     title: chapter.title,
                     content: [firstEl, ...els],
                 };
