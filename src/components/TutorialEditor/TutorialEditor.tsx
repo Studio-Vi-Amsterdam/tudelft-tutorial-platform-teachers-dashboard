@@ -21,16 +21,14 @@ import {
     setKeywordsProposedList,
     setNewState,
 } from 'src/redux/features/editorSlice';
+import { useAuth } from 'src/lib/AuthContext';
 
 const BlogEditor = () => {
     const dispatch = useAppDispatch();
+    const { isAuthenticated } = useAuth();
     const params = new URLSearchParams(useLocation().search);
     const articleType = params.get('type');
     const articleId = params.get('id');
-    useEffect(() => {
-        console.log('articleId ', articleId);
-        console.log('articleType ', articleType);
-    }, [articleId, articleType]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -61,36 +59,43 @@ const BlogEditor = () => {
                 dispatch(setKeywordsProposedList(keywordsResponse));
             }
         };
-        fetchData();
-    }, []);
+        if (isAuthenticated) {
+            fetchData();
+        }
+    }, [isAuthenticated]);
     const tutorialTitle = useAppSelector(
         (state: RootState) => state.editor.tutorialTop.title
     );
     const chapters = useAppSelector(
         (state: RootState) => state.editor.chapters
     );
+    if (isAuthenticated) {
+        return (
+            <main className="container mx-auto flex flex-auto flex-row justify-between">
+                <EditorSidebar tutorialTitle={tutorialTitle} />
+                <div className="flex w-3/4 flex-col items-start pl-4">
+                    <TutorialButtonsSection />
+                    <TutorialTopSection tutorialTitle={tutorialTitle} />
+                    {chapters.length > 0 &&
+                        chapters.map(
+                            (chapter: ChapterInterface, index: number) => (
+                                <ChapterSection
+                                    key={index}
+                                    chapter={chapter}
+                                    index={index}
+                                />
+                            )
+                        )}
 
-    return (
-        <main className="container mx-auto flex flex-auto flex-row justify-between">
-            <EditorSidebar tutorialTitle={tutorialTitle} />
-            <div className="flex w-3/4 flex-col items-start pl-4">
-                <TutorialButtonsSection />
-                <TutorialTopSection tutorialTitle={tutorialTitle} />
-                {chapters.length > 0 &&
-                    chapters.map((chapter: ChapterInterface, index: number) => (
-                        <ChapterSection
-                            key={index}
-                            chapter={chapter}
-                            index={index}
-                        />
-                    ))}
-
-                <AddChapterSection />
-                <TutorialBottomSection />
-                <TutorialBelongsToSection />
-            </div>
-        </main>
-    );
+                    <AddChapterSection />
+                    <TutorialBottomSection />
+                    <TutorialBelongsToSection />
+                </div>
+            </main>
+        );
+    } else {
+        return <>You need to login!</>;
+    }
 };
 
 export default BlogEditor;

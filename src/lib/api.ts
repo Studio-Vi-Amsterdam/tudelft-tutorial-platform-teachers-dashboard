@@ -1,9 +1,23 @@
 import axios from 'axios';
 import { ArtictesType } from 'src/types/types';
+import { getAuthToken } from './cookies';
 
 const instance = axios.create({
     baseURL: process.env.REACT_APP_BASE_BACKEND_URL,
 });
+
+instance.interceptors.request.use(
+    (config) => {
+        const token = getAuthToken();
+        if (token && !config.url?.includes('/auth')) {
+            config.headers['Authorization'] = `${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 
 export const articlesAPI = {
     getArticles(type: ArtictesType) {
@@ -20,6 +34,9 @@ export const articlesAPI = {
             id: id,
         };
         return instance.delete(`/${type}/single/delete`, { data: payload });
+    },
+    updateArticle(type: ArtictesType, payload: any) {
+        return instance.put(`/${type}/single/update`, payload);
     },
 };
 
@@ -41,5 +58,11 @@ export const taxonomiesAPI = {
             keyword: keyword,
         };
         return instance.post(`/keywords/create`, payload);
+    },
+};
+
+export const authAPI = {
+    auth(token: string) {
+        return instance.post('/auth', { auth_key: token });
     },
 };

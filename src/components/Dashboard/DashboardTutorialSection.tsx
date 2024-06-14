@@ -9,9 +9,13 @@ const DashboardTutorialSection = (props: DashboardSectionProps) => {
                 {heading}
             </h3>
             <div className="flex w-full flex-row flex-wrap justify-start gap-x-6 gap-y-6">
-                {items.map((item, index) => (
-                    <DashboardCard item={item} key={index} />
-                ))}
+                {items.length !== 0 ? (
+                    items.map((item, index) => (
+                        <DashboardCard item={item} key={index} />
+                    ))
+                ) : (
+                    <>No published articles</>
+                )}
             </div>
         </section>
     );

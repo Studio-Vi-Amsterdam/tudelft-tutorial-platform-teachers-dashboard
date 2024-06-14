@@ -1,5 +1,6 @@
+import { AxiosResponse } from 'axios';
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from 'src/components/ui/Button';
 import { articlesAPI } from 'src/lib/api';
 import { reducerParser } from 'src/lib/reducerParser';
@@ -12,17 +13,34 @@ const TutorialButtonsSection = () => {
     const params = new URLSearchParams(useLocation().search);
     const articleType = params.get('type');
     const articleId = params.get('id');
+    const navigate = useNavigate();
     const testClick = () => {
         const parsedObject = reducerParser.parseFromReducer(
             tutorial,
-            'publish'
+            'publish',
+            articleId === 'new' ? undefined : (articleId as string)
         );
         if (articleType && articleId) {
             if (articleId === 'new') {
                 try {
                     articlesAPI
                         .postArticle(articleType as ArtictesType, parsedObject)
-                        .then((res) => console.log(res));
+                        .then(
+                            (res) =>
+                                res.data.id &&
+                                navigate(
+                                    `/dashboard/my-tutorials?type=${articleType}&id=${res.data.id}`
+                                )
+                        );
+                } catch (error) {
+                    console.error(error);
+                }
+            } else if (articleId !== 'new') {
+                try {
+                    articlesAPI.updateArticle(
+                        articleType as ArtictesType,
+                        parsedObject
+                    );
                 } catch (error) {
                     console.error(error);
                 }

@@ -14,6 +14,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import BlogEditor from './components/TutorialEditor/TutorialEditor';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+import { AuthProvider } from './lib/AuthContext';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -22,19 +23,23 @@ root.render(
     <Provider store={store}>
         <Router>
             <Header />
-
-            <Routes>
-                <Route path="/" element={<Navigate to={`/dashboard`} />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route
-                    path="/dashboard/my-tutorials"
-                    Component={() => <BlogEditor />}
-                />
-                <Route
-                    path="/dashboard/media"
-                    Component={() => <main className="flex-auto">Media</main>}
-                />
-            </Routes>
+            <AuthProvider>
+                <Routes>
+                    <Route path="/" element={<Navigate to={`/dashboard`} />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route
+                        path="/dashboard/my-tutorials"
+                        Component={() => <BlogEditor />}
+                    />
+                    <Route
+                        path="/dashboard/media"
+                        Component={() => (
+                            <main className="flex-auto">Media</main>
+                        )}
+                    />
+                    <Route path="/login" element={<>Please log in</>} />
+                </Routes>
+            </AuthProvider>
             <Footer />
         </Router>
     </Provider>

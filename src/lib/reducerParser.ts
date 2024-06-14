@@ -341,7 +341,11 @@ export const reducerParser = {
         };
         return parsedObject;
     },
-    parseFromReducer(editorState: EditorState, status: 'publish' | 'draft') {
+    parseFromReducer(
+        editorState: EditorState,
+        status: 'publish' | 'draft',
+        id?: string
+    ) {
         const parseElementsToContent = (
             elements: TutorialTopElementsObject[]
         ) => {
@@ -435,6 +439,7 @@ export const reducerParser = {
             return content;
         };
         const newObject = {
+            id: id !== undefined ? parseInt(id) : undefined,
             status: status,
             title: editorState.tutorialTop.title,
             description: editorState.tutorialTop.description,
