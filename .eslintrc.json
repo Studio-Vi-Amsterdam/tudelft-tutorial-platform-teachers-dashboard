@@ -1,0 +1,53 @@
+{
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "standard",
+    "prettier",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": ["prettier", "react", "import", "@typescript-eslint", "eslint-plugin-react"],
+  "rules": {
+    "no-multi-spaces": "error",
+    "react/no-children-prop": 0,
+    "import/newline-after-import": "error",
+    "import/no-absolute-path": ["error"],
+    "@typescript-eslint/no-unused-vars": ["error"],
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": ["off"],
+    "react/display-name": ["error"],
+    "react/jsx-key": ["error"],
+    "react/no-unknown-property": "error",
+    "@typescript-eslint/no-var-requires": "error",
+    "@typescript-eslint/ban-ts-comment": "error",
+    "@typescript-eslint/ban-types": "error",
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "array-callback-return": "error",
+    "quotes": [2, "single", { "avoidEscape": true }],
+    "semi": [2, "never"],
+    "@typescript-eslint/no-explicit-any": "off",
+    "object-curly-spacing": ["error", "always"]
+  }
+}
