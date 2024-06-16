@@ -174,17 +174,24 @@ export interface ChapterElementsObject {
     file?: ElementsFileInterface;
     quiz?: QuizElement;
     h5pElement?: h5pElementInterface;
+    textImage?: MediaTextInterface;
+    imageText?: MediaTextInterface;
+    textVideo?: MediaTextInterface;
+    videoText?: MediaTextInterface;
+    column?: string;
 }
 
-export interface Element {
-    text?: string;
-    infobox?: string;
-    image?: MediaObjectInterface;
-    video?: MediaObjectInterface;
-    quiz?: QuizElement;
-    h5pElement?: h5pElementInterface;
-    file?: ElementsFileInterface;
+interface MediaTextInterface {
+    title: string;
+    mediaUrl: string;
 }
+
+interface ColumnTextInterface {
+    title: string;
+    text: string;
+}
+
+export interface Element extends ChapterElementsObject {}
 
 export type LayoutChapterType =
     | '1 column'

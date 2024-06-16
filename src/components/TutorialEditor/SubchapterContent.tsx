@@ -124,22 +124,6 @@ const SubchapterContent = (props: SubchapterContentProps) => {
                             </div>
                         )}
                     </div>
-                    {subchapter.layout === '1 column' && (
-                        <ElementsBlock
-                            elements={subchapter.elements}
-                            block="subchapterElements"
-                            chapterIndex={chapterIndex}
-                            subchapterIndex={subchapterIndex}
-                        />
-                    )}
-                    {subchapter.layout === '1 column' && (
-                        <AddElementBlock
-                            handleAddElement={handleAddSubchapterElement}
-                            elements={elements}
-                            index={chapterIndex}
-                            subchapterIndex={subchapterIndex}
-                        />
-                    )}
                 </section>
             ))}
         </section>
