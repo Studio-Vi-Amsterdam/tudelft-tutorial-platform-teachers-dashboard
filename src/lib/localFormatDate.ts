@@ -1,8 +1,11 @@
-export const localFormatDate = (date: Date): string => {
-    const formattedDate = date.toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric',
-    });
-    return formattedDate;
-};
+export const localFormatDate = (dateString: string): string => {
+  const date = new Date(dateString)
+  if (isNaN(date.getTime())) {
+    throw new Error('Invalid date format')
+  }
+  return date.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+  })
+}
