@@ -250,6 +250,10 @@ export interface MetaFieldIdListInterface extends MetaFieldParentInterface {
   list: IdTitleObject[] | []
   value: IdTitleObject
 }
+export interface PrimarySoftInterface extends MetaFieldParentInterface {
+  list: { id: number; title: string; version: IdTitleObject[] }[] | []
+  value: { id: number | undefined; title: string; version: IdTitleObject[] }
+}
 
 interface KeywordsInterface extends MetaFieldListInterface {
   proposedList: string[] | []
@@ -277,7 +281,7 @@ export type ObjectNameType =
   | 'subjectsInvolve'
 
 export interface EditorBelongsInterface {
-  primary: MetaFieldIdListInterface
+  primary: PrimarySoftInterface
   version: MetaFieldIdListInterface
   primarySubject: MetaFieldIdListInterface
   secondarySubject: MetaFieldIdListInterface

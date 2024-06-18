@@ -52,31 +52,43 @@ const BlogEditor = () => {
           dispatch(setNewState({ parsedObject: newObject as EditorState }))
         } else if (articleId === 'new') {
           let info = {}
-          const softwares = await getSoftwares()
-          const subjects = await getSubjects()
-          const keywords = await getKeywords()
-          const teachers = await getTeachers()
-          const softwareVersions = await getSoftwareVersions()
           const extraInfo =
             articleType !== 'subjects' && (await getInfo(articleType as ArtictesType))
+          console.log('extraInfo', extraInfo)
+
           if (articleType === 'tutorials') {
             info = {
-              software: softwares.length > 0 ? softwares : [],
-              softwareVersions: softwareVersions.length > 0 ? softwareVersions : [],
-              subjects: subjects.length > 0 ? subjects : [],
-              keywords: keywords.length > 0 ? keywords : [],
-              teachers: teachers.length > 0 ? teachers : [],
+              software: extraInfo.data.softwares.length > 0 ? extraInfo.data.softwares : [],
+              subjects: extraInfo.data.subjects.length > 0 ? extraInfo.data.subjects : [],
+              keywords:
+                extraInfo.data.keywords.length > 0
+                  ? extraInfo.data.keywords.map(({ title }: any) => title)
+                  : [],
+              teachers:
+                extraInfo.data.teachers.length > 0
+                  ? extraInfo.data.teachers.map(({ title }: any) => title)
+                  : [],
             }
           } else if (articleType === 'courses') {
             info = {
               primaryStudy: extraInfo.study.length > 0 ? extraInfo.study : [],
-              keywords: keywords.length > 0 ? keywords : [],
-              teachers: teachers.length > 0 ? teachers : [],
+              keywords:
+                extraInfo.keywords.length > 0
+                  ? extraInfo.keywords.map(({ title }: any) => title)
+                  : [],
+              teachers:
+                extraInfo.teachers.length > 0
+                  ? extraInfo.teachers.map(({ title }: any) => title)
+                  : [],
             }
           } else if (articleType === 'softwares') {
             info = {
-              softwareVersions: softwareVersions.length > 0 ? softwareVersions : [],
-              keywords: keywords.length > 0 ? keywords : [],
+              softwareVersions:
+                extraInfo.software_versions.length > 0 ? extraInfo.software_versions : [],
+              keywords:
+                extraInfo.keywords.length > 0
+                  ? extraInfo.keywords.map(({ title }: any) => title)
+                  : [],
             }
           } else if (articleType === 'subjects') {
             info = {

@@ -276,10 +276,9 @@ export const reducerParser = {
     let reducerObject: EditorState | {} = {}
 
     if (articleType === 'tutorials') {
-      const softwares = await getSoftwares()
-      const subjects = await getSubjects()
-      const keywords = await getKeywords()
-      const teachers = await getTeachers()
+      const info = await getInfo(articleType as ArtictesType)
+      const softwareVersions = await getSoftwareVersions()
+
       reducerObject = {
         tutorialTop: {
           title: response.title ? response.title : '',
@@ -298,32 +297,37 @@ export const reducerParser = {
             primary: {
               fieldTitle: 'Primary software used',
               required: true,
-              list: softwares.length > 0 ? softwares : [],
+              list: info.data.softwares.length > 0 ? info.data.softwares : [],
               value: response.primary_software
-                ? softwares.find((item: any) => item.id === response.primary_software)
+                ? info.data.softwares.find((item: any) => item.id === response.primary_software)
                 : { id: undefined, title: '' },
             },
             version: {
               fieldTitle: 'Software Version',
-              list: [],
-              value: response.software_version && response.software_version[0],
+              list:
+                info.data.softwares.find((item: any) => item.id === response.primary_software)
+                  ?.version ?? [],
+              value:
+                response.software_version &&
+                softwareVersions &&
+                softwareVersions.find((item) => item.id === response.software_version?.[0]),
               required: false,
             },
             primarySubject: {
               fieldTitle: 'Primary Subject',
-              list: subjects,
+              list: info.data.subjects.length > 0 ? info.data.subjects : [],
               required: true,
               value:
                 response.primary_subject &&
-                subjects.find((subject: any) => subject.id === response.primary_subject),
+                info.data.subjects.find((subject: any) => subject.id === response.primary_subject),
             },
             secondarySubject: {
               fieldTitle: 'Secondary Subject',
-              list: subjects,
+              list: info.data.subjects.length > 0 ? info.data.subjects : [],
               required: false,
               value:
                 response.secondary_subject &&
-                subjects.find(
+                info.data.subjects.find(
                   (subject: any) => subject.id === parseInt(response.secondary_subject as string),
                 ),
             },
@@ -331,7 +335,7 @@ export const reducerParser = {
               required: true,
               list: response.keywords ? response.keywords : [],
               value: '',
-              proposedList: keywords,
+              proposedList: info.data.keywords.length > 0 ? info.data.length : [],
               fieldTitle: 'Keywords',
             },
             image: {
@@ -351,22 +355,23 @@ export const reducerParser = {
               fieldTitle: 'Faculty',
               required: true,
               value: response.faculty ? response.faculty : '',
-              list: ['BK'] /* Hardcoded now, as in design file */,
+              list: info.data.faculties.length > 0 ? info.data.faculties : [],
             },
             teachers: {
               required: true,
               list: response.teachers ? response.teachers : [],
               value: '',
-              proposedList: teachers,
+              proposedList:
+                info.data.teachers.length > 0
+                  ? info.data.teachers.map(({ title }: any) => title)
+                  : [],
               fieldTitle: 'Teachers',
             },
           },
         },
       }
     } else if (articleType === 'courses') {
-      const keywords = await getKeywords()
       const info = await getInfo(articleType)
-      const teachers = await getTeachers()
 
       reducerObject = {
         tutorialTop: {
@@ -401,7 +406,8 @@ export const reducerParser = {
             keywords: {
               fieldTitle: 'Keywords',
               list: response.keywords ? response.keywords : [],
-              proposedList: keywords ?? [],
+              proposedList:
+                info.keywords.length > 0 ? info.keywords.map(({ title }: any) => title) : [],
               required: false,
               value: '',
             },
@@ -423,20 +429,20 @@ export const reducerParser = {
               fieldTitle: 'Faculty',
               required: true,
               value: response.faculty ? response.faculty : '',
-              list: ['BK'] /* Hardcoded now, as in design file */,
+              list: info.faculty.length > 0 ? info.faculty : [],
             },
             teachers: {
               required: true,
               list: response.teachers ? response.teachers : [],
               value: '',
-              proposedList: teachers,
+              proposedList:
+                info.teachers.length > 0 ? info.teachers.map(({ title }: any) => title) : [],
               fieldTitle: 'Teachers',
             },
           },
         },
       }
     } else if (articleType === 'softwares') {
-      const keywords = await getKeywords()
       const info = await getInfo(articleType)
 
       reducerObject = {
@@ -462,7 +468,8 @@ export const reducerParser = {
             keywords: {
               fieldTitle: 'Keywords',
               list: response.keywords ? response.keywords : [],
-              proposedList: keywords ?? [],
+              proposedList:
+                info.keywords.length > 0 ? info.keywords.map(({ title }: any) => title) : [],
               required: false,
               value: '',
             },

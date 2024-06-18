@@ -95,11 +95,11 @@ export const editorSlice = createSlice({
                   fieldTitle: 'Primary software used',
                   required: true,
                   list: info.software,
-                  value: { id: undefined, title: '' },
+                  value: { id: undefined, title: '', version: [] },
                 },
                 version: {
                   fieldTitle: 'Software Version',
-                  list: info.softwareVersions,
+                  list: [],
                   value: { id: undefined, title: '' },
                   required: false,
                 },
@@ -597,10 +597,22 @@ export const editorSlice = createSlice({
       }>,
     ) => {
       if (state.meta.tutorialBelongs) {
-        state.meta.tutorialBelongs[action.payload.belongsKeyName].value =
-          state.meta.tutorialBelongs[action.payload.belongsKeyName].list.find(
+        if (action.payload.belongsKeyName === 'primary') {
+          state.meta.tutorialBelongs.primary.value = state.meta.tutorialBelongs.primary.list.find(
             (item) => item.title === action.payload.value,
-          ) ?? { id: undefined, title: '' }
+          ) ?? { id: undefined, title: '', version: [] }
+          if (state.meta.tutorialBelongs.version) {
+            state.meta.tutorialBelongs.version.list =
+              state.meta.tutorialBelongs.primary.list.find(
+                (item) => item.title === action.payload.value,
+              )?.version ?? []
+          }
+        } else {
+          state.meta.tutorialBelongs[action.payload.belongsKeyName].value =
+            state.meta.tutorialBelongs[action.payload.belongsKeyName].list.find(
+              (item) => item.title === action.payload.value,
+            ) ?? { id: undefined, title: '' }
+        }
       }
     },
     changeCourseIdListField: (
