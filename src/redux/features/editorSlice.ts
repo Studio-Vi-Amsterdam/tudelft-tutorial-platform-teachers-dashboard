@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import {
   AddChapterElementInterface,
   AddSubchapterElementInterface,
+  ArtictesType,
   BlankSubchapterActionInterface,
   ChapterTextFieldActionInterface,
   EditorBelongsInterface,
@@ -15,8 +16,10 @@ import {
   ElementQuizActionInterface,
   ElementTextActionInterface,
   ElementVideoActionInterface,
+  IdTitleObject,
   LayoutChapterType,
   MoveChapterInterface,
+  ObjectNameType,
   SubchapterTextFieldActionInterface,
   TutorialMetaObject,
   TutorialResponsibleInterface,
@@ -37,64 +40,7 @@ const initialState: EditorState = {
     titleType: 'h2',
     text: '',
   },
-  meta: {
-    belongs: {
-      primary: {
-        required: true,
-        list: ['Windows 10', 'Office 365', 'VS Code', 'Figma'],
-        value: '',
-        fieldTitle: 'Primary software used',
-      },
-      version: {
-        required: true,
-        value: '',
-        fieldTitle: 'Software version',
-      },
-      primarySubject: {
-        required: true,
-        list: ['Mathematics', 'Web-programing', 'Web-design', 'Physics'],
-        value: '',
-        fieldTitle: 'Primary Subject',
-      },
-      secondarySubject: {
-        required: false,
-        list: ['Mathematics', 'Web-programing', 'Web-design', 'Physics'],
-        value: '',
-        fieldTitle: 'Secondary Subject',
-      },
-      level: {
-        required: true,
-        list: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'],
-        value: '',
-        fieldTitle: 'Level',
-      },
-      keywords: {
-        required: true,
-        list: [],
-        proposedList: [],
-        value: '',
-        fieldTitle: 'Keywords',
-      },
-      image: {
-        required: false,
-        value: '',
-        fieldTitle: 'Featured image',
-      },
-    },
-    responsible: {
-      teacher: {
-        required: true,
-        value: '',
-        fieldTitle: 'Teacher',
-      },
-      faculty: {
-        required: true,
-        list: ['Computer Engeneering', 'Computer Science', 'Automation'],
-        value: '',
-        fieldTitle: 'Faculty',
-      },
-    },
-  },
+  meta: {},
 }
 
 const setElementProperty = (state: any, action: PayloadAction<any>, property: keyof Element) => {
@@ -126,19 +72,196 @@ export const editorSlice = createSlice({
   name: 'editor',
   initialState,
   reducers: {
-    setNewState: (state, action: PayloadAction<EditorState | undefined>) => {
-      if (action.payload === undefined) {
+    setNewState: (
+      state,
+      action: PayloadAction<{
+        parsedObject: EditorState | undefined
+        articleType?: ArtictesType
+        info?: any
+      }>,
+    ) => {
+      if (action.payload.parsedObject === undefined) {
         state.chapters = initialState.chapters
         state.meta = initialState.meta
         state.pageType = initialState.pageType
         state.tutorialBottom = initialState.tutorialBottom
         state.tutorialTop = initialState.tutorialTop
+        if (action.payload.articleType && action.payload.info) {
+          const info = action.payload.info
+          if (action.payload.articleType === 'tutorials') {
+            state.meta = {
+              tutorialBelongs: {
+                primary: {
+                  fieldTitle: 'Primary software used',
+                  required: true,
+                  list: info.software,
+                  value: { id: undefined, title: '' },
+                },
+                version: {
+                  fieldTitle: 'Software Version',
+                  list: info.softwareVersions,
+                  value: { id: undefined, title: '' },
+                  required: false,
+                },
+                primarySubject: {
+                  fieldTitle: 'Primary Subject',
+                  list: info.subjects,
+                  required: true,
+                  value: {
+                    id: undefined,
+                    title: '',
+                  },
+                },
+                secondarySubject: {
+                  fieldTitle: 'Secondary Subject',
+                  list: info.subjects,
+                  required: false,
+                  value: {
+                    id: undefined,
+                    title: '',
+                  },
+                },
+                keywords: {
+                  required: true,
+                  list: [],
+                  value: '',
+                  proposedList: info.keywords,
+                  fieldTitle: 'Keywords',
+                },
+                image: {
+                  fieldTitle: 'Featured Image',
+                  required: false,
+                  value: '',
+                },
+                level: {
+                  fieldTitle: 'Level',
+                  required: false,
+                  list: [],
+                  value: '',
+                },
+              },
+              tutorialResponsible: {
+                faculty: {
+                  fieldTitle: 'Faculty',
+                  required: true,
+                  value: '',
+                  list: ['BK'] /* Hardcoded now, as in design file */,
+                },
+                teachers: {
+                  required: true,
+                  list: [],
+                  value: '',
+                  proposedList: info.teachers,
+                  fieldTitle: 'Teachers',
+                },
+              },
+            }
+          } else if (action.payload.articleType === 'courses') {
+            state.meta = {
+              courseBelongs: {
+                course: {
+                  fieldTitle: 'Course',
+                  required: true,
+                  value: '',
+                },
+                courseCode: {
+                  fieldTitle: 'Course Code',
+                  required: true,
+                  value: '',
+                },
+                image: {
+                  fieldTitle: 'Featured image',
+                  required: false,
+                  value: '',
+                },
+                keywords: {
+                  fieldTitle: 'Keywords',
+                  list: [],
+                  proposedList: info.keywords,
+                  required: false,
+                  value: '',
+                },
+                primaryStudy: {
+                  fieldTitle: 'Primary Study',
+                  list: info.primaryStudy,
+                  required: true,
+                  value: {
+                    id: undefined,
+                    title: '',
+                  },
+                },
+                secondaryStudy: {
+                  fieldTitle: 'Secondary Study',
+                  list: info.primaryStudy,
+                  required: false,
+                  value: {
+                    id: undefined,
+                    title: '',
+                  },
+                },
+              },
+              courseResponsible: {
+                faculty: {
+                  fieldTitle: 'Faculty',
+                  required: true,
+                  value: '',
+                  list: ['BK'] /* Hardcoded now, as in design file */,
+                },
+                teachers: {
+                  required: true,
+                  list: [],
+                  value: '',
+                  proposedList: info.teachers,
+                  fieldTitle: 'Teachers',
+                },
+              },
+            }
+          } else if (action.payload.articleType === 'softwares') {
+            state.meta = {
+              softwareBelongs: {
+                image: {
+                  fieldTitle: 'Featured image',
+                  required: false,
+                  value: '',
+                },
+                keywords: {
+                  fieldTitle: 'Keywords',
+                  list: [],
+                  proposedList: info.keywords,
+                  required: false,
+                  value: '',
+                },
+                softwareVersion: {
+                  fieldTitle: 'Software version',
+                  required: true,
+                  list: info.softwareVersions,
+                  value: { id: undefined, title: '' },
+                },
+              },
+            }
+          } else if (action.payload.articleType === 'subjects') {
+            state.meta = {
+              subjectsInvolve: {
+                primaryCategory: {
+                  fieldTitle: 'Primary category',
+                  required: true,
+                  value: '',
+                },
+                secondaryCategory: {
+                  fieldTitle: 'Secondary category',
+                  required: false,
+                  value: '',
+                },
+              },
+            }
+          }
+        }
       } else {
-        state.chapters = action.payload.chapters
-        state.meta = action.payload.meta
-        state.pageType = action.payload.pageType
-        state.tutorialBottom = action.payload.tutorialBottom
-        state.tutorialTop = action.payload.tutorialTop
+        state.chapters = action.payload.parsedObject.chapters
+        state.meta = action.payload.parsedObject.meta
+        state.pageType = action.payload.parsedObject.pageType
+        state.tutorialBottom = action.payload.parsedObject.tutorialBottom
+        state.tutorialTop = action.payload.parsedObject.tutorialTop
       }
     },
     setTutorialTitle: (state, action: PayloadAction<string>) => {
@@ -466,42 +589,252 @@ export const editorSlice = createSlice({
         }
       }
     },
+    changeMetaListIdValue: (
+      state,
+      action: PayloadAction<{
+        value: string
+        belongsKeyName: 'primary' | 'version' | 'primarySubject' | 'secondarySubject'
+      }>,
+    ) => {
+      if (state.meta.tutorialBelongs) {
+        state.meta.tutorialBelongs[action.payload.belongsKeyName].value =
+          state.meta.tutorialBelongs[action.payload.belongsKeyName].list.find(
+            (item) => item.title === action.payload.value,
+          ) ?? { id: undefined, title: '' }
+      }
+    },
+    changeCourseIdListField: (
+      state,
+      action: PayloadAction<{
+        value: string
+        belongsKeyName: 'primaryStudy' | 'secondaryStudy'
+      }>,
+    ) => {
+      if (state.meta.courseBelongs) {
+        state.meta.courseBelongs[action.payload.belongsKeyName].value = state.meta.courseBelongs[
+          action.payload.belongsKeyName
+        ].list.find((item) => item.title === action.payload.value) ?? { id: undefined, title: '' }
+      }
+    },
+    changeSoftwareIdListField: (
+      state,
+      action: PayloadAction<{
+        value: string
+        belongsKeyName: 'softwareVersion'
+      }>,
+    ) => {
+      if (state.meta.softwareBelongs) {
+        state.meta.softwareBelongs[action.payload.belongsKeyName].value =
+          state.meta.softwareBelongs[action.payload.belongsKeyName].list.find(
+            (item) => item.title === action.payload.value,
+          ) ?? { id: undefined, title: '' }
+      }
+    },
     changeMetaField: (
       state,
       action: PayloadAction<{
         value: string
         objectName: keyof TutorialMetaObject
-        belongsKeyName?: keyof EditorBelongsInterface
+        belongsKeyName?: 'level' | 'image' | 'keywords'
         responsibleKeyName?: keyof TutorialResponsibleInterface
+        courseBelongsKeyName?: 'course' | 'courseCode' | 'keywords'
+        softwareBelongsKeyName?: 'softwareVersion' | 'keywords'
+        subjectInvolveKey?: 'primaryCategory' | 'secondaryCategory'
       }>,
     ) => {
-      if (action.payload.objectName === 'belongs' && action.payload.belongsKeyName) {
-        state.meta.belongs[action.payload.belongsKeyName].value = action.payload.value
-      } else if (action.payload.objectName === 'responsible' && action.payload.responsibleKeyName) {
-        state.meta.responsible[action.payload.responsibleKeyName].value = action.payload.value
+      if (
+        action.payload.objectName === 'tutorialBelongs' &&
+        action.payload.belongsKeyName &&
+        state.meta.tutorialBelongs
+      ) {
+        state.meta.tutorialBelongs[action.payload.belongsKeyName].value = action.payload.value
+      } else if (
+        action.payload.objectName === 'tutorialResponsible' &&
+        action.payload.responsibleKeyName &&
+        state.meta.tutorialResponsible
+      ) {
+        state.meta.tutorialResponsible[action.payload.responsibleKeyName].value =
+          action.payload.value
+      } else if (
+        action.payload.objectName === 'courseBelongs' &&
+        action.payload.courseBelongsKeyName &&
+        state.meta.courseBelongs
+      ) {
+        state.meta.courseBelongs[action.payload.courseBelongsKeyName].value = action.payload.value
+      } else if (
+        action.payload.objectName === 'softwareBelongs' &&
+        action.payload.softwareBelongsKeyName &&
+        state.meta.softwareBelongs
+      ) {
+        state.meta.softwareBelongs[action.payload.softwareBelongsKeyName].value =
+          action.payload.value
+      } else if (
+        action.payload.objectName === 'subjectsInvolve' &&
+        action.payload.subjectInvolveKey &&
+        state.meta.subjectsInvolve
+      ) {
+        state.meta.subjectsInvolve[action.payload.subjectInvolveKey].value = action.payload.value
       }
     },
-    addKeywordsToList: (state, action: PayloadAction<string>) => {
-      state.meta.belongs.keywords.list = [...state.meta.belongs.keywords.list, action.payload]
+    addKeywordsToList: (
+      state,
+      action: PayloadAction<{ value: string; objectName: keyof TutorialMetaObject }>,
+    ) => {
+      if (action.payload.objectName === 'tutorialBelongs' && state.meta.tutorialBelongs) {
+        state.meta.tutorialBelongs.keywords.list = [
+          ...state.meta.tutorialBelongs.keywords.list,
+          action.payload.value,
+        ]
+      } else if (action.payload.objectName === 'courseBelongs' && state.meta.courseBelongs) {
+        state.meta.courseBelongs.keywords.list = [
+          ...state.meta.courseBelongs.keywords.list,
+          action.payload.value,
+        ]
+      } else if (action.payload.objectName === 'softwareBelongs' && state.meta.softwareBelongs) {
+        state.meta.softwareBelongs.keywords.list = [
+          ...state.meta.softwareBelongs.keywords.list,
+          action.payload.value,
+        ]
+      }
     },
-    removeKeywordFromProposed: (state, action: PayloadAction<string>) => {
-      state.meta.belongs.keywords.proposedList = state.meta.belongs.keywords.proposedList.filter(
-        (item) => item !== action.payload,
-      )
+    addTeacherToList: (
+      state,
+      action: PayloadAction<{ value: string; objectName: keyof TutorialMetaObject }>,
+    ) => {
+      if (state.meta.tutorialResponsible && action.payload.objectName === 'tutorialResponsible') {
+        state.meta.tutorialResponsible.teachers.list = [
+          ...state.meta.tutorialResponsible.teachers.list,
+          action.payload.value,
+        ]
+      } else if (
+        state.meta.courseResponsible &&
+        action.payload.objectName === 'courseResponsible'
+      ) {
+        state.meta.courseResponsible.teachers.list = [
+          ...state.meta.courseResponsible.teachers.list,
+          action.payload.value,
+        ]
+      }
     },
-    addKeywordsToProposed: (state, action: PayloadAction<string>) => {
-      state.meta.belongs.keywords.proposedList = [
-        ...state.meta.belongs.keywords.proposedList,
-        action.payload,
-      ]
+    removeKeywordFromProposed: (
+      state,
+      action: PayloadAction<{ value: string; objectName: keyof TutorialMetaObject }>,
+    ) => {
+      if (state.meta.tutorialBelongs && action.payload.objectName === 'tutorialBelongs') {
+        state.meta.tutorialBelongs.keywords.proposedList =
+          state.meta.tutorialBelongs.keywords.proposedList.filter(
+            (item) => item !== action.payload.value,
+          )
+      } else if (state.meta.courseBelongs && action.payload.objectName === 'courseBelongs') {
+        state.meta.courseBelongs.keywords.proposedList =
+          state.meta.courseBelongs.keywords.proposedList.filter(
+            (item) => item !== action.payload.value,
+          )
+      } else if (state.meta.softwareBelongs && action.payload.objectName === 'softwareBelongs') {
+        state.meta.softwareBelongs.keywords.proposedList =
+          state.meta.softwareBelongs.keywords.proposedList.filter(
+            (item) => item !== action.payload.value,
+          )
+      }
+    },
+    removeTeacherFromProposed: (
+      state,
+      action: PayloadAction<{ value: string; objectName: keyof TutorialMetaObject }>,
+    ) => {
+      if (state.meta.tutorialResponsible && action.payload.objectName === 'tutorialResponsible') {
+        state.meta.tutorialResponsible.teachers.proposedList =
+          state.meta.tutorialResponsible.teachers.proposedList.filter(
+            (item) => item !== action.payload.value,
+          )
+      } else if (
+        state.meta.courseResponsible &&
+        action.payload.objectName === 'courseResponsible'
+      ) {
+        state.meta.courseResponsible.teachers.proposedList =
+          state.meta.courseResponsible.teachers.proposedList.filter(
+            (item) => item !== action.payload.value,
+          )
+      }
+    },
+    addKeywordsToProposed: (
+      state,
+      action: PayloadAction<{ value: string; objectName: keyof TutorialMetaObject }>,
+    ) => {
+      if (state.meta.tutorialBelongs && action.payload.objectName === 'tutorialBelongs') {
+        state.meta.tutorialBelongs.keywords.proposedList = [
+          ...state.meta.tutorialBelongs.keywords.proposedList,
+          action.payload.value,
+        ]
+      } else if (state.meta.courseBelongs && action.payload.objectName === 'courseBelongs') {
+        state.meta.courseBelongs.keywords.proposedList = [
+          ...state.meta.courseBelongs.keywords.proposedList,
+          action.payload.value,
+        ]
+      } else if (state.meta.softwareBelongs && action.payload.objectName === 'softwareBelongs') {
+        state.meta.softwareBelongs.keywords.proposedList = [
+          ...state.meta.softwareBelongs.keywords.proposedList,
+          action.payload.value,
+        ]
+      }
+    },
+    addTeacherToProposed: (
+      state,
+      action: PayloadAction<{ value: string; objectName: keyof TutorialMetaObject }>,
+    ) => {
+      if (state.meta.tutorialResponsible && action.payload.objectName === 'tutorialResponsible') {
+        state.meta.tutorialResponsible.teachers.proposedList = [
+          ...state.meta.tutorialResponsible.teachers.proposedList,
+          action.payload.value,
+        ]
+      } else if (
+        state.meta.courseResponsible &&
+        action.payload.objectName === 'courseResponsible'
+      ) {
+        state.meta.courseResponsible.teachers.proposedList = [
+          ...state.meta.courseResponsible.teachers.proposedList,
+          action.payload.value,
+        ]
+      }
     },
     setKeywordsProposedList: (state, action: PayloadAction<string[]>) => {
-      state.meta.belongs.keywords.proposedList = action.payload
+      if (state.meta.tutorialBelongs) {
+        state.meta.tutorialBelongs.keywords.proposedList = action.payload
+      }
     },
-    deleteKeyword: (state, action: PayloadAction<string>) => {
-      state.meta.belongs.keywords.list = state.meta.belongs.keywords.list.filter(
-        (item) => item !== action.payload,
-      )
+    deleteKeyword: (
+      state,
+      action: PayloadAction<{ value: string; objectName: keyof TutorialMetaObject }>,
+    ) => {
+      if (state.meta.tutorialBelongs && action.payload.objectName === 'tutorialBelongs') {
+        state.meta.tutorialBelongs.keywords.list = state.meta.tutorialBelongs.keywords.list.filter(
+          (item) => item !== action.payload.value,
+        )
+      } else if (state.meta.courseBelongs && action.payload.objectName === 'courseBelongs') {
+        state.meta.courseBelongs.keywords.list = state.meta.courseBelongs.keywords.list.filter(
+          (item) => item !== action.payload.value,
+        )
+      } else if (state.meta.softwareBelongs && action.payload.objectName === 'softwareBelongs') {
+        state.meta.softwareBelongs.keywords.list = state.meta.softwareBelongs.keywords.list.filter(
+          (item) => item !== action.payload.value,
+        )
+      }
+    },
+    deleteTeacher: (
+      state,
+      action: PayloadAction<{ value: string; objectName: keyof TutorialMetaObject }>,
+    ) => {
+      if (state.meta.tutorialResponsible && action.payload.objectName === 'tutorialResponsible') {
+        state.meta.tutorialResponsible.teachers.list =
+          state.meta.tutorialResponsible.teachers.list.filter(
+            (item) => item !== action.payload.value,
+          )
+      } else if (
+        state.meta.courseResponsible &&
+        action.payload.objectName === 'courseResponsible'
+      ) {
+        state.meta.courseResponsible.teachers.list =
+          state.meta.courseResponsible.teachers.list.filter((item) => item !== action.payload.value)
+      }
     },
   },
 })
@@ -539,6 +872,13 @@ export const {
   setFileElement,
   setNewState,
   removeKeywordFromProposed,
+  changeMetaListIdValue,
+  addTeacherToList,
+  removeTeacherFromProposed,
+  deleteTeacher,
+  addTeacherToProposed,
+  changeCourseIdListField,
+  changeSoftwareIdListField,
 } = editorSlice.actions
 
 export default editorSlice.reducer

@@ -122,6 +122,7 @@ const Dashboard = () => {
       let tutorials = []
       let courses = []
       let softwares = []
+      let subjects = []
 
       try {
         const tutorialsResponse = await articlesAPI.getArticles('tutorials')
@@ -151,7 +152,16 @@ const Dashboard = () => {
       } catch (error) {
         console.error(error)
       }
-      const allData = [...tutorials, ...courses, ...softwares]
+      try {
+        const subjectsResponse = await articlesAPI.getArticles('subjects')
+        subjects = subjectsResponse.data.map((item: any) => ({
+          ...item,
+          type: 'subjects' as const,
+        }))
+      } catch (error) {
+        console.error(error)
+      }
+      const allData = [...tutorials, ...courses, ...softwares, ...subjects]
 
       allData.sort(
         (a, b) => new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime(),

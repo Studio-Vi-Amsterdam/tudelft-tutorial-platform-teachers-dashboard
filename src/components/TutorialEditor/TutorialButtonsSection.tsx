@@ -18,7 +18,10 @@ const TutorialButtonsSection = () => {
       tutorial,
       'publish',
       articleId === 'new' ? undefined : (articleId as string),
+      articleType as ArtictesType,
     )
+    console.log('pO:', parsedObject)
+
     if (articleType && articleId) {
       if (articleId === 'new') {
         try {

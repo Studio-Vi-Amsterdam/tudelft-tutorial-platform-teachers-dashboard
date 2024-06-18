@@ -15,7 +15,7 @@ export type AddElementsType =
   | 'h5p element'
   | 'tutorial cards'
 
-export type ArtictesType = 'softwares' | 'courses' | 'tutorials'
+export type ArtictesType = 'softwares' | 'courses' | 'tutorials' | 'subjects'
 export interface DashboardPublishedInterface {
   id: number
   featured_image: null | boolean | string
@@ -228,13 +228,27 @@ interface TutorialTopInterface {
 
 interface MetaFieldParentInterface {
   required: boolean
-  value: string
   fieldTitle: string
-  list?: string[] | []
+  list?: string[] | IdTitleObject[] | []
+}
+
+export interface IdTitleObject {
+  title: string
+  id: number | undefined
 }
 
 interface MetaFieldListInterface extends MetaFieldParentInterface {
   list: string[] | []
+  value: string
+}
+
+interface OnlyValueInterface extends MetaFieldParentInterface {
+  value: string
+}
+
+export interface MetaFieldIdListInterface extends MetaFieldParentInterface {
+  list: IdTitleObject[] | []
+  value: IdTitleObject
 }
 
 interface KeywordsInterface extends MetaFieldListInterface {
@@ -254,26 +268,50 @@ export interface ResponseKeyword {
   filter: string
 }
 
-export type ObjectNameType = 'belongs' | 'responsible'
+export type ObjectNameType =
+  | 'tutorialBelongs'
+  | 'tutorialResponsible'
+  | 'courseBelongs'
+  | 'courseResponsible'
+  | 'softwareBelongs'
+  | 'subjectsInvolve'
 
 export interface EditorBelongsInterface {
-  primary: MetaFieldListInterface
-  version: MetaFieldParentInterface
-  primarySubject: MetaFieldListInterface
-  secondarySubject: MetaFieldListInterface
+  primary: MetaFieldIdListInterface
+  version: MetaFieldIdListInterface
+  primarySubject: MetaFieldIdListInterface
+  secondarySubject: MetaFieldIdListInterface
   level: MetaFieldListInterface
   keywords: KeywordsInterface
-  image: MetaFieldParentInterface
+  image: OnlyValueInterface
 }
 
 export interface TutorialResponsibleInterface {
-  teacher: MetaFieldParentInterface
+  teachers: KeywordsInterface
   faculty: MetaFieldListInterface
 }
 
 export interface TutorialMetaObject {
-  belongs: EditorBelongsInterface
-  responsible: TutorialResponsibleInterface
+  tutorialBelongs?: EditorBelongsInterface
+  tutorialResponsible?: TutorialResponsibleInterface
+  courseBelongs?: {
+    course: OnlyValueInterface
+    courseCode: OnlyValueInterface
+    primaryStudy: MetaFieldIdListInterface
+    secondaryStudy: MetaFieldIdListInterface
+    keywords: KeywordsInterface
+    image: OnlyValueInterface
+  }
+  courseResponsible?: TutorialResponsibleInterface
+  softwareBelongs?: {
+    softwareVersion: MetaFieldIdListInterface
+    keywords: KeywordsInterface
+    image: OnlyValueInterface
+  }
+  subjectsInvolve?: {
+    primaryCategory: OnlyValueInterface
+    secondaryCategory: OnlyValueInterface
+  }
 }
 
 export interface EditorState {
@@ -345,6 +383,9 @@ export interface ResponseArticleInterface {
   teachers?: [] | string[]
   title?: string
   useful_links?: string
+  course_code?: string
+  study?: string
+  category?: string
 }
 export type ResponseBlockName =
   | 'tu-delft-text'

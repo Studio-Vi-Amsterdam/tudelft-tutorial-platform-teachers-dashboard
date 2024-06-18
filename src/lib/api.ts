@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { ArtictesType } from 'src/types/types'
 import { getAuthToken } from './cookies'
+import { getSoftwareVersions } from './reducerParser'
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_BACKEND_URL,
@@ -38,6 +39,9 @@ export const articlesAPI = {
   updateArticle(type: ArtictesType, payload: any) {
     return instance.put(`/${type}/single/update`, payload)
   },
+  getInfo(type: ArtictesType) {
+    return instance.get(`/${type}/create/info`)
+  },
 }
 
 export const chaptersAPI = {
@@ -53,11 +57,17 @@ export const taxonomiesAPI = {
   getKeywords() {
     return instance.get('/keywords/')
   },
+  getTeachers() {
+    return instance.get('/teachers/')
+  },
   createKeyword(keyword: string) {
     const payload = {
       keyword,
     }
     return instance.post('/keywords/create', payload)
+  },
+  getSoftwareVersions() {
+    return instance.get('/software-version/')
   },
 }
 

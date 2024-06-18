@@ -5,16 +5,27 @@ import { RootState } from 'src/redux/store'
 import TutorialTopSection from './TutorialTopSection'
 import TutorialButtonsSection from './TutorialButtonsSection'
 import AddChapterSection from './AddChapterSection'
-import { ArtictesType, ChapterInterface, ResponseKeyword } from 'src/types/types'
+import { ArtictesType, ChapterInterface, EditorState, ResponseKeyword } from 'src/types/types'
 import ChapterSection from './ChapterSection'
 import EditorSidebar from './EditorSidebar'
 import TutorialBottomSection from './TutorialBottomSection'
-import TutorialBelongsToSection from './TutorialBelongsToSection'
 import { articlesAPI, taxonomiesAPI } from 'src/lib/api'
 import { useLocation } from 'react-router-dom'
-import { reducerParser } from 'src/lib/reducerParser'
+import {
+  getInfo,
+  getKeywords,
+  getSoftwares,
+  getSoftwareVersions,
+  getSubjects,
+  getTeachers,
+  reducerParser,
+} from 'src/lib/reducerParser'
 import { setKeywordsProposedList, setNewState } from 'src/redux/features/editorSlice'
 import { useAuth } from 'src/lib/AuthContext'
+import TutorialsMeta from './TutorialsMeta'
+import CoursesMeta from './CoursesMeta'
+import SoftwaresMeta from './SoftwaresMeta'
+import SubjectsMeta from './SubjectsMeta'
 
 const BlogEditor = () => {
   const dispatch = useAppDispatch()
@@ -38,9 +49,48 @@ const BlogEditor = () => {
             articleType as ArtictesType,
           )
 
-          dispatch(setNewState(newObject))
+          dispatch(setNewState({ parsedObject: newObject as EditorState }))
         } else if (articleId === 'new') {
-          dispatch(setNewState(undefined))
+          let info = {}
+          const softwares = await getSoftwares()
+          const subjects = await getSubjects()
+          const keywords = await getKeywords()
+          const teachers = await getTeachers()
+          const softwareVersions = await getSoftwareVersions()
+          const extraInfo =
+            articleType !== 'subjects' && (await getInfo(articleType as ArtictesType))
+          if (articleType === 'tutorials') {
+            info = {
+              software: softwares.length > 0 ? softwares : [],
+              softwareVersions: softwareVersions.length > 0 ? softwareVersions : [],
+              subjects: subjects.length > 0 ? subjects : [],
+              keywords: keywords.length > 0 ? keywords : [],
+              teachers: teachers.length > 0 ? teachers : [],
+            }
+          } else if (articleType === 'courses') {
+            info = {
+              primaryStudy: extraInfo.study.length > 0 ? extraInfo.study : [],
+              keywords: keywords.length > 0 ? keywords : [],
+              teachers: teachers.length > 0 ? teachers : [],
+            }
+          } else if (articleType === 'softwares') {
+            info = {
+              softwareVersions: softwareVersions.length > 0 ? softwareVersions : [],
+              keywords: keywords.length > 0 ? keywords : [],
+            }
+          } else if (articleType === 'subjects') {
+            info = {
+              test: '',
+            }
+          }
+
+          dispatch(
+            setNewState({
+              parsedObject: undefined,
+              articleType: articleType as ArtictesType,
+              info: info,
+            }),
+          )
         }
         dispatch(setKeywordsProposedList(keywordsResponse))
       }
@@ -65,7 +115,13 @@ const BlogEditor = () => {
 
           <AddChapterSection />
           <TutorialBottomSection />
-          <TutorialBelongsToSection />
+          {articleType === 'tutorials' && <TutorialsMeta />}
+          {articleType === 'courses' && <CoursesMeta />}
+          {articleType === 'softwares' && <SoftwaresMeta />}
+          {articleType === 'subjects' && <SubjectsMeta />}
+
+          {/* 
+          <TutorialBelongsToSection /> */}
         </div>
       </main>
     )
