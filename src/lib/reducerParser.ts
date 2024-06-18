@@ -14,10 +14,20 @@ import {
 import { articlesAPI, chaptersAPI, taxonomiesAPI } from './api'
 
 export const getSoftwares = async () => {
-  const softwares = await articlesAPI
-    .getArticles('softwares')
-    .then((res) => res.data && res.data.map(({ id, title }: any) => ({ id, title })))
-  return softwares
+  try {
+    const response = await articlesAPI.getArticles('softwares')
+    const data = response.data
+
+    if (data && Array.isArray(data)) {
+      const softwares = data.map(({ id, title }: any) => ({ id, title }))
+      return softwares
+    } else {
+      return []
+    }
+  } catch (error) {
+    console.error('Error fetching softwares:', error)
+    return []
+  }
 }
 
 export const getInfo = async (type: ArtictesType) => {
@@ -26,10 +36,20 @@ export const getInfo = async (type: ArtictesType) => {
 }
 
 export const getSubjects = async () => {
-  const subjects = await articlesAPI
-    .getArticles('subjects' as ArtictesType)
-    .then((res) => res.data && res.data.map(({ id, title }: any) => ({ id, title })))
-  return subjects
+  try {
+    const response = await articlesAPI.getArticles('subjects' as ArtictesType)
+    const data = response.data
+
+    if (data && Array.isArray(data)) {
+      const subjects = data.map(({ id, title }: any) => ({ id, title }))
+      return subjects
+    } else {
+      return []
+    }
+  } catch (error) {
+    console.error('Error fetching subjects:', error)
+    return []
+  }
 }
 
 export const getKeywords = async () => {
@@ -39,11 +59,23 @@ export const getKeywords = async () => {
 }
 
 export const getSoftwareVersions = async () => {
-  return await taxonomiesAPI
-    .getSoftwareVersions()
-    .then(
-      (res) => res.data && res.data.map(({ term_id, name }: any) => ({ id: term_id, title: name })),
-    )
+  try {
+    const response = await taxonomiesAPI.getSoftwareVersions()
+    const data = response.data
+
+    if (data && Array.isArray(data)) {
+      const softwareVersions = data.map(({ term_id, name }: any) => ({
+        id: term_id,
+        title: name,
+      }))
+      return softwareVersions
+    } else {
+      return []
+    }
+  } catch (error) {
+    console.error('Error fetching software versions:', error)
+    return []
+  }
 }
 
 export const getTeachers = async () => {
