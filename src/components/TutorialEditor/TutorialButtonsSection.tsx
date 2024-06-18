@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { Button } from 'src/components/ui/Button'
 import { articlesAPI } from 'src/lib/api'
 import { reducerParser } from 'src/lib/reducerParser'
+import { useToast } from 'src/lib/use-toast'
 import { useAppSelector } from 'src/redux/hooks'
 import { RootState } from 'src/redux/store'
 import { ArtictesType } from 'src/types/types'
@@ -13,6 +14,8 @@ const TutorialButtonsSection = () => {
   const articleType = params.get('type')
   const articleId = params.get('id')
   const navigate = useNavigate()
+  const { toast } = useToast()
+
   const testClick = () => {
     const parsedObject = reducerParser.parseFromReducer(
       tutorial,
@@ -20,26 +23,40 @@ const TutorialButtonsSection = () => {
       articleId === 'new' ? undefined : (articleId as string),
       articleType as ArtictesType,
     )
-    console.log('pO:', parsedObject)
-
     if (articleType && articleId) {
       if (articleId === 'new') {
         try {
-          articlesAPI
-            .postArticle(articleType as ArtictesType, parsedObject)
-            .then(
-              (res) =>
-                res.data.id &&
-                navigate(`/dashboard/my-tutorials?type=${articleType}&id=${res.data.id}`),
-            )
+          articlesAPI.postArticle(articleType as ArtictesType, parsedObject).then((res) => {
+            res.data.id && navigate(`/dashboard/my-tutorials?type=${articleType}&id=${res.data.id}`)
+            res.status === 200 &&
+              toast({
+                title: `Article created in "${articleType}"`,
+                description: 'Successfully!',
+              })
+          })
         } catch (error) {
           console.error(error)
+          toast({
+            title: 'Something went wrong!',
+            variant: 'destructive',
+          })
         }
       } else if (articleId !== 'new') {
         try {
-          articlesAPI.updateArticle(articleType as ArtictesType, parsedObject)
+          articlesAPI.updateArticle(articleType as ArtictesType, parsedObject).then(
+            (res) =>
+              res.data &&
+              toast({
+                title: `Article updated in "${articleType}"`,
+                description: 'Successfully!',
+              }),
+          )
         } catch (error) {
           console.error(error)
+          toast({
+            title: 'Something went wrong!',
+            variant: 'destructive',
+          })
         }
       }
     }
