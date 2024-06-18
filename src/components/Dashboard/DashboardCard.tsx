@@ -5,6 +5,17 @@ import { localFormatDate } from 'src/lib/localFormatDate'
 import { deleteFromPublished } from 'src/redux/features/dashboardSlice'
 import { useAppDispatch } from 'src/redux/hooks'
 import { DashboardPublishedInterface } from 'src/types/types'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from 'src/components/ui/AlertDialog'
 
 interface DashboardCardProps {
   item: DashboardPublishedInterface
@@ -41,9 +52,26 @@ const DashboardCard = (props: DashboardCardProps) => {
           <button onClick={handleClickEdit}>
             <img src="/img/dashboardCard/edit.svg" alt="" />
           </button>
-          <button onClick={handleOpenDeletePopup} disabled={isFetching}>
-            <img src="/img/dashboardCard/delete.svg" alt="" />
-          </button>
+          <AlertDialog>
+            <AlertDialogTrigger>
+              <img src="/img/dashboardCard/delete.svg" alt="" />
+            </AlertDialogTrigger>
+            <AlertDialogContent className="bg-white">
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete tutorial from our
+                  servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleOpenDeletePopup} disabled={isFetching}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           <button>
             <img src="/img/dashboardCard/copy.svg" alt="" />
           </button>

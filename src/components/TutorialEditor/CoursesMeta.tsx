@@ -9,7 +9,6 @@ import {
   addTeacherToProposed,
   changeCourseIdListField,
   changeMetaField,
-  changeMetaListIdValue,
   deleteKeyword,
   deleteTeacher,
   removeKeywordFromProposed,
@@ -17,7 +16,6 @@ import {
   setTutorialTitle,
 } from 'src/redux/features/editorSlice'
 import { ObjectNameType, TutorialMetaObject, TutorialResponsibleInterface } from 'src/types/types'
-import MetaIdSelect from './MetaIdSelect'
 import { Button } from '../ui/Button'
 import { Dialog, DialogContent, DialogFooter } from '../ui/Dialog'
 import TextInput from '../ui/TextInput'

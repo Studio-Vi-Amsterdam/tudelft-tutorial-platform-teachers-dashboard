@@ -11,15 +11,7 @@ import EditorSidebar from './EditorSidebar'
 import TutorialBottomSection from './TutorialBottomSection'
 import { articlesAPI, taxonomiesAPI } from 'src/lib/api'
 import { useLocation } from 'react-router-dom'
-import {
-  getInfo,
-  getKeywords,
-  getSoftwares,
-  getSoftwareVersions,
-  getSubjects,
-  getTeachers,
-  reducerParser,
-} from 'src/lib/reducerParser'
+import { getInfo, reducerParser } from 'src/lib/reducerParser'
 import { setKeywordsProposedList, setNewState } from 'src/redux/features/editorSlice'
 import { useAuth } from 'src/lib/AuthContext'
 import TutorialsMeta from './TutorialsMeta'

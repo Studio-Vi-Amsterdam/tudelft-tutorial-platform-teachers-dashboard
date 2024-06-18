@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { ArtictesType } from 'src/types/types'
 import { getAuthToken } from './cookies'
-import { getSoftwareVersions } from './reducerParser'
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_BACKEND_URL,

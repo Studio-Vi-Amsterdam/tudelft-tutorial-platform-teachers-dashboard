@@ -1,6 +1,4 @@
-import React, { useEffect } from 'react'
-import { useAppSelector } from 'src/redux/hooks'
-import { RootState } from 'src/redux/store'
+import React from 'react'
 import { MetaFieldIdListInterface, ObjectNameType } from 'src/types/types'
 
 interface MetaIdSelectProps {

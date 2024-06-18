@@ -64,7 +64,9 @@ export const getSoftwareVersions = async () => {
     const data = response.data
 
     if (data && Array.isArray(data)) {
+      // eslint-disable-next-line camelcase
       const softwareVersions = data.map(({ term_id, name }: any) => ({
+        // eslint-disable-next-line camelcase
         id: term_id,
         title: name,
       }))
@@ -273,7 +275,7 @@ export const reducerParser = {
 
       return newChapters
     }
-    let reducerObject: EditorState | {} = {}
+    let reducerObject: EditorState | object = {}
 
     if (articleType === 'tutorials') {
       const info = await getInfo(articleType as ArtictesType)

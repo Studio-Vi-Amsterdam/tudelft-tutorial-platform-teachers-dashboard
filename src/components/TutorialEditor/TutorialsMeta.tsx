@@ -19,8 +19,6 @@ import {
   removeKeywordFromProposed,
   removeTeacherFromProposed,
 } from 'src/redux/features/editorSlice'
-import MetaInput from '../ui/MetaInput'
-import MetaSelect from '../ui/MetaSelect'
 import { Button } from '../ui/Button'
 import TextInput from '../ui/TextInput'
 import { Dialog, DialogContent, DialogFooter } from '../ui/Dialog'
@@ -34,6 +32,8 @@ const TutorialsMeta = () => {
   const [responsibleKeys, setResponsibleKeys] = useState<
     Array<keyof TutorialResponsibleInterface> | undefined
   >(undefined)
+
+  belongsKeys && console.log(responsibleKeys)
 
   const belongsFields = useAppSelector((state: RootState) => state.editor.meta.tutorialBelongs)
   const responsibleFields = useAppSelector(
