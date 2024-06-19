@@ -15,14 +15,7 @@ const TutorialButtonsSection = () => {
   const articleId = params.get('id')
   const navigate = useNavigate()
   const { toast } = useToast()
-
-  const testClick = () => {
-    const parsedObject = reducerParser.parseFromReducer(
-      tutorial,
-      'publish',
-      articleId === 'new' ? undefined : (articleId as string),
-      articleType as ArtictesType,
-    )
+  const sendRequest = (parsedObject: any, draft?: boolean) => {
     if (articleType && articleId) {
       if (articleId === 'new') {
         try {
@@ -30,7 +23,7 @@ const TutorialButtonsSection = () => {
             res.data.id && navigate(`/dashboard/my-tutorials?type=${articleType}&id=${res.data.id}`)
             res.status === 200 &&
               toast({
-                title: `Article created in "${articleType}"`,
+                title: `Article created in "${articleType}" ${draft ? 'as draft' : ''}`,
                 description: 'Successfully!',
               })
           })
@@ -47,7 +40,7 @@ const TutorialButtonsSection = () => {
             (res) =>
               res.data &&
               toast({
-                title: `Article updated in "${articleType}"`,
+                title: `Article updated in "${articleType} ${draft ? 'as draft' : ''}"`,
                 description: 'Successfully!',
               }),
           )
@@ -61,15 +54,33 @@ const TutorialButtonsSection = () => {
       }
     }
   }
+  const testPublishClick = () => {
+    const parsedObject = reducerParser.parseFromReducer(
+      tutorial,
+      'publish',
+      articleId === 'new' ? undefined : (articleId as string),
+      articleType as ArtictesType,
+    )
+    sendRequest(parsedObject)
+  }
+  const testDraftClick = () => {
+    const parsedObject = reducerParser.parseFromReducer(
+      tutorial,
+      'draft',
+      articleId === 'new' ? undefined : (articleId as string),
+      articleType as ArtictesType,
+    )
+    sendRequest(parsedObject, true)
+  }
   return (
     <section className="flex w-full flex-row items-center justify-end gap-x-6 py-14">
       <Button variant={'outline'} size={'lg'}>
         <p>Preview</p>
       </Button>
-      <Button variant={'outline'} size={'lg'}>
+      <Button variant={'outline'} size={'lg'} onClick={testDraftClick}>
         <p>Save as draft</p>
       </Button>
-      <Button size={'lg'} onClick={testClick}>
+      <Button size={'lg'} onClick={testPublishClick}>
         <p>Publish</p>
       </Button>
     </section>

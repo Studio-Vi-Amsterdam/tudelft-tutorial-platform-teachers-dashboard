@@ -23,6 +23,9 @@ export const articlesAPI = {
   getArticles(type: ArtictesType) {
     return instance.get(`/${type}/`)
   },
+  getDraftArticles(type: ArtictesType) {
+    return instance.get(`/${type}?status=draft`)
+  },
   getSingleArticle(type: ArtictesType, id: number) {
     return instance.get(`/${type}/single/?id=${id}`)
   },

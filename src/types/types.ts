@@ -360,7 +360,7 @@ export interface DashboardDraftsInterface {
 
 export interface DashboardInterface {
   username: string
-  drafts: DashboardDraftsInterface[] | []
+  drafts: DashboardPublishedInterface[] | []
   published: DashboardPublishedInterface[] | []
 }
 
