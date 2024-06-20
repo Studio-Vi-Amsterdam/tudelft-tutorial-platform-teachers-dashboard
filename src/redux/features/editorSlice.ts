@@ -17,6 +17,7 @@ import {
   ElementVideoActionInterface,
   LayoutChapterType,
   MoveChapterInterface,
+  SubchapterImageAction,
   SubchapterTextFieldActionInterface,
   TutorialMetaObject,
   TutorialResponsibleInterface,
@@ -299,7 +300,29 @@ export const editorSlice = createSlice({
         ].subchapters[subchapterIndex].elements.filter((_, i) => i !== elementIndex)
       }
     },
+    setSubchapterMedia: (state, action: PayloadAction<SubchapterImageAction>) => {
+      const { chapterIndex, media, layout, listIndex } = action.payload
 
+      if (layout === 'imageText' || layout === 'textImage') {
+        const chapter = state.chapters[chapterIndex]
+        const elements = chapter?.elements
+        const element = elements ? elements[listIndex] : undefined
+        const layoutItem = element ? element[layout] : undefined
+
+        if (layoutItem && layoutItem.image !== undefined) {
+          layoutItem.image = media
+        }
+      } else if (layout === 'textVideo' || layout === 'videoText') {
+        const chapter = state.chapters[chapterIndex]
+        const elements = chapter?.elements
+        const element = elements ? elements[listIndex] : undefined
+        const layoutItem = element ? element[layout] : undefined
+
+        if (layoutItem && layoutItem.video !== undefined) {
+          layoutItem.video = media
+        }
+      }
+    },
     setElementText: (state, action: PayloadAction<ElementTextActionInterface>) => {
       setElementProperty(
         state,
@@ -480,6 +503,73 @@ export const editorSlice = createSlice({
         }
       }
     },
+    addBlankSubchapterToEls: (state, action: PayloadAction<BlankSubchapterActionInterface>) => {
+      if (action.payload.chapterType === 'image left') {
+        state.chapters[action.payload.chapterIndex].elements = [
+          ...(state.chapters[action.payload.chapterIndex].elements || []),
+          {
+            imageText: {
+              image: {
+                format: '',
+                link: '',
+                publishDate: '',
+                title: '',
+                type: 'image',
+              },
+              text: '',
+            },
+          },
+        ]
+      } else if (action.payload.chapterType === 'image right') {
+        state.chapters[action.payload.chapterIndex].elements = [
+          ...(state.chapters[action.payload.chapterIndex].elements || []),
+          {
+            textImage: {
+              image: {
+                format: '',
+                link: '',
+                publishDate: '',
+                title: '',
+                type: 'image',
+              },
+              text: '',
+            },
+          },
+        ]
+      } else if (action.payload.chapterType === 'video left') {
+        state.chapters[action.payload.chapterIndex].elements = [
+          ...(state.chapters[action.payload.chapterIndex].elements || []),
+          {
+            videoText: {
+              video: {
+                format: '',
+                link: '',
+                publishDate: '',
+                title: '',
+                type: 'video',
+              },
+              text: '',
+            },
+          },
+        ]
+      } else if (action.payload.chapterType === 'video right') {
+        state.chapters[action.payload.chapterIndex].elements = [
+          ...(state.chapters[action.payload.chapterIndex].elements || []),
+          {
+            textVideo: {
+              video: {
+                format: '',
+                link: '',
+                publishDate: '',
+                title: '',
+                type: 'video',
+              },
+              text: '',
+            },
+          },
+        ]
+      }
+    },
     setChapterText: (state, action: PayloadAction<ChapterTextFieldActionInterface>) => {
       state.chapters[action.payload.chapterIndex].text = action.payload.text
     },
@@ -637,6 +727,28 @@ export const editorSlice = createSlice({
           state.meta.softwareBelongs[action.payload.belongsKeyName].list.find(
             (item) => item.title === action.payload.value,
           ) ?? { id: undefined, title: '' }
+      }
+    },
+    changeSubchapterText: (
+      state,
+      action: PayloadAction<{
+        value: string
+        chapterIndex: number
+        listIndex: number
+        layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText'
+      }>,
+    ) => {
+      const { chapterIndex, listIndex, layout, value } = action.payload
+
+      if (layout !== undefined && chapterIndex !== undefined && listIndex !== undefined) {
+        const chapter = state.chapters[chapterIndex]
+        const elements = chapter?.elements
+        const element = elements ? elements[listIndex] : undefined
+        const layoutItem = element ? element[layout] : undefined
+
+        if (layoutItem && layoutItem.text !== undefined) {
+          layoutItem.text = value
+        }
       }
     },
     changeMetaField: (
@@ -888,6 +1000,9 @@ export const {
   addTeacherToProposed,
   changeCourseIdListField,
   changeSoftwareIdListField,
+  addBlankSubchapterToEls,
+  changeSubchapterText,
+  setSubchapterMedia,
 } = editorSlice.actions
 
 export default editorSlice.reducer

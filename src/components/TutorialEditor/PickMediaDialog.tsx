@@ -13,7 +13,11 @@ import PaginationBar from './PaginationBar'
 import { Button } from '../ui/Button'
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
 import { RootState } from 'src/redux/store'
-import { setElementImage, setElementVideo } from 'src/redux/features/editorSlice'
+import {
+  setElementImage,
+  setElementVideo,
+  setSubchapterMedia,
+} from 'src/redux/features/editorSlice'
 import { AddMediaElementProps, MediaObjectInterface } from 'src/types/types'
 
 interface PickMediaDialogProps extends AddMediaElementProps {
@@ -69,26 +73,41 @@ const PickMediaDialog = (props: PickMediaDialogProps) => {
 
   const handleSubmitMedia = () => {
     if (selectedMedia) {
-      if (props.mediaType === 'image') {
+      if (
+        props.layout !== undefined &&
+        props.chapterIndex !== undefined &&
+        props.listIndex !== undefined
+      ) {
         dispatch(
-          setElementImage({
-            block: props.block,
-            nestedIndex: props.chapterIndex,
-            image: selectedMedia,
-            index: props.listIndex,
-            subchapterIndex: props.subchapterIndex,
+          setSubchapterMedia({
+            chapterIndex: props.chapterIndex,
+            layout: props.layout,
+            listIndex: props.listIndex,
+            media: selectedMedia,
           }),
         )
-      } else if (props.mediaType === 'video') {
-        dispatch(
-          setElementVideo({
-            block: props.block,
-            nestedIndex: props.chapterIndex,
-            video: selectedMedia,
-            index: props.listIndex,
-            subchapterIndex: props.subchapterIndex,
-          }),
-        )
+      } else {
+        if (props.mediaType === 'image') {
+          dispatch(
+            setElementImage({
+              block: props.block,
+              nestedIndex: props.chapterIndex,
+              image: selectedMedia,
+              index: props.listIndex,
+              subchapterIndex: props.subchapterIndex,
+            }),
+          )
+        } else if (props.mediaType === 'video') {
+          dispatch(
+            setElementVideo({
+              block: props.block,
+              nestedIndex: props.chapterIndex,
+              video: selectedMedia,
+              index: props.listIndex,
+              subchapterIndex: props.subchapterIndex,
+            }),
+          )
+        }
       }
     }
     setDialogOpened(false)

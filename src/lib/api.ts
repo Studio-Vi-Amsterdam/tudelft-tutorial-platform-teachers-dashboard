@@ -73,6 +73,15 @@ export const taxonomiesAPI = {
   },
 }
 
+export const mediaAPI = {
+  getMedia(page: number, amount: number) {
+    return instance.get(`/media/?page=${page}&amount=${amount}`)
+  },
+  getMediaTotal() {
+    return instance.get('/media/total')
+  },
+}
+
 export const authAPI = {
   auth(token: string) {
     return instance.post('/auth', { auth_key: token })

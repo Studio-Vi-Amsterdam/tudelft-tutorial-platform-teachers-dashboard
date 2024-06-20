@@ -1,6 +1,7 @@
 import {
   ArtictesType,
   BoolString,
+  ChapterElementsObject,
   ChapterInterface,
   EditorState,
   LayoutChapterType,
@@ -112,7 +113,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
     return {
       block_name: 'tu-delft-image-text',
       block_data: {
-        image: 294 /* Hardcoded. Must be changed after Media resolve */,
+        image_url: chapter.image?.link,
         content: chapter.text,
       },
     }
@@ -120,7 +121,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
     return {
       block_name: 'tu-delft-text-image',
       block_data: {
-        image: 294 /* Hardcoded. Must be changed after Media resolve */,
+        image_url: chapter.image?.link,
         content: chapter.text,
       },
     }
@@ -128,7 +129,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
     return {
       block_name: 'tu-delft-video-text',
       block_data: {
-        video: 104 /* Hardcoded. Must be changed after Media resolve */,
+        video: chapter.video?.link,
         content: chapter.text,
       },
     }
@@ -136,7 +137,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
     return {
       block_name: 'tu-delft-text-video',
       block_data: {
-        video: 104 /* Hardcoded. Must be changed after Media resolve */,
+        video: chapter.video?.link,
         content: chapter.text,
       },
     }
@@ -200,19 +201,95 @@ export const reducerParser = {
                 image: {
                   link: block.block_data.image_url,
                   type: 'image',
-                  format: 'test',
+                  format: block.block_data.image_url
+                    ? block.block_data.image_url.split('.')[
+                        block.block_data.image_url.split('.').length - 1
+                      ]
+                    : 'unknown',
                   title: block.block_data.content ? block.block_data.content : '',
                   publishDate: 'hardcode',
                 },
               }
             case 'tu-delft-video':
               return {
-                image: {
+                video: {
                   link: block.block_data.video_url,
                   type: 'video',
-                  format: 'test',
+                  format: block.block_data.video_url
+                    ? block.block_data.video_url.split('.')[
+                        block.block_data.video_url.split('.').length - 1
+                      ]
+                    : 'unknown',
                   title: block.block_data.content ? block.block_data.content : '',
                   publishDate: 'hardcode',
+                },
+              }
+            case 'tu-delft-text-image':
+              return {
+                textImage: {
+                  text: block.block_data.content ? block.block_data.content : '',
+                  image: {
+                    link: block.block_data.image_url,
+                    type: 'image',
+                    format: block.block_data.image_url
+                      ? block.block_data.image_url.split('.')[
+                          block.block_data.image_url.split('.').length - 1
+                        ]
+                      : 'unknown',
+                    title: block.block_data.content ? block.block_data.content : '',
+                    publishDate: 'hardcode',
+                  },
+                },
+              }
+            case 'tu-delft-image-text':
+              return {
+                imageText: {
+                  text: block.block_data.content ? block.block_data.content : '',
+                  image: {
+                    link: block.block_data.image_url,
+                    type: 'image',
+                    format: block.block_data.image_url
+                      ? block.block_data.image_url.split('.')[
+                          block.block_data.image_url.split('.').length - 1
+                        ]
+                      : 'unknown',
+                    title: block.block_data.content ? block.block_data.content : '',
+                    publishDate: 'hardcode',
+                  },
+                },
+              }
+            case 'tu-delft-video-text':
+              return {
+                videoText: {
+                  text: block.block_data.content ? block.block_data.content : '',
+                  video: {
+                    link: block.block_data.video_url,
+                    type: 'video',
+                    format: block.block_data.video_url
+                      ? block.block_data.video_url.split('.')[
+                          block.block_data.video_url.split('.').length - 1
+                        ]
+                      : 'unknown',
+                    title: block.block_data.content ? block.block_data.content : '',
+                    publishDate: 'hardcode',
+                  },
+                },
+              }
+            case 'tu-delft-text-video':
+              return {
+                textVideo: {
+                  text: block.block_data.content ? block.block_data.content : '',
+                  video: {
+                    link: block.block_data.video_url,
+                    type: 'video',
+                    format: block.block_data.video_url
+                      ? block.block_data.video_url.split('.')[
+                          block.block_data.video_url.split('.').length - 1
+                        ]
+                      : 'unknown',
+                    title: block.block_data.content ? block.block_data.content : '',
+                    publishDate: 'hardcode',
+                  },
                 },
               }
             default:
@@ -247,7 +324,7 @@ export const reducerParser = {
           layout: chapterLayout(),
           title: chapter.title,
           text: chapter.content[0].block_data.content || '',
-          elements: parsedElements(chapter.content),
+          elements: chapter.content.length > 0 ? parsedElements(chapter.content.slice(1)) : [],
           subchapters: [],
           video:
             chapterLayout() === 'video left' || chapterLayout() === 'video right'
@@ -525,7 +602,7 @@ export const reducerParser = {
     id?: string,
     articleType?: ArtictesType,
   ) {
-    const parseElementsToContent = (elements: TutorialTopElementsObject[]) => {
+    const parseElementsToContent = (elements: ChapterElementsObject[]) => {
       const content = elements
         .map((item) => {
           if (item.text) {
@@ -573,7 +650,7 @@ export const reducerParser = {
             return {
               block_name: 'tu-delft-image',
               block_data: {
-                image: 294 /* Hardcoded. Must be changed after Media resolve */,
+                image_url: item.image.link,
               },
             }
           }
@@ -581,7 +658,43 @@ export const reducerParser = {
             return {
               block_name: 'tu-delft-video',
               block_data: {
-                video: 104 /* Hardcoded. Must be changed after Media resolve */,
+                video_url: item.video.link,
+              },
+            }
+          }
+          if (item.imageText) {
+            return {
+              block_name: 'tu-delft-image-text',
+              block_data: {
+                image_url: item.imageText.image.link,
+                content: item.imageText.text,
+              },
+            }
+          }
+          if (item.textImage) {
+            return {
+              block_name: 'tu-delft-text-image',
+              block_data: {
+                image_url: item.textImage.image.link,
+                content: item.textImage.text,
+              },
+            }
+          }
+          if (item.textVideo) {
+            return {
+              block_name: 'tu-delft-text-video',
+              block_data: {
+                image_url: item.textVideo.video.link,
+                content: item.textVideo.text,
+              },
+            }
+          }
+          if (item.videoText) {
+            return {
+              block_name: 'tu-delft-video-text',
+              block_data: {
+                image_url: item.videoText.video.link,
+                content: item.videoText.text,
               },
             }
           }

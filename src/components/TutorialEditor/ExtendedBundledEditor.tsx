@@ -7,8 +7,15 @@ interface BundledEditorProps {
   subchapterIndex?: number
   subchapter: boolean
   block?: string
+  layout?: 'textImage' | 'imageText' | 'textVideo' | 'videoText'
   handleInputChange?: (val: string, index: number, subchapterIndex: number) => void
   handleTextChange?: (val: string, index: number, block: string) => void
+  handleSubchapterTextChange?: (
+    val: string,
+    index: number,
+    layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText',
+    listIndex: number,
+  ) => void
 }
 
 const ExtendedBundledEditor = (props: BundledEditorProps) => {
@@ -22,10 +29,13 @@ const ExtendedBundledEditor = (props: BundledEditorProps) => {
           ? props.handleInputChange
           : props.handleTextChange
             ? props.handleTextChange
-            : () => {
-                console.log('Change text')
-              }
+            : props.handleSubchapterTextChange
+              ? props.handleSubchapterTextChange
+              : () => {
+                  console.log('Change text')
+                }
       }
+      layout={props.layout}
       subchapter={props.subchapter}
       block={props.block}
       init={{

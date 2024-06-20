@@ -162,10 +162,16 @@ export interface TermDialogInterface {
   select: string[] | null
   explanation: string
 }
-interface MediaTextInterface {
-  title: string
-  mediaUrl: string
+interface MediaTextImageInterface {
+  text: string
+  image: MediaObjectInterface
 }
+
+interface MediaTextVideoInterface {
+  text: string
+  video: MediaObjectInterface
+}
+
 export interface ChapterElementsObject {
   text?: string
   infobox?: string
@@ -175,10 +181,10 @@ export interface ChapterElementsObject {
   file?: ElementsFileInterface
   quiz?: QuizElement
   h5pElement?: h5pElementInterface
-  textImage?: MediaTextInterface
-  imageText?: MediaTextInterface
-  textVideo?: MediaTextInterface
-  videoText?: MediaTextInterface
+  textImage?: MediaTextImageInterface
+  imageText?: MediaTextImageInterface
+  textVideo?: MediaTextVideoInterface
+  videoText?: MediaTextVideoInterface
   column?: string
 }
 
@@ -345,6 +351,14 @@ export interface ElementProps {
 export interface AddMediaElementProps extends ElementProps {
   mediaType: MediaVariantType
   listIndex: number | undefined
+  layout?: 'textImage' | 'imageText' | 'textVideo' | 'videoText'
+}
+
+export interface SubchapterImageAction {
+  chapterIndex: number
+  listIndex: number
+  layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText'
+  media: MediaObjectInterface
 }
 
 export interface QuizElementProps extends ElementProps {
