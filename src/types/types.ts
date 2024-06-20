@@ -39,6 +39,7 @@ export type MediaVariantType = 'image' | 'video'
 
 export interface MediaObjectInterface {
   link: string
+  url?: string
   type: MediaVariantType
   format: string
   title: string

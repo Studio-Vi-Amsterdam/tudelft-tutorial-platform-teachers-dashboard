@@ -10,6 +10,7 @@ import BlogEditor from './components/TutorialEditor/TutorialEditor'
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
 import { AuthProvider } from './lib/AuthContext'
+import { MediaPage } from './components/Media/MediaPage'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
@@ -21,10 +22,7 @@ root.render(
           <Route path="/" element={<Navigate to={'/dashboard'} />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/my-tutorials" Component={() => <BlogEditor />} />
-          <Route
-            path="/dashboard/media"
-            Component={() => <main className="flex-auto">Media</main>}
-          />
+          <Route path="/dashboard/media" Component={() => <MediaPage />} />
           <Route path="/login" element={<>Please log in</>} />
         </Routes>
       </AuthProvider>

@@ -1,5 +1,4 @@
 import React from 'react'
-import { localFormatDate } from 'src/lib/localFormatDate'
 import { GalleryViewProps } from 'src/types/types'
 
 const GalleryListView = (props: GalleryViewProps) => {
@@ -18,13 +17,17 @@ const GalleryListView = (props: GalleryViewProps) => {
             key={index}
             className={`${
               selectedMedia === item ? '' : 'before:!hidden'
-            } relative w-full before:absolute before:left-0 before:top-0 before:h-full before:w-full before:bg-black before:opacity-50 [&>div]:flex [&>div]:flex-row [&>div]:justify-start`}
+            } relative w-full h-24 before:absolute before:left-0 before:top-0 before:h-full before:w-full before:bg-black before:opacity-50 [&>div]:flex [&>div]:flex-row [&>div]:justify-start`}
             onClick={() => handleSelectMedia(item)}
           >
-            <img src={item.link} alt={item.title} className="w-44 object-cover object-center" />
+            <img
+              src={item.url}
+              alt={item.title}
+              className="w-44 h-full object-cover object-center"
+            />
             <div className="w-[calc(100%-600px)]">{item.title}</div>
-            <div className="w-44">{localFormatDate(item.publishDate)}</div>
-            <div className="w-44">{item.format.toLocaleUpperCase() + ' ' + item.type}</div>
+            {/* <div className="w-44">{localFormatDate(item.publishDate)}</div> */}
+            {/* <div className="w-44">{item.format.toLocaleUpperCase() + ' ' + item.type}</div> */}
           </button>
         ))}
       </div>
