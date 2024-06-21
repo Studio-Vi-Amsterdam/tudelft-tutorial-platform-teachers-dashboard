@@ -1,6 +1,7 @@
 import React from 'react'
 import {
   EditorBelongsInterface,
+  IdTitleObject,
   ObjectNameType,
   TutorialResponsibleInterface,
 } from 'src/types/types'
@@ -10,20 +11,20 @@ interface MetaSelectProps {
   belongsKeyName?: keyof EditorBelongsInterface
   responsibleKeyName?: keyof TutorialResponsibleInterface
   handleMetaInputChange: (
-    value: string,
+    value: string | IdTitleObject | undefined,
     objectName: ObjectNameType,
     belongsKeyName?: keyof EditorBelongsInterface,
     responsibleKeyName?: keyof TutorialResponsibleInterface,
   ) => void
-  selectValue: string
+  selectValue: string | IdTitleObject
   fieldTitle: string
-  options: string[] | [] | undefined
+  options: IdTitleObject[] | string[] | [] | undefined
 }
 
 const MetaSelect = (props: MetaSelectProps) => {
   return (
     <select
-      value={props.selectValue}
+      value={typeof props.selectValue === 'string' ? props.selectValue : props.selectValue.title}
       className="w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone"
       onChange={(e) =>
         props.handleMetaInputChange(
@@ -37,8 +38,8 @@ const MetaSelect = (props: MetaSelectProps) => {
       <option value="">{props.fieldTitle}</option>
       {props.options &&
         props.options.map((listItem, index) => (
-          <option key={index} value={listItem}>
-            {listItem}
+          <option key={index} value={typeof listItem === 'string' ? listItem : listItem.title}>
+            {typeof listItem === 'string' ? listItem : listItem.title}
           </option>
         ))}
     </select>

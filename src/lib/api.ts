@@ -26,6 +26,9 @@ export const articlesAPI = {
   getArticles(type: ArtictesType) {
     return instance.get(`/${type}/`)
   },
+  getDraftArticles(type: ArtictesType) {
+    return instance.get(`/${type}?status=draft`)
+  },
   getSingleArticle(type: ArtictesType, id: number) {
     return instance.get(`/${type}/single/?id=${id}`)
   },
@@ -40,6 +43,9 @@ export const articlesAPI = {
   },
   updateArticle(type: ArtictesType, payload: any) {
     return instance.put(`/${type}/single/update`, payload)
+  },
+  getInfo(type: ArtictesType) {
+    return instance.get(`/${type}/create/info`)
   },
 }
 
@@ -56,11 +62,26 @@ export const taxonomiesAPI = {
   getKeywords() {
     return instance.get('/keywords/')
   },
+  getTeachers() {
+    return instance.get('/teachers/')
+  },
   createKeyword(keyword: string) {
     const payload = {
       keyword,
     }
     return instance.post('/keywords/create', payload)
+  },
+  getSoftwareVersions() {
+    return instance.get('/software-version/')
+  },
+}
+
+export const mediaAPI = {
+  getMedia(page: number, amount: number) {
+    return instance.get(`/media/?page=${page}&amount=${amount}`)
+  },
+  getMediaTotal() {
+    return instance.get('/media/total')
   },
 }
 

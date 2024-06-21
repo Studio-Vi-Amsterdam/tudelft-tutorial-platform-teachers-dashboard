@@ -11,6 +11,7 @@ import { Provider } from 'react-redux'
 import { store } from './redux/store'
 import { AuthProvider } from './lib/AuthContext'
 import { MediaPage } from './components/Media/MediaPage'
+import { Toaster } from './lib/toaster'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
@@ -28,6 +29,7 @@ root.render(
       </AuthProvider>
       <Footer />
     </Router>
+    <Toaster />
   </Provider>,
 )
 

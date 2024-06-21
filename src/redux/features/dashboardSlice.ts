@@ -14,12 +14,15 @@ export const dashboardSlice = createSlice({
     setPublished: (state, action: PayloadAction<DashboardPublishedInterface[]>) => {
       state.published = action.payload
     },
+    setDrafts: (state, action: PayloadAction<DashboardPublishedInterface[]>) => {
+      state.drafts = action.payload
+    },
     deleteFromPublished: (state, action: PayloadAction<number>) => {
       state.published = state.published.filter((item) => item.id !== action.payload)
     },
   },
 })
 
-export const { setPublished, deleteFromPublished } = dashboardSlice.actions
+export const { setPublished, deleteFromPublished, setDrafts } = dashboardSlice.actions
 
 export default dashboardSlice.reducer

@@ -27,8 +27,9 @@ const TutorialBottomSection = () => {
       <TextInput
         handleChange={handleTutorialBottomTitleChange}
         value={tutorialBottom.title}
-        placeholder="Title"
+        placeholder="Useful links"
         headingType={tutorialBottom.titleType}
+        readonly={true}
       />
       <BundledEditor
         value={tutorialBottom.text}

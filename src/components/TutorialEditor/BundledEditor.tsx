@@ -147,7 +147,7 @@ export default function BundledEditor(props: any) {
           licenseKey="gpl"
           value={props.value}
           onEditorChange={(newValue) =>
-            props.handleChange(newValue, props?.index, props?.subchapterIndex)
+            props.handleChange(newValue, props?.index, props?.layout, props?.subchapterIndex)
           }
           {...props}
         />

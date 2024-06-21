@@ -13,10 +13,10 @@ import {
   setSubchapterText,
   setSubchapterTitle,
 } from 'src/redux/features/editorSlice'
-import AddChapterSection from './AddChapterSection'
 import ChapterContent from './ChapterContent'
 import SubchapterContent from './SubchapterContent'
 import ChapterMenu from './ChapterMenu'
+import NewAddSubchapter from './NewAddSubchapter'
 
 interface ChapterSectionProps {
   chapter: ChapterInterface
@@ -143,7 +143,7 @@ const ChapterSection = (props: ChapterSectionProps) => {
         handleSubchapterTextInputChange={handleSubchapterTextInputChange}
         subchapters={chapter.subchapters}
       />
-      <AddChapterSection isSubchapter={true} chapterIndex={index} />
+      <NewAddSubchapter chapterIndex={index} />
     </section>
   )
 }

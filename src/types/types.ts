@@ -15,7 +15,7 @@ export type AddElementsType =
   | 'h5p element'
   | 'tutorial cards'
 
-export type ArtictesType = 'softwares' | 'courses' | 'tutorials'
+export type ArtictesType = 'softwares' | 'courses' | 'tutorials' | 'subjects'
 export interface DashboardPublishedInterface {
   id: number
   featured_image: null | boolean | string
@@ -163,10 +163,16 @@ export interface TermDialogInterface {
   select: string[] | null
   explanation: string
 }
-interface MediaTextInterface {
-  title: string
-  mediaUrl: string
+interface MediaTextImageInterface {
+  text: string
+  image: MediaObjectInterface
 }
+
+interface MediaTextVideoInterface {
+  text: string
+  video: MediaObjectInterface
+}
+
 export interface ChapterElementsObject {
   text?: string
   infobox?: string
@@ -176,10 +182,10 @@ export interface ChapterElementsObject {
   file?: ElementsFileInterface
   quiz?: QuizElement
   h5pElement?: h5pElementInterface
-  textImage?: MediaTextInterface
-  imageText?: MediaTextInterface
-  textVideo?: MediaTextInterface
-  videoText?: MediaTextInterface
+  textImage?: MediaTextImageInterface
+  imageText?: MediaTextImageInterface
+  textVideo?: MediaTextVideoInterface
+  videoText?: MediaTextVideoInterface
   column?: string
 }
 
@@ -229,13 +235,31 @@ interface TutorialTopInterface {
 
 interface MetaFieldParentInterface {
   required: boolean
-  value: string
   fieldTitle: string
-  list?: string[] | []
+  list?: string[] | IdTitleObject[] | []
+}
+
+export interface IdTitleObject {
+  title: string
+  id: number | undefined
 }
 
 interface MetaFieldListInterface extends MetaFieldParentInterface {
   list: string[] | []
+  value: string
+}
+
+interface OnlyValueInterface extends MetaFieldParentInterface {
+  value: string
+}
+
+export interface MetaFieldIdListInterface extends MetaFieldParentInterface {
+  list: IdTitleObject[] | []
+  value: IdTitleObject
+}
+export interface PrimarySoftInterface extends MetaFieldParentInterface {
+  list: { id: number; title: string; version: IdTitleObject[] }[] | []
+  value: { id: number | undefined; title: string; version: IdTitleObject[] }
 }
 
 interface KeywordsInterface extends MetaFieldListInterface {
@@ -255,26 +279,50 @@ export interface ResponseKeyword {
   filter: string
 }
 
-export type ObjectNameType = 'belongs' | 'responsible'
+export type ObjectNameType =
+  | 'tutorialBelongs'
+  | 'tutorialResponsible'
+  | 'courseBelongs'
+  | 'courseResponsible'
+  | 'softwareBelongs'
+  | 'subjectsInvolve'
 
 export interface EditorBelongsInterface {
-  primary: MetaFieldListInterface
-  version: MetaFieldParentInterface
-  primarySubject: MetaFieldListInterface
-  secondarySubject: MetaFieldListInterface
+  primary: PrimarySoftInterface
+  version: MetaFieldIdListInterface
+  primarySubject: MetaFieldIdListInterface
+  secondarySubject: MetaFieldIdListInterface
   level: MetaFieldListInterface
   keywords: KeywordsInterface
-  image: MetaFieldParentInterface
+  image: OnlyValueInterface
 }
 
 export interface TutorialResponsibleInterface {
-  teacher: MetaFieldParentInterface
+  teachers: KeywordsInterface
   faculty: MetaFieldListInterface
 }
 
 export interface TutorialMetaObject {
-  belongs: EditorBelongsInterface
-  responsible: TutorialResponsibleInterface
+  tutorialBelongs?: EditorBelongsInterface
+  tutorialResponsible?: TutorialResponsibleInterface
+  courseBelongs?: {
+    course: OnlyValueInterface
+    courseCode: OnlyValueInterface
+    primaryStudy: MetaFieldIdListInterface
+    secondaryStudy: MetaFieldIdListInterface
+    keywords: KeywordsInterface
+    image: OnlyValueInterface
+  }
+  courseResponsible?: TutorialResponsibleInterface
+  softwareBelongs?: {
+    softwareVersion: MetaFieldIdListInterface
+    keywords: KeywordsInterface
+    image: OnlyValueInterface
+  }
+  subjectsInvolve?: {
+    primaryCategory: OnlyValueInterface
+    secondaryCategory: OnlyValueInterface
+  }
 }
 
 export interface EditorState {
@@ -304,6 +352,14 @@ export interface ElementProps {
 export interface AddMediaElementProps extends ElementProps {
   mediaType: MediaVariantType
   listIndex: number | undefined
+  layout?: 'textImage' | 'imageText' | 'textVideo' | 'videoText'
+}
+
+export interface SubchapterImageAction {
+  chapterIndex: number
+  listIndex: number
+  layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText'
+  media: MediaObjectInterface
 }
 
 export interface QuizElementProps extends ElementProps {
@@ -319,7 +375,7 @@ export interface DashboardDraftsInterface {
 
 export interface DashboardInterface {
   username: string
-  drafts: DashboardDraftsInterface[] | []
+  drafts: DashboardPublishedInterface[] | []
   published: DashboardPublishedInterface[] | []
 }
 
@@ -346,6 +402,9 @@ export interface ResponseArticleInterface {
   teachers?: [] | string[]
   title?: string
   useful_links?: string
+  course_code?: string
+  study?: string
+  category?: string
 }
 export type ResponseBlockName =
   | 'tu-delft-text'

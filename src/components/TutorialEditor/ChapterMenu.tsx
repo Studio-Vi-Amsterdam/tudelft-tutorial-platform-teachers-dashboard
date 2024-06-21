@@ -2,6 +2,17 @@ import { UnknownAction } from '@reduxjs/toolkit'
 import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
 import { RootState } from 'src/redux/store'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from 'src/components/ui/AlertDialog'
 
 interface MoveChapterArgs {
   index: number
@@ -106,7 +117,24 @@ const ChapterMenu = (props: ChapterMenuProps) => {
             onClick={moveChapterUp}
           ></button>
           <button className="bg-duplicate" onClick={handleDuplicateChapter}></button>
-          <button className=" bg-delete" onClick={handleDeleteChapter}></button>
+          <AlertDialog>
+            <AlertDialogTrigger>
+              <div className="w-6 h-6 bg-delete bg-no-repeat bg-center self-center bg-transparent text-black"></div>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="bg-white">
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete chapter from our
+                  servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleDeleteChapter}>Continue</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
         <div className="flex items-center justify-center pl-1">
           <button

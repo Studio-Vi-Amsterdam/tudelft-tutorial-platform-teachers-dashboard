@@ -1,6 +1,7 @@
 import {
   ArtictesType,
   BoolString,
+  ChapterElementsObject,
   ChapterInterface,
   EditorState,
   LayoutChapterType,
@@ -11,7 +12,81 @@ import {
   ResponseKeyword,
   TutorialTopElementsObject,
 } from 'src/types/types'
-import { chaptersAPI, taxonomiesAPI } from './api'
+import { articlesAPI, chaptersAPI, taxonomiesAPI } from './api'
+
+export const getSoftwares = async () => {
+  try {
+    const response = await articlesAPI.getArticles('softwares')
+    const data = response.data
+
+    if (data && Array.isArray(data)) {
+      const softwares = data.map(({ id, title }: any) => ({ id, title }))
+      return softwares
+    } else {
+      return []
+    }
+  } catch (error) {
+    console.error('Error fetching softwares:', error)
+    return []
+  }
+}
+
+export const getInfo = async (type: ArtictesType) => {
+  const info = await articlesAPI.getInfo(type).then((res) => res.data)
+  return info
+}
+
+export const getSubjects = async () => {
+  try {
+    const response = await articlesAPI.getArticles('subjects' as ArtictesType)
+    const data = response.data
+
+    if (data && Array.isArray(data)) {
+      const subjects = data.map(({ id, title }: any) => ({ id, title }))
+      return subjects
+    } else {
+      return []
+    }
+  } catch (error) {
+    console.error('Error fetching subjects:', error)
+    return []
+  }
+}
+
+export const getKeywords = async () => {
+  return await taxonomiesAPI
+    .getKeywords()
+    .then((res) => res.data && res.data.map((item: ResponseKeyword) => item.name))
+}
+
+export const getSoftwareVersions = async () => {
+  try {
+    const response = await taxonomiesAPI.getSoftwareVersions()
+    const data = response.data
+
+    if (data && Array.isArray(data)) {
+      // eslint-disable-next-line camelcase
+      const softwareVersions = data.map(({ term_id, name }: any) => ({
+        // eslint-disable-next-line camelcase
+        id: term_id,
+        title: name,
+      }))
+      return softwareVersions
+    } else {
+      return []
+    }
+  } catch (error) {
+    console.error('Error fetching software versions:', error)
+    return []
+  }
+}
+
+export const getTeachers = async () => {
+  const teachers = await taxonomiesAPI
+    .getTeachers()
+    .then((res) => res.data && res.data.map(({ name }: any) => name))
+  return teachers
+}
 
 const getExtendedChapters = async (
   chaptersData: ResponseArticleChapterInterface[] | { error: string },
@@ -38,7 +113,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
     return {
       block_name: 'tu-delft-image-text',
       block_data: {
-        image: 294 /* Hardcoded. Must be changed after Media resolve */,
+        image_url: chapter.image?.link,
         content: chapter.text,
       },
     }
@@ -46,7 +121,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
     return {
       block_name: 'tu-delft-text-image',
       block_data: {
-        image: 294 /* Hardcoded. Must be changed after Media resolve */,
+        image_url: chapter.image?.link,
         content: chapter.text,
       },
     }
@@ -54,7 +129,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
     return {
       block_name: 'tu-delft-video-text',
       block_data: {
-        video: 104 /* Hardcoded. Must be changed after Media resolve */,
+        video: chapter.video?.link,
         content: chapter.text,
       },
     }
@@ -62,7 +137,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
     return {
       block_name: 'tu-delft-text-video',
       block_data: {
-        video: 104 /* Hardcoded. Must be changed after Media resolve */,
+        video: chapter.video?.link,
         content: chapter.text,
       },
     }
@@ -78,12 +153,6 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
 
 export const reducerParser = {
   async parseToReducer(response: ResponseArticleInterface, articleType: ArtictesType) {
-    const getKeywords = async () => {
-      return await taxonomiesAPI
-        .getKeywords()
-        .then((res) => res.data && res.data.map((item: ResponseKeyword) => item.name))
-    }
-
     const parsedElements = (elements: ResponseContentBlock[]): TutorialTopElementsObject[] => {
       return elements
         .map((block) => {
@@ -132,19 +201,95 @@ export const reducerParser = {
                 image: {
                   link: block.block_data.image_url,
                   type: 'image',
-                  format: 'test',
+                  format: block.block_data.image_url
+                    ? block.block_data.image_url.split('.')[
+                        block.block_data.image_url.split('.').length - 1
+                      ]
+                    : 'unknown',
                   title: block.block_data.content ? block.block_data.content : '',
                   publishDate: 'hardcode',
                 },
               }
             case 'tu-delft-video':
               return {
-                image: {
+                video: {
                   link: block.block_data.video_url,
                   type: 'video',
-                  format: 'test',
+                  format: block.block_data.video_url
+                    ? block.block_data.video_url.split('.')[
+                        block.block_data.video_url.split('.').length - 1
+                      ]
+                    : 'unknown',
                   title: block.block_data.content ? block.block_data.content : '',
                   publishDate: 'hardcode',
+                },
+              }
+            case 'tu-delft-text-image':
+              return {
+                textImage: {
+                  text: block.block_data.content ? block.block_data.content : '',
+                  image: {
+                    link: block.block_data.image_url,
+                    type: 'image',
+                    format: block.block_data.image_url
+                      ? block.block_data.image_url.split('.')[
+                          block.block_data.image_url.split('.').length - 1
+                        ]
+                      : 'unknown',
+                    title: block.block_data.content ? block.block_data.content : '',
+                    publishDate: 'hardcode',
+                  },
+                },
+              }
+            case 'tu-delft-image-text':
+              return {
+                imageText: {
+                  text: block.block_data.content ? block.block_data.content : '',
+                  image: {
+                    link: block.block_data.image_url,
+                    type: 'image',
+                    format: block.block_data.image_url
+                      ? block.block_data.image_url.split('.')[
+                          block.block_data.image_url.split('.').length - 1
+                        ]
+                      : 'unknown',
+                    title: block.block_data.content ? block.block_data.content : '',
+                    publishDate: 'hardcode',
+                  },
+                },
+              }
+            case 'tu-delft-video-text':
+              return {
+                videoText: {
+                  text: block.block_data.content ? block.block_data.content : '',
+                  video: {
+                    link: block.block_data.video_url,
+                    type: 'video',
+                    format: block.block_data.video_url
+                      ? block.block_data.video_url.split('.')[
+                          block.block_data.video_url.split('.').length - 1
+                        ]
+                      : 'unknown',
+                    title: block.block_data.content ? block.block_data.content : '',
+                    publishDate: 'hardcode',
+                  },
+                },
+              }
+            case 'tu-delft-text-video':
+              return {
+                textVideo: {
+                  text: block.block_data.content ? block.block_data.content : '',
+                  video: {
+                    link: block.block_data.video_url,
+                    type: 'video',
+                    format: block.block_data.video_url
+                      ? block.block_data.video_url.split('.')[
+                          block.block_data.video_url.split('.').length - 1
+                        ]
+                      : 'unknown',
+                    title: block.block_data.content ? block.block_data.content : '',
+                    publishDate: 'hardcode',
+                  },
                 },
               }
             default:
@@ -179,7 +324,7 @@ export const reducerParser = {
           layout: chapterLayout(),
           title: chapter.title,
           text: chapter.content[0].block_data.content || '',
-          elements: parsedElements(chapter.content),
+          elements: chapter.content.length > 0 ? parsedElements(chapter.content.slice(1)) : [],
           subchapters: [],
           video:
             chapterLayout() === 'video left' || chapterLayout() === 'video right'
@@ -207,84 +352,257 @@ export const reducerParser = {
 
       return newChapters
     }
+    let reducerObject: EditorState | object = {}
 
-    const parsedObject: EditorState = {
-      pageType: articleType,
-      tutorialTop: {
-        title: response.title ? response.title : '',
-        titleType: 'h1',
-        description: response.description ? response.description : '',
-        elements: tutorialTopElements,
-      },
-      chapters: response.chapters ? await parseChapters(response.chapters) : [],
-      tutorialBottom: {
-        title: 'Useful Links',
-        titleType: 'h2',
-        text: response.useful_links ? response.useful_links : '',
-      },
-      meta: {
-        belongs: {
-          primary: {
-            required: true,
-            list: ['Windows 10', 'Office 365', 'VS Code', 'Figma'],
-            value: '' /* There we should to get "primary_software" */,
-            fieldTitle: 'Primary software used',
+    if (articleType === 'tutorials') {
+      const info = await getInfo(articleType as ArtictesType)
+      const softwareVersions = await getSoftwareVersions()
+
+      reducerObject = {
+        tutorialTop: {
+          title: response.title ? response.title : '',
+          titleType: 'h1',
+          description: response.description ? response.description : '',
+          elements: tutorialTopElements,
+        },
+        chapters: response.chapters ? await parseChapters(response.chapters) : [],
+        tutorialBottom: {
+          title: 'Useful Links',
+          titleType: 'h2',
+          text: response.useful_links ? response.useful_links : '',
+        },
+        meta: {
+          tutorialBelongs: {
+            primary: {
+              fieldTitle: 'Primary software used',
+              required: true,
+              list: info.data.softwares.length > 0 ? info.data.softwares : [],
+              value: response.primary_software
+                ? info.data.softwares.find((item: any) => item.id === response.primary_software)
+                : { id: undefined, title: '' },
+            },
+            version: {
+              fieldTitle: 'Software Version',
+              list:
+                info.data.softwares.find((item: any) => item.id === response.primary_software)
+                  ?.version ?? [],
+              value:
+                response.software_version &&
+                softwareVersions &&
+                softwareVersions.find((item) => item.id === response.software_version?.[0]),
+              required: false,
+            },
+            primarySubject: {
+              fieldTitle: 'Primary Subject',
+              list: info.data.subjects.length > 0 ? info.data.subjects : [],
+              required: true,
+              value:
+                response.primary_subject &&
+                info.data.subjects.find((subject: any) => subject.id === response.primary_subject),
+            },
+            secondarySubject: {
+              fieldTitle: 'Secondary Subject',
+              list: info.data.subjects.length > 0 ? info.data.subjects : [],
+              required: false,
+              value:
+                response.secondary_subject &&
+                info.data.subjects.find(
+                  (subject: any) => subject.id === parseInt(response.secondary_subject as string),
+                ),
+            },
+            keywords: {
+              required: true,
+              list: response.keywords ? response.keywords : [],
+              value: '',
+              proposedList: info.data.keywords.length > 0 ? info.data.length : [],
+              fieldTitle: 'Keywords',
+            },
+            image: {
+              fieldTitle: 'Featured Image',
+              required: false,
+              value: response.featured_image ? response.featured_image : '',
+            },
+            level: {
+              fieldTitle: 'Level',
+              required: false,
+              list: [],
+              value: response.level ? response.level : '',
+            },
           },
-          version: {
-            required: true,
-            value: response.software_version ? response.software_version.toString() : '',
-            fieldTitle: 'Software version',
-          },
-          primarySubject: {
-            required: true,
-            list: ['Mathematics', 'Web-programing', 'Web-design', 'Physics'],
-            value: '' /* There we need to get primary_subject */,
-            fieldTitle: 'Primary Subject',
-          },
-          secondarySubject: {
-            required: false,
-            list: ['Mathematics', 'Web-programing', 'Web-design', 'Physics'],
-            value: '' /* There we need to get secondary_subject */,
-            fieldTitle: 'Secondary Subject',
-          },
-          level: {
-            required: true,
-            list: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'],
-            value: response.level ? response.level : '',
-            fieldTitle: 'Level',
-          },
-          keywords: {
-            required: true,
-            list: response.keywords ? response.keywords : [],
-            value: '',
-            proposedList: await getKeywords(),
-            fieldTitle: 'Keywords',
-          },
-          image: {
-            required: false,
-            value: response.featured_image ? response.featured_image : '',
-            fieldTitle: 'Featured image',
+          tutorialResponsible: {
+            faculty: {
+              fieldTitle: 'Faculty',
+              required: true,
+              value: response.faculty ? response.faculty : '',
+              list: info.data.faculties.length > 0 ? info.data.faculties : [],
+            },
+            teachers: {
+              required: true,
+              list: response.teachers ? response.teachers : [],
+              value: '',
+              proposedList:
+                info.data.teachers.length > 0
+                  ? info.data.teachers.map(({ title }: any) => title)
+                  : [],
+              fieldTitle: 'Teachers',
+            },
           },
         },
-        responsible: {
-          teacher: {
-            required: true,
-            value: response.teachers ? response.teachers.toString() : '',
-            fieldTitle: 'Teacher',
+      }
+    } else if (articleType === 'courses') {
+      const info = await getInfo(articleType)
+
+      reducerObject = {
+        tutorialTop: {
+          title: response.title ? response.title : '',
+          titleType: 'h1',
+          description: response.description ? response.description : '',
+          elements: tutorialTopElements,
+        },
+        chapters: response.chapters ? await parseChapters(response.chapters) : [],
+        tutorialBottom: {
+          title: 'Useful Links',
+          titleType: 'h2',
+          text: response.useful_links ? response.useful_links : '',
+        },
+        meta: {
+          courseBelongs: {
+            course: {
+              fieldTitle: 'Course',
+              required: true,
+              value: response.title ? response.title : '',
+            },
+            courseCode: {
+              fieldTitle: 'Course Code',
+              required: true,
+              value: response.course_code ? response.course_code : '',
+            },
+            image: {
+              fieldTitle: 'Featured image',
+              required: false,
+              value: response.featured_image ? response.featured_image : '',
+            },
+            keywords: {
+              fieldTitle: 'Keywords',
+              list: response.keywords ? response.keywords : [],
+              proposedList:
+                info.keywords.length > 0 ? info.keywords.map(({ title }: any) => title) : [],
+              required: false,
+              value: '',
+            },
+            primaryStudy: {
+              fieldTitle: 'Primary Study',
+              list: info.study ? info.study : [{ id: undefined, title: '' }],
+              required: true,
+              value: response.study ? response.study : '',
+            },
+            secondaryStudy: {
+              fieldTitle: 'Secondary Study',
+              list: info.study ? info.study : [{ id: undefined, title: '' }],
+              required: false,
+              value: response.study ? response.study : '' /* To change */,
+            },
           },
-          faculty: {
-            required: true,
-            list: ['Computer Engeneering', 'Computer Science', 'Automation'],
-            value: response.faculty ? response.faculty.toString() : '',
-            fieldTitle: 'Faculty',
+          courseResponsible: {
+            faculty: {
+              fieldTitle: 'Faculty',
+              required: true,
+              value: response.faculty ? response.faculty : '',
+              list: info.faculty.length > 0 ? info.faculty : [],
+            },
+            teachers: {
+              required: true,
+              list: response.teachers ? response.teachers : [],
+              value: '',
+              proposedList:
+                info.teachers.length > 0 ? info.teachers.map(({ title }: any) => title) : [],
+              fieldTitle: 'Teachers',
+            },
           },
         },
-      },
+      }
+    } else if (articleType === 'softwares') {
+      const info = await getInfo(articleType)
+
+      reducerObject = {
+        tutorialTop: {
+          title: response.title ? response.title : '',
+          titleType: 'h1',
+          description: response.description ? response.description : '',
+          elements: tutorialTopElements,
+        },
+        chapters: response.chapters ? await parseChapters(response.chapters) : [],
+        tutorialBottom: {
+          title: 'Useful Links',
+          titleType: 'h2',
+          text: response.useful_links ? response.useful_links : '',
+        },
+        meta: {
+          softwareBelongs: {
+            image: {
+              fieldTitle: 'Featured image',
+              required: false,
+              value: response.featured_image ? response.featured_image : '',
+            },
+            keywords: {
+              fieldTitle: 'Keywords',
+              list: response.keywords ? response.keywords : [],
+              proposedList:
+                info.keywords.length > 0 ? info.keywords.map(({ title }: any) => title) : [],
+              required: false,
+              value: '',
+            },
+            softwareVersion: {
+              fieldTitle: 'Software version',
+              required: true,
+              list: info.software_versions
+                ? info.software_versions
+                : [{ id: undefined, title: '' }],
+              value: response.software_version ?? '',
+            },
+          },
+        },
+      }
+    } else if (articleType === 'subjects') {
+      reducerObject = {
+        tutorialTop: {
+          title: response.title ? response.title : '',
+          titleType: 'h1',
+          description: response.description ? response.description : '',
+          elements: tutorialTopElements,
+        },
+        chapters: response.chapters ? await parseChapters(response.chapters) : [],
+        tutorialBottom: {
+          title: 'Useful Links',
+          titleType: 'h2',
+          text: response.useful_links ? response.useful_links : '',
+        },
+        meta: {
+          subjectsInvolve: {
+            primaryCategory: {
+              fieldTitle: 'Primary category',
+              required: true,
+              value: response.category ?? '',
+            },
+            secondaryCategory: {
+              fieldTitle: 'Secondary category',
+              required: false,
+              value: '' /* TO DO */,
+            },
+          },
+        },
+      }
     }
-    return parsedObject
+
+    return reducerObject as EditorState
   },
-  parseFromReducer(editorState: EditorState, status: 'publish' | 'draft', id?: string) {
-    const parseElementsToContent = (elements: TutorialTopElementsObject[]) => {
+  parseFromReducer(
+    editorState: EditorState,
+    status: 'publish' | 'draft',
+    id?: string,
+    articleType?: ArtictesType,
+  ) {
+    const parseElementsToContent = (elements: ChapterElementsObject[]) => {
       const content = elements
         .map((item) => {
           if (item.text) {
@@ -332,7 +650,7 @@ export const reducerParser = {
             return {
               block_name: 'tu-delft-image',
               block_data: {
-                image: 294 /* Hardcoded. Must be changed after Media resolve */,
+                image_url: item.image.link,
               },
             }
           }
@@ -340,7 +658,43 @@ export const reducerParser = {
             return {
               block_name: 'tu-delft-video',
               block_data: {
-                video: 104 /* Hardcoded. Must be changed after Media resolve */,
+                video_url: item.video.link,
+              },
+            }
+          }
+          if (item.imageText) {
+            return {
+              block_name: 'tu-delft-image-text',
+              block_data: {
+                image_url: item.imageText.image.link,
+                content: item.imageText.text,
+              },
+            }
+          }
+          if (item.textImage) {
+            return {
+              block_name: 'tu-delft-text-image',
+              block_data: {
+                image_url: item.textImage.image.link,
+                content: item.textImage.text,
+              },
+            }
+          }
+          if (item.textVideo) {
+            return {
+              block_name: 'tu-delft-text-video',
+              block_data: {
+                image_url: item.textVideo.video.link,
+                content: item.textVideo.text,
+              },
+            }
+          }
+          if (item.videoText) {
+            return {
+              block_name: 'tu-delft-video-text',
+              block_data: {
+                image_url: item.videoText.video.link,
+                content: item.videoText.text,
               },
             }
           }
@@ -371,26 +725,78 @@ export const reducerParser = {
       })
       return content
     }
-    const newObject = {
-      id: id !== undefined ? parseInt(id) : undefined,
-      status,
-      title: editorState.tutorialTop.title,
-      description: editorState.tutorialTop.description,
-      content:
-        editorState.tutorialTop.elements.length !== 0
-          ? parseElementsToContent(editorState.tutorialTop.elements)
-          : [],
-      useful_links: editorState.tutorialBottom.text,
-      primary_software: 270,
-      software_version: [3, 4],
-      primary_subject: 386,
-      secondary_subject: '',
-      level: 2,
-      faculty: editorState.meta.responsible.faculty.value,
-      keywords: editorState.meta.belongs.keywords.list,
-      teachers: editorState.meta.responsible.teacher.value.split(','),
-      chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
+    let parsedObject = {}
+    if (articleType === 'tutorials') {
+      parsedObject = {
+        id: id !== undefined ? parseInt(id) : undefined,
+        status,
+        title: editorState.tutorialTop.title,
+        description: editorState.tutorialTop.description,
+        content:
+          editorState.tutorialTop.elements.length !== 0
+            ? parseElementsToContent(editorState.tutorialTop.elements)
+            : [],
+        useful_links: editorState.tutorialBottom.text,
+        primary_software: editorState.meta?.tutorialBelongs?.primary.value.id ?? null,
+        software_version: [editorState.meta?.tutorialBelongs?.version.value.id] ?? null,
+        primary_subject: editorState.meta?.tutorialBelongs?.primarySubject.value?.id ?? null,
+        secondary_subject: editorState.meta?.tutorialBelongs?.secondarySubject.value?.id ?? null,
+        level: editorState.meta?.tutorialBelongs?.level.value ?? null,
+        faculty: editorState.meta?.tutorialResponsible?.faculty.value,
+        keywords: editorState.meta?.tutorialBelongs?.keywords.list,
+        teachers: editorState.meta?.tutorialResponsible?.teachers.list,
+        chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
+        featured_image: editorState.meta?.tutorialBelongs?.image.value,
+      }
+    } else if (articleType === 'courses') {
+      parsedObject = {
+        id: id !== undefined ? parseInt(id) : undefined,
+        status,
+        title: editorState.tutorialTop.title,
+        description: editorState.tutorialTop.description,
+        content:
+          editorState.tutorialTop.elements.length !== 0
+            ? parseElementsToContent(editorState.tutorialTop.elements)
+            : [],
+        useful_links: editorState.tutorialBottom.text,
+        chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
+        course_code: editorState.meta.courseBelongs?.courseCode.value ?? '',
+        study: editorState.meta.courseBelongs?.primaryStudy.value.id ?? '',
+        keywords: editorState.meta.courseBelongs?.keywords.list ?? [],
+        featured_image: editorState.meta.courseBelongs?.image.value ?? null,
+        faculty: editorState.meta.courseResponsible?.faculty.value ?? null,
+        teachers: editorState.meta.courseResponsible?.teachers.list ?? [],
+      }
+    } else if (articleType === 'subjects') {
+      parsedObject = {
+        id: id !== undefined ? parseInt(id) : undefined,
+        status,
+        title: editorState.tutorialTop.title,
+        description: editorState.tutorialTop.description,
+        content:
+          editorState.tutorialTop.elements.length !== 0
+            ? parseElementsToContent(editorState.tutorialTop.elements)
+            : [],
+        useful_links: editorState.tutorialBottom.text,
+        chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
+        category: editorState.meta.subjectsInvolve?.primaryCategory.value ?? null,
+      }
+    } else if (articleType === 'softwares') {
+      parsedObject = {
+        id: id !== undefined ? parseInt(id) : undefined,
+        title: editorState.tutorialTop.title,
+        description: editorState.tutorialTop.description,
+        content:
+          editorState.tutorialTop.elements.length !== 0
+            ? parseElementsToContent(editorState.tutorialTop.elements)
+            : [],
+        useful_links: editorState.tutorialBottom.text,
+        chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
+        software_version: editorState.meta.softwareBelongs?.softwareVersion.value.id ?? [],
+        keywords: editorState.meta.softwareBelongs?.keywords.list ?? [],
+        featured_image: editorState.meta?.softwareBelongs?.image.value ?? null,
+      }
     }
-    return newObject
+    return parsedObject
   },
 }

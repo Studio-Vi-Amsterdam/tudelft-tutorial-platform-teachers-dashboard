@@ -2,6 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { deleteElement } from 'src/redux/features/editorSlice'
 import { useAppDispatch } from 'src/redux/hooks'
 import { ElementProps } from 'src/types/types'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from 'src/components/ui/AlertDialog'
 
 interface DeleteElementWraperProps extends ElementProps {
   children: React.ReactNode
@@ -57,7 +68,24 @@ const DeleteElementWraper = (props: DeleteElementWraperProps) => {
             hiddenMenu && 'hidden'
           } flex flex-row justify-between gap-x-2 border-r border-primary-skyBlue transition-all delay-300 [&>button]:h-6 [&>button]:w-6 [&>button]:self-center [&>button]:bg-transparent [&>button]:bg-center [&>button]:bg-no-repeat [&>button]:text-black`}
         >
-          <button className=" bg-delete" onClick={handleDeleteElement}></button>
+          <AlertDialog>
+            <AlertDialogTrigger>
+              <div className="w-6 h-6 bg-delete bg-no-repeat bg-center self-center bg-transparent text-black"></div>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="bg-white">
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete element from our
+                  servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleDeleteElement}>Continue</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
         <div className={`${openedMenu ? 'pl-1' : ''} flex items-center justify-center `}>
           <button
