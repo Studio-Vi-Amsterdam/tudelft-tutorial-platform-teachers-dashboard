@@ -12,6 +12,9 @@ instance.interceptors.request.use(
     if (token && !config.url?.includes('/auth')) {
       config.headers.Authorization = `${token}`
     }
+    if (config.url?.includes('/media/upload')) {
+      config.headers['Content-Type'] = 'multipart/form-data'
+    }
     return config
   },
   (error) => {
@@ -85,5 +88,17 @@ export const mediaAPI = {
 export const authAPI = {
   auth(token: string) {
     return instance.post('/auth', { auth_key: token })
+  },
+}
+
+export const mediaAPI = {
+  getMedia(params?: string) {
+    return instance.get(`/media?${params}`)
+  },
+  getAllMediaPages() {
+    return instance.get('/media/total')
+  },
+  uploadFiles(formData: FormData) {
+    return instance.post('/media/upload', formData)
   },
 }
