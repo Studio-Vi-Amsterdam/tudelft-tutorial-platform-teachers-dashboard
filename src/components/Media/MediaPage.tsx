@@ -21,7 +21,7 @@ export const MediaPage = () => {
         </div>
       </header>
 
-      <MediaLibrary />
+      <MediaLibrary selectedMedia={undefined} />
 
       <Dialog open={isOpenUpload} onOpenChange={(val) => setIsOpenUpload(val)}>
         <DialogContent className="bg-white max-w-7xl">

@@ -12,26 +12,35 @@ import GalleryListView from '../TutorialEditor/GalleryListView'
 import PaginationBar from '../TutorialEditor/PaginationBar'
 import { MediaObjectInterface } from '../../types/types'
 
-export const MediaLibrary = () => {
-  const [media, setMedia] = useState<any>(undefined)
+interface MediaLibraryProps {
+  itemsPerPage?: number
+  isPopup?: boolean
+  handleSelectMedia?: (item: MediaObjectInterface) => void
+  selectedMedia: MediaObjectInterface | undefined
+}
+
+export const MediaLibrary = (props: MediaLibraryProps) => {
+  const [media, setMedia] = useState<MediaObjectInterface[] | undefined>(undefined)
   const [totalMediaPages, setTotalMediaPages] = useState(0)
-  const itemsPerPage = 12
+  const [itemsPerPage, setItemsPerPage] = useState<number>(props.itemsPerPage ?? 12)
   const [viewType, setViewType] = useState<'block' | 'list'>('block')
   const [currentPage, setCurrentPage] = useState<number>(1)
-  const [selectedMedia, setSelectedMedia] = useState<MediaObjectInterface | undefined>(undefined)
 
   const handleGetMedia = (params?: string) => {
+    setMedia(undefined)
     mediaAPI.getMedia(params).then((res) => {
-      setMedia(res.data)
+      const newMedia: MediaObjectInterface[] = res.data.map((serverItem: any) => {
+        return {
+          id: serverItem.id,
+          url: serverItem.url,
+          type: serverItem.media_type.split('/')[0],
+          format: serverItem.media_type.split('/')[1],
+          title: serverItem.title,
+          publishDate: serverItem.published,
+        }
+      })
+      setMedia(newMedia)
     })
-  }
-
-  const handleSelectMedia = (item: MediaObjectInterface) => {
-    if (selectedMedia === item) {
-      setSelectedMedia(undefined)
-    } else {
-      setSelectedMedia(item)
-    }
   }
 
   const handleClick = (pageNumber: number) => {
@@ -50,11 +59,19 @@ export const MediaLibrary = () => {
     mediaAPI.getAllMediaPages().then((res) => {
       setTotalMediaPages(Math.ceil(parseInt(res.data) / itemsPerPage))
     })
-  }, [])
+  }, [itemsPerPage])
 
   useEffect(() => {
     handleGetMedia(`page=${currentPage}&amount=${itemsPerPage}`)
-  }, [currentPage])
+  }, [currentPage, itemsPerPage])
+
+  useEffect(() => {
+    if (viewType === 'block') {
+      setItemsPerPage(props.itemsPerPage ?? 12)
+    } else if (viewType === 'list') {
+      setItemsPerPage(4)
+    }
+  }, [viewType])
 
   return (
     <>
@@ -110,15 +127,17 @@ export const MediaLibrary = () => {
           {viewType === 'block' && (
             <GalleryBlockView
               currentItems={media}
-              handleSelectMedia={handleSelectMedia}
-              selectedMedia={selectedMedia}
+              // eslint-disable-next-line @typescript-eslint/no-empty-function
+              handleSelectMedia={props.handleSelectMedia ? props.handleSelectMedia : () => {}}
+              selectedMedia={props.selectedMedia}
             />
           )}
           {viewType === 'list' && (
             <GalleryListView
               currentItems={media}
-              handleSelectMedia={handleSelectMedia}
-              selectedMedia={selectedMedia}
+              // eslint-disable-next-line @typescript-eslint/no-empty-function
+              handleSelectMedia={props.handleSelectMedia ? props.handleSelectMedia : () => {}}
+              selectedMedia={props.selectedMedia}
             />
           )}
           <PaginationBar

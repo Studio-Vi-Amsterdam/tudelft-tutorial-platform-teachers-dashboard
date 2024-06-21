@@ -38,6 +38,7 @@ interface ElementActionBase {
 export type MediaVariantType = 'image' | 'video'
 
 export interface MediaObjectInterface {
+  id?: number
   link: string
   url?: string
   type: MediaVariantType

@@ -199,7 +199,8 @@ export const reducerParser = {
             case 'tu-delft-image':
               return {
                 image: {
-                  link: block.block_data.image_url,
+                  id: block.block_data.image,
+                  url: block.block_data.image_url,
                   type: 'image',
                   format: block.block_data.image_url
                     ? block.block_data.image_url.split('.')[
@@ -213,7 +214,8 @@ export const reducerParser = {
             case 'tu-delft-video':
               return {
                 video: {
-                  link: block.block_data.video_url,
+                  id: block.block_data.video,
+                  url: block.block_data.video_url,
                   type: 'video',
                   format: block.block_data.video_url
                     ? block.block_data.video_url.split('.')[
@@ -229,7 +231,8 @@ export const reducerParser = {
                 textImage: {
                   text: block.block_data.content ? block.block_data.content : '',
                   image: {
-                    link: block.block_data.image_url,
+                    id: block.block_data.image,
+                    url: block.block_data.image_url,
                     type: 'image',
                     format: block.block_data.image_url
                       ? block.block_data.image_url.split('.')[
@@ -246,7 +249,8 @@ export const reducerParser = {
                 imageText: {
                   text: block.block_data.content ? block.block_data.content : '',
                   image: {
-                    link: block.block_data.image_url,
+                    id: block.block_data.image,
+                    url: block.block_data.image_url,
                     type: 'image',
                     format: block.block_data.image_url
                       ? block.block_data.image_url.split('.')[
@@ -263,7 +267,8 @@ export const reducerParser = {
                 videoText: {
                   text: block.block_data.content ? block.block_data.content : '',
                   video: {
-                    link: block.block_data.video_url,
+                    id: block.block_data.video,
+                    url: block.block_data.video_url,
                     type: 'video',
                     format: block.block_data.video_url
                       ? block.block_data.video_url.split('.')[
@@ -280,7 +285,8 @@ export const reducerParser = {
                 textVideo: {
                   text: block.block_data.content ? block.block_data.content : '',
                   video: {
-                    link: block.block_data.video_url,
+                    id: block.block_data.video,
+                    url: block.block_data.video_url,
                     type: 'video',
                     format: block.block_data.video_url
                       ? block.block_data.video_url.split('.')[
@@ -650,7 +656,8 @@ export const reducerParser = {
             return {
               block_name: 'tu-delft-image',
               block_data: {
-                image_url: item.image.link,
+                image: item.image.id,
+                image_url: item.image.url,
               },
             }
           }
@@ -658,7 +665,8 @@ export const reducerParser = {
             return {
               block_name: 'tu-delft-video',
               block_data: {
-                video_url: item.video.link,
+                video: item.video.id,
+                video_url: item.video.url,
               },
             }
           }
@@ -666,7 +674,8 @@ export const reducerParser = {
             return {
               block_name: 'tu-delft-image-text',
               block_data: {
-                image_url: item.imageText.image.link,
+                image: item.imageText.image.id,
+                image_url: item.imageText.image.url,
                 content: item.imageText.text,
               },
             }
@@ -675,7 +684,8 @@ export const reducerParser = {
             return {
               block_name: 'tu-delft-text-image',
               block_data: {
-                image_url: item.textImage.image.link,
+                image: item.textImage.image.id,
+                image_url: item.textImage.image.url,
                 content: item.textImage.text,
               },
             }
@@ -684,7 +694,8 @@ export const reducerParser = {
             return {
               block_name: 'tu-delft-text-video',
               block_data: {
-                image_url: item.textVideo.video.link,
+                video: item.textVideo.video.id,
+                video_url: item.textVideo.video.url,
                 content: item.textVideo.text,
               },
             }
@@ -693,7 +704,8 @@ export const reducerParser = {
             return {
               block_name: 'tu-delft-video-text',
               block_data: {
-                image_url: item.videoText.video.link,
+                video: item.videoText.video.id,
+                video_url: item.videoText.video.url,
                 content: item.videoText.text,
               },
             }

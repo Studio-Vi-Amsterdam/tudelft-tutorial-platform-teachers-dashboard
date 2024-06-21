@@ -60,10 +60,23 @@ const AddMediaElement = (props: AddMediaElementProps) => {
 
         return layoutItem ? layoutItem.image : undefined
       }
+      if (
+        chapterIndex !== undefined &&
+        listIndex !== undefined &&
+        (layout === 'videoText' || layout === 'textVideo')
+      ) {
+        const chapter = state.editor.chapters[chapterIndex]
+        const elements = chapter?.elements
+        const element = elements ? elements[listIndex] : undefined
+        const layoutItem = element ? element[layout] : undefined
+
+        return layoutItem ? layoutItem.video : undefined
+      }
     }
 
     return undefined
   })
+
   const dispatch = useAppDispatch()
 
   const handleClearMedia = () => {
@@ -80,6 +93,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
           media: {
             format: '',
             link: '',
+            url: '',
             publishDate: '',
             title: '',
             type: 'image',
@@ -95,6 +109,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
             image: {
               format: '',
               link: '',
+              url: '',
               publishDate: '',
               title: '',
               type: 'image',
@@ -111,6 +126,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
             video: {
               format: '',
               link: '',
+              url: '',
               publishDate: '',
               title: '',
               type: 'video',
@@ -125,12 +141,12 @@ const AddMediaElement = (props: AddMediaElementProps) => {
 
   return (
     <div className="flex w-full flex-col gap-y-2">
-      {mediaDataState && mediaDataState.link ? (
+      {mediaDataState && mediaDataState.url ? (
         <div className="w-full group relative">
           <div className="absolute flex justify-center items-center group-hover:opacity-100 opacity-0 transition-opacity delay-300 bg-[rgba(0,0,0,0.3)] w-full h-full top-0 left-0">
             <Button onClick={handleClearMedia}>Delete</Button>
           </div>
-          <img src={mediaDataState.link} className="w-full object-cover" alt="" />
+          <img src={mediaDataState.url} className="w-full object-cover" alt="" />
         </div>
       ) : (
         <div className="flex w-full items-center justify-center bg-tertiary-grey-silver py-16">

@@ -4,6 +4,7 @@ import TextInput from '../ui/TextInput'
 import { Button } from '../ui/Button'
 import GalleryFileView from './GalleryFileView'
 import { mediaAPI } from '../../lib/api'
+import { useToast } from 'src/lib/use-toast'
 
 export const FileUpload = () => {
   const emptyFileTitles = { index: 0, val: '' }
@@ -14,7 +15,7 @@ export const FileUpload = () => {
   ])
   const [errorMessage] = useState<string>('')
   const [selectedFile, setSelectedFile] = useState<number | null>(null)
-
+  const { toast } = useToast()
   const handleSetFileData = (files: File[]) => {
     setFiles(files)
     setPaths(files.map((file) => URL.createObjectURL(file)))
@@ -50,8 +51,11 @@ export const FileUpload = () => {
         formData.append('file', el)
         formData.append('title', title[0].val)
         mediaAPI.uploadFiles(formData).then((res) => {
-          // TODO after success upload
-          console.log(res)
+          res.status === 200 &&
+            toast({
+              title: 'Success!',
+              description: `${res.data.data.title} uploaded with ID: ${res.data.data.id}`,
+            })
         })
       })
     }

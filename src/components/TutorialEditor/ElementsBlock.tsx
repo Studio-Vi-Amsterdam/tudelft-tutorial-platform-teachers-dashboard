@@ -84,16 +84,6 @@ const ElementsBlock = (props: ElementsBlockProps) => {
             >
               <div className="w-full flex flex-row justify-between">
                 <div className="w-1/2">
-                  <AddMediaElement
-                    mediaType="image"
-                    block={props.block}
-                    chapterIndex={props.chapterIndex}
-                    subchapterIndex={props.subchapterIndex}
-                    listIndex={index}
-                    layout="textImage"
-                  />
-                </div>
-                <div className="w-1/2">
                   <ExtendedBundledEditor
                     value={element.textImage.text}
                     block={block}
@@ -101,6 +91,16 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                     handleSubchapterTextChange={handleSubchapterTextChange}
                     subchapter={true}
                     subchapterIndex={index}
+                    layout="textImage"
+                  />
+                </div>
+                <div className="w-1/2">
+                  <AddMediaElement
+                    mediaType="image"
+                    block={props.block}
+                    chapterIndex={props.chapterIndex}
+                    subchapterIndex={props.subchapterIndex}
+                    listIndex={index}
                     layout="textImage"
                   />
                 </div>
@@ -116,6 +116,16 @@ const ElementsBlock = (props: ElementsBlockProps) => {
             >
               <div className="w-full flex flex-row justify-between">
                 <div className="w-1/2">
+                  <AddMediaElement
+                    mediaType="image"
+                    block={props.block}
+                    chapterIndex={props.chapterIndex}
+                    subchapterIndex={props.subchapterIndex}
+                    listIndex={index}
+                    layout="imageText"
+                  />
+                </div>
+                <div className="w-1/2">
                   <ExtendedBundledEditor
                     value={element.imageText.text}
                     block={block}
@@ -123,16 +133,6 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                     handleSubchapterTextChange={handleSubchapterTextChange}
                     subchapter={true}
                     subchapterIndex={index}
-                    layout="imageText"
-                  />
-                </div>
-                <div className="w-1/2">
-                  <AddMediaElement
-                    mediaType="image"
-                    block={props.block}
-                    chapterIndex={props.chapterIndex}
-                    subchapterIndex={props.subchapterIndex}
-                    listIndex={index}
                     layout="imageText"
                   />
                 </div>
@@ -149,7 +149,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               <div className="w-full flex flex-row justify-between">
                 <div className="w-1/2">
                   <AddMediaElement
-                    mediaType="image"
+                    mediaType="video"
                     block={props.block}
                     chapterIndex={props.chapterIndex}
                     subchapterIndex={props.subchapterIndex}
@@ -192,7 +192,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                 </div>
                 <div className="w-1/2">
                   <AddMediaElement
-                    mediaType="image"
+                    mediaType="video"
                     block={props.block}
                     chapterIndex={props.chapterIndex}
                     subchapterIndex={props.subchapterIndex}
