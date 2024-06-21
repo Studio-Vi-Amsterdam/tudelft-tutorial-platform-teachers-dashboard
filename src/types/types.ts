@@ -232,16 +232,14 @@ interface TutorialTopInterface {
   description: string
   elements: [] | TutorialTopElementsObject[]
 }
-
+export interface IdTitleObject {
+  title: string
+  id: number | undefined
+}
 interface MetaFieldParentInterface {
   required: boolean
   fieldTitle: string
   list?: string[] | IdTitleObject[] | []
-}
-
-export interface IdTitleObject {
-  title: string
-  id: number | undefined
 }
 
 interface MetaFieldListInterface extends MetaFieldParentInterface {

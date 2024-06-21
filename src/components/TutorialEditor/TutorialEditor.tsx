@@ -92,7 +92,7 @@ const BlogEditor = () => {
             setNewState({
               parsedObject: undefined,
               articleType: articleType as ArtictesType,
-              info: info,
+              info,
             }),
           )
         }

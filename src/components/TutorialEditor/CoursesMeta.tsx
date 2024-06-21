@@ -54,7 +54,7 @@ const CoursesMeta = () => {
       changeMetaField({
         value,
         objectName,
-        courseBelongsKeyName: courseBelongsKeyName,
+        courseBelongsKeyName,
       }),
     )
   }

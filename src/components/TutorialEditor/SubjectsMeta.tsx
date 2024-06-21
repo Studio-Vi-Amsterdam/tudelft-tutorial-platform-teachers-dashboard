@@ -17,7 +17,7 @@ const SubjectsMeta = () => {
       changeMetaField({
         value,
         objectName,
-        subjectInvolveKey: subjectInvolveKey,
+        subjectInvolveKey,
       }),
     )
   }

@@ -63,8 +63,8 @@ const ElementsBlock = (props: ElementsBlockProps) => {
       dispatch(
         changeSubchapterText({
           chapterIndex: index,
-          layout: layout,
-          listIndex: listIndex,
+          layout,
+          listIndex,
           value: val,
         }),
       )
