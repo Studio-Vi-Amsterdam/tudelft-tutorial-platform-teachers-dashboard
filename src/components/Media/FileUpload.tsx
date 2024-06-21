@@ -43,14 +43,16 @@ export const FileUpload = () => {
 
   const handleUploadFiles = () => {
     if (files !== null) {
-      const fileIndex = 0
-      const title = filesTitles.filter((el) => el.index === fileIndex)
-      const formData = new FormData()
-      formData.append('file', files[fileIndex])
-      formData.append('title', title[0].val)
-      mediaAPI.uploadFiles(formData).then((res) => {
-        // TODO after success upload
-        console.log(res)
+      // eslint-disable-next-line array-callback-return
+      files.map((el, index) => {
+        const title = filesTitles.filter((el) => el.index === index)
+        const formData = new FormData()
+        formData.append('file', el)
+        formData.append('title', title[0].val)
+        mediaAPI.uploadFiles(formData).then((res) => {
+          // TODO after success upload
+          console.log(res)
+        })
       })
     }
   }
