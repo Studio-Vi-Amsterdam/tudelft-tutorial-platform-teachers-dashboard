@@ -17,6 +17,9 @@ interface MediaLibraryProps {
   isPopup?: boolean
   handleSelectMedia?: (item: MediaObjectInterface) => void
   selectedMedia: MediaObjectInterface | undefined
+  selectMode?: boolean
+  handleMultipleSelect: (item: MediaObjectInterface) => void
+  mediaToDelete: MediaObjectInterface[] | undefined
 }
 
 export const MediaLibrary = (props: MediaLibraryProps) => {
@@ -84,6 +87,7 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
                 : 'text-tertiary-grey-dim'
             }
             onClick={() => setViewType('block')}
+            disabled={props.selectMode}
           >
             <GalleryBlockViewIcon color={viewType === 'block' ? '#00A6D6' : '#67676B'} />
             {viewType !== 'block' && <p>Gallery View</p>}
@@ -95,6 +99,7 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
                 : 'text-tertiary-grey-dim'
             }
             onClick={() => setViewType('list')}
+            disabled={props.selectMode}
           >
             <GalleryListViewIcon color={viewType === 'list' ? '#00A6D6' : '#67676B'} />
             {viewType !== 'list' && <p>List View</p>}
@@ -126,7 +131,10 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
         <div className="flex flex-col gap-y-10">
           {viewType === 'block' && (
             <GalleryBlockView
+              selectMode={props.selectMode}
               currentItems={media}
+              mediaToDelete={props.mediaToDelete}
+              handleMultipleSelect={props.handleMultipleSelect}
               // eslint-disable-next-line @typescript-eslint/no-empty-function
               handleSelectMedia={props.handleSelectMedia ? props.handleSelectMedia : () => {}}
               selectedMedia={props.selectedMedia}
@@ -134,13 +142,17 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
           )}
           {viewType === 'list' && (
             <GalleryListView
+              selectMode={props.selectMode}
               currentItems={media}
+              mediaToDelete={props.mediaToDelete}
+              handleMultipleSelect={props.handleMultipleSelect}
               // eslint-disable-next-line @typescript-eslint/no-empty-function
               handleSelectMedia={props.handleSelectMedia ? props.handleSelectMedia : () => {}}
               selectedMedia={props.selectedMedia}
             />
           )}
           <PaginationBar
+            selectMode={props.selectMode}
             currentPage={currentPage}
             handleClickPage={handleClick}
             handleNextClick={handleNextClick}

@@ -6,6 +6,7 @@ interface PaginationBarProps {
   handleClickPage: (page: number) => void
   handlePrevClick: () => void
   handleNextClick: () => void
+  selectMode?: boolean
 }
 
 const PaginationBar = (props: PaginationBarProps) => {
@@ -43,7 +44,7 @@ const PaginationBar = (props: PaginationBarProps) => {
         key={index}
         onClick={() => typeof page === 'number' && handleClickPage(page)}
         className={page === currentPage ? 'bg-primary-skyBlue text-white' : ''}
-        disabled={typeof page !== 'number'}
+        disabled={typeof page !== 'number' || props.selectMode}
       >
         {page}
       </button>
@@ -53,11 +54,11 @@ const PaginationBar = (props: PaginationBarProps) => {
   return (
     <div className="flex flex-row items-center justify-center">
       <div className="flex flex-row gap-x-2 [&>button]:flex [&>button]:h-12 [&>button]:w-12 [&>button]:flex-row [&>button]:items-center [&>button]:justify-center [&>button]:rounded-[4px] [&>button]:text-xl [&>button]:leading-8">
-        <button onClick={handlePrevClick} disabled={currentPage === 1}>
+        <button onClick={handlePrevClick} disabled={currentPage === 1 || props.selectMode}>
           {'<'}
         </button>
         {renderPageNumbers()}
-        <button onClick={handleNextClick} disabled={currentPage === totalPages}>
+        <button onClick={handleNextClick} disabled={currentPage === totalPages || props.selectMode}>
           {'>'}
         </button>
       </div>

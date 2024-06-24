@@ -91,4 +91,10 @@ export const mediaAPI = {
   uploadFiles(formData: FormData) {
     return instance.post('/media/upload', formData)
   },
+  deleteFile(id: number) {
+    const payload = {
+      id,
+    }
+    return instance.delete('/media/delete', { data: payload })
+  },
 }

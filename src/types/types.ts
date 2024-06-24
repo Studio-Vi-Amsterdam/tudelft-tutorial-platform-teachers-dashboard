@@ -337,6 +337,9 @@ export interface MediaState {
 }
 
 export interface GalleryViewProps {
+  handleMultipleSelect: (item: MediaObjectInterface) => void
+  mediaToDelete: MediaObjectInterface[] | undefined
+  selectMode?: boolean
   currentItems: MediaObjectInterface[]
   selectedMedia: MediaObjectInterface | undefined
   handleSelectMedia: (arg0: MediaObjectInterface) => void

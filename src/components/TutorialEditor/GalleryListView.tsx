@@ -16,10 +16,15 @@ const GalleryListView = (props: GalleryViewProps) => {
         {currentItems.map((item, index) => (
           <button
             key={index}
-            className={`${
-              selectedMedia === item ? '' : 'before:!hidden'
-            } relative w-full h-24 before:absolute before:left-0 before:top-0 before:h-full before:w-full before:bg-black before:opacity-50 [&>div]:flex [&>div]:flex-row [&>div]:justify-start`}
-            onClick={() => handleSelectMedia(item)}
+            className={`${selectedMedia === item ? '' : 'before:!hidden'} 
+            ${props.selectMode ? 'after:w-6 after:h-6 after:absolute after:border after:bg-white after:rounded-sm after:border-primary-skyBlue after:top-2 after:right-2 after:z-10' : ' '} 
+          ${props.mediaToDelete !== undefined && props.mediaToDelete.includes(item) && 'after:!bg-primary-skyBlue after:!bg-check after:!bg-center after:!bg-no-repeat'}  
+            relative w-full h-24 before:absolute before:left-0 before:top-0 before:h-full before:w-full before:bg-black before:opacity-50 [&>div]:flex [&>div]:flex-row [&>div]:justify-start`}
+            onClick={
+              props.selectMode
+                ? () => props.handleMultipleSelect(item)
+                : () => handleSelectMedia(item)
+            }
           >
             <MediaPreviewTemplate item={item} styles="w-44" />
             <div className="w-[calc(100%-600px)]">{item.title}</div>
