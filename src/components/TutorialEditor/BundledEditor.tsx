@@ -82,12 +82,30 @@ export default function BundledEditor(props: any) {
 
   const handleSubmitCommand = () => {
     commandDialog.editor.insertContent(
-      'cmd:' +
-        '{' +
-        'buttons:[' +
-        commandDialog.fields.map((item) => (item.length !== 0 ? '"' + item + '"' : null)) +
-        `], separator: "${commandDialog.separator}"}`,
+      `
+  <div class="buttons-combination ${commandDialog.separator === 'arrow' ? 'buttons-combination--with-arrows' : ''} flex">
+    ${commandDialog.fields
+      .map((item) =>
+        item.length !== 0
+          ? `<div class="buttons-combination__button flex items-center"><span>${item}</span></div>`
+          : '',
+      )
+      .join('')}
+  </div>
+`,
     )
+    console.log(`
+  <div class="buttons-combination ${commandDialog.separator === 'arrow' ? 'buttons-combination--with-arrows' : ''} flex">
+    ${commandDialog.fields
+      .map((item) =>
+        item.length !== 0
+          ? `<div class="buttons-combination__button flex items-center"><span>${item}</span></div>`
+          : '',
+      )
+      .join('')}
+  </div>
+`)
+
     setCommandDialog({
       isOpen: false,
       editor: undefined,

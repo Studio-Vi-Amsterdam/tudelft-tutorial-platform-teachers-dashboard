@@ -6,7 +6,6 @@ import { FileUpload } from './FileUpload'
 import { MediaObjectInterface } from 'src/types/types'
 import { mediaAPI } from 'src/lib/api'
 import { useToast } from 'src/lib/use-toast'
-import { useNavigate } from 'react-router-dom'
 
 export const MediaPage = () => {
   const [isOpenUpload, setIsOpenUpload] = useState<boolean>(false)
