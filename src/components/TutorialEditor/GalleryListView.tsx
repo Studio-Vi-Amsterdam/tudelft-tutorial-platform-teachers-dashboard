@@ -1,5 +1,6 @@
 import React from 'react'
 import { GalleryViewProps } from 'src/types/types'
+import MediaPreviewTemplate from '../Media/MediaPreviewTemplate'
 
 const GalleryListView = (props: GalleryViewProps) => {
   const { currentItems, handleSelectMedia, selectedMedia } = props
@@ -20,14 +21,8 @@ const GalleryListView = (props: GalleryViewProps) => {
             } relative w-full h-24 before:absolute before:left-0 before:top-0 before:h-full before:w-full before:bg-black before:opacity-50 [&>div]:flex [&>div]:flex-row [&>div]:justify-start`}
             onClick={() => handleSelectMedia(item)}
           >
-            <img
-              src={item.url}
-              alt={item.title}
-              className="w-44 h-full object-cover object-center"
-            />
+            <MediaPreviewTemplate item={item} styles="w-44" />
             <div className="w-[calc(100%-600px)]">{item.title}</div>
-            {/* <div className="w-44">{localFormatDate(item.publishDate)}</div> */}
-            {/* <div className="w-44">{item.format.toLocaleUpperCase() + ' ' + item.type}</div> */}
           </button>
         ))}
       </div>

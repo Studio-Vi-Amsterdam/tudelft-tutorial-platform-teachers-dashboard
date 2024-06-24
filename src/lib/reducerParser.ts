@@ -335,7 +335,9 @@ export const reducerParser = {
           video:
             chapterLayout() === 'video left' || chapterLayout() === 'video right'
               ? {
+                  id: chapter.content[0].block_data.video,
                   link: chapter.content[0].block_data.video_url || '',
+                  url: chapter.content[0].block_data.video_url || '',
                   type: 'video',
                   format: 'test',
                   title: '',
@@ -345,6 +347,8 @@ export const reducerParser = {
           image:
             chapterLayout() === 'image left' || chapterLayout() === 'image right'
               ? {
+                  id: chapter.content[0].block_data.image,
+                  url: chapter.content[0].block_data.image_url || '',
                   link: chapter.content[0].block_data.image_url || '',
                   type: 'image',
                   format: 'test',

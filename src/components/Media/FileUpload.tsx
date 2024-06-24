@@ -5,10 +5,11 @@ import { Button } from '../ui/Button'
 import GalleryFileView from './GalleryFileView'
 import { mediaAPI } from '../../lib/api'
 import { useToast } from 'src/lib/use-toast'
+import MediaPreviewTemplate from './MediaPreviewTemplate'
 
 export const FileUpload = () => {
   const emptyFileTitles = { index: 0, val: '' }
-  const [paths, setPaths] = useState<string[]>([])
+  const [paths, setPaths] = useState<{ url: string; type: string }[]>([])
   const [files, setFiles] = useState<File[] | null>(null)
   const [filesTitles, setFilesTitles] = useState<{ index: number; val: string }[]>([
     emptyFileTitles,
@@ -18,7 +19,11 @@ export const FileUpload = () => {
   const { toast } = useToast()
   const handleSetFileData = (files: File[]) => {
     setFiles(files)
-    setPaths(files.map((file) => URL.createObjectURL(file)))
+    setPaths(
+      files.map((file) => {
+        return { url: URL.createObjectURL(file), type: file.type.split('/')[0] }
+      }),
+    )
   }
 
   const handleSetFilesTitles = (title: string, index: number) => {
@@ -92,7 +97,7 @@ export const FileUpload = () => {
             </div>
           )}
 
-          {files?.length === 1 && <img src={paths[0]} className="w-full" alt="Placeholder" />}
+          {files?.length === 1 && <MediaPreviewTemplate item={paths[0]} styles="w-full" />}
         </div>
         {files?.length === 1 && (
           <div>

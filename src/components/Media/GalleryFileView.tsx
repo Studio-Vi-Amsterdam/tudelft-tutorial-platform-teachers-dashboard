@@ -1,8 +1,9 @@
 import React from 'react'
 import TextInput from '../ui/TextInput'
+import MediaPreviewTemplate from './MediaPreviewTemplate'
 
 interface GalleryFileViewProps {
-  currentItems: string[]
+  currentItems: { url: string; type: string }[]
   selectedFile: number | null
   onSetFileTitles: (title: string, index: number) => void
   fileTitles: { index: number; val: string }[]
@@ -10,6 +11,7 @@ interface GalleryFileViewProps {
 }
 const GalleryFileView = (props: GalleryFileViewProps) => {
   const { currentItems, onSetFileTitles, fileTitles, selectedFile, handleSelectFile } = props
+
   return (
     <>
       <div className="flex w-full flex-row justify-between flex-wrap gap-x-6 gap-y-6 ">
@@ -23,11 +25,7 @@ const GalleryFileView = (props: GalleryFileViewProps) => {
               } relative w-[calc(25%-1.5rem)] h-48 before:absolute before:left-0 before:top-0 before:h-full before:w-full before:bg-black before:opacity-50`}
               onClick={() => handleSelectFile(index, isSelected)}
             >
-              <img
-                src={item}
-                alt="preview image"
-                className="object-cover h-full w-full object-center"
-              />
+              <MediaPreviewTemplate item={item} styles="w-full" />
             </button>
           )
         })}

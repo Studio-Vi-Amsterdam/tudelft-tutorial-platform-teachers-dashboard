@@ -1,5 +1,6 @@
 import React from 'react'
 import { GalleryViewProps } from 'src/types/types'
+import MediaPreviewTemplate from '../Media/MediaPreviewTemplate'
 
 const GalleryBlockView = (props: GalleryViewProps) => {
   const { currentItems, selectedMedia, handleSelectMedia } = props
@@ -14,11 +15,12 @@ const GalleryBlockView = (props: GalleryViewProps) => {
           } relative w-[calc(25%-1.5rem)] h-48 before:absolute before:left-0 before:top-0 before:h-full before:w-full before:bg-black before:opacity-50`}
           onClick={() => handleSelectMedia(item)}
         >
-          <img
+          {/* <img
             src={item.url}
             alt={item.title}
             className="object-cover h-full w-full object-center"
-          />
+          /> */}
+          <MediaPreviewTemplate item={item} styles="w-full" />
         </button>
       ))}
     </div>
