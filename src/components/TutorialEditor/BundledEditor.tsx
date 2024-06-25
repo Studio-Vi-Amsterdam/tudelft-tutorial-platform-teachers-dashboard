@@ -69,7 +69,7 @@ export default function BundledEditor(props: any) {
 
   const handleSubmitTerm = () => {
     termDialog.editor.insertContent(
-      `<span class="tooltip">${termDialog.term} <span> ${termDialog.explanation}</span></span>`,
+      `<span class='tooltip'>${termDialog.term} <span> ${termDialog.explanation}</span></span> `,
     )
     setTermDialog({
       isOpen: false,
@@ -83,28 +83,17 @@ export default function BundledEditor(props: any) {
   const handleSubmitCommand = () => {
     commandDialog.editor.insertContent(
       `
-  <div class="buttons-combination ${commandDialog.separator === 'arrow' ? 'buttons-combination--with-arrows' : ''} flex">
+  <div class='buttons-combination ${commandDialog.separator === 'arrow' ? 'buttons-combination--with-arrows' : ''} flex'>
     ${commandDialog.fields
       .map((item) =>
         item.length !== 0
-          ? `<div class="buttons-combination__button flex items-center"><span>${item}</span></div>`
+          ? `<div class='buttons-combination__button flex items-center'><span>${item}</span></div>`
           : '',
       )
       .join('')}
-  </div>
+  </div><br />
 `,
     )
-    console.log(`
-  <div class="buttons-combination ${commandDialog.separator === 'arrow' ? 'buttons-combination--with-arrows' : ''} flex">
-    ${commandDialog.fields
-      .map((item) =>
-        item.length !== 0
-          ? `<div class="buttons-combination__button flex items-center"><span>${item}</span></div>`
-          : '',
-      )
-      .join('')}
-  </div>
-`)
 
     setCommandDialog({
       isOpen: false,

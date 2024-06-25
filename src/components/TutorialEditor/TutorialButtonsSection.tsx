@@ -49,14 +49,26 @@ const TutorialButtonsSection = () => {
         }
       } else if (articleId !== 'new') {
         try {
-          articlesAPI.updateArticle(articleType as ArtictesType, parsedObject).then(
-            (res) =>
-              res.data &&
-              toast({
-                title: `Article updated in "${articleType} ${draft ? 'as draft' : ''}"`,
-                description: 'Successfully!',
-              }),
-          )
+          if (draft) {
+            articlesAPI.postDraftArticle(articleType as ArtictesType, parsedObject).then((res) => {
+              res.data.data.id &&
+                navigate(`/dashboard/my-tutorials?type=${articleType}&id=${res.data.data.id}`)
+              res.status === 200 &&
+                toast({
+                  title: `Article created in "${articleType}" ${draft ? 'as draft' : ''}`,
+                  description: 'Successfully!',
+                })
+            })
+          } else {
+            articlesAPI.updateArticle(articleType as ArtictesType, parsedObject).then(
+              (res) =>
+                res.data &&
+                toast({
+                  title: `Article updated in "${articleType} ${draft ? 'as draft' : ''}"`,
+                  description: 'Successfully!',
+                }),
+            )
+          }
         } catch (error) {
           console.error(error)
           toast({
