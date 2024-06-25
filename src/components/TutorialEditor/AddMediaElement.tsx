@@ -7,6 +7,7 @@ import { AddMediaElementProps } from 'src/types/types'
 import {
   setElementImage,
   setElementVideo,
+  setFeaturedImage,
   setSubchapterMedia,
 } from 'src/redux/features/editorSlice'
 
@@ -38,6 +39,12 @@ const AddMediaElement = (props: AddMediaElementProps) => {
       }
       if (block === 'tutorialMeta' && state.editor.meta.tutorialBelongs !== undefined) {
         return state.editor.meta.tutorialBelongs.image.value
+      }
+      if (block === 'softwareMeta' && state.editor.meta.softwareBelongs !== undefined) {
+        return state.editor.meta.softwareBelongs.image.value
+      }
+      if (block === 'courseMeta' && state.editor.meta.courseBelongs !== undefined) {
+        return state.editor.meta.courseBelongs.image.value
       }
       if (
         block === 'subchapterElements' &&
@@ -83,6 +90,24 @@ const AddMediaElement = (props: AddMediaElementProps) => {
 
   const handleClearMedia = () => {
     if (
+      props.block === 'tutorialMeta' ||
+      props.block === 'courseMeta' ||
+      props.block === 'softwareMeta'
+    ) {
+      dispatch(
+        setFeaturedImage({
+          data: {
+            format: '',
+            link: '',
+            url: '',
+            publishDate: '',
+            title: '',
+            type: 'image',
+          },
+          block: props.block,
+        }),
+      )
+    } else if (
       props.layout !== undefined &&
       props.chapterIndex !== undefined &&
       props.listIndex !== undefined

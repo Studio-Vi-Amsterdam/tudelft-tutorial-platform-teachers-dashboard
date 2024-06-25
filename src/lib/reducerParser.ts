@@ -430,7 +430,16 @@ export const reducerParser = {
             image: {
               fieldTitle: 'Featured Image',
               required: false,
-              value: response.featured_image ? response.featured_image : '',
+              value: response.featured_image
+                ? {
+                    format: response.featured_image.split('.').pop,
+                    link: response.featured_image,
+                    url: response.featured_image,
+                    publishDate: '',
+                    title: '',
+                    type: 'image',
+                  }
+                : '',
             },
             level: {
               fieldTitle: 'Level',
@@ -490,7 +499,16 @@ export const reducerParser = {
             image: {
               fieldTitle: 'Featured image',
               required: false,
-              value: response.featured_image ? response.featured_image : '',
+              value: response.featured_image
+                ? {
+                    format: response.featured_image.split('.').pop,
+                    link: response.featured_image,
+                    url: response.featured_image,
+                    publishDate: '',
+                    title: '',
+                    type: 'image',
+                  }
+                : '',
             },
             keywords: {
               fieldTitle: 'Keywords',
@@ -552,7 +570,16 @@ export const reducerParser = {
             image: {
               fieldTitle: 'Featured image',
               required: false,
-              value: response.featured_image ? response.featured_image : '',
+              value: response.featured_image
+                ? {
+                    format: response.featured_image.split('.').pop,
+                    link: response.featured_image,
+                    url: response.featured_image,
+                    publishDate: '',
+                    title: '',
+                    type: 'image',
+                  }
+                : '',
             },
             keywords: {
               fieldTitle: 'Keywords',
@@ -762,7 +789,7 @@ export const reducerParser = {
         keywords: editorState.meta?.tutorialBelongs?.keywords.list,
         teachers: editorState.meta?.tutorialResponsible?.teachers.list,
         chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
-        featured_image: editorState.meta?.tutorialBelongs?.image.value,
+        featured_image: editorState.meta?.tutorialBelongs?.image.value.id ?? null,
       }
     } else if (articleType === 'courses') {
       parsedObject = {
@@ -779,7 +806,7 @@ export const reducerParser = {
         course_code: editorState.meta.courseBelongs?.courseCode.value ?? '',
         study: editorState.meta.courseBelongs?.primaryStudy.value.id ?? '',
         keywords: editorState.meta.courseBelongs?.keywords.list ?? [],
-        featured_image: editorState.meta.courseBelongs?.image.value ?? null,
+        featured_image: editorState.meta.courseBelongs?.image.value.id ?? null,
         faculty: editorState.meta.courseResponsible?.faculty.value ?? null,
         teachers: editorState.meta.courseResponsible?.teachers.list ?? [],
       }
@@ -810,7 +837,7 @@ export const reducerParser = {
         chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
         software_version: editorState.meta.softwareBelongs?.softwareVersion.value.id ?? [],
         keywords: editorState.meta.softwareBelongs?.keywords.list ?? [],
-        featured_image: editorState.meta?.softwareBelongs?.image.value ?? null,
+        featured_image: editorState.meta?.softwareBelongs?.image.value.id ?? null,
       }
     }
     return parsedObject

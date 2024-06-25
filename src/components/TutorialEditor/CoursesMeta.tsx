@@ -20,6 +20,7 @@ import { Button } from '../ui/Button'
 import { Dialog, DialogContent, DialogFooter } from '../ui/Dialog'
 import TextInput from '../ui/TextInput'
 import { taxonomiesAPI } from 'src/lib/api'
+import AddMediaElement from './AddMediaElement'
 
 const CoursesMeta = () => {
   const belongsFields = useAppSelector((state: RootState) => state.editor.meta.courseBelongs)
@@ -321,10 +322,13 @@ const CoursesMeta = () => {
                   belongsFields.image.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
-                  <Button variant={'outline'}>
-                    <div>+</div>
-                    <p>Select image from media library</p>
-                  </Button>
+                  <AddMediaElement
+                    block="courseMeta"
+                    chapterIndex={undefined}
+                    subchapterIndex={undefined}
+                    listIndex={undefined}
+                    mediaType="image"
+                  />
                 </div>
               </div>
               <Dialog open={addKeywordDialogOpened} onOpenChange={setAddKeywordDialogOpened}>

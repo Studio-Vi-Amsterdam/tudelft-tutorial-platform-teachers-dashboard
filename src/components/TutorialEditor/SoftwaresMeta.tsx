@@ -15,6 +15,7 @@ import {
 } from 'src/redux/features/editorSlice'
 import { ObjectNameType } from 'src/types/types'
 import { taxonomiesAPI } from 'src/lib/api'
+import AddMediaElement from './AddMediaElement'
 
 const SoftwaresMeta = () => {
   const belongsFields = useAppSelector((state: RootState) => state.editor.meta.softwareBelongs)
@@ -203,10 +204,13 @@ const SoftwaresMeta = () => {
                   belongsFields.image.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
-                  <Button variant={'outline'}>
-                    <div>+</div>
-                    <p>Select image from media library</p>
-                  </Button>
+                  <AddMediaElement
+                    block="softwareMeta"
+                    chapterIndex={undefined}
+                    subchapterIndex={undefined}
+                    listIndex={undefined}
+                    mediaType="image"
+                  />
                 </div>
               </div>
               <Dialog open={addKeywordDialogOpened} onOpenChange={setAddKeywordDialogOpened}>
