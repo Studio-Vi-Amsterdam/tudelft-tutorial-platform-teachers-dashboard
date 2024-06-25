@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import EditorLabel from '../ui/EditorLabel'
-import {
-  EditorBelongsInterface,
-  ObjectNameType,
-  TutorialResponsibleInterface,
-} from 'src/types/types'
+import { ObjectNameType, TutorialResponsibleInterface } from 'src/types/types'
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
 import { RootState } from 'src/redux/store'
 import {
@@ -26,26 +22,12 @@ import { taxonomiesAPI } from 'src/lib/api'
 import MetaIdSelect from './MetaIdSelect'
 
 const TutorialsMeta = () => {
-  const [belongsKeys, setBelongsKeys] = useState<Array<keyof EditorBelongsInterface> | undefined>(
-    undefined,
-  )
-  const [responsibleKeys, setResponsibleKeys] = useState<
-    Array<keyof TutorialResponsibleInterface> | undefined
-  >(undefined)
-
-  belongsKeys && console.log(responsibleKeys)
-
   const belongsFields = useAppSelector((state: RootState) => state.editor.meta.tutorialBelongs)
   const responsibleFields = useAppSelector(
     (state: RootState) => state.editor.meta.tutorialResponsible,
   )
 
   const dispatch = useAppDispatch()
-
-  const state = useAppSelector((state: RootState) => state.editor)
-  useEffect(() => {
-    console.log(state)
-  }, [state])
 
   const handleMetaInputTeachersChange = (value: string) => {
     dispatch(addTeacherToList({ value: value.split(';')[0], objectName: 'tutorialResponsible' }))
@@ -66,7 +48,6 @@ const TutorialsMeta = () => {
     value: string,
     objectName: ObjectNameType,
     belongsKeyName?: 'level' | 'image' | 'keywords',
-    // responsibleKeyName?: keyof TutorialResponsibleInterface,
   ) => {
     if (value[value.length - 1] === ';') {
       dispatch(addKeywordsToList({ value: value.split(';')[0], objectName: 'tutorialBelongs' }))
@@ -181,16 +162,6 @@ const TutorialsMeta = () => {
   }
 
   const [addKeywordDialogOpened, setAddKeywordDialogOpened] = useState<boolean>(false)
-
-  useEffect(() => {
-    if (belongsFields && responsibleFields) {
-      setBelongsKeys(Object.keys(belongsFields) as Array<keyof EditorBelongsInterface>)
-      setResponsibleKeys(
-        Object.keys(responsibleFields) as Array<keyof TutorialResponsibleInterface>,
-      )
-    }
-  }, [])
-
   const [isKeywordPostFetching, setIsKeywordPostFetching] = useState<boolean>(false)
 
   const handleCreateNewKeyword = async (keyword: string) => {

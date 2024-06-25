@@ -35,6 +35,9 @@ export const articlesAPI = {
   postArticle(type: ArtictesType, payload: any) {
     return instance.post(`/${type}/create`, payload)
   },
+  postDraftArticle(type: ArtictesType, payload: any) {
+    return instance.post(`/${type}/create/draft`, payload)
+  },
   deleteArticle(type: ArtictesType, id: number) {
     const payload = {
       id,

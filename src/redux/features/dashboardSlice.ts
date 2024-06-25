@@ -20,9 +20,13 @@ export const dashboardSlice = createSlice({
     deleteFromPublished: (state, action: PayloadAction<number>) => {
       state.published = state.published.filter((item) => item.id !== action.payload)
     },
+    deleteFromDrafts: (state, action: PayloadAction<number>) => {
+      state.drafts = state.drafts.filter((item) => item.id !== action.payload)
+    },
   },
 })
 
-export const { setPublished, deleteFromPublished, setDrafts } = dashboardSlice.actions
+export const { setPublished, deleteFromPublished, setDrafts, deleteFromDrafts } =
+  dashboardSlice.actions
 
 export default dashboardSlice.reducer

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { articlesAPI } from 'src/lib/api'
 import { localFormatDate } from 'src/lib/localFormatDate'
-import { deleteFromPublished } from 'src/redux/features/dashboardSlice'
+import { deleteFromDrafts, deleteFromPublished } from 'src/redux/features/dashboardSlice'
 import { useAppDispatch } from 'src/redux/hooks'
 import { DashboardPublishedInterface } from 'src/types/types'
 import {
@@ -16,13 +16,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from 'src/components/ui/AlertDialog'
+import { useToast } from 'src/lib/use-toast'
 
 interface DashboardCardProps {
   item: DashboardPublishedInterface
+  draft?: boolean
 }
 
 const DashboardCard = (props: DashboardCardProps) => {
-  const { item } = props
+  const { item, draft } = props
+  const { toast } = useToast()
   const [isFetching, setIsFetching] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -32,7 +35,15 @@ const DashboardCard = (props: DashboardCardProps) => {
   const handleOpenDeletePopup = async () => {
     setIsFetching(true)
     const afterDeleteAction = () => {
-      dispatch(deleteFromPublished(item.id))
+      if (draft) {
+        dispatch(deleteFromDrafts(item.id))
+      } else {
+        dispatch(deleteFromPublished(item.id))
+      }
+      toast({
+        title: `${draft ? 'Draft' : 'Article'} with id: ${item.id} deleted`,
+        description: 'Successfully!',
+      })
       setIsFetching(false)
     }
     await articlesAPI

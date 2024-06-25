@@ -46,7 +46,6 @@ const BlogEditor = () => {
           let info = {}
           const extraInfo =
             articleType !== 'subjects' && (await getInfo(articleType as ArtictesType))
-          console.log('extraInfo', extraInfo)
 
           if (articleType === 'tutorials') {
             info = {
