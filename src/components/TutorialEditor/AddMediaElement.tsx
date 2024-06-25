@@ -10,6 +10,7 @@ import {
   setFeaturedImage,
   setSubchapterMedia,
 } from 'src/redux/features/editorSlice'
+import MediaPreviewTemplate from '../Media/MediaPreviewTemplate'
 
 const AddMediaElement = (props: AddMediaElementProps) => {
   const [dialogOpened, setDialogOpened] = useState<boolean>(false)
@@ -173,7 +174,9 @@ const AddMediaElement = (props: AddMediaElementProps) => {
           <div className="absolute flex justify-center items-center group-hover:opacity-100 opacity-0 transition-opacity delay-300 bg-[rgba(0,0,0,0.3)] w-full h-full top-0 left-0">
             <Button onClick={handleClearMedia}>Delete</Button>
           </div>
-          <img src={mediaDataState.url} className="w-full object-cover" alt="" />
+          {/* 
+          <img src={mediaDataState.url} className="w-full object-cover" alt="" /> */}
+          <MediaPreviewTemplate item={mediaDataState} styles="w-full" />
         </div>
       ) : (
         <div className="flex w-full items-center justify-center bg-tertiary-grey-silver py-16">
