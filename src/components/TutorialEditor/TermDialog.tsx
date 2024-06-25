@@ -4,6 +4,7 @@ import EditorLabel from '../ui/EditorLabel'
 import TextInput from '../ui/TextInput'
 import { Button } from '../ui/Button'
 import { TermDialogInterface } from 'src/types/types'
+import { taxonomiesAPI } from 'src/lib/api'
 
 interface TermDialogProps {
   setTermDialog: React.Dispatch<React.SetStateAction<TermDialogInterface>>
@@ -18,7 +19,41 @@ const TermDialog = (props: TermDialogProps) => {
     term: string
     explanation: string
   }
+  interface ResponseObject {
+    count: number
+    description: string
+    filter: string
+    name: string
+    parent: number
+    slug: string
+    taxonomy: string
+    term_group: number
+    term_id: number
+    term_taxonomy_id: number
+  }
 
+  const [displayedTerms, setDisplayedTerms] = useState<TermInterface[] | []>([])
+
+  const [inputValue, setInputValue] = useState<string>('')
+
+  const inputRef = useRef<HTMLInputElement | null>(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const teachers: ResponseObject[] = await taxonomiesAPI.getTeachers().then((res) => res.data)
+      const keywords: ResponseObject[] = await taxonomiesAPI.getKeywords().then((res) => res.data)
+      const concatedArr = [...keywords, ...teachers]
+      const responseArr = concatedArr.map((item) => {
+        return {
+          id: item.term_id,
+          term: item.name,
+          explanation: item.description,
+        }
+      })
+      setDisplayedTerms(responseArr)
+    }
+    fetchData()
+  }, [])
   const hardcodeTermins = [
     {
       term: 'Aberration',
@@ -183,12 +218,6 @@ const TermDialog = (props: TermDialogProps) => {
     },
   ]
 
-  const [displayedTerms, setDisplayedTerms] = useState<TermInterface[]>(hardcodeTermins)
-
-  const [inputValue, setInputValue] = useState<string>('')
-
-  const inputRef = useRef<HTMLInputElement | null>(null)
-
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus()
@@ -204,10 +233,7 @@ const TermDialog = (props: TermDialogProps) => {
   }
 
   const [selectOpened, setSelectOpened] = useState<boolean>(false)
-  // const [selectedOption, setSelectedOption] = useState<TermInterface>({
-  //   term: termDialog.term,
-  //   explanation: termDialog.explanation,
-  // })
+
   const handleSelect = (props: TermInterface) => {
     handleTermInputChange(props.term)
     setTermDialog({

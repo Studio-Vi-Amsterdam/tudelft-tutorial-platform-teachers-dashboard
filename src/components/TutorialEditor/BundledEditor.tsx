@@ -69,7 +69,7 @@ export default function BundledEditor(props: any) {
 
   const handleSubmitTerm = () => {
     termDialog.editor.insertContent(
-      ` term:{termin:'${termDialog.term}', explanation:'${termDialog.explanation}'}`,
+      `<span class="tooltip">${termDialog.term} <span> ${termDialog.explanation}</span></span>`,
     )
     setTermDialog({
       isOpen: false,

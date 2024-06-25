@@ -65,6 +65,9 @@ export const taxonomiesAPI = {
   getTeachers() {
     return instance.get('/teachers/')
   },
+  getCategories() {
+    return instance.get('/categories/')
+  },
   createKeyword(keyword: string) {
     const payload = {
       keyword,
