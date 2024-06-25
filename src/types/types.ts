@@ -252,6 +252,10 @@ interface OnlyValueInterface extends MetaFieldParentInterface {
   value: string
 }
 
+interface OnlyValueImageInterface extends MetaFieldParentInterface {
+  value: MediaObjectInterface
+}
+
 export interface MetaFieldIdListInterface extends MetaFieldParentInterface {
   list: IdTitleObject[] | []
   value: IdTitleObject
@@ -293,7 +297,7 @@ export interface EditorBelongsInterface {
   secondarySubject: MetaFieldIdListInterface
   level: MetaFieldListInterface
   keywords: KeywordsInterface
-  image: OnlyValueInterface
+  image: OnlyValueImageInterface
 }
 
 export interface TutorialResponsibleInterface {
@@ -310,13 +314,13 @@ export interface TutorialMetaObject {
     primaryStudy: MetaFieldIdListInterface
     secondaryStudy: MetaFieldIdListInterface
     keywords: KeywordsInterface
-    image: OnlyValueInterface
+    image: OnlyValueImageInterface
   }
   courseResponsible?: TutorialResponsibleInterface
   softwareBelongs?: {
     softwareVersion: MetaFieldIdListInterface
     keywords: KeywordsInterface
-    image: OnlyValueInterface
+    image: OnlyValueImageInterface
   }
   subjectsInvolve?: {
     primaryCategory: OnlyValueInterface

@@ -36,7 +36,9 @@ const AddMediaElement = (props: AddMediaElementProps) => {
       if (block === 'chapterElements' && chapterIndex !== undefined && listIndex !== undefined) {
         return state.editor.chapters[chapterIndex].elements[listIndex][mediaType]
       }
-
+      if (block === 'tutorialMeta' && state.editor.meta.tutorialBelongs !== undefined) {
+        return state.editor.meta.tutorialBelongs.image.value
+      }
       if (
         block === 'subchapterElements' &&
         chapterIndex !== undefined &&

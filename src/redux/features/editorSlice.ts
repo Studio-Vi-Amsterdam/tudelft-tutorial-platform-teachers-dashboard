@@ -16,6 +16,7 @@ import {
   ElementTextActionInterface,
   ElementVideoActionInterface,
   LayoutChapterType,
+  MediaObjectInterface,
   MoveChapterInterface,
   SubchapterImageAction,
   SubchapterTextFieldActionInterface,
@@ -129,7 +130,15 @@ export const editorSlice = createSlice({
                 image: {
                   fieldTitle: 'Featured Image',
                   required: false,
-                  value: '',
+                  value: {
+                    format: '',
+                    link: '',
+                    publishDate: '',
+                    title: '',
+                    type: 'image',
+                    id: undefined,
+                    url: '',
+                  },
                 },
                 level: {
                   fieldTitle: 'Level',
@@ -170,7 +179,15 @@ export const editorSlice = createSlice({
                 image: {
                   fieldTitle: 'Featured image',
                   required: false,
-                  value: '',
+                  value: {
+                    format: '',
+                    link: '',
+                    publishDate: '',
+                    title: '',
+                    type: 'image',
+                    id: undefined,
+                    url: '',
+                  },
                 },
                 keywords: {
                   fieldTitle: 'Keywords',
@@ -220,7 +237,15 @@ export const editorSlice = createSlice({
                 image: {
                   fieldTitle: 'Featured image',
                   required: false,
-                  value: '',
+                  value: {
+                    format: '',
+                    link: '',
+                    publishDate: '',
+                    title: '',
+                    type: 'image',
+                    id: undefined,
+                    url: '',
+                  },
                 },
                 keywords: {
                   fieldTitle: 'Keywords',
@@ -957,6 +982,22 @@ export const editorSlice = createSlice({
           state.meta.courseResponsible.teachers.list.filter((item) => item !== action.payload.value)
       }
     },
+    setFeaturedImage: (
+      state,
+      action: PayloadAction<{
+        data: MediaObjectInterface
+        block: 'softwareMeta' | 'tutorialMeta' | 'courseMeta'
+      }>,
+    ) => {
+      const { data, block } = action.payload
+      if (block === 'tutorialMeta' && state.meta.tutorialBelongs !== undefined) {
+        state.meta.tutorialBelongs.image.value = data
+      } else if (block === 'softwareMeta' && state.meta.softwareBelongs !== undefined) {
+        state.meta.softwareBelongs.image.value = data
+      } else if (block === 'courseMeta' && state.meta.courseBelongs !== undefined) {
+        state.meta.courseBelongs.image.value = data
+      }
+    },
   },
 })
 
@@ -1003,6 +1044,7 @@ export const {
   addBlankSubchapterToEls,
   changeSubchapterText,
   setSubchapterMedia,
+  setFeaturedImage,
 } = editorSlice.actions
 
 export default editorSlice.reducer

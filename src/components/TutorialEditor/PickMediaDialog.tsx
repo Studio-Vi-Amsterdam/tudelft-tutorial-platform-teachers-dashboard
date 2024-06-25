@@ -7,6 +7,7 @@ import { useAppDispatch } from 'src/redux/hooks'
 import {
   setElementImage,
   setElementVideo,
+  setFeaturedImage,
   setSubchapterMedia,
 } from 'src/redux/features/editorSlice'
 
@@ -22,9 +23,16 @@ const PickMediaDialog = (props: PickMediaDialogProps) => {
   const handleSubmitMedia = () => {
     if (selectedMedia) {
       if (
+        props.block === 'tutorialMeta' ||
+        props.block === 'courseMeta' ||
+        props.block === 'softwareMeta'
+      ) {
+        dispatch(setFeaturedImage({ data: selectedMedia, block: props.block }))
+      } else if (
         props.layout !== undefined &&
         props.chapterIndex !== undefined &&
-        props.listIndex !== undefined
+        props.listIndex !== undefined &&
+        props.block !== 'tutorialMeta'
       ) {
         dispatch(
           setSubchapterMedia({
