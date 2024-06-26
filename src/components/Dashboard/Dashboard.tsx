@@ -4,7 +4,7 @@ import { HardcodeTestDataInterface } from 'src/types/types'
 import { useEffect } from 'react'
 import { articlesAPI } from 'src/lib/api'
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
-import { setDashboardFetched, setDrafts, setPublished } from 'src/redux/features/dashboardSlice'
+import { setDrafts, setPublished } from 'src/redux/features/dashboardSlice'
 import { RootState } from 'src/redux/store'
 import { useAuth } from 'src/lib/AuthContext'
 
@@ -44,8 +44,7 @@ const Dashboard = () => {
   const dispatch = useAppDispatch()
   const published = useAppSelector((state: RootState) => state.dashboard.published)
   const drafts = useAppSelector((state: RootState) => state.dashboard.drafts)
-  const isDraftsFetched = useAppSelector((state: RootState) => state.dashboard.isDraftsLoaded)
-  const isPublishedFetched = useAppSelector((state: RootState) => state.dashboard.isPublishedLoaded)
+
   const { isAuthenticated } = useAuth()
 
   useEffect(() => {
@@ -58,8 +57,7 @@ const Dashboard = () => {
       let draftCourses = []
       let draftSubjects = []
       let draftSoftwares = []
-      dispatch(setDashboardFetched({ row: 'published', value: false }))
-      dispatch(setDashboardFetched({ row: 'drafts', value: false }))
+
       try {
         const tutorialsResponse = await articlesAPI.getArticles('tutorials')
 
@@ -103,7 +101,6 @@ const Dashboard = () => {
         (a, b) => new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime(),
       )
       dispatch(setPublished(allData))
-      dispatch(setDashboardFetched({ row: 'published', value: true }))
       try {
         const tutorialsDraftResponse = await articlesAPI.getDraftArticles('tutorials')
 
@@ -146,7 +143,6 @@ const Dashboard = () => {
         (a, b) => new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime(),
       )
       dispatch(setDrafts(draftData))
-      dispatch(setDashboardFetched({ row: 'drafts', value: true }))
     }
     if (isAuthenticated) {
       fetchData()
@@ -186,16 +182,10 @@ const Dashboard = () => {
           </section>
         )}
         {published && (
-          <DashboardTutorialSection
-            heading="My published tutorials"
-            items={published}
-            fetched={isPublishedFetched}
-          />
+          <DashboardTutorialSection heading="My published tutorials" items={published} />
         )}
 
-        {drafts && (
-          <DashboardTutorialSection heading="My drafts" items={drafts} fetched={isDraftsFetched} />
-        )}
+        {drafts && <DashboardTutorialSection heading="My drafts" items={drafts} />}
       </main>
     )
   } else {
