@@ -1,6 +1,10 @@
 import React from 'react'
 import { useAppDispatch } from 'src/redux/hooks'
-import { setElementInfobox, setElementText } from 'src/redux/features/editorSlice'
+import {
+  changeSubchapterText,
+  setElementInfobox,
+  setElementText,
+} from 'src/redux/features/editorSlice'
 import { ChapterElementsObject } from 'src/types/types'
 import AddMediaElement from './AddMediaElement'
 import ExtendedBundledEditor from './ExtendedBundledEditor'
@@ -49,10 +53,156 @@ const ElementsBlock = (props: ElementsBlockProps) => {
     }
   }
 
+  const handleSubchapterTextChange = (
+    val: string,
+    index: number,
+    layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText',
+    listIndex: number,
+  ) => {
+    if (index !== undefined && listIndex !== undefined && layout !== undefined) {
+      dispatch(
+        changeSubchapterText({
+          chapterIndex: index,
+          layout,
+          listIndex,
+          value: val,
+        }),
+      )
+    }
+  }
+
   return (
     <div className="flex w-full flex-col gap-y-6">
       {elements.map((element, index) => (
         <div className="w-full" key={index}>
+          {element?.textImage !== undefined && (
+            <DeleteElementWraper
+              block={block}
+              chapterIndex={props.chapterIndex}
+              subchapterIndex={subchapterIndex}
+              elementIndex={index}
+            >
+              <div className="w-full flex flex-row justify-between">
+                <div className="w-1/2">
+                  <ExtendedBundledEditor
+                    value={element.textImage.text}
+                    block={block}
+                    chapterIndex={props.chapterIndex}
+                    handleSubchapterTextChange={handleSubchapterTextChange}
+                    subchapter={true}
+                    subchapterIndex={index}
+                    layout="textImage"
+                  />
+                </div>
+                <div className="w-1/2">
+                  <AddMediaElement
+                    mediaType="image"
+                    block={props.block}
+                    chapterIndex={props.chapterIndex}
+                    subchapterIndex={props.subchapterIndex}
+                    listIndex={index}
+                    layout="textImage"
+                  />
+                </div>
+              </div>
+            </DeleteElementWraper>
+          )}
+          {element?.imageText !== undefined && (
+            <DeleteElementWraper
+              block={block}
+              chapterIndex={props.chapterIndex}
+              subchapterIndex={subchapterIndex}
+              elementIndex={index}
+            >
+              <div className="w-full flex flex-row justify-between">
+                <div className="w-1/2">
+                  <AddMediaElement
+                    mediaType="image"
+                    block={props.block}
+                    chapterIndex={props.chapterIndex}
+                    subchapterIndex={props.subchapterIndex}
+                    listIndex={index}
+                    layout="imageText"
+                  />
+                </div>
+                <div className="w-1/2">
+                  <ExtendedBundledEditor
+                    value={element.imageText.text}
+                    block={block}
+                    chapterIndex={props.chapterIndex}
+                    handleSubchapterTextChange={handleSubchapterTextChange}
+                    subchapter={true}
+                    subchapterIndex={index}
+                    layout="imageText"
+                  />
+                </div>
+              </div>
+            </DeleteElementWraper>
+          )}
+          {element?.videoText !== undefined && (
+            <DeleteElementWraper
+              block={block}
+              chapterIndex={props.chapterIndex}
+              subchapterIndex={subchapterIndex}
+              elementIndex={index}
+            >
+              <div className="w-full flex flex-row justify-between">
+                <div className="w-1/2">
+                  <AddMediaElement
+                    mediaType="video"
+                    block={props.block}
+                    chapterIndex={props.chapterIndex}
+                    subchapterIndex={props.subchapterIndex}
+                    listIndex={index}
+                    layout="videoText"
+                  />
+                </div>
+                <div className="w-1/2">
+                  <ExtendedBundledEditor
+                    value={element.videoText.text}
+                    block={block}
+                    chapterIndex={props.chapterIndex}
+                    handleSubchapterTextChange={handleSubchapterTextChange}
+                    subchapter={true}
+                    subchapterIndex={index}
+                    layout="videoText"
+                  />
+                </div>
+              </div>
+            </DeleteElementWraper>
+          )}
+          {element?.textVideo !== undefined && (
+            <DeleteElementWraper
+              block={block}
+              chapterIndex={props.chapterIndex}
+              subchapterIndex={subchapterIndex}
+              elementIndex={index}
+            >
+              <div className="w-full flex flex-row justify-between">
+                <div className="w-1/2">
+                  <ExtendedBundledEditor
+                    value={element.textVideo.text}
+                    block={block}
+                    chapterIndex={props.chapterIndex}
+                    handleSubchapterTextChange={handleSubchapterTextChange}
+                    subchapter={true}
+                    subchapterIndex={index}
+                    layout="textVideo"
+                  />
+                </div>
+                <div className="w-1/2">
+                  <AddMediaElement
+                    mediaType="video"
+                    block={props.block}
+                    chapterIndex={props.chapterIndex}
+                    subchapterIndex={props.subchapterIndex}
+                    listIndex={index}
+                    layout="textVideo"
+                  />
+                </div>
+              </div>
+            </DeleteElementWraper>
+          )}
           {element?.text !== undefined && (
             <DeleteElementWraper
               block={block}

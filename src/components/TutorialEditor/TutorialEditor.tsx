@@ -5,16 +5,19 @@ import { RootState } from 'src/redux/store'
 import TutorialTopSection from './TutorialTopSection'
 import TutorialButtonsSection from './TutorialButtonsSection'
 import AddChapterSection from './AddChapterSection'
-import { ArtictesType, ChapterInterface, ResponseKeyword } from 'src/types/types'
+import { ArtictesType, ChapterInterface, EditorState, ResponseKeyword } from 'src/types/types'
 import ChapterSection from './ChapterSection'
 import EditorSidebar from './EditorSidebar'
 import TutorialBottomSection from './TutorialBottomSection'
-import TutorialBelongsToSection from './TutorialBelongsToSection'
 import { articlesAPI, taxonomiesAPI } from 'src/lib/api'
 import { useLocation } from 'react-router-dom'
-import { reducerParser } from 'src/lib/reducerParser'
+import { getInfo, reducerParser } from 'src/lib/reducerParser'
 import { setKeywordsProposedList, setNewState } from 'src/redux/features/editorSlice'
 import { useAuth } from 'src/lib/AuthContext'
+import TutorialsMeta from './TutorialsMeta'
+import CoursesMeta from './CoursesMeta'
+import SoftwaresMeta from './SoftwaresMeta'
+import SubjectsMeta from './SubjectsMeta'
 
 const BlogEditor = () => {
   const dispatch = useAppDispatch()
@@ -38,9 +41,59 @@ const BlogEditor = () => {
             articleType as ArtictesType,
           )
 
-          dispatch(setNewState(newObject))
+          dispatch(setNewState({ parsedObject: newObject as EditorState }))
         } else if (articleId === 'new') {
-          dispatch(setNewState(undefined))
+          let info = {}
+          const extraInfo =
+            articleType !== 'subjects' && (await getInfo(articleType as ArtictesType))
+
+          if (articleType === 'tutorials') {
+            info = {
+              software: extraInfo.data.softwares.length > 0 ? extraInfo.data.softwares : [],
+              subjects: extraInfo.data.subjects.length > 0 ? extraInfo.data.subjects : [],
+              keywords:
+                extraInfo.data.keywords.length > 0
+                  ? extraInfo.data.keywords.map(({ title }: any) => title)
+                  : [],
+              teachers:
+                extraInfo.data.teachers.length > 0
+                  ? extraInfo.data.teachers.map(({ title }: any) => title)
+                  : [],
+            }
+          } else if (articleType === 'courses') {
+            info = {
+              primaryStudy: extraInfo.study.length > 0 ? extraInfo.study : [],
+              keywords:
+                extraInfo.keywords.length > 0
+                  ? extraInfo.keywords.map(({ title }: any) => title)
+                  : [],
+              teachers:
+                extraInfo.teachers.length > 0
+                  ? extraInfo.teachers.map(({ title }: any) => title)
+                  : [],
+            }
+          } else if (articleType === 'softwares') {
+            info = {
+              softwareVersions:
+                extraInfo.software_versions.length > 0 ? extraInfo.software_versions : [],
+              keywords:
+                extraInfo.keywords.length > 0
+                  ? extraInfo.keywords.map(({ title }: any) => title)
+                  : [],
+            }
+          } else if (articleType === 'subjects') {
+            info = {
+              test: '',
+            }
+          }
+
+          dispatch(
+            setNewState({
+              parsedObject: undefined,
+              articleType: articleType as ArtictesType,
+              info,
+            }),
+          )
         }
         dispatch(setKeywordsProposedList(keywordsResponse))
       }
@@ -65,7 +118,13 @@ const BlogEditor = () => {
 
           <AddChapterSection />
           <TutorialBottomSection />
-          <TutorialBelongsToSection />
+          {articleType === 'tutorials' && <TutorialsMeta />}
+          {articleType === 'courses' && <CoursesMeta />}
+          {articleType === 'softwares' && <SoftwaresMeta />}
+          {articleType === 'subjects' && <SubjectsMeta />}
+
+          {/* 
+          <TutorialBelongsToSection /> */}
         </div>
       </main>
     )

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+/* import React, { useEffect, useState } from 'react'
 import EditorLabel from '../ui/EditorLabel'
 import {
   EditorBelongsInterface,
@@ -211,7 +211,11 @@ const TutorialBelongsToSection = () => {
                       handleMetaInputChange={handleMetaInputChange}
                       objectType="belongs"
                       options={belongsFields[keyName].list}
-                      selectValue={belongsFields[keyName].value}
+                      selectValue={
+                        typeof belongsFields[keyName].value === 'string'
+                          ? belongsFields[keyName].value
+                          : belongsFields[keyName].value.title
+                      }
                       belongsKeyName={keyName}
                     />
                   ) : (
@@ -219,7 +223,11 @@ const TutorialBelongsToSection = () => {
                       handleChange={handleMetaInputChange}
                       objectName="belongs"
                       placeholder={belongsFields[keyName].fieldTitle}
-                      value={belongsFields[keyName].value}
+                      value={
+                        typeof belongsFields[keyName].value === 'string'
+                          ? belongsFields[keyName].value
+                          : belongsFields[keyName].value.title
+                      }
                       belongsKeyName={keyName}
                     />
                   )}
@@ -308,3 +316,5 @@ const TutorialBelongsToSection = () => {
 }
 
 export default TutorialBelongsToSection
+ */
+export {}

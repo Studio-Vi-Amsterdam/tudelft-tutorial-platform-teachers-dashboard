@@ -69,7 +69,7 @@ export default function BundledEditor(props: any) {
 
   const handleSubmitTerm = () => {
     termDialog.editor.insertContent(
-      ` term:{termin:'${termDialog.term}', explanation:'${termDialog.explanation}'}`,
+      `<span class='tooltip'>${termDialog.term} <span> ${termDialog.explanation}</span></span> `,
     )
     setTermDialog({
       isOpen: false,
@@ -82,12 +82,19 @@ export default function BundledEditor(props: any) {
 
   const handleSubmitCommand = () => {
     commandDialog.editor.insertContent(
-      'cmd:' +
-        '{' +
-        'buttons:[' +
-        commandDialog.fields.map((item) => (item.length !== 0 ? '"' + item + '"' : null)) +
-        `], separator: "${commandDialog.separator}"}`,
+      `
+  <div class='buttons-combination ${commandDialog.separator === 'arrow' ? 'buttons-combination--with-arrows' : ''} flex'>
+    ${commandDialog.fields
+      .map((item) =>
+        item.length !== 0
+          ? `<div class='buttons-combination__button flex items-center'><span>${item}</span></div>`
+          : '',
+      )
+      .join('')}
+  </div><br />
+`,
     )
+
     setCommandDialog({
       isOpen: false,
       editor: undefined,
@@ -147,7 +154,7 @@ export default function BundledEditor(props: any) {
           licenseKey="gpl"
           value={props.value}
           onEditorChange={(newValue) =>
-            props.handleChange(newValue, props?.index, props?.subchapterIndex)
+            props.handleChange(newValue, props?.index, props?.layout, props?.subchapterIndex)
           }
           {...props}
         />

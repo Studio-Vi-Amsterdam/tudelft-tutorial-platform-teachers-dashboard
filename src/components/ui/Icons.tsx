@@ -5,6 +5,32 @@ interface IconsProps {
   height?: string
 }
 
+export const FileIcon = () => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0,0,256,256" width="100px" height="100px">
+      <g
+        fill="#00a6d6"
+        fillRule="nonzero"
+        stroke="none"
+        strokeWidth="1"
+        strokeLinecap="butt"
+        strokeLinejoin="miter"
+        strokeMiterlimit="10"
+        strokeDasharray=""
+        strokeDashoffset="0"
+        fontFamily="none"
+        fontWeight="none"
+        fontSize="none"
+        textAnchor="none"
+      >
+        <g transform="scale(5.12,5.12)">
+          <path d="M7,2v46h36v-33.40625l-0.28125,-0.3125l-12,-12l-0.3125,-0.28125zM9,4h20v12h12v30h-32zM31,5.4375l8.5625,8.5625h-8.5625z"></path>
+        </g>
+      </g>
+    </svg>
+  )
+}
+
 export const CrossIcon = (props: IconsProps) => {
   return (
     <svg

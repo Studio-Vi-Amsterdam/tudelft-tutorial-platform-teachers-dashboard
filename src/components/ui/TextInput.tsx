@@ -7,6 +7,7 @@ interface TextInputProps {
   headingType?: string
   index?: number
   subchapterIndex?: number
+  readonly?: boolean
 }
 
 const TextInput = (props: TextInputProps) => {
@@ -40,6 +41,7 @@ const TextInput = (props: TextInputProps) => {
         value={props.value}
         placeholder={props.placeholder}
         onChange={(e) => props.handleChange(e.target.value, props?.index, props?.subchapterIndex)}
+        readOnly={props?.readonly}
       />
       {props?.headingType && (
         <div className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer rounded-[4px] border border-tertiary-grey-stone bg-tertiary-grey-silver px-3 py-2 text-sm text-tertiary-grey-dim">

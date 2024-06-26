@@ -2,16 +2,30 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { articlesAPI } from 'src/lib/api'
 import { localFormatDate } from 'src/lib/localFormatDate'
-import { deleteFromPublished } from 'src/redux/features/dashboardSlice'
+import { deleteFromDrafts, deleteFromPublished } from 'src/redux/features/dashboardSlice'
 import { useAppDispatch } from 'src/redux/hooks'
 import { DashboardPublishedInterface } from 'src/types/types'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from 'src/components/ui/AlertDialog'
+import { useToast } from 'src/lib/use-toast'
 
 interface DashboardCardProps {
   item: DashboardPublishedInterface
+  draft?: boolean
 }
 
 const DashboardCard = (props: DashboardCardProps) => {
-  const { item } = props
+  const { item, draft } = props
+  const { toast } = useToast()
   const [isFetching, setIsFetching] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -21,7 +35,15 @@ const DashboardCard = (props: DashboardCardProps) => {
   const handleOpenDeletePopup = async () => {
     setIsFetching(true)
     const afterDeleteAction = () => {
-      dispatch(deleteFromPublished(item.id))
+      if (draft) {
+        dispatch(deleteFromDrafts(item.id))
+      } else {
+        dispatch(deleteFromPublished(item.id))
+      }
+      toast({
+        title: `${draft ? 'Draft' : 'Article'} with id: ${item.id} deleted`,
+        description: 'Successfully!',
+      })
       setIsFetching(false)
     }
     await articlesAPI
@@ -41,9 +63,26 @@ const DashboardCard = (props: DashboardCardProps) => {
           <button onClick={handleClickEdit}>
             <img src="/img/dashboardCard/edit.svg" alt="" />
           </button>
-          <button onClick={handleOpenDeletePopup} disabled={isFetching}>
-            <img src="/img/dashboardCard/delete.svg" alt="" />
-          </button>
+          <AlertDialog>
+            <AlertDialogTrigger>
+              <img src="/img/dashboardCard/delete.svg" alt="" />
+            </AlertDialogTrigger>
+            <AlertDialogContent className="bg-white">
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete tutorial from our
+                  servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleOpenDeletePopup} disabled={isFetching}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           <button>
             <img src="/img/dashboardCard/copy.svg" alt="" />
           </button>
