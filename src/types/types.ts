@@ -23,6 +23,7 @@ export interface DashboardPublishedInterface {
   title: string
   type: ArtictesType
   previewLink: string | null
+  status: 'draft' | 'published' | 'new'
 }
 
 export interface DashboardSectionProps {

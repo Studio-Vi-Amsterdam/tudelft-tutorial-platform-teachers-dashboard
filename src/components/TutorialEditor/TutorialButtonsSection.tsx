@@ -13,6 +13,8 @@ const TutorialButtonsSection = () => {
   const params = new URLSearchParams(useLocation().search)
   const articleType = params.get('type') as ArtictesType
   const articleId = params.get('id')
+  const status = params.get('status')
+
   const navigate = useNavigate()
   const { toast } = useToast()
 
@@ -26,18 +28,21 @@ const TutorialButtonsSection = () => {
 
           if (res.data.id || res.data.data.id) {
             const newId = res.data.id || res.data.data.id
-            navigate(`/dashboard/my-tutorials?type=${articleType}&id=${newId}`)
+            navigate(
+              `/dashboard/my-tutorials?type=${articleType}&id=${newId}&status=${draft ? 'draft' : 'published'}`,
+            )
             toast({
               title: `Article created in "${articleType}"${draft ? ' as draft' : ''}`,
               description: 'Successfully!',
             })
           }
         } else {
-          const res = draft
-            ? await articlesAPI.postDraftArticle(articleType, parsedObject)
-            : await articlesAPI.updateArticle(articleType, parsedObject)
+          const res = await articlesAPI.updateArticle(articleType, parsedObject)
 
           if (res.data) {
+            navigate(
+              `/dashboard/my-tutorials?type=${articleType}&id=${articleId}&status=${draft ? 'draft' : 'published'}`,
+            )
             toast({
               title: `Article updated in "${articleType}"${draft ? ' as draft' : ''}`,
               description: 'Successfully!',
@@ -100,10 +105,16 @@ const TutorialButtonsSection = () => {
         </Button>
       )}
       <Button variant={'outline'} size={'lg'} onClick={testDraftClick}>
-        <p>Save as draft</p>
+        {status === 'new' ? (
+          <p>Save as draft</p>
+        ) : status === 'draft' ? (
+          <p>Update draft</p>
+        ) : (
+          status === 'published' && <p>Switch to draft</p>
+        )}
       </Button>
       <Button size={'lg'} onClick={testPublishClick}>
-        <p>Publish</p>
+        <p>Publish {status === 'published' && 'changes'}</p>
       </Button>
     </section>
   )

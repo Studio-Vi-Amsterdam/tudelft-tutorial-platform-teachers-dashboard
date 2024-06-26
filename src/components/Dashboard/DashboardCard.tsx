@@ -30,7 +30,7 @@ const DashboardCard = (props: DashboardCardProps) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const handleClickEdit = async () => {
-    navigate(`my-tutorials?type=${item.type}&id=${item.id}`)
+    navigate(`my-tutorials?type=${item.type}&id=${item.id}&status=${item.status}`)
   }
   const handleOpenDeletePopup = async () => {
     setIsFetching(true)

@@ -68,6 +68,7 @@ const Dashboard = () => {
           return response.data.map((item: any) => ({
             ...item,
             type,
+            status: 'published',
           }))
         } catch (error) {
           console.error(error)
@@ -83,6 +84,7 @@ const Dashboard = () => {
           return response.data.map((item: any) => ({
             ...item,
             type,
+            status: 'draft',
           }))
         } catch (error) {
           console.error(error)
@@ -120,10 +122,6 @@ const Dashboard = () => {
     }
   }, [isAuthenticated, dispatch])
 
-  const publishedTEST = useAppSelector((state: RootState) => state.dashboard.published)
-  useEffect(() => {
-    console.log('Published', publishedTEST)
-  }, [publishedTEST])
   if (isAuthenticated) {
     return (
       <main className="container mx-auto mb-24 mt-20 flex flex-auto flex-col gap-y-16">
