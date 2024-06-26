@@ -103,4 +103,7 @@ export const mediaAPI = {
     }
     return instance.delete('/media/delete', { data: payload })
   },
+  searchMedia(term: string) {
+    return instance.get(`/media/search/?term=${term}`)
+  },
 }
