@@ -63,15 +63,6 @@ const SubjectsMeta = () => {
                 <div>{`${belongsFields.secondaryCategory.fieldTitle}${
                   belongsFields.secondaryCategory.required ? '*' : ''
                 }`}</div>
-                {/*<div className="w-9/12">*/}
-                {/*  <input*/}
-                {/*    value={belongsFields.secondaryCategory.value}*/}
-                {/*    placeholder={belongsFields.secondaryCategory.fieldTitle}*/}
-                {/*    onChange={(e) =>*/}
-                {/*      handleChangeInput(e.target.value, 'subjectsInvolve', 'secondaryCategory')*/}
-                {/*    }*/}
-                {/*  />*/}
-                {/*</div>*/}
               </div>
             </>
           )}
