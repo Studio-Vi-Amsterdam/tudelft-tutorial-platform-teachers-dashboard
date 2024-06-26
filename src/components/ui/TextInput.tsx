@@ -8,6 +8,7 @@ interface TextInputProps {
   index?: number
   subchapterIndex?: number
   readonly?: boolean
+  className?: string
 }
 
 const TextInput = (props: TextInputProps) => {
@@ -35,7 +36,7 @@ const TextInput = (props: TextInputProps) => {
     <div className="relative w-full">
       <input
         type="text"
-        className={`${
+        className={`${props.className} ${
           props?.headingType && 'pr-24'
         } w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
         value={props.value}

@@ -13,27 +13,32 @@ const MediaPreviewTemplate = (props: MediaPreviewTemplateProps) => {
       <img
         src={props.item.url}
         alt={props.item.url}
-        className={`${props.styles} h-full object-center object-cover`}
+        className={`${props.styles} aspect-video object-center object-cover`}
       />
     )
   } else if (props.item.type === 'video') {
     return (
-      <div className={`${props.styles} h-full flex justify-center items-center flex-col`}>
-        <video controls src={props.item.url} preload="none"></video>
-        {props.item.url && (
-          <p className="text-primary-skyBlue font-medium break-all">
+      <div className={`${props.styles} h-full relative flex !flex-col items-center gap-3`}>
+        <video
+          controls
+          src={props.item.url}
+          preload="metadata"
+          className="aspect-video w-full"
+        ></video>
+        {/* {props.item.url && (
+          <p className="text-primary-skyBlue font-medium break-all text-small">
             {props.item.url.split('/').pop()}
           </p>
-        )}
+        )} */}
       </div>
     )
   } else {
     return (
       <div className={`${props.styles} h-full flex justify-center items-center flex-col`}>
-        <div className="relative">
+        <div className="relative flex flex-col items-center gap-3">
           <FileIcon />
           {props.item.url && (
-            <p className="text-primary-skyBlue font-medium break-all">
+            <p className="text-primary-skyBlue font-medium break-all text-small">
               {props.item.url.split('/').pop()}
             </p>
           )}

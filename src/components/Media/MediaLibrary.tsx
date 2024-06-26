@@ -139,7 +139,7 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
       </div>
       <div className="min-h-[620px]">
         {media && (
-          <div className="flex flex-col gap-y-20">
+          <div className="flex flex-col gap-y-6">
             {viewType === 'block' && (
               <GalleryBlockView
                 selectMode={props.selectMode}

@@ -55,7 +55,13 @@ export const TUDelftLogo = (props: IconsTwoColorsProps) => {
 
 export const FileIcon = () => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0,0,256,256" width="100px" height="100px">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0,0,256,256"
+      width="100px"
+      height="100px"
+      className="h-auto w-1/4"
+    >
       <g
         fill="#00a6d6"
         fillRule="nonzero"

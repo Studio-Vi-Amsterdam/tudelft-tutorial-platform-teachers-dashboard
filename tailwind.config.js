@@ -101,6 +101,7 @@ module.exports = {
       fontSize: {
         h2: ['44px', '48px'],
         h3: ['28px', '40px'],
+        small: ['12px', '16px'],
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -127,6 +128,9 @@ module.exports = {
       },
       transitionTimingFunction: {
         'in-expo': 'cubic-bezier(0.15, 0.00, 0.00, 1.00)',
+      },
+      height: {
+        'auto': 'auto'
       }
     },
   },
