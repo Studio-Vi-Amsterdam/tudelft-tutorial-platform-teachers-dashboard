@@ -23,7 +23,6 @@ const SubjectsMeta = () => {
       )
     }
   }
-  console.log(belongsFields?.primaryCategory.list)
 
   return (
     <>
