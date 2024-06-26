@@ -272,12 +272,14 @@ export const editorSlice = createSlice({
                 primaryCategory: {
                   fieldTitle: 'Primary category',
                   required: true,
-                  value: '',
+                  list: info.categories ?? [],
+                  value: { id: undefined, title: '' },
                 },
                 secondaryCategory: {
                   fieldTitle: 'Secondary category',
                   required: false,
-                  value: '',
+                  list: info.categories ?? [],
+                  value: { id: undefined, title: '' },
                 },
               },
             }
@@ -823,7 +825,8 @@ export const editorSlice = createSlice({
         action.payload.subjectInvolveKey &&
         state.meta.subjectsInvolve
       ) {
-        state.meta.subjectsInvolve[action.payload.subjectInvolveKey].value = action.payload.value
+        state.meta.subjectsInvolve[action.payload.subjectInvolveKey].value.title =
+          action.payload.value
       }
     },
     addKeywordsToList: (

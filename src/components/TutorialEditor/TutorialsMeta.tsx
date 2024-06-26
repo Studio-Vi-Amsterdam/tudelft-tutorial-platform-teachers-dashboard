@@ -250,21 +250,13 @@ const TutorialsMeta = () => {
                   belongsFields.level.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
-                  <select
+                  <input
+                    type="text"
                     value={belongsFields.level.value}
-                    className="w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone"
                     onChange={(e) =>
                       handleMetaInputChange(e.target.value, 'tutorialBelongs', 'level')
                     }
-                  >
-                    <option value="">{belongsFields.level.fieldTitle}</option>
-                    {belongsFields.level.list &&
-                      belongsFields.level.list.map((listItem, index) => (
-                        <option key={index} value={listItem}>
-                          {listItem}
-                        </option>
-                      ))}
-                  </select>
+                  />
                 </div>
               </div>
               <div className="flex w-full flex-row items-center justify-between">
