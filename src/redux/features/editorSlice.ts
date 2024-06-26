@@ -26,6 +26,7 @@ import {
 } from 'src/types/types'
 
 const initialState: EditorState = {
+  isEditorLoaded: false,
   pageType: undefined,
   tutorialTop: {
     title: '',
@@ -71,6 +72,9 @@ export const editorSlice = createSlice({
   name: 'editor',
   initialState,
   reducers: {
+    setEditorLoaded: (state, action: PayloadAction<boolean>) => {
+      state.isEditorLoaded = action.payload
+    },
     setNewState: (
       state,
       action: PayloadAction<{
@@ -152,7 +156,7 @@ export const editorSlice = createSlice({
                   fieldTitle: 'Faculty',
                   required: true,
                   value: '',
-                  list: ['BK'] /* Hardcoded now, as in design file */,
+                  list: ['Bouwkunde'] /* Hardcoded now, as in design file */,
                 },
                 teachers: {
                   required: true,
@@ -220,7 +224,7 @@ export const editorSlice = createSlice({
                   fieldTitle: 'Faculty',
                   required: true,
                   value: '',
-                  list: ['BK'] /* Hardcoded now, as in design file */,
+                  list: ['Bouwkunde'] /* Hardcoded now, as in design file */,
                 },
                 teachers: {
                   required: true,
@@ -1002,6 +1006,7 @@ export const editorSlice = createSlice({
 })
 
 export const {
+  setEditorLoaded,
   setTutorialTitle,
   setTutorialDescription,
   setPageType,
