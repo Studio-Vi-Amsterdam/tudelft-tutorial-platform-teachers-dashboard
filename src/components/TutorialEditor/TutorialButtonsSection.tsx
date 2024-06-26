@@ -25,7 +25,7 @@ const TutorialButtonsSection = () => {
                 navigate(`/dashboard/my-tutorials?type=${articleType}&id=${res.data.data.id}`)
               res.status === 200 &&
                 toast({
-                  title: `Article created in "${articleType}" ${draft ? 'as draft' : ''}`,
+                  title: `Article created in "${articleType}"${draft ? ' as draft' : ''}`,
                   description: 'Successfully!',
                 })
             })
@@ -35,7 +35,7 @@ const TutorialButtonsSection = () => {
                 navigate(`/dashboard/my-tutorials?type=${articleType}&id=${res.data.id}`)
               res.status === 200 &&
                 toast({
-                  title: `Article created in "${articleType}" ${draft ? 'as draft' : ''}`,
+                  title: `Article created in "${articleType}"${draft ? ' as draft' : ''}`,
                   description: 'Successfully!',
                 })
             })
@@ -55,7 +55,7 @@ const TutorialButtonsSection = () => {
                 navigate(`/dashboard/my-tutorials?type=${articleType}&id=${res.data.data.id}`)
               res.status === 200 &&
                 toast({
-                  title: `Article created in "${articleType}" ${draft ? 'as draft' : ''}`,
+                  title: `Article created in "${articleType}"${draft ? ' as draft' : ''}`,
                   description: 'Successfully!',
                 })
             })
@@ -64,7 +64,7 @@ const TutorialButtonsSection = () => {
               (res) =>
                 res.data &&
                 toast({
-                  title: `Article updated in "${articleType} ${draft ? 'as draft' : ''}"`,
+                  title: `Article updated in "${articleType}${draft ? ' as draft' : ''}"`,
                   description: 'Successfully!',
                 }),
             )
