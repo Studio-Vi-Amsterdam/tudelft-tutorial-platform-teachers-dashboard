@@ -53,8 +53,7 @@ const BlogEditor = () => {
           dispatch(setEditorLoaded(true))
         } else if (articleId === 'new') {
           let info = {}
-          const extraInfo =
-            articleType !== 'subjects' && (await getInfo(articleType as ArtictesType))
+          const extraInfo = await getInfo(articleType as ArtictesType)
 
           if (articleType === 'tutorials') {
             info = {
@@ -92,7 +91,7 @@ const BlogEditor = () => {
             }
           } else if (articleType === 'subjects') {
             info = {
-              test: '',
+              categories: extraInfo.categories,
             }
           }
 
