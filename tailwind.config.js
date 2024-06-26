@@ -35,6 +35,9 @@ module.exports = {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         inputBorder: 'var(--input-border)',
+        seasalt: 'var(--seasalt)',
+        dim: 'var(--dim-grey)',
+        stone: 'var(--stone-grey)',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',

@@ -119,7 +119,7 @@ const BlogEditor = () => {
     return (
       <main className="container mx-auto flex flex-auto flex-row justify-between">
         <EditorSidebar tutorialTitle={tutorialTitle} />
-        <div className="flex w-3/4 flex-col items-start pl-4">
+        <div className="flex w-3/4 flex-col items-start pl-28">
           {isFetched ? (
             <>
               <TutorialButtonsSection />
@@ -143,7 +143,7 @@ const BlogEditor = () => {
       </main>
     )
   } else {
-    return <>You need to login!</>
+    return <div className="text-center px-6 py-12">You need to login!</div>
   }
 }
 

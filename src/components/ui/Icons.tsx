@@ -285,3 +285,10 @@ export const ArrowPrev = () => {
     </svg>
   )
 }
+export const TriangleArrow = () => {
+  return (
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 3.75L6 8.25L2 3.75L10 3.75Z" fill="white" />
+    </svg>
+  )
+}
