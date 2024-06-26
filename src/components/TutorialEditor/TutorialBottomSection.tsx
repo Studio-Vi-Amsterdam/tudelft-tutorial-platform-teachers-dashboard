@@ -41,7 +41,10 @@ const TutorialBottomSection = () => {
           toolbar: 'bullist numlist link code table command',
         }}
       />
-      <Tip>This section can be used for a list of useful links, but also for other recurring sections, such as a conclusion.</Tip>
+      <Tip>
+        This section can be used for a list of useful links, but also for other recurring sections
+        such as a conclusion.
+      </Tip>
     </section>
   )
 }
