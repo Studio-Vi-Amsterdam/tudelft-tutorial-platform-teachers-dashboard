@@ -411,6 +411,7 @@ export interface ResponseArticleInterface {
   publish_date?: string
   secondary_subject?: boolean | string | number
   software_version?: number[]
+  'software-version'?: string[]
   teachers?: [] | string[]
   title?: string
   useful_links?: string
