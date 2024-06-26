@@ -21,7 +21,9 @@ const MediaPreviewTemplate = (props: MediaPreviewTemplateProps) => {
       <div className={`${props.styles} h-full flex justify-center items-center flex-col`}>
         <video controls src={props.item.url} preload="none"></video>
         {props.item.url && (
-          <p className="text-primary-skyBlue font-medium">{props.item.url.split('/').pop()}</p>
+          <p className="text-primary-skyBlue font-medium break-all">
+            {props.item.url.split('/').pop()}
+          </p>
         )}
       </div>
     )
@@ -31,7 +33,9 @@ const MediaPreviewTemplate = (props: MediaPreviewTemplateProps) => {
         <div className="relative">
           <FileIcon />
           {props.item.url && (
-            <p className="text-primary-skyBlue font-medium">{props.item.url.split('/').pop()}</p>
+            <p className="text-primary-skyBlue font-medium break-all">
+              {props.item.url.split('/').pop()}
+            </p>
           )}
         </div>
       </div>

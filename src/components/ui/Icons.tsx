@@ -59,6 +59,7 @@ export const GalleryBlockViewIcon = (props: IconsProps) => {
       viewBox={props.width && props.height ? `0 0 ${props.width} ${props.height}` : '0 0 24 24'}
       fill={props.bgColor ? props.bgColor : 'none'}
       xmlns="http://www.w3.org/2000/svg"
+      className="duration-170 transition-all"
     >
       <rect
         x={props.width ? (parseFloat(props.width) / 5.3333).toString() : '4.5'}
@@ -104,6 +105,7 @@ export const GalleryListViewIcon = (props: IconsProps) => {
       viewBox="0 0 24 24"
       fill={props.bgColor ? props.bgColor : 'none'}
       xmlns="http://www.w3.org/2000/svg"
+      className="duration-170 transition-all"
     >
       <rect x="10" y="5" width="10" height="2" fill={props.color} />
       <rect x="10" y="11" width="10" height="2" fill={props.color} />
@@ -187,6 +189,44 @@ export const FilterIcon = (props: IconsProps) => {
         d="M1.08 3.56L1.72 5.8C1.83 6.19 2.06 6.54 2.37 6.8L8.25 11.63C8.71 12.01 8.98 12.58 8.98 13.18V18.13C8.98 19.14 10.32 19.51 10.84 18.64L11.75 16.89C11.9 16.6 11.98 16.29 11.98 15.96V13.12C11.98 12.55 12.23 12 12.66 11.62L18.14 6.78C18.43 6.53 18.63 6.2 18.74 5.83L19.39 3.55C19.76 2.27 18.8 1 17.47 1H3C1.67 1.01 0.71 2.28 1.08 3.56Z"
         stroke={props.color}
         strokeWidth="1.5"
+      />
+    </svg>
+  )
+}
+export const ArrowNext = () => {
+  return (
+    <svg
+      width="48"
+      height="48"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-full"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M19.4697 32.5303C19.1768 32.2374 19.1768 31.7626 19.4697 31.4697L26.9393 24L19.4697 16.5303C19.1768 16.2374 19.1768 15.7626 19.4697 15.4697C19.7626 15.1768 20.2374 15.1768 20.5303 15.4697L28.5303 23.4697C28.8232 23.7626 28.8232 24.2374 28.5303 24.5303L20.5303 32.5303C20.2374 32.8232 19.7626 32.8232 19.4697 32.5303Z"
+        fill="black"
+      />
+    </svg>
+  )
+}
+export const ArrowPrev = () => {
+  return (
+    <svg
+      width="48"
+      height="48"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-full"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M28.5303 15.4697C28.8232 15.7626 28.8232 16.2374 28.5303 16.5303L21.0607 24L28.5303 31.4697C28.8232 31.7626 28.8232 32.2374 28.5303 32.5303C28.2374 32.8232 27.7626 32.8232 27.4697 32.5303L19.4697 24.5303C19.1768 24.2374 19.1768 23.7626 19.4697 23.4697L27.4697 15.4697C27.7626 15.1768 28.2374 15.1768 28.5303 15.4697Z"
+        fill="black"
       />
     </svg>
   )

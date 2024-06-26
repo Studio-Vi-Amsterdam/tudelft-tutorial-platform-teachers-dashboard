@@ -7,10 +7,10 @@ const GalleryListView = (props: GalleryViewProps) => {
   return (
     <>
       <div className=" flex w-full flex-row gap-x-6 border-b border-tertiary-grey-dim py-4">
-        <div className="w-44">Preview</div>
-        <div className="w-[calc(100%-600px)]">Image Title</div>
-        <div className="w-44">Publish Date</div>
-        <div className="w-44">Media Type</div>
+        <div className="w-44 text-subtext">Preview</div>
+        <div className="w-[calc(100%-600px)] text-subtext">Image Title</div>
+        <div className="w-44 text-subtext">Publish Date</div>
+        <div className="w-44 text-subtext">Media Type</div>
       </div>
       <div className="flex w-full flex-col gap-y-4 [&>button]:flex [&>button]:flex-row [&>button]:justify-between">
         {currentItems.map((item, index) => (
@@ -28,6 +28,8 @@ const GalleryListView = (props: GalleryViewProps) => {
           >
             <MediaPreviewTemplate item={item} styles="w-44" />
             <div className="w-[calc(100%-600px)]">{item.title}</div>
+            <div className="w-44"></div>
+            <div className="w-44"></div>
           </button>
         ))}
       </div>

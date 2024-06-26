@@ -57,10 +57,11 @@ export const MediaPage = () => {
             Browse the published tutorials for content that might be useful for your new tutorial.
           </p>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-6">
           <Button
             variant={'outline'}
             onClick={isOpenSelect ? () => setIsOpenSelect(false) : () => setIsOpenSelect(true)}
+            className="px-10"
           >
             {isOpenSelect ? 'Cancel' : 'Select files'}
           </Button>
@@ -68,11 +69,14 @@ export const MediaPage = () => {
             <Button
               onClick={() => setIsOpenDelete(true)}
               disabled={mediaToDelete !== undefined && mediaToDelete.length === 0}
+              className="px-10"
             >
               Delete
             </Button>
           ) : (
-            <Button onClick={() => setIsOpenUpload(true)}>Upload file</Button>
+            <Button onClick={() => setIsOpenUpload(true)} className="px-10">
+              Upload file
+            </Button>
           )}
         </div>
       </header>
