@@ -113,7 +113,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
     return {
       block_name: 'tu-delft-image-text',
       block_data: {
-        image_url: chapter.image?.link,
+        image_url: chapter.image?.id,
         content: chapter.text,
       },
     }
@@ -121,7 +121,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
     return {
       block_name: 'tu-delft-text-image',
       block_data: {
-        image_url: chapter.image?.link,
+        image_url: chapter.image?.id,
         content: chapter.text,
       },
     }
@@ -129,7 +129,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
     return {
       block_name: 'tu-delft-video-text',
       block_data: {
-        video: chapter.video?.link,
+        video: chapter.video?.id,
         content: chapter.text,
       },
     }
@@ -137,7 +137,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
     return {
       block_name: 'tu-delft-text-video',
       block_data: {
-        video: chapter.video?.link,
+        video: chapter.video?.id,
         content: chapter.text,
       },
     }
