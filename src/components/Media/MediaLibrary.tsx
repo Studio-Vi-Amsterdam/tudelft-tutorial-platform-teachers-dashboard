@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { mediaAPI } from '../../lib/api'
-import {
-  FilterIcon,
-  GalleryBlockViewIcon,
-  GalleryListViewIcon,
-  SearchIcon,
-  SortIcon,
-} from '../ui/Icons'
+import { GalleryBlockViewIcon, GalleryListViewIcon } from '../ui/Icons'
 import GalleryBlockView from '../TutorialEditor/GalleryBlockView'
 import GalleryListView from '../TutorialEditor/GalleryListView'
 import PaginationBar from '../TutorialEditor/PaginationBar'
@@ -80,29 +74,29 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
     }
   }, [viewType])
 
-  const [searchValue, setSearchValue] = useState<string>('')
-  const handleChangeSearchValue = async (val: string) => {
-    setSearchValue(val)
-    if (val === '' && val !== searchValue) {
-      handleGetMedia(`page=${currentPage}&amount=${itemsPerPage}`)
-    } else {
-      setIsLoading(true)
-      const foundMedia = await mediaAPI.searchMedia(val).then((res) =>
-        res.data.map((serverItem: any) => {
-          return {
-            id: serverItem.id,
-            url: serverItem.url,
-            type: serverItem.media_type.split('/')[0],
-            format: serverItem.media_type.split('/')[1],
-            title: serverItem.title,
-            publishDate: serverItem.published,
-          }
-        }),
-      )
-      setMedia(foundMedia.slice(0, itemsPerPage))
-      setIsLoading(false)
-    }
-  }
+  const [searchValue] = useState<string>('')
+  // const handleChangeSearchValue = async (val: string) => {
+  //   setSearchValue(val)
+  //   if (val === '' && val !== searchValue) {
+  //     handleGetMedia(`page=${currentPage}&amount=${itemsPerPage}`)
+  //   } else {
+  //     setIsLoading(true)
+  //     const foundMedia = await mediaAPI.searchMedia(val).then((res) =>
+  //       res.data.map((serverItem: any) => {
+  //         return {
+  //           id: serverItem.id,
+  //           url: serverItem.url,
+  //           type: serverItem.media_type.split('/')[0],
+  //           format: serverItem.media_type.split('/')[1],
+  //           title: serverItem.title,
+  //           publishDate: serverItem.published,
+  //         }
+  //       }),
+  //     )
+  //     setMedia(foundMedia.slice(0, itemsPerPage))
+  //     setIsLoading(false)
+  //   }
+  // }
   return (
     <>
       <div className="flex flex-row items-center justify-between mb-6">
@@ -132,31 +126,31 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
             {viewType !== 'list' && <p>List View</p>}
           </button>
         </div>
-        <div className="flex flex-row items-center justify-end [&>div:first-child]:before:!hidden [&>div>button]:flex [&>div>button]:flex-row [&>div>button]:items-center [&>div>button]:gap-x-6 [&>div]:relative [&>div]:before:absolute [&>div]:before:left-0 [&>div]:before:h-full [&>div]:before:w-[1px] [&>div]:before:bg-tertiary-skyBlue-20">
-          <div className="pr-6">
-            <button className="px-4">
-              <input
-                type="text"
-                placeholder="Search"
-                value={searchValue}
-                onChange={(e) => handleChangeSearchValue(e.target.value)}
-              />
-              <SearchIcon color="#000000" />
-            </button>
-          </div>
-          <div className="px-6">
-            <button className="px-4 py-2">
-              <p>Sort</p>
-              <SortIcon color="#000000" />
-            </button>
-          </div>
-          <div className="pl-6">
-            <button className="px-4 py-2">
-              <p>Filter</p>
-              <FilterIcon color="#000000" />
-            </button>
-          </div>
-        </div>
+        {/* <div className="flex flex-row items-center justify-end [&>div:first-child]:before:!hidden [&>div>button]:flex [&>div>button]:flex-row [&>div>button]:items-center [&>div>button]:gap-x-6 [&>div]:relative [&>div]:before:absolute [&>div]:before:left-0 [&>div]:before:h-full [&>div]:before:w-[1px] [&>div]:before:bg-tertiary-skyBlue-20"> */}
+        {/*  <div className="pr-6"> */}
+        {/*    <button className="px-4"> */}
+        {/*      <input */}
+        {/*        type="text" */}
+        {/*        placeholder="Search" */}
+        {/*        value={searchValue} */}
+        {/*        onChange={(e) => handleChangeSearchValue(e.target.value)} */}
+        {/*      /> */}
+        {/*      <SearchIcon color="#000000" /> */}
+        {/*    </button> */}
+        {/*  </div> */}
+        {/*  <div className="px-6"> */}
+        {/*    <button className="px-4 py-2"> */}
+        {/*      <p>Sort</p> */}
+        {/*      <SortIcon color="#000000" /> */}
+        {/*    </button> */}
+        {/*  </div> */}
+        {/*  <div className="pl-6"> */}
+        {/*    <button className="px-4 py-2"> */}
+        {/*      <p>Filter</p> */}
+        {/*      <FilterIcon color="#000000" /> */}
+        {/*    </button> */}
+        {/*  </div> */}
+        {/* </div> */}
       </div>
 
       {media && (
