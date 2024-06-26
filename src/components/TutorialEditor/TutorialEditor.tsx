@@ -43,6 +43,7 @@ const BlogEditor = () => {
           const response = await articlesAPI
             .getSingleArticle(articleType as ArtictesType, parseInt(articleId))
             .then((res) => res.data)
+
           const newObject = await reducerParser.parseToReducer(
             response,
             articleType as ArtictesType,
@@ -108,10 +109,12 @@ const BlogEditor = () => {
         dispatch(setEditorLoaded(true))
       }
     }
+
     if (isAuthenticated) {
       fetchData()
     }
   }, [isAuthenticated])
+
   const tutorialTitle = useAppSelector((state: RootState) => state.editor.tutorialTop.title)
   const chapters = useAppSelector((state: RootState) => state.editor.chapters)
   const isFetched = useAppSelector((state: RootState) => state.editor.isEditorLoaded)
