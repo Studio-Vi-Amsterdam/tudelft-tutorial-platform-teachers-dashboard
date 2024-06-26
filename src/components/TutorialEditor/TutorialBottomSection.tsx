@@ -22,7 +22,7 @@ const TutorialBottomSection = () => {
   return (
     <section className="relative flex w-full flex-col gap-y-6 py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver">
       <EditorLabel>
-        This section is optional and appears on the botom of the tutorial page.
+        This section is optional and appears on the bottom of the tutorial page.
       </EditorLabel>
       <TextInput
         handleChange={handleTutorialBottomTitleChange}
@@ -41,7 +41,7 @@ const TutorialBottomSection = () => {
           toolbar: 'bullist numlist link code table command',
         }}
       />
-      <Tip>Lorem Ipsum</Tip>
+      <Tip>This section can be used for a list of useful links, but also for other recurring sections, such as a conclusion.</Tip>
     </section>
   )
 }
