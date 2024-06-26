@@ -156,7 +156,7 @@ export const editorSlice = createSlice({
                   fieldTitle: 'Faculty',
                   required: true,
                   value: '',
-                  list: ['BK'] /* Hardcoded now, as in design file */,
+                  list: ['Bouwkunde'] /* Hardcoded now, as in design file */,
                 },
                 teachers: {
                   required: true,
@@ -224,7 +224,7 @@ export const editorSlice = createSlice({
                   fieldTitle: 'Faculty',
                   required: true,
                   value: '',
-                  list: ['BK'] /* Hardcoded now, as in design file */,
+                  list: ['Bouwkunde'] /* Hardcoded now, as in design file */,
                 },
                 teachers: {
                   required: true,
