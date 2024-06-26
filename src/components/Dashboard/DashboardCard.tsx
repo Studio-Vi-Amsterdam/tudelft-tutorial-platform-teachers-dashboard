@@ -50,6 +50,9 @@ const DashboardCard = (props: DashboardCardProps) => {
       .deleteArticle(item.type, item.id)
       .then((res) => res.status === 200 && afterDeleteAction())
   }
+  const openPreviewTab = () => {
+    item.previewLink && window.open(item.previewLink, '_blank', 'noopener,noreferrer')
+  }
   return (
     <div className="flex w-[calc(25%-18px)]  flex-col gap-y-4 rounded-[4px] bg-background-aliceBlue p-4">
       <div className="flex flex-row items-center justify-between">
@@ -57,7 +60,7 @@ const DashboardCard = (props: DashboardCardProps) => {
           {item.type}
         </span>
         <div className=" flex flex-row gap-x-2 [&>button]:h-6 [&>button]:w-6 [&>button]:rounded-[4px] [&>button]:bg-white [&>button]:p-1">
-          <button>
+          <button onClick={openPreviewTab}>
             <img src="/img/dashboardCard/view.svg" alt="" />
           </button>
           <button onClick={handleClickEdit}>

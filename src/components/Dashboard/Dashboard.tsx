@@ -1,6 +1,10 @@
 import DashboardTutorialSection from './DashboardTutorialSection'
 import AddNewTutorialButton from './AddNewTutorialButton'
-import { HardcodeTestDataInterface } from 'src/types/types'
+import {
+  ArtictesType,
+  DashboardPublishedInterface,
+  HardcodeTestDataInterface,
+} from 'src/types/types'
 import { useEffect } from 'react'
 import { articlesAPI } from 'src/lib/api'
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
@@ -25,20 +29,6 @@ const Dashboard = () => {
         imgSrc: '/img/dashboard/onboarding-guidelines.svg',
       },
     ],
-    drafts: [
-      {
-        type: 'course',
-        name: 'Computer Aided Design',
-        lastEdit: new Date('2023-06-09'),
-        published: new Date('2023-06-09'),
-      },
-      {
-        type: 'course',
-        name: 'Computer Aided Design',
-        lastEdit: new Date('2023-06-09'),
-        published: new Date('2023-06-09'),
-      },
-    ],
   }
 
   const dispatch = useAppDispatch()
@@ -49,109 +39,91 @@ const Dashboard = () => {
   const { isAuthenticated } = useAuth()
 
   useEffect(() => {
+    const fetchPreviewLink = async (type: ArtictesType, id: number): Promise<string | null> => {
+      try {
+        const response = await articlesAPI.getPreviewLink(type, id)
+        return response.data.preview_link || null
+      } catch (error) {
+        console.error(`Error fetching preview link for ${type} with id ${id}:`, error)
+        return null
+      }
+    }
+
+    const addPreviewLinks = async (
+      articles: DashboardPublishedInterface[],
+    ): Promise<DashboardPublishedInterface[]> => {
+      const articlesWithPreviewLinks = await Promise.all(
+        articles.map(async (article) => {
+          const previewLink = await fetchPreviewLink(article.type, article.id)
+          return { ...article, previewLink }
+        }),
+      )
+      return articlesWithPreviewLinks
+    }
+
     const fetchData = async () => {
-      let tutorials = []
-      let courses = []
-      let softwares = []
-      let subjects = []
-      let draftTutorials = []
-      let draftCourses = []
-      let draftSubjects = []
-      let draftSoftwares = []
+      const fetchArticles = async (type: ArtictesType): Promise<DashboardPublishedInterface[]> => {
+        try {
+          const response = await articlesAPI.getArticles(type)
+          return response.data.map((item: any) => ({
+            ...item,
+            type,
+          }))
+        } catch (error) {
+          console.error(error)
+          return []
+        }
+      }
+
+      const fetchDraftArticles = async (
+        type: ArtictesType,
+      ): Promise<DashboardPublishedInterface[]> => {
+        try {
+          const response = await articlesAPI.getDraftArticles(type)
+          return response.data.map((item: any) => ({
+            ...item,
+            type,
+          }))
+        } catch (error) {
+          console.error(error)
+          return []
+        }
+      }
+
+      const articleTypes: ArtictesType[] = ['tutorials', 'courses', 'softwares', 'subjects']
+
       dispatch(setDashboardFetched({ row: 'published', value: false }))
       dispatch(setDashboardFetched({ row: 'drafts', value: false }))
-      try {
-        const tutorialsResponse = await articlesAPI.getArticles('tutorials')
 
-        tutorials = tutorialsResponse.data.map((item: any) => ({
-          ...item,
-          type: 'tutorials' as const,
-        }))
-      } catch (error) {
-        console.error(error)
-      }
-      try {
-        const coursesResponse = await articlesAPI.getArticles('courses')
-        courses = coursesResponse.data.map((item: any) => ({
-          ...item,
-          type: 'courses' as const,
-        }))
-      } catch (error) {
-        console.error(error)
-      }
-      try {
-        const softwaresResponse = await articlesAPI.getArticles('softwares')
-        softwares = softwaresResponse.data.map((item: any) => ({
-          ...item,
-          type: 'softwares' as const,
-        }))
-      } catch (error) {
-        console.error(error)
-      }
-      try {
-        const subjectsResponse = await articlesAPI.getArticles('subjects')
-        subjects = subjectsResponse.data.map((item: any) => ({
-          ...item,
-          type: 'subjects' as const,
-        }))
-      } catch (error) {
-        console.error(error)
-      }
-      const allData = [...tutorials, ...courses, ...softwares, ...subjects]
+      const [publishedArticles, draftArticles] = await Promise.all([
+        Promise.all(articleTypes.map(fetchArticles)).then((results) => results.flat()),
+        Promise.all(articleTypes.map(fetchDraftArticles)).then((results) => results.flat()),
+      ])
 
-      allData.sort(
-        (a, b) => new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime(),
-      )
-      dispatch(setPublished(allData))
+      const sortByDate = (a: DashboardPublishedInterface, b: DashboardPublishedInterface) =>
+        new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime()
+
+      let sortedPublishedArticles = publishedArticles.sort(sortByDate)
+      let sortedDraftArticles = draftArticles.sort(sortByDate)
+
+      sortedPublishedArticles = await addPreviewLinks(sortedPublishedArticles)
+      sortedDraftArticles = await addPreviewLinks(sortedDraftArticles)
+
+      dispatch(setPublished(sortedPublishedArticles))
       dispatch(setDashboardFetched({ row: 'published', value: true }))
-      try {
-        const tutorialsDraftResponse = await articlesAPI.getDraftArticles('tutorials')
-
-        draftTutorials = tutorialsDraftResponse.data.map((item: any) => ({
-          ...item,
-          type: 'tutorials' as const,
-        }))
-      } catch (error) {
-        console.error(error)
-      }
-      try {
-        const coursesDraftResponse = await articlesAPI.getDraftArticles('courses')
-        draftCourses = coursesDraftResponse.data.map((item: any) => ({
-          ...item,
-          type: 'courses' as const,
-        }))
-      } catch (error) {
-        console.error(error)
-      }
-      try {
-        const softwaresDraftResponse = await articlesAPI.getDraftArticles('softwares')
-        draftSoftwares = softwaresDraftResponse.data.map((item: any) => ({
-          ...item,
-          type: 'softwares' as const,
-        }))
-      } catch (error) {
-        console.error(error)
-      }
-      try {
-        const subjectsDraftResponse = await articlesAPI.getArticles('subjects')
-        draftSubjects = subjectsDraftResponse.data.map((item: any) => ({
-          ...item,
-          type: 'subjects' as const,
-        }))
-      } catch (error) {
-        console.error(error)
-      }
-      const draftData = [...draftTutorials, ...draftCourses, ...draftSoftwares, ...draftSubjects]
-      draftData.sort(
-        (a, b) => new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime(),
-      )
-      dispatch(setDrafts(draftData))
+      dispatch(setDrafts(sortedDraftArticles))
       dispatch(setDashboardFetched({ row: 'drafts', value: true }))
     }
+
     if (isAuthenticated) {
       fetchData()
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated, dispatch])
+
+  const publishedTEST = useAppSelector((state: RootState) => state.dashboard.published)
+  useEffect(() => {
+    console.log('Published', publishedTEST)
+  }, [publishedTEST])
   if (isAuthenticated) {
     return (
       <main className="container mx-auto mb-24 mt-20 flex flex-auto flex-col gap-y-16">

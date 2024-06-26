@@ -22,6 +22,7 @@ export interface DashboardPublishedInterface {
   publish_date: string
   title: string
   type: ArtictesType
+  previewLink: string | null
 }
 
 export interface DashboardSectionProps {
