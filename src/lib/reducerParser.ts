@@ -840,7 +840,7 @@ export const reducerParser = {
         useful_links: editorState.tutorialBottom.text,
         chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
         software_version: editorState.meta.softwareBelongs?.softwareVersion.value.title
-          ? editorState.meta.softwareBelongs?.softwareVersion.value.title
+          ? [editorState.meta.softwareBelongs?.softwareVersion.value.title]
           : [],
         keywords: editorState.meta.softwareBelongs?.keywords.list ?? [],
         featured_image: editorState.meta?.softwareBelongs?.image.value.id ?? null,
