@@ -247,7 +247,7 @@ const TutorialsMeta = () => {
                   />
                 </div>
               </div>
-              <div className="flex w-full flex-row items-center justify-between">
+              {/* <div className="flex w-full flex-row items-center justify-between">
                 <div>{`${belongsFields.level.fieldTitle}${
                   belongsFields.level.required ? '*' : ''
                 }`}</div>
@@ -260,7 +260,7 @@ const TutorialsMeta = () => {
                     }
                   />
                 </div>
-              </div>
+              </div> */}
               <div className="flex w-full flex-row items-center justify-between">
                 <div>{`${belongsFields.keywords.fieldTitle}${
                   belongsFields.keywords.required ? '*' : ''
