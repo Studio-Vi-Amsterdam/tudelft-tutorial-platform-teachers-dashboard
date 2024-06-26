@@ -59,7 +59,7 @@ const DeleteElementWraper = (props: DeleteElementWraperProps) => {
       <div
         className={`${
           props.styles && props.styles
-        } absolute right-1 top-1 z-50 flex w-fit flex-row rounded-[20px] border bg-background-seasalt p-2`}
+        } absolute right-1 top-1 z-40 flex w-fit flex-row rounded-[20px] border bg-background-seasalt p-2`}
       >
         <div
           className={`${

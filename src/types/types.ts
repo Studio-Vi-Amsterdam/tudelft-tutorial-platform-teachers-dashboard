@@ -27,6 +27,7 @@ export interface DashboardPublishedInterface {
 export interface DashboardSectionProps {
   items: DashboardPublishedInterface[]
   heading: string
+  fetched: boolean
 }
 
 interface ElementActionBase {
@@ -329,6 +330,7 @@ export interface TutorialMetaObject {
 }
 
 export interface EditorState {
+  isEditorLoaded: boolean
   pageType: PageTypeType
   tutorialTop: TutorialTopInterface
   chapters: ChapterInterface[] | []
@@ -380,6 +382,8 @@ export interface DashboardDraftsInterface {
 }
 
 export interface DashboardInterface {
+  isDraftsLoaded: boolean
+  isPublishedLoaded: boolean
   username: string
   drafts: DashboardPublishedInterface[] | []
   published: DashboardPublishedInterface[] | []
