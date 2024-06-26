@@ -760,6 +760,20 @@ export const editorSlice = createSlice({
           ) ?? { id: undefined, title: '' }
       }
     },
+    changeSubjectsIdListField: (
+      state,
+      action: PayloadAction<{
+        value: string
+        involvesKeyName: 'primaryCategory' | 'secondaryCategory'
+      }>,
+    ) => {
+      if (state.meta.subjectsInvolve) {
+        state.meta.subjectsInvolve[action.payload.involvesKeyName].value =
+          state.meta.subjectsInvolve[action.payload.involvesKeyName].list.find(
+            (item) => item.title === action.payload.value,
+          ) ?? { id: undefined, title: '' }
+      }
+    },
     changeSubchapterText: (
       state,
       action: PayloadAction<{
@@ -1043,6 +1057,7 @@ export const {
   setNewState,
   removeKeywordFromProposed,
   changeMetaListIdValue,
+  changeSubjectsIdListField,
   addTeacherToList,
   removeTeacherFromProposed,
   deleteTeacher,

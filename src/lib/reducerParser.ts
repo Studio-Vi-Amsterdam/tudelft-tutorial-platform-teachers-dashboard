@@ -605,6 +605,9 @@ export const reducerParser = {
         },
       }
     } else if (articleType === 'subjects') {
+      const info = await getInfo(articleType)
+      console.log(info)
+
       reducerObject = {
         tutorialTop: {
           title: response.title ? response.title : '',
@@ -622,8 +625,9 @@ export const reducerParser = {
           subjectsInvolve: {
             primaryCategory: {
               fieldTitle: 'Primary category',
+              list: info.categories ?? [],
               required: true,
-              value: response.category ?? '',
+              value: response.category ?? { id: undefined, title: '' },
             },
             secondaryCategory: {
               fieldTitle: 'Secondary category',

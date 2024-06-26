@@ -2,28 +2,19 @@ import React from 'react'
 import EditorLabel from '../ui/EditorLabel'
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
 import { RootState } from 'src/redux/store'
-import { changeMetaField } from 'src/redux/features/editorSlice'
-import { ObjectNameType } from '../../types/types'
+import { changeSubjectsIdListField } from 'src/redux/features/editorSlice'
 
 const SubjectsMeta = () => {
   const belongsFields = useAppSelector((state: RootState) => state.editor.meta.subjectsInvolve)
   const dispatch = useAppDispatch()
-  const handleMetaInputChange = (
+  const handleMetaIdInputChange = (
     value: string,
-    objectName: ObjectNameType,
-    subjectInvolveKey?: 'primaryCategory' | 'secondaryCategory',
+    involvesKeyName: 'primaryCategory' | 'secondaryCategory',
   ) => {
-    if (subjectInvolveKey) {
-      dispatch(
-        changeMetaField({
-          value,
-          objectName,
-          subjectInvolveKey,
-        }),
-      )
+    if (involvesKeyName) {
+      dispatch(changeSubjectsIdListField({ value, involvesKeyName }))
     }
   }
-
   return (
     <>
       <section className="relative flex w-full flex-col gap-y-6 py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver">
@@ -44,9 +35,7 @@ const SubjectsMeta = () => {
                   <select
                     value={belongsFields.primaryCategory.value.title}
                     className="w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone"
-                    onChange={(e) =>
-                      handleMetaInputChange(e.target.value, 'subjectsInvolve', 'primaryCategory')
-                    }
+                    onChange={(e) => handleMetaIdInputChange(e.target.value, 'primaryCategory')}
                   >
                     <option value="">{belongsFields.primaryCategory.fieldTitle}</option>
                     {belongsFields.primaryCategory.list &&
@@ -62,6 +51,21 @@ const SubjectsMeta = () => {
                 <div>{`${belongsFields.secondaryCategory.fieldTitle}${
                   belongsFields.secondaryCategory.required ? '*' : ''
                 }`}</div>
+                <div className="w-9/12">
+                  <select
+                    value={belongsFields.secondaryCategory.value.title}
+                    className="w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone"
+                    onChange={(e) => handleMetaIdInputChange(e.target.value, 'secondaryCategory')}
+                  >
+                    <option value="">{belongsFields.secondaryCategory.fieldTitle}</option>
+                    {belongsFields.secondaryCategory.list &&
+                      belongsFields.secondaryCategory.list.map((listItem, index) => (
+                        <option key={index} value={listItem?.title}>
+                          {listItem?.title}
+                        </option>
+                      ))}
+                  </select>
+                </div>
               </div>
             </>
           )}
