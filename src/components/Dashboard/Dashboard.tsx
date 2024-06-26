@@ -126,7 +126,7 @@ const Dashboard = () => {
     return (
       <main className="container mx-auto mb-24 mt-20 flex flex-auto flex-col gap-y-16">
         <div className="flex flex-row items-center justify-between">
-          <h2 className="font-RobotoSlab text-h2 font-light -tracking-1">Hello Username</h2>
+          <h2 className="font-RobotoSlab text-h2 font-light -tracking-1">Hello there!</h2>
           <AddNewTutorialButton />
         </div>
         {hardcodeTestData?.onboarding && (
