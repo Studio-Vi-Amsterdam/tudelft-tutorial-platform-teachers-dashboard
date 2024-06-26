@@ -324,8 +324,8 @@ export interface TutorialMetaObject {
     image: OnlyValueImageInterface
   }
   subjectsInvolve?: {
-    primaryCategory: OnlyValueInterface
-    secondaryCategory: OnlyValueInterface
+    primaryCategory: MetaFieldIdListInterface
+    secondaryCategory: MetaFieldIdListInterface
   }
 }
 

@@ -2,25 +2,29 @@ import React from 'react'
 import EditorLabel from '../ui/EditorLabel'
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
 import { RootState } from 'src/redux/store'
-import { TutorialMetaObject } from 'src/types/types'
 import { changeMetaField } from 'src/redux/features/editorSlice'
+import { ObjectNameType } from '../../types/types'
 
 const SubjectsMeta = () => {
   const belongsFields = useAppSelector((state: RootState) => state.editor.meta.subjectsInvolve)
   const dispatch = useAppDispatch()
-  const handleChangeInput = (
+  const handleMetaInputChange = (
     value: string,
-    objectName: keyof TutorialMetaObject,
-    subjectInvolveKey: 'primaryCategory' | 'secondaryCategory',
+    objectName: ObjectNameType,
+    subjectInvolveKey?: 'primaryCategory' | 'secondaryCategory',
   ) => {
-    dispatch(
-      changeMetaField({
-        value,
-        objectName,
-        subjectInvolveKey,
-      }),
-    )
+    if (subjectInvolveKey) {
+      dispatch(
+        changeMetaField({
+          value,
+          objectName,
+          subjectInvolveKey,
+        }),
+      )
+    }
   }
+  console.log(belongsFields?.primaryCategory.list)
+
   return (
     <>
       <section className="relative flex w-full flex-col gap-y-6 py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver">
@@ -38,28 +42,36 @@ const SubjectsMeta = () => {
                   belongsFields.primaryCategory.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
-                  <input
-                    value={belongsFields.primaryCategory.value}
-                    placeholder={belongsFields.primaryCategory.fieldTitle}
+                  <select
+                    value={belongsFields.primaryCategory.value.title}
+                    className="w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone"
                     onChange={(e) =>
-                      handleChangeInput(e.target.value, 'subjectsInvolve', 'primaryCategory')
+                      handleMetaInputChange(e.target.value, 'subjectsInvolve', 'primaryCategory')
                     }
-                  />
+                  >
+                    <option value="">{belongsFields.primaryCategory.fieldTitle}</option>
+                    {belongsFields.primaryCategory.list &&
+                      belongsFields.primaryCategory.list.map((listItem, index) => (
+                        <option key={index} value={listItem?.title}>
+                          {listItem?.title}
+                        </option>
+                      ))}
+                  </select>
                 </div>
               </div>
               <div className="flex w-full flex-row items-center justify-between">
                 <div>{`${belongsFields.secondaryCategory.fieldTitle}${
                   belongsFields.secondaryCategory.required ? '*' : ''
                 }`}</div>
-                <div className="w-9/12">
-                  <input
-                    value={belongsFields.secondaryCategory.value}
-                    placeholder={belongsFields.secondaryCategory.fieldTitle}
-                    onChange={(e) =>
-                      handleChangeInput(e.target.value, 'subjectsInvolve', 'secondaryCategory')
-                    }
-                  />
-                </div>
+                {/*<div className="w-9/12">*/}
+                {/*  <input*/}
+                {/*    value={belongsFields.secondaryCategory.value}*/}
+                {/*    placeholder={belongsFields.secondaryCategory.fieldTitle}*/}
+                {/*    onChange={(e) =>*/}
+                {/*      handleChangeInput(e.target.value, 'subjectsInvolve', 'secondaryCategory')*/}
+                {/*    }*/}
+                {/*  />*/}
+                {/*</div>*/}
               </div>
             </>
           )}
