@@ -599,7 +599,7 @@ export const reducerParser = {
               list: info.software_versions
                 ? info.software_versions
                 : [{ id: undefined, title: '' }],
-              value: response.software_version ?? '',
+              value: response['software-version'] ? { title: response['software-version'] } : '',
             },
           },
         },
@@ -839,8 +839,8 @@ export const reducerParser = {
             : [],
         useful_links: editorState.tutorialBottom.text,
         chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
-        software_version: editorState.meta.softwareBelongs?.softwareVersion.value.id
-          ? [editorState.meta.softwareBelongs?.softwareVersion.value.id]
+        software_version: editorState.meta.softwareBelongs?.softwareVersion.value.title
+          ? editorState.meta.softwareBelongs?.softwareVersion.value.title
           : [],
         keywords: editorState.meta.softwareBelongs?.keywords.list ?? [],
         featured_image: editorState.meta?.softwareBelongs?.image.value.id ?? null,
