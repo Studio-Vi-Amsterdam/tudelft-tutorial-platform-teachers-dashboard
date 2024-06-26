@@ -1,4 +1,5 @@
 import React from 'react'
+import { ArrowNext, ArrowPrev } from '../ui/Icons'
 
 interface PaginationBarProps {
   totalPages: number
@@ -55,11 +56,11 @@ const PaginationBar = (props: PaginationBarProps) => {
     <div className="flex flex-row items-center justify-center">
       <div className="flex flex-row gap-x-2 [&>button]:flex [&>button]:h-12 [&>button]:w-12 [&>button]:flex-row [&>button]:items-center [&>button]:justify-center [&>button]:rounded-[4px] [&>button]:text-xl [&>button]:leading-8">
         <button onClick={handlePrevClick} disabled={currentPage === 1 || props.selectMode}>
-          {'<'}
+          <ArrowPrev />
         </button>
         {renderPageNumbers()}
         <button onClick={handleNextClick} disabled={currentPage === totalPages || props.selectMode}>
-          {'>'}
+          <ArrowNext />
         </button>
       </div>
     </div>

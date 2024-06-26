@@ -13,7 +13,7 @@ module.exports = {
       center: true,
       padding: '2rem',
       screens: {
-        '2xl': '1400px',
+        '2xl': '1300px',
       },
     },
     fontFamily: {
@@ -35,6 +35,9 @@ module.exports = {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         inputBorder: 'var(--input-border)',
+        seasalt: 'var(--seasalt)',
+        dim: 'var(--dim-grey)',
+        stone: 'var(--stone-grey)',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
@@ -101,6 +104,7 @@ module.exports = {
       fontSize: {
         h2: ['44px', '48px'],
         h3: ['28px', '40px'],
+        small: ['12px', '16px'],
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -121,6 +125,16 @@ module.exports = {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
+      transitionDuration: {
+        '170': '170ms',
+        '330': '330ms',
+      },
+      transitionTimingFunction: {
+        'in-expo': 'cubic-bezier(0.15, 0.00, 0.00, 1.00)',
+      },
+      height: {
+        'auto': 'auto'
+      }
     },
   },
   plugins: [require('tailwindcss-animate')],

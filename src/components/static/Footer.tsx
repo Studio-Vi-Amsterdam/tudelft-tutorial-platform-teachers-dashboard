@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
-    <footer className="bg-background-aliceBlue">
+    <footer className=" relative">
+      <div className="absolute top-0 left-0 w-full h-full z-[-1] bg-background-aliceBlue">
+        <img className="w-full h-full object-cover" src="/img/footer.svg" alt="footer bg" />
+      </div>
       <div className="container mx-auto pb-14 pt-20">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row gap-x-24">

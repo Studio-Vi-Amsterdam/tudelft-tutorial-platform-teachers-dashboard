@@ -11,7 +11,7 @@ const Header = () => {
     }
   }, [location])
   return (
-    <header className="z-50  bg-white py-5">
+    <header className="z-50  bg-white py-5 border-b boder-2 border-[#EFF1F3]">
       <div className="container mx-auto flex flex-row items-center justify-between">
         {pathname && (
           <h1 className="flex text-2xl font-bold leading-[30px] -tracking-6 ">

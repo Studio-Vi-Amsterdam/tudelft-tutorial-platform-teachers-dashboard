@@ -55,7 +55,13 @@ export const TUDelftLogo = (props: IconsTwoColorsProps) => {
 
 export const FileIcon = () => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0,0,256,256" width="100px" height="100px">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0,0,256,256"
+      width="100px"
+      height="100px"
+      className="h-auto w-1/4"
+    >
       <g
         fill="#00a6d6"
         fillRule="nonzero"
@@ -107,6 +113,7 @@ export const GalleryBlockViewIcon = (props: IconsProps) => {
       viewBox={props.width && props.height ? `0 0 ${props.width} ${props.height}` : '0 0 24 24'}
       fill={props.bgColor ? props.bgColor : 'none'}
       xmlns="http://www.w3.org/2000/svg"
+      className="duration-170 transition-all"
     >
       <rect
         x={props.width ? (parseFloat(props.width) / 5.3333).toString() : '4.5'}
@@ -152,6 +159,7 @@ export const GalleryListViewIcon = (props: IconsProps) => {
       viewBox="0 0 24 24"
       fill={props.bgColor ? props.bgColor : 'none'}
       xmlns="http://www.w3.org/2000/svg"
+      className="duration-170 transition-all"
     >
       <rect x="10" y="5" width="10" height="2" fill={props.color} />
       <rect x="10" y="11" width="10" height="2" fill={props.color} />
@@ -236,6 +244,51 @@ export const FilterIcon = (props: IconsProps) => {
         stroke={props.color}
         strokeWidth="1.5"
       />
+    </svg>
+  )
+}
+export const ArrowNext = () => {
+  return (
+    <svg
+      width="48"
+      height="48"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-full"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M19.4697 32.5303C19.1768 32.2374 19.1768 31.7626 19.4697 31.4697L26.9393 24L19.4697 16.5303C19.1768 16.2374 19.1768 15.7626 19.4697 15.4697C19.7626 15.1768 20.2374 15.1768 20.5303 15.4697L28.5303 23.4697C28.8232 23.7626 28.8232 24.2374 28.5303 24.5303L20.5303 32.5303C20.2374 32.8232 19.7626 32.8232 19.4697 32.5303Z"
+        fill="black"
+      />
+    </svg>
+  )
+}
+export const ArrowPrev = () => {
+  return (
+    <svg
+      width="48"
+      height="48"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-full"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M28.5303 15.4697C28.8232 15.7626 28.8232 16.2374 28.5303 16.5303L21.0607 24L28.5303 31.4697C28.8232 31.7626 28.8232 32.2374 28.5303 32.5303C28.2374 32.8232 27.7626 32.8232 27.4697 32.5303L19.4697 24.5303C19.1768 24.2374 19.1768 23.7626 19.4697 23.4697L27.4697 15.4697C27.7626 15.1768 28.2374 15.1768 28.5303 15.4697Z"
+        fill="black"
+      />
+    </svg>
+  )
+}
+export const TriangleArrow = () => {
+  return (
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 3.75L6 8.25L2 3.75L10 3.75Z" fill="white" />
     </svg>
   )
 }

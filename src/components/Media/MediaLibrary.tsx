@@ -99,31 +99,42 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
   // }
   return (
     <>
-      <div className="flex flex-row items-center justify-between mb-6">
+      <div className="flex flex-row items-center justify-between mb-10">
         <div className="flex flex-row items-center justify-start gap-x-6 [&>button]:flex [&>button]:flex-row [&>button]:gap-x-4 [&>button]:rounded-[4px] [&>button]:bg-background-aliceBlue [&>button]:p-2">
           <button
-            className={
-              viewType === 'block'
-                ? '!bg-tertiary-skyBlue-10 text-primary-skyBlue'
-                : 'text-tertiary-grey-dim'
-            }
+            className={`
+              ${
+                viewType === 'block'
+                  ? '!bg-tertiary-skyBlue-10 text-primary-skyBlue'
+                  : 'text-tertiary-grey-dim'
+              }
+                !gap-0
+              `}
             onClick={() => setViewType('block')}
             disabled={props.selectMode || isLoading}
           >
             <GalleryBlockViewIcon color={viewType === 'block' ? '#00A6D6' : '#67676B'} />
-            {viewType !== 'block' && <p>Gallery View</p>}
+            <p
+              className={`${viewType === 'block' ? 'w-0 ' : 'w-[105px]'} transition-all duration-330 in-expo overflow-hidden`}
+            >
+              <span className="whitespace-nowrap pl-4">Gallery View</span>
+            </p>
           </button>
           <button
-            className={
+            className={`${
               viewType === 'list'
                 ? '!bg-tertiary-skyBlue-10 text-primary-skyBlue'
                 : 'text-tertiary-grey-dim'
-            }
+            } !gap-0 `}
             onClick={() => setViewType('list')}
             disabled={props.selectMode || isLoading}
           >
             <GalleryListViewIcon color={viewType === 'list' ? '#00A6D6' : '#67676B'} />
-            {viewType !== 'list' && <p>List View</p>}
+            <p
+              className={`${viewType === 'list' ? 'w-0' : 'w-[84px]'} transition-all duration-330 in-expo overflow-hidden`}
+            >
+              <span className="whitespace-nowrap pl-4">List View</span>
+            </p>
           </button>
         </div>
         {/* <div className="flex flex-row items-center justify-end [&>div:first-child]:before:!hidden [&>div>button]:flex [&>div>button]:flex-row [&>div>button]:items-center [&>div>button]:gap-x-6 [&>div]:relative [&>div]:before:absolute [&>div]:before:left-0 [&>div]:before:h-full [&>div]:before:w-[1px] [&>div]:before:bg-tertiary-skyBlue-20"> */}
@@ -152,51 +163,52 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
         {/*  </div> */}
         {/* </div> */}
       </div>
-
-      {media && (
-        <div className="flex flex-col gap-y-10">
-          {isLoading ? (
-            <div className={'w-full flex justify-center items-center'}>
-              <Preloader color="secondary" />
-            </div>
-          ) : (
-            <>
-              {viewType === 'block' && (
-                <GalleryBlockView
-                  selectMode={props.selectMode}
-                  currentItems={media}
-                  mediaToDelete={props.mediaToDelete}
-                  handleMultipleSelect={props.handleMultipleSelect}
-                  // eslint-disable-next-line @typescript-eslint/no-empty-function
-                  handleSelectMedia={props.handleSelectMedia ? props.handleSelectMedia : () => {}}
-                  selectedMedia={props.selectedMedia}
-                />
-              )}
-              {viewType === 'list' && (
-                <GalleryListView
-                  selectMode={props.selectMode}
-                  currentItems={media}
-                  mediaToDelete={props.mediaToDelete}
-                  handleMultipleSelect={props.handleMultipleSelect}
-                  // eslint-disable-next-line @typescript-eslint/no-empty-function
-                  handleSelectMedia={props.handleSelectMedia ? props.handleSelectMedia : () => {}}
-                  selectedMedia={props.selectedMedia}
-                />
-              )}
-            </>
-          )}
-          {searchValue.trim() === '' && (
-            <PaginationBar
-              selectMode={props.selectMode}
-              currentPage={currentPage}
-              handleClickPage={handleClick}
-              handleNextClick={handleNextClick}
-              handlePrevClick={handlePrevClick}
-              totalPages={totalMediaPages}
-            />
-          )}
-        </div>
-      )}
+      <div className="min-h-[620px]">
+        {media && (
+          <div className="flex flex-col gap-y-10">
+            {isLoading ? (
+              <div className={'w-full flex justify-center items-center'}>
+                <Preloader color="secondary" />
+              </div>
+            ) : (
+              <>
+                {viewType === 'block' && (
+                  <GalleryBlockView
+                    selectMode={props.selectMode}
+                    currentItems={media}
+                    mediaToDelete={props.mediaToDelete}
+                    handleMultipleSelect={props.handleMultipleSelect}
+                    // eslint-disable-next-line @typescript-eslint/no-empty-function
+                    handleSelectMedia={props.handleSelectMedia ? props.handleSelectMedia : () => {}}
+                    selectedMedia={props.selectedMedia}
+                  />
+                )}
+                {viewType === 'list' && (
+                  <GalleryListView
+                    selectMode={props.selectMode}
+                    currentItems={media}
+                    mediaToDelete={props.mediaToDelete}
+                    handleMultipleSelect={props.handleMultipleSelect}
+                    // eslint-disable-next-line @typescript-eslint/no-empty-function
+                    handleSelectMedia={props.handleSelectMedia ? props.handleSelectMedia : () => {}}
+                    selectedMedia={props.selectedMedia}
+                  />
+                )}
+              </>
+            )}
+            {searchValue.trim() === '' && (
+              <PaginationBar
+                selectMode={props.selectMode}
+                currentPage={currentPage}
+                handleClickPage={handleClick}
+                handleNextClick={handleNextClick}
+                handlePrevClick={handlePrevClick}
+                totalPages={totalMediaPages}
+              />
+            )}
+          </div>
+        )}
+      </div>
     </>
   )
 }

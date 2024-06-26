@@ -81,6 +81,7 @@ const CoursesMeta = () => {
 
   const [displayedKeywords, setDisplayedKeywords] = useState<string[]>(keywordsArr)
   const [addKeywordDialogOpened, setAddKeywordDialogOpened] = useState<boolean>(false)
+  // const [showDropdown, setShowDropdown] = useState<boolean>(true)
 
   const handleKeywordInputChange = (keyword: string) => {
     dispatch(
@@ -199,17 +200,18 @@ const CoursesMeta = () => {
           {belongsFields && (
             <>
               <div className="flex w-full flex-row items-center justify-between">
-                <div>{'Course*'}</div>
+                <div className="min-h-14">{'Course*'}</div>
                 <div className="w-9/12">
                   <input
                     value={title}
                     placeholder={'Course'}
                     onChange={(e) => handleChangeTitle(e.target.value)}
+                    className="w-full p-4 rounded border placeholder:text-[#96969B] text-base bg-seasalt border-dim"
                   />
                 </div>
               </div>
               <div className="flex w-full flex-row items-center justify-between">
-                <div>{`${belongsFields.courseCode.fieldTitle}${
+                <div className="min-h-14">{`${belongsFields.courseCode.fieldTitle}${
                   belongsFields.courseCode.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
@@ -219,17 +221,18 @@ const CoursesMeta = () => {
                     onChange={(e) =>
                       handleChangeInput(e.target.value, 'courseBelongs', 'courseCode')
                     }
+                    className="w-full p-4 rounded border placeholder:text-stone text-base bg-seasalt border-dim"
                   />
                 </div>
               </div>
               <div className="flex w-full flex-row items-center justify-between">
-                <div>{`${belongsFields.primaryStudy.fieldTitle}${
+                <div className="min-h-14">{`${belongsFields.primaryStudy.fieldTitle}${
                   belongsFields.primaryStudy.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
                   <select
                     value={belongsFields.primaryStudy.value.title}
-                    className="w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone"
+                    className="w-full p-4 rounded border text-[#96969B] text-base bg-seasalt border-dim"
                     onChange={(e) =>
                       handleMetaIdInputChange(e.target.value, 'courseBelongs', 'primaryStudy')
                     }
@@ -245,13 +248,13 @@ const CoursesMeta = () => {
                 </div>
               </div>
               <div className="flex w-full flex-row items-center justify-between">
-                <div>{`${belongsFields.secondaryStudy.fieldTitle}${
+                <div className="min-h-14">{`${belongsFields.secondaryStudy.fieldTitle}${
                   belongsFields.secondaryStudy.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
                   <select
                     value={belongsFields.secondaryStudy.value.title}
-                    className="w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone"
+                    className="w-full p-4 rounded border text-[#96969B] text-base bg-seasalt border-dim"
                     onChange={(e) =>
                       handleMetaIdInputChange(e.target.value, 'courseBelongs', 'secondaryStudy')
                     }
@@ -266,44 +269,50 @@ const CoursesMeta = () => {
                   </select>
                 </div>
               </div>
-              <div className="flex w-full flex-row items-center justify-between">
-                <div>{`${belongsFields.keywords.fieldTitle}${
+              <div className="flex w-full flex-row items-start justify-between">
+                <div className="h-14 flex items-center">{`${belongsFields.keywords.fieldTitle}${
                   belongsFields.keywords.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
                   <>
                     <div className="w-full">
-                      <div className="relative mx-auto flex w-full flex-col gap-y-4 pt-4">
-                        <div className="absolute right-0 top-0">
+                      <div className="relative mx-auto flex w-full  gap-x-4">
+                        <div className="grow relative z-10">
+                          <input
+                            type="text"
+                            placeholder="search keyword"
+                            value={belongsFields.keywords.value}
+                            onChange={(e) => handleKeywordInputChange(e.target.value)}
+                            className="w-full p-4 rounded border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible"
+                            // onBlur={() => setShowDropdown(!showDropdown)}
+                          />
+                          {displayedKeywords.length > 0 &&
+                            belongsFields.keywords.value.length > 0 && (
+                              <div
+                                className={
+                                  ' absolute top-full w-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
+                                }
+                              >
+                                {displayedKeywords.map((item, index) => (
+                                  <button
+                                    className="w-full text-left hover:bg-tertiary-grey-silver px-4"
+                                    key={index}
+                                    onClick={() => handleKeywordSelect(item)}
+                                  >
+                                    {item}
+                                  </button>
+                                ))}
+                              </div>
+                            )}
+                        </div>
+                        <div className="h-full h-14">
                           <Button
+                            className="h-full flex items-center"
                             variant={'default'}
                             onClick={() => setAddKeywordDialogOpened(true)}
                           >
                             <div>+</div>
                           </Button>
-                        </div>
-
-                        <input
-                          type="text"
-                          placeholder="search keyword"
-                          className="p-1"
-                          value={belongsFields.keywords.value}
-                          onChange={(e) => handleKeywordInputChange(e.target.value)}
-                        />
-                        <div
-                          className={
-                            ' flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-white px-2 pb-2 [&>button]:py-2'
-                          }
-                        >
-                          {displayedKeywords.map((item, index) => (
-                            <button
-                              className="w-full text-left hover:bg-tertiary-grey-silver"
-                              key={index}
-                              onClick={() => handleKeywordSelect(item)}
-                            >
-                              {item}
-                            </button>
-                          ))}
                         </div>
                       </div>
                     </div>
@@ -311,7 +320,7 @@ const CoursesMeta = () => {
                 </div>
               </div>
               <div className="flex w-full flex-row justify-end">
-                <div className="flex w-9/12 flex-row flex-wrap gap-x-2 gap-y-2 pt-4">
+                <div className="flex w-9/12 flex-row flex-wrap gap-x-2 gap-y-2">
                   {belongsFields.keywords.list.map((keyword, index) => (
                     <button
                       key={index}
@@ -323,8 +332,8 @@ const CoursesMeta = () => {
                   ))}
                 </div>
               </div>
-              <div className="flex w-full flex-row items-center justify-between">
-                <div>{`${belongsFields.image.fieldTitle}${
+              <div className="flex w-full flex-row items-start justify-between">
+                <div className="h-14 flex items-center">{`${belongsFields.image.fieldTitle}${
                   belongsFields.image.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
@@ -338,7 +347,7 @@ const CoursesMeta = () => {
                 </div>
               </div>
               <Dialog open={addKeywordDialogOpened} onOpenChange={setAddKeywordDialogOpened}>
-                <DialogContent className="bg-white">
+                <DialogContent className="bg-white p-10">
                   <EditorLabel>Create new keyword</EditorLabel>
                   <TextInput
                     placeholder="term"
@@ -382,7 +391,7 @@ const CoursesMeta = () => {
                 <div className="w-9/12">
                   <select
                     value={responsibleFields.faculty.value}
-                    className="w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone"
+                    className="w-full p-4 rounded text-[#96969B] border text-base bg-seasalt border-dim"
                     onChange={(e) =>
                       handleMetaInputChange(e.target.value, 'courseResponsible', 'faculty')
                     }
@@ -408,25 +417,28 @@ const CoursesMeta = () => {
                         <input
                           type="text"
                           placeholder="search teacher"
-                          className="p-1"
+                          className="w-full p-4 rounded border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible"
                           value={responsibleFields.teachers.value}
                           onChange={(e) => handleTeacherInputChange(e.target.value)}
                         />
-                        <div
-                          className={
-                            ' flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-white px-2 pb-2 [&>button]:py-2'
-                          }
-                        >
-                          {responsibleFields.teachers.proposedList.map((item, index) => (
-                            <button
-                              className="w-full text-left hover:bg-tertiary-grey-silver"
-                              key={index}
-                              onClick={() => handleTeacherSelect(item)}
+                        {responsibleFields.teachers.value.length > 0 &&
+                          responsibleFields.teachers.proposedList.length > 0 && (
+                            <div
+                              className={
+                                'opacity-0 invisible absolute w-full top-full left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim rounded px-2 pb-2 [&>button]:py-2'
+                              }
                             >
-                              {item}
-                            </button>
-                          ))}
-                        </div>
+                              {responsibleFields.teachers.proposedList.map((item, index) => (
+                                <button
+                                  className="w-full text-left hover:bg-tertiary-grey-silver"
+                                  key={index}
+                                  onClick={() => handleTeacherSelect(item)}
+                                >
+                                  {item}
+                                </button>
+                              ))}
+                            </div>
+                          )}
                       </div>
                     </div>
                   </>

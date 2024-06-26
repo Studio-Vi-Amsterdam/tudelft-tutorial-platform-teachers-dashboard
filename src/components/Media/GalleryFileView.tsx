@@ -14,7 +14,7 @@ const GalleryFileView = (props: GalleryFileViewProps) => {
 
   return (
     <>
-      <div className="flex w-full flex-row justify-between flex-wrap gap-x-6 gap-y-6 ">
+      <div className="grid grid-cols-3 gap-x-6 gap-y-6 ">
         {currentItems?.map((item, index) => {
           const isSelected = selectedFile === index
           return (
@@ -22,10 +22,10 @@ const GalleryFileView = (props: GalleryFileViewProps) => {
               key={index}
               className={`${
                 isSelected ? '' : 'before:!hidden'
-              } relative w-[calc(25%-1.5rem)] h-48 before:absolute before:left-0 before:top-0 before:h-full before:w-full before:bg-black before:opacity-50`}
+              } relative w-[calc(25%-1.5rem)] w-full before:absolute before:left-0 before:top-0 before:h-full before:w-full before:bg-black before:opacity-50`}
               onClick={() => handleSelectFile(index, isSelected)}
             >
-              <MediaPreviewTemplate item={item} styles="w-full" />
+              <MediaPreviewTemplate item={item} styles="w-full h-full object-cover" />
             </button>
           )
         })}

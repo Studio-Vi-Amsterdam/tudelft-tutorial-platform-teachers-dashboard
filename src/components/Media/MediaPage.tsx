@@ -57,10 +57,11 @@ export const MediaPage = () => {
             Browse the published tutorials for content that might be useful for your new tutorial.
           </p>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-6">
           <Button
             variant={'outline'}
             onClick={isOpenSelect ? () => setIsOpenSelect(false) : () => setIsOpenSelect(true)}
+            className="px-10"
           >
             {isOpenSelect ? 'Cancel' : 'Select files'}
           </Button>
@@ -68,11 +69,14 @@ export const MediaPage = () => {
             <Button
               onClick={() => setIsOpenDelete(true)}
               disabled={mediaToDelete !== undefined && mediaToDelete.length === 0}
+              className="px-10"
             >
               Delete
             </Button>
           ) : (
-            <Button onClick={() => setIsOpenUpload(true)}>Upload file</Button>
+            <Button onClick={() => setIsOpenUpload(true)} className="px-10">
+              Upload file
+            </Button>
           )}
         </div>
       </header>
@@ -85,23 +89,26 @@ export const MediaPage = () => {
       />
 
       <Dialog open={isOpenUpload} onOpenChange={(val) => setIsOpenUpload(val)}>
-        <DialogContent className="bg-white max-w-7xl">
+        <DialogContent className="bg-white max-w-7xl !rounded p-10">
           <FileUpload />
         </DialogContent>
       </Dialog>
       <Dialog open={isOpenDelete} onOpenChange={setIsOpenDelete}>
-        <DialogContent className="bg-white max-w-lg">
-          <h3>Are you sure to delete selected files?</h3>
-          <p>If you delete this file you will not be able to recover it.</p>
-          <DialogFooter>
+        <DialogContent className="bg-white max-w-[600px] !rounded p-10">
+          <h3 className="pt-16 text-h3">Are you sure to delete selected files?</h3>
+          <p className="text-subtext">
+            If you delete this file you will not be able to recover it.
+          </p>
+          <DialogFooter className="mt-6 !justify-between">
             <Button
               onClick={() => setIsOpenDelete(false)}
               disabled={isFetching}
               variant={'outline'}
+              className="px-10"
             >
               Cancel
             </Button>
-            <Button onClick={() => handleDeleteFiles()} disabled={isFetching}>
+            <Button onClick={() => handleDeleteFiles()} disabled={isFetching} className="px-10">
               {isFetching ? 'Deleting' : 'Delete'}
             </Button>
           </DialogFooter>

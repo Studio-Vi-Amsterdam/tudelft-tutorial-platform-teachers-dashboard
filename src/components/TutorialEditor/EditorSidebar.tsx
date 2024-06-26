@@ -3,6 +3,7 @@ import { useAppSelector } from 'src/redux/hooks'
 import { RootState } from 'src/redux/store'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/Accordion'
 import Preloader from '../ui/Preloader'
+import { TriangleArrow } from '../ui/Icons'
 
 interface EditorSidebarProps {
   tutorialTitle: string
@@ -12,7 +13,7 @@ const EditorSidebar = (props: EditorSidebarProps) => {
   const chapters = useAppSelector((state: RootState) => state.editor.chapters)
   const isFetched = useAppSelector((state: RootState) => state.editor.isEditorLoaded)
   return (
-    <div className="relative w-1/4 text-white">
+    <div className="relative w-1/4 text-white pr-6">
       <div className="sticky top-0">
         <div className="py-10 font-RobotoSlab text-2xl font-medium">Index</div>
         <div className="flex flex-col">
@@ -29,6 +30,9 @@ const EditorSidebar = (props: EditorSidebarProps) => {
                     {chapter.subchapters.length > 0 ? (
                       <>
                         <AccordionTrigger>
+                          <div className="absolute top-1/2 -translate-y-1/2 left-0">
+                            <TriangleArrow />
+                          </div>
                           {chapter.title !== '' ? chapter.title : `Chapter ${index + 1}`}
                         </AccordionTrigger>
                         <AccordionContent>

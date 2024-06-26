@@ -68,7 +68,7 @@ export const FileUpload = () => {
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-8">
+      <div className="grid grid-cols-2 gap-8 mt-14">
         <div className="w-full">
           {!files && (
             <div className="flex w-full flex-col items-center justify-center py-2">
@@ -76,10 +76,10 @@ export const FileUpload = () => {
                 {({ getRootProps, getInputProps }) => (
                   <section
                     {...getRootProps()}
-                    className="flex w-full h-80	bg-tertiary-grey-silver px-20 flex-col items-center h- justify-center gap-y-2"
+                    className="flex w-full h-80	bg-tertiary-grey-silver px-20 flex-col items-center h-96 justify-center gap-y-2"
                   >
                     <input {...getInputProps()} />
-                    <div className="flex w-full flex-col items-center justify-center gap-y-2 rounded-[4px] border border-dashed border-tertiary-grey-stone py-2 text-center text-tertiary-grey-dim">
+                    <div className="flex w-full flex-col items-center justify-center gap-y-2 rounded border border-dashed border-tertiary-grey-stone py-4 text-center text-tertiary-grey-dim">
                       <p className="cursor-pointer text-center text-base ">
                         Drag your file here
                         <br /> <u>or upload it</u>
@@ -101,12 +101,13 @@ export const FileUpload = () => {
         </div>
         {files?.length === 1 && (
           <div>
-            <label>Title</label>
-            <div className="w-9/12">
+            <label className="mb-2 block">Title</label>
+            <div className="w-full">
               <TextInput
                 value={filesTitles !== undefined ? filesTitles[0].val : ''}
                 handleChange={(value) => handleSetFilesTitles(value, 0)}
                 placeholder="Title"
+                className="w-full block !border-[#67676B] rounded-lg !leading-5"
               />
             </div>
           </div>
@@ -126,11 +127,13 @@ export const FileUpload = () => {
       )}
 
       <div>
-        <div className="flex gap-4 justify-between">
-          <Button variant={'outline'} onClick={handleDeleteFiles}>
+        <div className="flex gap-4 justify-between mt-12">
+          <Button variant={'outline'} onClick={handleDeleteFiles} className="px-10">
             Delete file{files && files?.length > 1 ? 's' : ''}
           </Button>
-          <Button onClick={handleUploadFiles}>Save</Button>
+          <Button onClick={handleUploadFiles} className="px-10">
+            Save
+          </Button>
         </div>
       </div>
     </>
