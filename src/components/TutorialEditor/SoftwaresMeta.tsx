@@ -50,8 +50,8 @@ const SoftwaresMeta = () => {
         softwareBelongsKeyName: 'keywords',
       }),
     )
-    const newDisplayedValues = displayedKeywords
-      .filter((item) => item.toLowerCase().startsWith(keyword))
+    const newDisplayedValues = keywordsArr
+      .filter((item) => item.toLowerCase().startsWith(keyword.toLowerCase().trim()))
       .sort((a, b) => a.localeCompare(b))
 
     if (keyword === '') {
@@ -93,8 +93,22 @@ const SoftwaresMeta = () => {
     dispatch(addKeywordsToProposed({ value: keyword, objectName: 'softwareBelongs' }))
   }
   const handleKeywordSelect = (val: string) => {
-    handleMetaInputKeywordsChange(val + ';', 'tutorialBelongs', 'keywords')
+    handleMetaInputKeywordsChange(val + ';', 'softwareBelongs', 'keywords')
+    dispatch(
+      changeMetaField({
+        value: '',
+        objectName: 'softwareBelongs',
+        softwareBelongsKeyName: 'keywords',
+      }),
+    )
   }
+
+  const inputValue = useAppSelector(
+    (state: RootState) => state.editor.meta.softwareBelongs?.keywords.value,
+  )
+  useEffect(() => {
+    console.log('inputValue', inputValue)
+  }, [inputValue])
 
   const [isKeywordPostFetching, setIsKeywordPostFetching] = useState<boolean>(false)
 

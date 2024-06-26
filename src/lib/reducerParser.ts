@@ -113,7 +113,8 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
     return {
       block_name: 'tu-delft-image-text',
       block_data: {
-        image_url: chapter.image?.link,
+        image_url: chapter.image?.url,
+        image: chapter.image?.id,
         content: chapter.text,
       },
     }
@@ -121,7 +122,8 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
     return {
       block_name: 'tu-delft-text-image',
       block_data: {
-        image_url: chapter.image?.link,
+        image_url: chapter.image?.url,
+        image: chapter.image?.id,
         content: chapter.text,
       },
     }
@@ -129,7 +131,8 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
     return {
       block_name: 'tu-delft-video-text',
       block_data: {
-        video: chapter.video?.link,
+        video: chapter.video?.id,
+        video_url: chapter.video?.url,
         content: chapter.text,
       },
     }
@@ -137,7 +140,8 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
     return {
       block_name: 'tu-delft-text-video',
       block_data: {
-        video: chapter.video?.link,
+        video: chapter.video?.id,
+        video_url: chapter.video?.url,
         content: chapter.text,
       },
     }
@@ -595,12 +599,15 @@ export const reducerParser = {
               list: info.software_versions
                 ? info.software_versions
                 : [{ id: undefined, title: '' }],
-              value: response.software_version ?? '',
+              value: response['software-version'] ? { title: response['software-version'] } : '',
             },
           },
         },
       }
     } else if (articleType === 'subjects') {
+      const info = await getInfo(articleType)
+      console.log(info)
+
       reducerObject = {
         tutorialTop: {
           title: response.title ? response.title : '',
@@ -618,8 +625,9 @@ export const reducerParser = {
           subjectsInvolve: {
             primaryCategory: {
               fieldTitle: 'Primary category',
+              list: info.categories ?? [],
               required: true,
-              value: response.category ?? '',
+              value: response.category ?? { id: undefined, title: '' },
             },
             secondaryCategory: {
               fieldTitle: 'Secondary category',
@@ -835,7 +843,9 @@ export const reducerParser = {
             : [],
         useful_links: editorState.tutorialBottom.text,
         chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
-        software_version: editorState.meta.softwareBelongs?.softwareVersion.value.id ?? [],
+        software_version: editorState.meta.softwareBelongs?.softwareVersion.value.title
+          ? [editorState.meta.softwareBelongs?.softwareVersion.value.title]
+          : [],
         keywords: editorState.meta.softwareBelongs?.keywords.list ?? [],
         featured_image: editorState.meta?.softwareBelongs?.image.value.id ?? null,
       }

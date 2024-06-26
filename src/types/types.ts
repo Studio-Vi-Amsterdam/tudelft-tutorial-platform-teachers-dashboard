@@ -22,6 +22,8 @@ export interface DashboardPublishedInterface {
   publish_date: string
   title: string
   type: ArtictesType
+  previewLink: string | null
+  status: 'draft' | 'published' | 'new'
 }
 
 export interface DashboardSectionProps {
@@ -324,8 +326,8 @@ export interface TutorialMetaObject {
     image: OnlyValueImageInterface
   }
   subjectsInvolve?: {
-    primaryCategory: OnlyValueInterface
-    secondaryCategory: OnlyValueInterface
+    primaryCategory: MetaFieldIdListInterface
+    secondaryCategory: MetaFieldIdListInterface
   }
 }
 
@@ -409,6 +411,7 @@ export interface ResponseArticleInterface {
   publish_date?: string
   secondary_subject?: boolean | string | number
   software_version?: number[]
+  'software-version'?: string[]
   teachers?: [] | string[]
   title?: string
   useful_links?: string

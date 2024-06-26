@@ -272,12 +272,14 @@ export const editorSlice = createSlice({
                 primaryCategory: {
                   fieldTitle: 'Primary category',
                   required: true,
-                  value: '',
+                  list: info.categories ?? [],
+                  value: { id: undefined, title: '' },
                 },
                 secondaryCategory: {
                   fieldTitle: 'Secondary category',
                   required: false,
-                  value: '',
+                  list: info.categories ?? [],
+                  value: { id: undefined, title: '' },
                 },
               },
             }
@@ -758,6 +760,20 @@ export const editorSlice = createSlice({
           ) ?? { id: undefined, title: '' }
       }
     },
+    changeSubjectsIdListField: (
+      state,
+      action: PayloadAction<{
+        value: string
+        involvesKeyName: 'primaryCategory' | 'secondaryCategory'
+      }>,
+    ) => {
+      if (state.meta.subjectsInvolve) {
+        state.meta.subjectsInvolve[action.payload.involvesKeyName].value =
+          state.meta.subjectsInvolve[action.payload.involvesKeyName].list.find(
+            (item) => item.title === action.payload.value,
+          ) ?? { id: undefined, title: '' }
+      }
+    },
     changeSubchapterText: (
       state,
       action: PayloadAction<{
@@ -823,7 +839,8 @@ export const editorSlice = createSlice({
         action.payload.subjectInvolveKey &&
         state.meta.subjectsInvolve
       ) {
-        state.meta.subjectsInvolve[action.payload.subjectInvolveKey].value = action.payload.value
+        state.meta.subjectsInvolve[action.payload.subjectInvolveKey].value.title =
+          action.payload.value
       }
     },
     addKeywordsToList: (
@@ -1040,6 +1057,7 @@ export const {
   setNewState,
   removeKeywordFromProposed,
   changeMetaListIdValue,
+  changeSubjectsIdListField,
   addTeacherToList,
   removeTeacherFromProposed,
   deleteTeacher,
