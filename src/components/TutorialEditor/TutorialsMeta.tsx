@@ -206,19 +206,21 @@ const TutorialsMeta = () => {
                   />
                 </div>
               </div>
-              <div className="flex w-full flex-row items-center justify-between">
-                <div>{`${belongsFields.version.fieldTitle}${
-                  belongsFields.version.required ? '*' : ''
-                }`}</div>
-                <div className="w-9/12">
-                  <MetaIdSelect
-                    handleMetaInputChange={handleMetaIdInputChange}
-                    keyName="version"
-                    objectName="tutorialBelongs"
-                    selectedObject={belongsFields.version}
-                  />
+              {belongsFields.version.list.length > 0 && (
+                <div className="flex w-full flex-row items-center justify-between">
+                  <div>{`${belongsFields.version.fieldTitle}${
+                    belongsFields.version.required ? '*' : ''
+                  }`}</div>
+                  <div className="w-9/12">
+                    <MetaIdSelect
+                      handleMetaInputChange={handleMetaIdInputChange}
+                      keyName="version"
+                      objectName="tutorialBelongs"
+                      selectedObject={belongsFields.version}
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="flex w-full flex-row items-center justify-between">
                 <div>{`${belongsFields.primarySubject.fieldTitle}${
                   belongsFields.primarySubject.required ? '*' : ''
