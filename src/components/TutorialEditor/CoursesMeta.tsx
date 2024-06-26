@@ -90,8 +90,8 @@ const CoursesMeta = () => {
         courseBelongsKeyName: 'keywords',
       }),
     )
-    const newDisplayedValues = displayedKeywords
-      .filter((item) => item.toLowerCase().startsWith(keyword))
+    const newDisplayedValues = keywordsArr
+      .filter((item) => item.toLowerCase().startsWith(keyword.toLowerCase().trim()))
       .sort((a, b) => a.localeCompare(b))
 
     if (keyword === '') {
@@ -105,7 +105,6 @@ const CoursesMeta = () => {
     value: string,
     objectName: ObjectNameType,
     belongsKeyName?: 'level' | 'image' | 'keywords',
-    // responsibleKeyName?: keyof TutorialResponsibleInterface,
   ) => {
     if (value[value.length - 1] === ';') {
       dispatch(addKeywordsToList({ value: value.split(';')[0], objectName: 'courseBelongs' }))
@@ -134,7 +133,14 @@ const CoursesMeta = () => {
     dispatch(addKeywordsToProposed({ value: keyword, objectName: 'courseBelongs' }))
   }
   const handleKeywordSelect = (val: string) => {
-    handleMetaInputKeywordsChange(val + ';', 'tutorialBelongs', 'keywords')
+    handleMetaInputKeywordsChange(val + ';', 'courseBelongs', 'keywords')
+    dispatch(
+      changeMetaField({
+        value: '',
+        objectName: 'courseBelongs',
+        courseBelongsKeyName: 'keywords',
+      }),
+    )
   }
 
   const [isKeywordPostFetching, setIsKeywordPostFetching] = useState<boolean>(false)

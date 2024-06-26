@@ -144,8 +144,8 @@ const TutorialsMeta = () => {
         belongsKeyName: 'keywords',
       }),
     )
-    const newDisplayedValues = displayedKeywords
-      .filter((item) => item.startsWith(keyword))
+    const newDisplayedValues = keywordsArr
+      .filter((item) => item.toLowerCase().startsWith(keyword.toLowerCase().trim()))
       .sort((a, b) => a.localeCompare(b))
 
     if (keyword === '') {
@@ -156,6 +156,13 @@ const TutorialsMeta = () => {
   }
   const handleKeywordSelect = (val: string) => {
     handleMetaInputKeywordsChange(val + ';', 'tutorialBelongs', 'keywords')
+    dispatch(
+      changeMetaField({
+        value: '',
+        objectName: 'tutorialBelongs',
+        belongsKeyName: 'keywords',
+      }),
+    )
   }
 
   const handleTeacherSelect = (val: string) => {
