@@ -42,14 +42,14 @@ const AddNewTutorialButton = () => {
         <DialogHeader>
           <DialogTitle>What are you creating?</DialogTitle>
         </DialogHeader>
-        <div className="flex w-full flex-row flex-wrap gap-x-6 gap-y-6 pb-20 mt-6">
+        <div className="grid sm:grid-cols-2 gap-6 pb-6 sm:pb-20 mt-6">
           {buttons.map((item, index) => (
             <button
               key={index}
               onClick={() => handleChangeButton(item)}
               className={`${
                 item === activeButton ? 'border-primary-skyBlue' : 'border-transparent'
-              } w-[calc(50%-12px)] border bg-background-aliceBlue px-6 py-11 text-left text-xl leading-8 transition-colors duration-200`}
+              }  border bg-background-aliceBlue p-6 sm:py-11 text-left text-xl leading-8 transition-colors duration-200`}
             >
               {item}
             </button>

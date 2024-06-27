@@ -124,30 +124,32 @@ const Dashboard = () => {
 
   if (isAuthenticated) {
     return (
-      <main className="container mx-auto mb-24 mt-20 flex flex-auto flex-col gap-y-16">
-        <div className="flex flex-row items-center justify-between">
-          <h2 className="font-RobotoSlab text-h2 font-light -tracking-1">Hello there!</h2>
+      <main className="container mx-auto my-12 sm:mb-24 sm:mt-20 flex flex-auto flex-col gap-10 sm:gap-y-16">
+        <div className="sm:flex flex-row items-center justify-between">
+          <h2 className="font-RobotoSlab text-h2 font-light -tracking-1 sm:mb-0 mb-6">
+            Hello there!
+          </h2>
           <AddNewTutorialButton />
         </div>
         {hardcodeTestData?.onboarding && (
           <section className="flex flex-col">
             <h3 className="mb-6 text-h3 -tracking-1 text-primary-skyBlue">Onboarding</h3>
-            <div className="flex flex-row gap-x-6">
+            <div className=" grid lg:grid-cols-2 gap-6">
               {hardcodeTestData.onboarding.map((item, index) => (
                 <div
                   key={index}
-                  className="flex w-1/2 flex-row gap-x-8 bg-background-aliceBlue p-8"
+                  className="flex sm:flex-row flex-col-reverse justify-between gap-x-8 bg-background-aliceBlue p-6 sm:p-8"
                 >
                   <div className="flex flex-col">
                     <div className="flex flex-col gap-y-4 ">
                       <h4 className="font-RobotoSlab text-2xl font-medium">{item.name}</h4>
                       <p className="text-primary-subtext">{item.text}</p>
                     </div>
-                    <button className="mt-14">
+                    <button className="sm:mt-14 mt-6 max-sm:w-6">
                       <img src="/img/arrow-right.svg" alt={`Navigate to ${item.name}`} />
                     </button>
                   </div>
-                  <div className="flex items-center justify-center">
+                  <div className="flex items-center sm:justify-center sm:mb-0 mb-6 max-sm:w-[100px]">
                     <img src={item.imgSrc} className="object-contain" alt={item.name} />
                   </div>
                 </div>

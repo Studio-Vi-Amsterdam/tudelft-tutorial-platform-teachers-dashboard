@@ -54,19 +54,19 @@ export const MediaPage = () => {
   }
 
   return (
-    <main className="container mx-auto mb-24 mt-20">
-      <header className="flex justify-between items-end mb-20">
+    <main className="container mx-auto md:mb-24 md:mt-20 my-10 mb-16">
+      <header className="md:flex justify-between items-end mb-10 sm:mb-20 gap-3">
         <div>
-          <h1 className="font-RobotoSlab text-h2 font-light -tracking-1 mb-2">Media</h1>
-          <p>
+          <h1 className="font-RobotoSlab text-h2 font-light -tracking-1 mb-4">Media</h1>
+          <p className="text-tertiary-grey-dim max-w-[495px]">
             Browse the published tutorials for content that might be useful for your new tutorial.
           </p>
         </div>
-        <div className="flex gap-6">
+        <div className="flex gap-2 sm:gap-6 md:mt-0 mt-10">
           <Button
             variant={'outline'}
             onClick={isOpenSelect ? () => setIsOpenSelect(false) : () => setIsOpenSelect(true)}
-            className="px-10"
+            className="px-10 whitespace-nowrap max-sm:w-full flex justify-center"
           >
             {isOpenSelect ? 'Cancel' : 'Select files'}
           </Button>
@@ -74,12 +74,15 @@ export const MediaPage = () => {
             <Button
               onClick={() => setIsOpenDelete(true)}
               disabled={mediaToDelete !== undefined && mediaToDelete.length === 0}
-              className="px-10"
+              className="px-10 whitespace-nowrap max-sm:w-full flex justify-center"
             >
               Delete
             </Button>
           ) : (
-            <Button onClick={() => setIsOpenUpload(true)} className="px-10">
+            <Button
+              onClick={() => setIsOpenUpload(true)}
+              className="px-10 whitespace-nowrap max-sm:w-full flex justify-center"
+            >
               Upload file
             </Button>
           )}
@@ -95,7 +98,7 @@ export const MediaPage = () => {
       />
 
       <Dialog open={isOpenUpload} onOpenChange={(val) => setIsOpenUpload(val)}>
-        <DialogContent className="bg-white max-w-7xl !rounded p-10">
+        <DialogContent className="bg-white max-w-7xl !rounded p-8 sm:p-10">
           <FileUpload
             onFetching={handleFetching}
             setIsOpen={(val: boolean) => setIsOpenUpload(val)}
@@ -103,7 +106,7 @@ export const MediaPage = () => {
         </DialogContent>
       </Dialog>
       <Dialog open={isOpenDelete} onOpenChange={setIsOpenDelete}>
-        <DialogContent className="bg-white max-w-[600px] !rounded p-10">
+        <DialogContent className="bg-white max-w-[600px] !rounded p-6 sm:p-10">
           <h3 className="pt-16 text-h3">Are you sure to delete selected files?</h3>
           <p className="text-subtext">
             If you delete this file you will not be able to recover it.
