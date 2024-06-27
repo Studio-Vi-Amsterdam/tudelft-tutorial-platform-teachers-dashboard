@@ -261,8 +261,8 @@ const TutorialsMeta = () => {
                   />
                 </div>
               </div> */}
-              <div className="flex w-full flex-row items-center justify-between">
-                <div className="min-h-14 flex items-center">{`${belongsFields.keywords.fieldTitle}${
+              <div className="flex w-full flex-row items-start justify-between">
+                <div className="h-14 flex items-center">{`${belongsFields.keywords.fieldTitle}${
                   belongsFields.keywords.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
@@ -322,8 +322,8 @@ const TutorialsMeta = () => {
                     ))}
                 </div>
               </div>
-              <div className="flex w-full flex-row items-center justify-between">
-                <div>{`${belongsFields.image.fieldTitle}${
+              <div className="flex w-full flex-row items-start justify-between">
+                <div className="h-14 flex items-center">{`${belongsFields.image.fieldTitle}${
                   belongsFields.image.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
@@ -407,7 +407,7 @@ const TutorialsMeta = () => {
                 }`}</div>
                 <div className="w-9/12">
                   <>
-                    <div className="relative mx-auto flex w-full flex-col gap-y-4 pt-4 z-10">
+                    <div className="relative mx-auto flex w-full flex-col gap-y-4  z-10">
                       <input
                         type="text"
                         placeholder="search teacher"

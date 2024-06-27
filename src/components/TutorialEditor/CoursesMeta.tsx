@@ -413,7 +413,7 @@ const CoursesMeta = () => {
                 <div className="w-9/12">
                   <>
                     <div className="w-full">
-                      <div className="relative mx-auto flex w-full flex-col gap-y-4 pt-4">
+                      <div className="relative mx-auto flex w-full flex-col gap-y-4 ">
                         <input
                           type="text"
                           placeholder="search teacher"

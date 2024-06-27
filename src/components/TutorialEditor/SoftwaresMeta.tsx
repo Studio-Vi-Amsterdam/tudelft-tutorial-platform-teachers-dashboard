@@ -156,8 +156,8 @@ const SoftwaresMeta = () => {
                   </select>
                 </div>
               </div>
-              <div className="flex w-full flex-row items-center justify-between">
-                <div>{`${belongsFields.keywords.fieldTitle}${
+              <div className="flex w-full flex-row items-start justify-between">
+                <div className="h-14 flex items-center">{`${belongsFields.keywords.fieldTitle}${
                   belongsFields.keywords.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
@@ -215,8 +215,8 @@ const SoftwaresMeta = () => {
                   ))}
                 </div>
               </div>
-              <div className="flex w-full flex-row items-center justify-between">
-                <div>{`${belongsFields.image.fieldTitle}${
+              <div className="flex w-full flex-row items-start justify-between">
+                <div className="h-14 flex items-center">{`${belongsFields.image.fieldTitle}${
                   belongsFields.image.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
