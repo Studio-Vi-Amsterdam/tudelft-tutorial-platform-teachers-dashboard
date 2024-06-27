@@ -39,7 +39,8 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
     dispatch(setTutorialDescription(value))
   }
 
-  const tutorialElements: AddElementsType[] = ['text', 'infobox', 'image', 'video', 'file']
+  // const tutorialElements: AddElementsType[] = ['text', 'infobox', 'image', 'video', 'file']
+  const tutorialElements: AddElementsType[] = ['text', 'infobox', 'image', 'video']
   const handleAddTutorialElement = (value: string): void => {
     const payload: any = {}
 
