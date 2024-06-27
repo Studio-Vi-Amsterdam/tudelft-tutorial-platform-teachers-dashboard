@@ -19,6 +19,7 @@ export const TUDelftLogo = (props: IconsTwoColorsProps) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       preserveAspectRatio="xMidYMid meet"
+      style={{ display: 'none' }}
     >
       <path
         d="M53.6173 64.6872C58.2587 64.6872 60.6722 61.5397 60.6722 57.2812V35.4336H70.512V57.8367C70.3263 67.6496 62.5288 71.5377 53.6173 71.5377C44.7058 71.5377 36.7227 67.6496 36.7227 57.8367V35.4336H46.5624V57.2812C46.3767 61.7248 48.9759 64.6872 53.6173 64.6872Z"
