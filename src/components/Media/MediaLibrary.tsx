@@ -16,6 +16,7 @@ interface MediaLibraryProps {
   handleMultipleSelect: (item: MediaObjectInterface) => void
   mediaToDelete: MediaObjectInterface[] | undefined
   column?: string
+  hideVideo?: boolean
 }
 
 export const MediaLibrary = (props: MediaLibraryProps) => {
@@ -182,6 +183,8 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
                     // eslint-disable-next-line @typescript-eslint/no-empty-function
                     handleSelectMedia={props.handleSelectMedia ? props.handleSelectMedia : () => {}}
                     selectedMedia={props.selectedMedia}
+                    hideVideo={props.hideVideo}
+                    column={props.column}
                   />
                 )}
                 {viewType === 'list' && (

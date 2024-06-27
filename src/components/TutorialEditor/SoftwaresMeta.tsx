@@ -141,7 +141,7 @@ const SoftwaresMeta = () => {
                 <div className="w-9/12">
                   <select
                     value={belongsFields.softwareVersion.value.title}
-                    className="w-full p-4 rounded border text-[#96969B] text-base bg-seasalt border-dim"
+                    className="w-full p-4 rounded text-[#96969B] border text-base bg-seasalt border-dim"
                     onChange={(e) =>
                       handleMetaIdInputChange(e.target.value, 'softwareBelongs', 'softwareVersion')
                     }

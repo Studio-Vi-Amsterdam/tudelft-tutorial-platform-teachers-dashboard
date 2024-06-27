@@ -35,7 +35,7 @@ const MediaPreviewTemplate = (props: MediaPreviewTemplateProps) => {
   } else {
     return (
       <div className={`${props.styles} h-full flex justify-center items-center flex-col`}>
-        <div className="relative flex flex-col items-center gap-3">
+        <div className="relative flex flex-col items-center gap-3 w-full">
           <FileIcon />
           {props.item.url && (
             <p className="text-primary-skyBlue font-medium break-all text-small">

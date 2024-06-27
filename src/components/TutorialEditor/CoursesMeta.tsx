@@ -305,7 +305,7 @@ const CoursesMeta = () => {
                               </div>
                             )}
                         </div>
-                        <div className="h-full h-14">
+                        <div className=" h-14">
                           <Button
                             className="h-full flex items-center"
                             variant={'default'}
@@ -425,7 +425,7 @@ const CoursesMeta = () => {
                           responsibleFields.teachers.proposedList.length > 0 && (
                             <div
                               className={
-                                'opacity-0 invisible absolute w-full top-full left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim rounded px-2 pb-2 [&>button]:py-2'
+                                'opacity-0 absolute w-full top-full left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim rounded px-2 pb-2 [&>button]:py-2'
                               }
                             >
                               {responsibleFields.teachers.proposedList.map((item, index) => (

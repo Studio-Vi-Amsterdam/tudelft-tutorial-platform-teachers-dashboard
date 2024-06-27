@@ -90,6 +90,7 @@ const PickMediaDialog = (props: PickMediaDialogProps) => {
           handleMultipleSelect={() => {}}
           mediaToDelete={undefined}
           column="3"
+          hideVideo={true}
         />
         <DialogFooter>
           <Button onClick={handleSubmitMedia} disabled={!selectedMedia}>

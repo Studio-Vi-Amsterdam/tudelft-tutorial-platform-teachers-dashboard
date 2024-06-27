@@ -34,7 +34,7 @@ const SubjectsMeta = () => {
                 <div className="w-9/12">
                   <select
                     value={belongsFields.primaryCategory.value.title}
-                    className="w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone"
+                    className="w-full p-4 rounded text-[#96969B] border text-base bg-seasalt border-dim"
                     onChange={(e) => handleMetaIdInputChange(e.target.value, 'primaryCategory')}
                   >
                     <option value="">{belongsFields.primaryCategory.fieldTitle}</option>
@@ -54,7 +54,7 @@ const SubjectsMeta = () => {
                 <div className="w-9/12">
                   <select
                     value={belongsFields.secondaryCategory.value.title}
-                    className="w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone"
+                    className="w-full p-4 rounded text-[#96969B] border text-base bg-seasalt border-dim"
                     onChange={(e) => handleMetaIdInputChange(e.target.value, 'secondaryCategory')}
                   >
                     <option value="">{belongsFields.secondaryCategory.fieldTitle}</option>
