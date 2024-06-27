@@ -548,6 +548,7 @@ export const editorSlice = createSlice({
                 type: 'image',
               },
               text: '',
+              title: '',
             },
           },
         ]
@@ -564,6 +565,7 @@ export const editorSlice = createSlice({
                 type: 'image',
               },
               text: '',
+              title: '',
             },
           },
         ]
@@ -580,6 +582,7 @@ export const editorSlice = createSlice({
                 type: 'video',
               },
               text: '',
+              title: '',
             },
           },
         ]
@@ -596,6 +599,7 @@ export const editorSlice = createSlice({
                 type: 'video',
               },
               text: '',
+              title: '',
             },
           },
         ]
@@ -772,6 +776,25 @@ export const editorSlice = createSlice({
           state.meta.subjectsInvolve[action.payload.involvesKeyName].list.find(
             (item) => item.title === action.payload.value,
           ) ?? { id: undefined, title: '' }
+      }
+    },
+    changeSubchapterTitle: (
+      state,
+      action: PayloadAction<{
+        value: string
+        chapterIndex: number
+        listIndex: number
+        layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText'
+      }>,
+    ) => {
+      const { value, chapterIndex, listIndex, layout } = action.payload
+      const chapter = state.chapters[chapterIndex]
+      const elements = chapter?.elements
+      const element = elements ? elements[listIndex] : undefined
+      const layoutItem = element ? element[layout] : undefined
+
+      if (layoutItem && layoutItem.text !== undefined) {
+        layoutItem.title = value
       }
     },
     changeSubchapterText: (
@@ -1072,6 +1095,7 @@ export const {
   changeSoftwareIdListField,
   addBlankSubchapterToEls,
   changeSubchapterText,
+  changeSubchapterTitle,
   setSubchapterMedia,
   setFeaturedImage,
 } = editorSlice.actions

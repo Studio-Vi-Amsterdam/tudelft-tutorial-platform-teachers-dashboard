@@ -170,10 +170,12 @@ export interface TermDialogInterface {
 interface MediaTextImageInterface {
   text: string
   image: MediaObjectInterface
+  title: string
 }
 
 interface MediaTextVideoInterface {
   text: string
+  title: string
   video: MediaObjectInterface
 }
 
@@ -447,6 +449,7 @@ export interface ResponseContentBlock {
     file?: number
     file_url?: string
     title?: string
+    alt?: string
     description?: string
     content_card_row_0_card_title?: string
     content_card_row_0_card_link?: number

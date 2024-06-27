@@ -116,6 +116,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
         image_url: chapter.image?.url,
         image: chapter.image?.id,
         content: chapter.text,
+        alt: chapter.title,
       },
     }
   } else if (chapter.layout === 'image right') {
@@ -125,6 +126,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
         image_url: chapter.image?.url,
         image: chapter.image?.id,
         content: chapter.text,
+        alt: chapter.title,
       },
     }
   } else if (chapter.layout === 'video left') {
@@ -134,6 +136,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
         video: chapter.video?.id,
         video_url: chapter.video?.url,
         content: chapter.text,
+        alt: chapter.title,
       },
     }
   } else if (chapter.layout === 'video right') {
@@ -143,6 +146,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
         video: chapter.video?.id,
         video_url: chapter.video?.url,
         content: chapter.text,
+        alt: chapter.title,
       },
     }
   } else {
@@ -246,6 +250,7 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
+                  title: block.block_data.alt ? block.block_data.alt : '',
                 },
               }
             case 'tu-delft-image-text':
@@ -264,6 +269,7 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
+                  title: block.block_data.alt ? block.block_data.alt : '',
                 },
               }
             case 'tu-delft-video-text':
@@ -282,6 +288,7 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
+                  title: block.block_data.alt ? block.block_data.alt : '',
                 },
               }
             case 'tu-delft-text-video':
@@ -300,6 +307,7 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
+                  title: block.block_data.alt ? block.block_data.alt : '',
                 },
               }
             default:
@@ -726,6 +734,7 @@ export const reducerParser = {
                 image: item.imageText.image.id,
                 image_url: item.imageText.image.url,
                 content: item.imageText.text,
+                title: item.imageText.title,
               },
             }
           }
@@ -736,6 +745,7 @@ export const reducerParser = {
                 image: item.textImage.image.id,
                 image_url: item.textImage.image.url,
                 content: item.textImage.text,
+                title: item.textImage.title,
               },
             }
           }
@@ -746,6 +756,7 @@ export const reducerParser = {
                 video: item.textVideo.video.id,
                 video_url: item.textVideo.video.url,
                 content: item.textVideo.text,
+                title: item.textVideo.title,
               },
             }
           }
@@ -756,6 +767,7 @@ export const reducerParser = {
                 video: item.videoText.video.id,
                 video_url: item.videoText.video.url,
                 content: item.videoText.text,
+                title: item.videoText.title,
               },
             }
           }
