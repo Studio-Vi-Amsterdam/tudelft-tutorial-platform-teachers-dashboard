@@ -57,6 +57,7 @@ const H5pElement = (props: QuizElementProps) => {
         handleChange={handleChangeInput}
         placeholder="Insert the h5p embed code here"
         value={localH5PElement.value}
+        element="textarea"
       />
       {localH5PElement.error && <p className="text-red-500">{localH5PElement.error}</p>}
     </div>

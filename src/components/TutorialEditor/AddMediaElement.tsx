@@ -192,9 +192,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
           type="checkbox"
           id="show"
         />
-        <label htmlFor="show" className="text-stone">
-          Show subtitles
-        </label>
+        <p className="text-stone">Show subtitles</p>
       </div>
       <PickMediaDialog
         block={props.block}

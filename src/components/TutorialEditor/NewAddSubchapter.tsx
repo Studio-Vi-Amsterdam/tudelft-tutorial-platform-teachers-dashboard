@@ -40,7 +40,7 @@ const NewAddSubchapter = (props: NewAddSubchapterProps) => {
   return (
     <section className="py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver relative flex w-full flex-col gap-y-6 ">
       {isChapterCreating && (
-        <div className="flex flex-col gap-y-4 rounded-[8px] border-[2px] border-dashed border-tertiary-grey-dim py-6">
+        <div className="flex bg-seasalt flex-col gap-y-4 rounded-[8px] border-[2px] border-dashed border-tertiary-grey-dim py-6">
           <h4 className="text-center">Choose layout</h4>
           <div className="flex flex-row flex-wrap justify-center gap-x-10 gap-y-4">
             {subchapterLayout.map((layoutType: LayoutChapterType, index: number) => (

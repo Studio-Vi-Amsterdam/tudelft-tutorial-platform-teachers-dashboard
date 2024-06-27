@@ -89,6 +89,7 @@ const PickMediaDialog = (props: PickMediaDialogProps) => {
           // eslint-disable-next-line @typescript-eslint/no-empty-function
           handleMultipleSelect={() => {}}
           mediaToDelete={undefined}
+          column="3"
         />
         <DialogFooter>
           <Button onClick={handleSubmitMedia} disabled={!selectedMedia}>

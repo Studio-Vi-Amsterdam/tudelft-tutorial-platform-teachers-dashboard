@@ -15,6 +15,7 @@ interface MediaLibraryProps {
   selectMode?: boolean
   handleMultipleSelect: (item: MediaObjectInterface) => void
   mediaToDelete: MediaObjectInterface[] | undefined
+  column?: string
 }
 
 export const MediaLibrary = (props: MediaLibraryProps) => {
