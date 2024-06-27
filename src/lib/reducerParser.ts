@@ -849,7 +849,9 @@ export const reducerParser = {
         software_version:
           editorState.meta.softwareBelongs?.softwareVersion.value.title &&
           editorState.meta.softwareBelongs?.softwareVersion.value.title.length > 0
-            ? [editorState.meta.softwareBelongs?.softwareVersion.value.title]
+            ? typeof editorState.meta.softwareBelongs?.softwareVersion.value.title === 'string'
+              ? [editorState.meta.softwareBelongs?.softwareVersion.value.title]
+              : editorState.meta.softwareBelongs?.softwareVersion.value.title
             : [],
         keywords: editorState.meta.softwareBelongs?.keywords.list ?? [],
         featured_image: editorState.meta?.softwareBelongs?.image.value.id ?? null,
