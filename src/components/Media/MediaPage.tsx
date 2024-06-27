@@ -48,6 +48,11 @@ export const MediaPage = () => {
       })
     }
   }
+
+  const handleFetching = (val: boolean) => {
+    setIsFetching(val)
+  }
+
   return (
     <main className="container mx-auto mb-24 mt-20">
       <header className="flex justify-between items-end mb-20">
@@ -84,13 +89,17 @@ export const MediaPage = () => {
       <MediaLibrary
         selectedMedia={undefined}
         selectMode={isOpenSelect}
+        isFetching={isFetching}
         handleMultipleSelect={handleMultipleSelect}
         mediaToDelete={mediaToDelete}
       />
 
       <Dialog open={isOpenUpload} onOpenChange={(val) => setIsOpenUpload(val)}>
         <DialogContent className="bg-white max-w-7xl !rounded p-10">
-          <FileUpload setIsOpen={(val: boolean) => setIsOpenUpload(val)} />
+          <FileUpload
+            onFetching={handleFetching}
+            setIsOpen={(val: boolean) => setIsOpenUpload(val)}
+          />
         </DialogContent>
       </Dialog>
       <Dialog open={isOpenDelete} onOpenChange={setIsOpenDelete}>
