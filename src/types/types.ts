@@ -123,7 +123,7 @@ export interface TutorialTopElementsObject {
   file?: ElementsFileInterface
   quiz?: QuizElement
   h5pElement?: h5pElementInterface
-  tutorialCard?: string
+  tutorialCard?: TutorialCardInterface
 }
 export interface AddChapterElementInterface {
   val: TutorialTopElementsObject
@@ -179,12 +179,17 @@ interface MediaTextVideoInterface {
   video: MediaObjectInterface
 }
 
+export interface TutorialCardInterface {
+  value: { id: number | undefined; title: string }
+  proposedList: { id: number; title: string }[] | []
+}
+
 export interface ChapterElementsObject {
   text?: string
   infobox?: string
   image?: MediaObjectInterface
   video?: MediaObjectInterface
-  tutorialCard?: string
+  tutorialCard?: TutorialCardInterface
   file?: ElementsFileInterface
   quiz?: QuizElement
   h5pElement?: h5pElementInterface

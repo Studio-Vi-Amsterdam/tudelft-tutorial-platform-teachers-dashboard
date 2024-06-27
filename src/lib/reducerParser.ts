@@ -161,6 +161,21 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
 
 export const reducerParser = {
   async parseToReducer(response: ResponseArticleInterface, articleType: ArtictesType) {
+    let shortTutorials: any[] = []
+    try {
+      const response = await articlesAPI.getArticles('tutorials')
+      const tutorials = response.data.map((item: any) => ({
+        id: item.id,
+        title: item.title,
+      }))
+      shortTutorials = tutorials
+    } catch (error: any) {
+      if (error.response && error.response.status === 404) {
+        shortTutorials = []
+      } else {
+        console.error(error)
+      }
+    }
     const parsedElements = (elements: ResponseContentBlock[]): TutorialTopElementsObject[] => {
       return elements
         .map((block) => {
@@ -289,6 +304,20 @@ export const reducerParser = {
                     publishDate: 'hardcode',
                   },
                   title: block.block_data.alt ? block.block_data.alt : '',
+                },
+              }
+            case 'tu-delft-content-card':
+              return {
+                tutorialCard: {
+                  proposedList: shortTutorials,
+                  value:
+                    block.block_data.content_card_row_0_card_title &&
+                    block.block_data.content_card_row_0_card_link
+                      ? {
+                          id: block.block_data.content_card_row_0_card_link,
+                          title: block.block_data.content_card_row_0_card_title,
+                        }
+                      : { id: undefined, title: '' },
                 },
               }
             case 'tu-delft-text-video':
@@ -698,6 +727,20 @@ export const reducerParser = {
                 answers_3_answer: item.quiz.answers[3].answer,
                 answers_3_is_correct: item.quiz.answers[3].isCorrect,
                 answers: item.quiz.answersCount,
+              },
+            }
+          }
+          if (item.tutorialCard) {
+            return {
+              block_name: 'tu-delft-content-card',
+              block_data: {
+                content_card_row_0_card_title: item.tutorialCard.value.title,
+                content_card_row_0_card_link: item.tutorialCard.value.id,
+                content_card_row_1_card_title: item.tutorialCard.value.title,
+                content_card_row_1_card_link: item.tutorialCard.value.id,
+                content_card_row_2_card_title: item.tutorialCard.value.title,
+                content_card_row_2_card_link: item.tutorialCard.value.id,
+                content_card_row: 3,
               },
             }
           }

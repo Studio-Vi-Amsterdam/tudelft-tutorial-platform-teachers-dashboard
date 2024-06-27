@@ -3,6 +3,7 @@ import { useAppDispatch } from 'src/redux/hooks'
 import {
   changeSubchapterText,
   changeSubchapterTitle,
+  changeTutorialCard,
   setElementInfobox,
   setElementText,
 } from 'src/redux/features/editorSlice'
@@ -81,6 +82,15 @@ const ElementsBlock = (props: ElementsBlockProps) => {
     if (chapterIndex !== undefined) {
       dispatch(changeSubchapterTitle({ value, chapterIndex, layout, listIndex }))
     }
+  }
+
+  const handleSelectTutorialCard = (
+    value: string,
+    block: string,
+    listIndex: number,
+    chapterIndex?: number,
+  ) => {
+    dispatch(changeTutorialCard({ value, block, listIndex, chapterIndex }))
   }
 
   return (
@@ -317,6 +327,35 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                 handleTextChange={handleInfoboxElementChange}
                 subchapter={false}
               />
+            </DeleteElementWraper>
+          )}
+          {element.tutorialCard !== undefined && (
+            <DeleteElementWraper
+              block={block}
+              chapterIndex={props.chapterIndex}
+              subchapterIndex={subchapterIndex}
+              elementIndex={index}
+            >
+              <div className="flex w-full flex-row items-center justify-between">
+                <div>Tutorial</div>
+                <div className="w-9/12">
+                  <select
+                    value={element.tutorialCard.value.title}
+                    className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
+                    onChange={(e) =>
+                      handleSelectTutorialCard(e.target.value, block, index, props.chapterIndex)
+                    }
+                  >
+                    <option value="">Choose tutorial</option>
+                    {element.tutorialCard.proposedList &&
+                      element.tutorialCard.proposedList.map((listItem, index) => (
+                        <option key={index} value={listItem.title}>
+                          {listItem.title}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </div>
             </DeleteElementWraper>
           )}
           {element?.image !== undefined && (
