@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Dropzone from 'react-dropzone'
 import TextInput from '../ui/TextInput'
 import { Button } from '../ui/Button'
@@ -9,6 +9,7 @@ import MediaPreviewTemplate from './MediaPreviewTemplate'
 
 interface FileUploadProps {
   setIsOpen: (arg0: boolean) => void
+  onFetching: (val: boolean) => void
 }
 
 export const FileUpload = (props: FileUploadProps) => {
@@ -22,6 +23,11 @@ export const FileUpload = (props: FileUploadProps) => {
   const [errorMessage] = useState<string>('')
   const [selectedFile, setSelectedFile] = useState<number | null>(null)
   const { toast } = useToast()
+
+  useEffect(() => {
+    props.onFetching(isFetching)
+  }, [isFetching])
+
   const handleSetFileData = (files: File[]) => {
     setFiles(files)
     setPaths(
