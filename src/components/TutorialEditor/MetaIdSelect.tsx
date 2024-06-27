@@ -16,7 +16,7 @@ const MetaIdSelect = (props: MetaIdSelectProps) => {
   return (
     <select
       value={props.selectedObject.value?.title}
-      className="w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone"
+      className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
       onChange={(e) => props.handleMetaInputChange(e.target.value, props.objectName, props.keyName)}
     >
       <option value="">{props.selectedObject.fieldTitle}</option>

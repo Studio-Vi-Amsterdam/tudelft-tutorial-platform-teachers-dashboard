@@ -82,7 +82,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
-              <div className="w-full flex flex-row justify-between">
+              <div className="w-full flex flex-row justify-between gap-6">
                 <div className="w-1/2">
                   <ExtendedBundledEditor
                     value={element.textImage.text}
@@ -114,7 +114,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
-              <div className="w-full flex flex-row justify-between">
+              <div className="w-full flex flex-row justify-between gap-6">
                 <div className="w-1/2">
                   <AddMediaElement
                     mediaType="image"
@@ -146,7 +146,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
-              <div className="w-full flex flex-row justify-between">
+              <div className="w-full flex flex-row justify-between gap-6">
                 <div className="w-1/2">
                   <AddMediaElement
                     mediaType="video"
@@ -178,7 +178,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
-              <div className="w-full flex flex-row justify-between">
+              <div className="w-full flex flex-row justify-between gap-6">
                 <div className="w-1/2">
                   <ExtendedBundledEditor
                     value={element.textVideo.text}
