@@ -27,7 +27,7 @@ const AddElementBlock = (props: AddElementBlockProps) => {
 
   return (
     <div className="flex w-full flex-row gap-x-6">
-      <div className="w-1/3">
+      <div className="w-1/3 whitespace-nowrap">
         <Button variant={'outline'} onClick={handleAddTutorialElementClick}>
           <div>+</div>
           <p>Add element</p>

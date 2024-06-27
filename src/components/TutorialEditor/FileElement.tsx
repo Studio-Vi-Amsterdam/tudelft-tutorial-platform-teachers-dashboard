@@ -105,7 +105,12 @@ const FileElement = (props: QuizElementProps) => {
         <div className="flex w-full flex-row items-center justify-between">
           <div>Title</div>
           <div className="w-9/12">
-            <TextInput value={fileTitle} handleChange={setFileTitle} placeholder="Title" />
+            <TextInput
+              value={fileTitle}
+              handleChange={setFileTitle}
+              placeholder="Title"
+              className="!text-base !p-4"
+            />
           </div>
         </div>
         <div className="flex w-full flex-row items-center justify-between">
@@ -115,6 +120,7 @@ const FileElement = (props: QuizElementProps) => {
               value={fileDescription}
               handleChange={setFileDescription}
               placeholder="Description"
+              className="!text-base !p-4"
             />
           </div>
         </div>
