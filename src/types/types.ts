@@ -351,6 +351,8 @@ export interface GalleryViewProps {
   currentItems: MediaObjectInterface[]
   selectedMedia: MediaObjectInterface | undefined
   handleSelectMedia: (arg0: MediaObjectInterface) => void
+  column?: string
+  hideVideo?: boolean
 }
 
 export interface ElementProps {

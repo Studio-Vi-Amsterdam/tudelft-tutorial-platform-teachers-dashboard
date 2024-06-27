@@ -288,45 +288,47 @@ const TutorialsMeta = () => {
                   />
                 </div>
               </div> */}
-              <div className="flex w-full flex-row items-center justify-between">
-                <div>{`${belongsFields.keywords.fieldTitle}${
+              <div className="flex w-full flex-row items-start justify-between">
+                <div className="h-14 flex items-center">{`${belongsFields.keywords.fieldTitle}${
                   belongsFields.keywords.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
                   <>
                     <div className="w-full">
-                      <div className="relative mx-auto flex w-full flex-col gap-y-4 pt-4">
-                        <div className="absolute right-0 top-0">
-                          <Button
-                            variant={'default'}
-                            onClick={() => setAddKeywordDialogOpened(true)}
-                          >
-                            <div>+</div>
-                          </Button>
-                        </div>
-
+                      <div className="grow relative z-10">
                         <input
                           type="text"
                           placeholder="search keyword"
-                          className="p-1"
+                          className="w-full p-4 rounded placeholder:text-[#96969B] border text-base bg-seasalt border-dim"
                           value={belongsFields.keywords.value}
                           onChange={(e) => handleKeywordInputChange(e.target.value)}
                         />
                         <div
                           className={
-                            ' flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-white px-2 pb-2 [&>button]:py-2'
+                            ' absolute top-full w-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
                           }
                         >
                           {displayedKeywords &&
                             displayedKeywords.map((item, index) => (
                               <button
-                                className="w-full text-left hover:bg-tertiary-grey-silver"
+                                className="w-full text-left hover:bg-tertiary-grey-silver px-4"
                                 key={index}
                                 onClick={() => handleKeywordSelect(item)}
                               >
                                 {item}
                               </button>
                             ))}
+                        </div>
+                      </div>
+                      <div className="relative mx-auto flex w-full flex-col gap-y-4 pt-4">
+                        <div className="h-14">
+                          <Button
+                            className="h-full flex items-center"
+                            variant={'default'}
+                            onClick={() => setAddKeywordDialogOpened(true)}
+                          >
+                            <div>+</div>
+                          </Button>
                         </div>
                       </div>
                     </div>
@@ -347,8 +349,8 @@ const TutorialsMeta = () => {
                     ))}
                 </div>
               </div>
-              <div className="flex w-full flex-row items-center justify-between">
-                <div>{`${belongsFields.image.fieldTitle}${
+              <div className="flex w-full flex-row items-start justify-between">
+                <div className="h-14 flex items-center">{`${belongsFields.image.fieldTitle}${
                   belongsFields.image.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
@@ -406,7 +408,7 @@ const TutorialsMeta = () => {
                 <div className="w-9/12">
                   <select
                     value={responsibleFields.faculty.value}
-                    className="w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone"
+                    className="w-full p-4 rounded text-[#96969B] border text-base bg-seasalt border-dim"
                     onChange={(e) =>
                       handleMetaInputChange(
                         e.target.value,

@@ -273,28 +273,28 @@ const CoursesMeta = () => {
                   </select>
                 </div>
               </div>
-              <div className="flex w-full flex-row items-center justify-between">
-                <div className="min-h-14">{`${belongsFields.secondaryStudy.fieldTitle}${
-                  belongsFields.secondaryStudy.required ? '*' : ''
-                }`}</div>
-                <div className="w-9/12">
-                  <select
-                    value={belongsFields.secondaryStudy.value.title}
-                    className="w-full p-4 rounded border text-[#96969B] text-base bg-seasalt border-dim"
-                    onChange={(e) =>
-                      handleMetaIdInputChange(e.target.value, 'courseBelongs', 'secondaryStudy')
-                    }
-                  >
-                    <option value="">{belongsFields.secondaryStudy.fieldTitle}</option>
-                    {belongsFields.secondaryStudy.list &&
-                      belongsFields.secondaryStudy.list.map((listItem, index) => (
-                        <option key={index} value={listItem.title}>
-                          {listItem.title}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-              </div>
+              {/* <div className="flex w-full flex-row items-center justify-between"> */}
+              {/*  <div className="min-h-14">{`${belongsFields.secondaryStudy.fieldTitle}${ */}
+              {/*    belongsFields.secondaryStudy.required ? '*' : '' */}
+              {/*  }`}</div> */}
+              {/*  <div className="w-9/12"> */}
+              {/*    <select */}
+              {/*      value={belongsFields.secondaryStudy.value.title} */}
+              {/*      className="w-full p-4 rounded border text-[#96969B] text-base bg-seasalt border-dim" */}
+              {/*      onChange={(e) => */}
+              {/*        handleMetaIdInputChange(e.target.value, 'courseBelongs', 'secondaryStudy') */}
+              {/*      } */}
+              {/*    > */}
+              {/*      <option value="">{belongsFields.secondaryStudy.fieldTitle}</option> */}
+              {/*      {belongsFields.secondaryStudy.list && */}
+              {/*        belongsFields.secondaryStudy.list.map((listItem, index) => ( */}
+              {/*          <option key={index} value={listItem.title}> */}
+              {/*            {listItem.title} */}
+              {/*          </option> */}
+              {/*        ))} */}
+              {/*    </select> */}
+              {/*  </div> */}
+              {/* </div> */}
               <div className="flex w-full flex-row items-start justify-between">
                 <div className="h-14 flex items-center">{`${belongsFields.keywords.fieldTitle}${
                   belongsFields.keywords.required ? '*' : ''
@@ -331,7 +331,7 @@ const CoursesMeta = () => {
                               </div>
                             )}
                         </div>
-                        <div className="h-full h-14">
+                        <div className=" h-14">
                           <Button
                             className="h-full flex items-center"
                             variant={'default'}
@@ -439,7 +439,7 @@ const CoursesMeta = () => {
                 <div className="w-9/12">
                   <>
                     <div className="w-full">
-                      <div className="relative mx-auto flex w-full flex-col gap-y-4 pt-4">
+                      <div className="relative mx-auto flex w-full flex-col gap-y-4 ">
                         <input
                           type="text"
                           placeholder="search teacher"

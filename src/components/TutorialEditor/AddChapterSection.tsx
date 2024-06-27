@@ -56,7 +56,7 @@ const AddChapterSection = (props: AddChapterSectionProps) => {
         <EditorLabel>This section is a chapter of your tutorial.</EditorLabel>
       )}
       {isChapterCreating && (
-        <div className="flex flex-col gap-y-4 rounded-[8px] border-[2px] border-dashed border-tertiary-grey-dim py-6">
+        <div className="flex bg-seasalt flex-col gap-y-4 rounded-[8px] border-[2px] border-dashed border-tertiary-grey-dim py-6">
           <h4 className="text-center">Choose layout</h4>
           <div className="flex flex-row flex-wrap justify-center gap-x-10 gap-y-4">
             {chapterLayout.map((layoutType: LayoutChapterType, index: number) => (

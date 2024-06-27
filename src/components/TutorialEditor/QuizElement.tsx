@@ -52,7 +52,7 @@ const QuizElement = (props: QuizElementProps) => {
   }, [localAnswers, localQuestion])
 
   return quiz ? (
-    <div className="flex w-full flex-col gap-y-2 rounded-[4px] border [&>div>input]:border-b [&>div>input]:border-[#999999] [&>div>input]:bg-transparent [&>div>p]:text-xs [&>div>p]:leading-5 [&>div]:gap-y-2 [&>div]:py-4">
+    <div className="flex w-full flex-col rounded-[4px] border border-dim [&>div>input]:border-b [&>div>input]:border-[#999999] [&>div>input]:bg-transparent [&>div>p]:text-xs [&>div>p]:leading-5 [&>div]:gap-y-2 [&>div]:py-4">
       <div className="flex w-full flex-col bg-tertiary-grey-silver p-4">
         <p>Question</p>
         <input
@@ -60,6 +60,7 @@ const QuizElement = (props: QuizElementProps) => {
           value={localQuestion}
           onChange={(e) => setLocalQuestion(e.target.value)}
           placeholder="Please write your question here."
+          className="focus-visible:outline-none"
         />
       </div>
       {localAnswers &&
@@ -75,6 +76,7 @@ const QuizElement = (props: QuizElementProps) => {
               value={answer.answer}
               onChange={(e) => handleChangeLocalAnswer(index, e.target.value)}
               placeholder={'Please write your answer here.'}
+              className="focus-visible:outline-none"
             />
           </div>
         ))}
