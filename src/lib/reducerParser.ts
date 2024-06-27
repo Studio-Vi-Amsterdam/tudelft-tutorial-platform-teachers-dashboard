@@ -838,6 +838,7 @@ export const reducerParser = {
     } else if (articleType === 'softwares') {
       parsedObject = {
         id: id !== undefined ? parseInt(id) : undefined,
+        status,
         title: editorState.tutorialTop.title,
         description: editorState.tutorialTop.description,
         content:
