@@ -822,6 +822,12 @@ export const editorSlice = createSlice({
         state.meta.tutorialResponsible[action.payload.responsibleKeyName].value =
           action.payload.value
       } else if (
+        action.payload.objectName === 'courseResponsible' &&
+        action.payload.responsibleKeyName &&
+        state.meta.courseResponsible
+      ) {
+        state.meta.courseResponsible[action.payload.responsibleKeyName].value = action.payload.value
+      } else if (
         action.payload.objectName === 'courseBelongs' &&
         action.payload.courseBelongsKeyName &&
         state.meta.courseBelongs

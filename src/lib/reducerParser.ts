@@ -478,7 +478,6 @@ export const reducerParser = {
       }
     } else if (articleType === 'courses') {
       const info = await getInfo(articleType)
-
       reducerObject = {
         tutorialTop: {
           title: response.title ? response.title : '',
@@ -530,7 +529,11 @@ export const reducerParser = {
               fieldTitle: 'Primary Study',
               list: info.study ? info.study : [{ id: undefined, title: '' }],
               required: true,
-              value: response.study ? response.study : '',
+              value: response.study
+                ? info.study.filter(
+                    (el: { id: string; title: string }) => el.id === response.study,
+                  )[0]
+                : '',
             },
             secondaryStudy: {
               fieldTitle: 'Secondary Study',
@@ -838,6 +841,7 @@ export const reducerParser = {
     } else if (articleType === 'softwares') {
       parsedObject = {
         id: id !== undefined ? parseInt(id) : undefined,
+        status,
         title: editorState.tutorialTop.title,
         description: editorState.tutorialTop.description,
         content:

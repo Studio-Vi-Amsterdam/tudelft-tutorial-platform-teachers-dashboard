@@ -13,6 +13,7 @@ interface MediaLibraryProps {
   handleSelectMedia?: (item: MediaObjectInterface) => void
   selectedMedia: MediaObjectInterface | undefined
   selectMode?: boolean
+  isFetching?: boolean
   handleMultipleSelect: (item: MediaObjectInterface) => void
   mediaToDelete: MediaObjectInterface[] | undefined
   column?: string
@@ -26,6 +27,12 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
   const [itemsPerPage, setItemsPerPage] = useState<number>(props.itemsPerPage ?? 12)
   const [viewType, setViewType] = useState<'block' | 'list'>('block')
   const [currentPage, setCurrentPage] = useState<number>(1)
+
+  useEffect(() => {
+    if (!props.isFetching) {
+      handleGetMedia()
+    }
+  }, [props.isFetching])
 
   const handleGetMedia = (params?: string) => {
     setIsLoading(true)

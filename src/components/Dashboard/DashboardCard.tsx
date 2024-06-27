@@ -86,9 +86,9 @@ const DashboardCard = (props: DashboardCardProps) => {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-          <button>
-            <img src="/img/dashboardCard/copy.svg" alt="" />
-          </button>
+          {/* <button> */}
+          {/*  <img src="/img/dashboardCard/copy.svg" alt="" /> */}
+          {/* </button> */}
         </div>
       </div>
       <div className="flex flex-col gap-y-6">

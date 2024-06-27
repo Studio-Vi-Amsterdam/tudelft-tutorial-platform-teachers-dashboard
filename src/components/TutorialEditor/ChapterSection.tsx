@@ -112,9 +112,9 @@ const ChapterSection = (props: ChapterSectionProps) => {
     'infobox',
     'image',
     'video',
-    'file',
+    // 'file',
     'h5p element',
-    'quiz',
+    // 'quiz',
   ]
 
   return (
