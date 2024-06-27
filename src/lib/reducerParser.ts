@@ -311,6 +311,10 @@ export const reducerParser = {
 
     const tutorialTopElements = response.content ? parsedElements(response.content) : []
 
+    if (typeof response.featured_image !== 'string' && response.featured_image) {
+      response.featured_image = response.featured_image.url
+    }
+
     const parseChapters = async (responseChapters: ResponseArticleChapterInterface[]) => {
       const extendedChapters = await getExtendedChapters(responseChapters)
 
@@ -606,7 +610,6 @@ export const reducerParser = {
       }
     } else if (articleType === 'subjects') {
       const info = await getInfo(articleType)
-      console.log(info)
 
       reducerObject = {
         tutorialTop: {
