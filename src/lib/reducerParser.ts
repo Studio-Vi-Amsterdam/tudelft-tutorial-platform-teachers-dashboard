@@ -311,6 +311,10 @@ export const reducerParser = {
 
     const tutorialTopElements = response.content ? parsedElements(response.content) : []
 
+    if (typeof response.featured_image !== 'string' && response.featured_image) {
+      response.featured_image = response.featured_image.url
+    }
+
     const parseChapters = async (responseChapters: ResponseArticleChapterInterface[]) => {
       const extendedChapters = await getExtendedChapters(responseChapters)
 
@@ -606,7 +610,6 @@ export const reducerParser = {
       }
     } else if (articleType === 'subjects') {
       const info = await getInfo(articleType)
-      console.log(info)
 
       reducerObject = {
         tutorialTop: {
@@ -843,9 +846,13 @@ export const reducerParser = {
             : [],
         useful_links: editorState.tutorialBottom.text,
         chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
-        software_version: editorState.meta.softwareBelongs?.softwareVersion.value.title
-          ? [editorState.meta.softwareBelongs?.softwareVersion.value.title]
-          : [],
+        software_version:
+          editorState.meta.softwareBelongs?.softwareVersion.value.title &&
+          editorState.meta.softwareBelongs?.softwareVersion.value.title.length > 0
+            ? typeof editorState.meta.softwareBelongs?.softwareVersion.value.title === 'string'
+              ? [editorState.meta.softwareBelongs?.softwareVersion.value.title]
+              : editorState.meta.softwareBelongs?.softwareVersion.value.title
+            : [],
         keywords: editorState.meta.softwareBelongs?.keywords.list ?? [],
         featured_image: editorState.meta?.softwareBelongs?.image.value.id ?? null,
       }

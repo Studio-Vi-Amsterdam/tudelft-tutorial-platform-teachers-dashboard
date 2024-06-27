@@ -49,11 +49,12 @@ const ExtendedBundledEditor = (props: BundledEditorProps) => {
           'autoresize',
           'command',
           'term',
-          'mark',
-          'eqneditor',
+          'mark' /* 
+          'eqneditor', */,
         ],
 
-        toolbar: 'bullist numlist link code table command term mark mathjax eqneditor',
+        /* toolbar: 'bullist numlist link code table command term mark mathjax eqneditor', */
+        toolbar: 'bullist numlist link code table command term mark mathjax',
       }}
     />
   )

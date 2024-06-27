@@ -90,7 +90,7 @@ export const MediaPage = () => {
 
       <Dialog open={isOpenUpload} onOpenChange={(val) => setIsOpenUpload(val)}>
         <DialogContent className="bg-white max-w-7xl !rounded p-10">
-          <FileUpload />
+          <FileUpload setIsOpen={(val: boolean) => setIsOpenUpload(val)} />
         </DialogContent>
       </Dialog>
       <Dialog open={isOpenDelete} onOpenChange={setIsOpenDelete}>

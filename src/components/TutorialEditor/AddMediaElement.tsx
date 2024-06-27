@@ -186,14 +186,16 @@ const AddMediaElement = (props: AddMediaElementProps) => {
           </Button>
         </div>
       )}
-      <div className="flex flex-row gap-2">
+      {/* <div className="flex flex-row gap-2">
         <input
           className="appearance-none w-6 h-6  border-2 bg-white rounded-sm border-stone checked:!bg-primary-skyBlue checked:!border-primary-skyBlue checked:!opacity-90 checked:!bg-check checked:!bg-center checked:!bg-no-repeat"
           type="checkbox"
           id="show"
         />
-        <p className="text-stone">Show subtitles</p>
-      </div>
+        <label htmlFor="show" className="text-stone">
+          Show subtitles
+        </label>
+      </div> */}
       <PickMediaDialog
         block={props.block}
         chapterIndex={props.chapterIndex}

@@ -7,8 +7,13 @@ import { mediaAPI } from '../../lib/api'
 import { useToast } from 'src/lib/use-toast'
 import MediaPreviewTemplate from './MediaPreviewTemplate'
 
-export const FileUpload = () => {
+interface FileUploadProps {
+  setIsOpen: (arg0: boolean) => void
+}
+
+export const FileUpload = (props: FileUploadProps) => {
   const emptyFileTitles = { index: 0, val: '' }
+  const [isFetching, setIsFetching] = useState<boolean>(false)
   const [paths, setPaths] = useState<{ url: string; type: string }[]>([])
   const [files, setFiles] = useState<File[] | null>(null)
   const [filesTitles, setFilesTitles] = useState<{ index: number; val: string }[]>([
@@ -49,18 +54,32 @@ export const FileUpload = () => {
 
   const handleUploadFiles = () => {
     if (files !== null) {
+      setIsFetching(true)
       // eslint-disable-next-line array-callback-return
       files.map((el, index) => {
         const title = filesTitles.filter((el) => el.index === index)
         const formData = new FormData()
+
         formData.append('file', el)
         formData.append('title', title[0].val)
         mediaAPI.uploadFiles(formData).then((res) => {
-          res.status === 200 &&
+          if (res.status === 200) {
             toast({
               title: 'Success!',
               description: `${res.data.data.title} uploaded with ID: ${res.data.data.id}`,
             })
+            if (index + 1 === files.length) {
+              setIsFetching(false)
+              handleDeleteFiles()
+              props.setIsOpen(false)
+            }
+          } else {
+            toast({
+              title: 'Error!',
+              description: 'Something went wrong',
+              variant: 'destructive',
+            })
+          }
         })
       })
     }
@@ -128,11 +147,20 @@ export const FileUpload = () => {
 
       <div>
         <div className="flex gap-4 justify-between mt-12">
-          <Button variant={'outline'} onClick={handleDeleteFiles} className="px-10">
+          <Button
+            variant={'outline'}
+            onClick={handleDeleteFiles}
+            className="px-10"
+            disabled={files === null || isFetching}
+          >
             Delete file{files && files?.length > 1 ? 's' : ''}
           </Button>
-          <Button onClick={handleUploadFiles} className="px-10">
-            Save
+          <Button
+            onClick={handleUploadFiles}
+            className="px-10"
+            disabled={files === null || isFetching}
+          >
+            {!isFetching ? 'Save' : 'Loading...'}
           </Button>
         </div>
       </div>

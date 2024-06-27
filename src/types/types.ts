@@ -403,7 +403,7 @@ export interface ResponseArticleInterface {
   content?: []
   description?: string
   faculty?: []
-  featured_image?: string
+  featured_image?: string | any
   id?: number
   keywords?: string[]
   level?: string
