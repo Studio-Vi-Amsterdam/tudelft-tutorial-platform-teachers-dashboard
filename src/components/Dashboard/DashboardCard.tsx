@@ -54,7 +54,7 @@ const DashboardCard = (props: DashboardCardProps) => {
     item.previewLink && window.open(item.previewLink, '_blank', 'noopener,noreferrer')
   }
   return (
-    <div className="flex w-[calc(25%-18px)]  flex-col gap-y-4 rounded-[4px] bg-background-aliceBlue p-4">
+    <div className="flex  flex-col gap-y-4 rounded-[4px] bg-background-aliceBlue p-4">
       <div className="flex flex-row items-center justify-between">
         <span className="rounded-[4px] border border-secondary-cornYellow bg-tertiary-cornYellow px-2 py-[1px] text-xs capitalize leading-5">
           {item.type}

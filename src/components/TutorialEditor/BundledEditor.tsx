@@ -69,7 +69,7 @@ export default function BundledEditor(props: any) {
 
   const handleSubmitTerm = () => {
     termDialog.editor.insertContent(
-      `<span class='tooltip'>${termDialog.term} <span> ${termDialog.explanation}</span></span> `,
+      `<span class='tooltip'>${termDialog.term} <span class="">${termDialog.explanation}</span></span> `,
     )
     setTermDialog({
       isOpen: false,
@@ -87,7 +87,7 @@ export default function BundledEditor(props: any) {
     ${commandDialog.fields
       .map((item) =>
         item.length !== 0
-          ? `<div class='buttons-combination__button flex items-center'><span>${item}</span></div>`
+          ? `<div class='buttons-combination__button flex items-center'><span class="">${item}</span></div>`
           : '',
       )
       .join('')}

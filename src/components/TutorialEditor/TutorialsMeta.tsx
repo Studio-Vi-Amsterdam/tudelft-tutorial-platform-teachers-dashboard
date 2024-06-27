@@ -198,6 +198,8 @@ const TutorialsMeta = () => {
 
   const [addKeywordDialogOpened, setAddKeywordDialogOpened] = useState<boolean>(false)
   const [isKeywordPostFetching, setIsKeywordPostFetching] = useState<boolean>(false)
+  const [showDropdown, setShowDropdown] = useState<boolean>(true)
+  const [showDropdownTeacher, setShowDropdownTeacher] = useState<boolean>(true)
 
   const handleCreateNewKeyword = async (keyword: string) => {
     setIsKeywordPostFetching(true)
@@ -302,23 +304,33 @@ const TutorialsMeta = () => {
                           className="w-full p-4 rounded placeholder:text-[#96969B] border text-base bg-seasalt border-dim"
                           value={belongsFields.keywords.value}
                           onChange={(e) => handleKeywordInputChange(e.target.value)}
-                        />
-                        <div
-                          className={
-                            ' absolute top-full w-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
+                          onFocus={() => setShowDropdown(true)}
+                          onBlur={() =>
+                            setTimeout(() => {
+                              setShowDropdown(false)
+                            }, 100)
                           }
-                        >
-                          {displayedKeywords &&
-                            displayedKeywords.map((item, index) => (
-                              <button
-                                className="w-full text-left hover:bg-tertiary-grey-silver px-4"
-                                key={index}
-                                onClick={() => handleKeywordSelect(item)}
-                              >
-                                {item}
-                              </button>
-                            ))}
-                        </div>
+                        />
+                        {showDropdown &&
+                          displayedKeywords.length > 0 &&
+                          belongsFields.keywords.value.length > 0 && (
+                            <div
+                              className={
+                                ' absolute top-full w-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
+                              }
+                            >
+                              {displayedKeywords &&
+                                displayedKeywords.map((item, index) => (
+                                  <button
+                                    className="w-full text-left hover:bg-tertiary-grey-silver px-4"
+                                    key={index}
+                                    onClick={() => handleKeywordSelect(item)}
+                                  >
+                                    {item}
+                                  </button>
+                                ))}
+                            </div>
+                          )}
                       </div>
                       <div className="relative mx-auto flex w-full flex-col gap-y-4 pt-4">
                         <div className="h-14">
@@ -435,30 +447,40 @@ const TutorialsMeta = () => {
                 <div className="w-9/12">
                   <>
                     <div className="w-full">
-                      <div className="relative mx-auto flex w-full flex-col gap-y-4 pt-4">
+                      <div className="relative mx-auto flex w-full flex-col gap-y-4 pt-4 z-10">
                         <input
                           type="text"
                           placeholder="search teacher"
-                          className="p-1"
+                          className="w-full p-4 rounded border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible"
                           value={responsibleFields.teachers.value}
                           onChange={(e) => handleTeacherInputChange(e.target.value)}
-                        />
-                        <div
-                          className={
-                            ' flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-white px-2 pb-2 [&>button]:py-2'
+                          onFocus={() => setShowDropdownTeacher(true)}
+                          onBlur={() =>
+                            setTimeout(() => {
+                              setShowDropdownTeacher(false)
+                            }, 100)
                           }
-                        >
-                          {displayedTeachers &&
-                            displayedTeachers.map((item, index) => (
-                              <button
-                                className="w-full text-left hover:bg-tertiary-grey-silver"
-                                key={index}
-                                onClick={() => handleTeacherSelect(item)}
-                              >
-                                {item}
-                              </button>
-                            ))}
-                        </div>
+                        />
+                        {showDropdownTeacher &&
+                          displayedTeachers.length > 0 &&
+                          responsibleFields.teachers.value.length > 0 && (
+                            <div
+                              className={
+                                'absolute top-full w-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
+                              }
+                            >
+                              {displayedTeachers &&
+                                displayedTeachers.map((item, index) => (
+                                  <button
+                                    className="w-full text-left hover:bg-tertiary-grey-silver px-4"
+                                    key={index}
+                                    onClick={() => handleTeacherSelect(item)}
+                                  >
+                                    {item}
+                                  </button>
+                                ))}
+                            </div>
+                          )}
                       </div>
                     </div>
                   </>
