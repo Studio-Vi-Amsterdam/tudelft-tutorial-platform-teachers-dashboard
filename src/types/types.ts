@@ -419,6 +419,7 @@ export interface ResponseArticleInterface {
   useful_links?: string
   course_code?: string
   study?: string
+  secondary_study?: string
   category?: string
 }
 export type ResponseBlockName =

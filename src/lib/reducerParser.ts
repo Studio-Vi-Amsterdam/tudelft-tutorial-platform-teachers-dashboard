@@ -539,7 +539,11 @@ export const reducerParser = {
               fieldTitle: 'Secondary Study',
               list: info.study ? info.study : [{ id: undefined, title: '' }],
               required: false,
-              value: response.study ? response.study : '' /* To change */,
+              value: response.study
+                ? info.study.filter(
+                    (el: { id: string; title: string }) => el.id === response.secondary_study,
+                  )[0]
+                : '',
             },
           },
           courseResponsible: {
@@ -819,6 +823,7 @@ export const reducerParser = {
         chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
         course_code: editorState.meta.courseBelongs?.courseCode.value ?? '',
         study: editorState.meta.courseBelongs?.primaryStudy.value.id ?? '',
+        secondary_study: editorState.meta.courseBelongs?.secondaryStudy.value.id ?? '',
         keywords: editorState.meta.courseBelongs?.keywords.list ?? [],
         featured_image: editorState.meta.courseBelongs?.image.value.id ?? null,
         faculty: editorState.meta.courseResponsible?.faculty.value ?? null,
