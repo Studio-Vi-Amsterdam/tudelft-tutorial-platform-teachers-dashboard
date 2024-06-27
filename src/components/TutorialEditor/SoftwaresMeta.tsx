@@ -19,6 +19,7 @@ import AddMediaElement from './AddMediaElement'
 
 const SoftwaresMeta = () => {
   const belongsFields = useAppSelector((state: RootState) => state.editor.meta.softwareBelongs)
+  const [showDropdown, setShowDropdown] = useState<boolean>(true)
   const keywordsArr: string[] | [] = useAppSelector((state: RootState) =>
     state.editor.meta.softwareBelongs
       ? state.editor.meta.softwareBelongs.keywords.proposedList
@@ -163,7 +164,7 @@ const SoftwaresMeta = () => {
                 <div className="w-9/12">
                   <>
                     <div className="w-full">
-                      <div className="relative mx-auto flex w-full flex-col gap-y-4 pt-4">
+                      <div className="relative mx-auto flex w-full  gap-x-4">
                         <div className="grow relative z-10">
                           <input
                             type="text"
@@ -171,24 +172,34 @@ const SoftwaresMeta = () => {
                             className="w-full p-4 rounded border placeholder:text-[#96969B] text-base bg-seasalt border-dim"
                             value={belongsFields.keywords.value}
                             onChange={(e) => handleKeywordInputChange(e.target.value)}
-                          />
-                          <div
-                            className={
-                              ' absolute top-full w-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
+                            onFocus={() => setShowDropdown(true)}
+                            onBlur={() =>
+                              setTimeout(() => {
+                                setShowDropdown(false)
+                              }, 100)
                             }
-                          >
-                            {displayedKeywords.map((item, index) => (
-                              <button
-                                className="w-full text-left hover:bg-tertiary-grey-silver px-4"
-                                key={index}
-                                onClick={() => handleKeywordSelect(item)}
+                          />
+                          {showDropdown &&
+                            displayedKeywords.length > 0 &&
+                            belongsFields.keywords.value.length > 0 && (
+                              <div
+                                className={
+                                  ' absolute top-full w-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
+                                }
                               >
-                                {item}
-                              </button>
-                            ))}
-                          </div>
+                                {displayedKeywords.map((item, index) => (
+                                  <button
+                                    className="w-full text-left hover:bg-tertiary-grey-silver px-4"
+                                    key={index}
+                                    onClick={() => handleKeywordSelect(item)}
+                                  >
+                                    {item}
+                                  </button>
+                                ))}
+                              </div>
+                            )}
                         </div>
-                        <div className="h-full h-14">
+                        <div className="h-14">
                           <Button
                             className="h-full flex items-center"
                             variant={'default'}

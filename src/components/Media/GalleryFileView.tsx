@@ -22,7 +22,7 @@ const GalleryFileView = (props: GalleryFileViewProps) => {
               key={index}
               className={`${
                 isSelected ? '' : 'before:!hidden'
-              } relative w-[calc(25%-1.5rem)] w-full before:absolute before:left-0 before:top-0 before:h-full before:w-full before:bg-black before:opacity-50`}
+              } relative w-[calc(25%-1.5rem)] w-full before:absolute before:z-10 before:left-0 before:top-0 before:h-full before:w-full before:bg-black before:opacity-50`}
               onClick={() => handleSelectFile(index, isSelected)}
             >
               <MediaPreviewTemplate item={item} styles="w-full h-full object-cover" />

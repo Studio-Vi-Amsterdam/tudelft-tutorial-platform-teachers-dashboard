@@ -91,7 +91,8 @@ const CoursesMeta = () => {
   const [displayedTeachers, setDisplayedTeachers] = useState<string[]>(teachersArr)
 
   const [addKeywordDialogOpened, setAddKeywordDialogOpened] = useState<boolean>(false)
-  // const [showDropdown, setShowDropdown] = useState<boolean>(true)
+  const [showDropdown, setShowDropdown] = useState<boolean>(true)
+  const [showDropdownTeacher, setShowDropdownTeacher] = useState<boolean>(true)
 
   const handleKeywordInputChange = (keyword: string) => {
     dispatch(
@@ -310,9 +311,15 @@ const CoursesMeta = () => {
                             value={belongsFields.keywords.value}
                             onChange={(e) => handleKeywordInputChange(e.target.value)}
                             className="w-full p-4 rounded border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible"
-                            // onBlur={() => setShowDropdown(!showDropdown)}
+                            onFocus={() => setShowDropdown(true)}
+                            onBlur={() =>
+                              setTimeout(() => {
+                                setShowDropdown(false)
+                              }, 100)
+                            }
                           />
-                          {displayedKeywords.length > 0 &&
+                          {showDropdown &&
+                            displayedKeywords.length > 0 &&
                             belongsFields.keywords.value.length > 0 && (
                               <div
                                 className={
@@ -439,30 +446,40 @@ const CoursesMeta = () => {
                 <div className="w-9/12">
                   <>
                     <div className="w-full">
-                      <div className="relative mx-auto flex w-full flex-col gap-y-4 ">
+                      <div className="relative mx-auto flex w-full flex-col gap-y-4 z-10">
                         <input
                           type="text"
                           placeholder="search teacher"
                           className="w-full p-4 rounded border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible"
                           value={responsibleFields.teachers.value}
                           onChange={(e) => handleTeacherInputChange(e.target.value)}
-                        />
-                        <div
-                          className={
-                            ' flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-white px-2 pb-2 [&>button]:py-2'
+                          onFocus={() => setShowDropdownTeacher(true)}
+                          onBlur={() =>
+                            setTimeout(() => {
+                              setShowDropdownTeacher(false)
+                            }, 100)
                           }
-                        >
-                          {displayedTeachers &&
-                            displayedTeachers.map((item, index) => (
-                              <button
-                                className="w-full text-left hover:bg-tertiary-grey-silver"
-                                key={index}
-                                onClick={() => handleTeacherSelect(item)}
-                              >
-                                {item}
-                              </button>
-                            ))}
-                        </div>
+                        />
+                        {showDropdownTeacher &&
+                          displayedTeachers.length > 0 &&
+                          responsibleFields.teachers.value.length > 0 && (
+                            <div
+                              className={
+                                'absolute top-full w-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
+                              }
+                            >
+                              {displayedTeachers &&
+                                displayedTeachers.map((item, index) => (
+                                  <button
+                                    className="w-full text-left hover:bg-tertiary-grey-silver px-4"
+                                    key={index}
+                                    onClick={() => handleTeacherSelect(item)}
+                                  >
+                                    {item}
+                                  </button>
+                                ))}
+                            </div>
+                          )}
                       </div>
                     </div>
                   </>

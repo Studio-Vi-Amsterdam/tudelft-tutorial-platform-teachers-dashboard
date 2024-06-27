@@ -93,7 +93,7 @@ export const FileUpload = (props: FileUploadProps) => {
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-8 mt-14">
+      <div className="grid md:grid-cols-2 gap-8 mt-14">
         <div className="w-full">
           {!files && (
             <div className="flex w-full flex-col items-center justify-center py-2">
@@ -152,7 +152,7 @@ export const FileUpload = (props: FileUploadProps) => {
       )}
 
       <div>
-        <div className="flex gap-4 justify-between mt-12">
+        <div className="flex sm:flex-row flex-col gap-4 justify-between mt-6 sm:mt-12">
           <Button
             variant={'outline'}
             onClick={handleDeleteFiles}
