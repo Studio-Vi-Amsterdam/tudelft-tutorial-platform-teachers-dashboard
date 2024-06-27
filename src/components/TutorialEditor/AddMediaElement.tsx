@@ -10,6 +10,7 @@ import {
   setFeaturedImage,
   setSubchapterMedia,
 } from 'src/redux/features/editorSlice'
+import MediaPreviewTemplate from '../Media/MediaPreviewTemplate'
 
 const AddMediaElement = (props: AddMediaElementProps) => {
   const [dialogOpened, setDialogOpened] = useState<boolean>(false)
@@ -173,7 +174,9 @@ const AddMediaElement = (props: AddMediaElementProps) => {
           <div className="absolute flex justify-center items-center group-hover:opacity-100 opacity-0 transition-opacity delay-300 bg-[rgba(0,0,0,0.3)] w-full h-full top-0 left-0">
             <Button onClick={handleClearMedia}>Delete</Button>
           </div>
-          <img src={mediaDataState.url} className="w-full object-cover" alt="" />
+          {/* 
+          <img src={mediaDataState.url} className="w-full object-cover" alt="" /> */}
+          <MediaPreviewTemplate item={mediaDataState} styles="w-full" />
         </div>
       ) : (
         <div className="flex w-full items-center justify-center bg-tertiary-grey-silver py-16">
@@ -183,10 +186,16 @@ const AddMediaElement = (props: AddMediaElementProps) => {
           </Button>
         </div>
       )}
-      <div className="flex flex-row">
-        <input type="checkbox" />
-        <p>Show subtitles</p>
-      </div>
+      {/* <div className="flex flex-row gap-2">
+        <input
+          className="appearance-none w-6 h-6  border-2 bg-white rounded-sm border-stone checked:!bg-primary-skyBlue checked:!border-primary-skyBlue checked:!opacity-90 checked:!bg-check checked:!bg-center checked:!bg-no-repeat"
+          type="checkbox"
+          id="show"
+        />
+        <label htmlFor="show" className="text-stone">
+          Show subtitles
+        </label>
+      </div> */}
       <PickMediaDialog
         block={props.block}
         chapterIndex={props.chapterIndex}

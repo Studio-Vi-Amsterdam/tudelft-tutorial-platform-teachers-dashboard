@@ -144,8 +144,8 @@ const TutorialsMeta = () => {
         belongsKeyName: 'keywords',
       }),
     )
-    const newDisplayedValues = displayedKeywords
-      .filter((item) => item.startsWith(keyword))
+    const newDisplayedValues = keywordsArr
+      .filter((item) => item.toLowerCase().startsWith(keyword.toLowerCase().trim()))
       .sort((a, b) => a.localeCompare(b))
 
     if (keyword === '') {
@@ -156,6 +156,13 @@ const TutorialsMeta = () => {
   }
   const handleKeywordSelect = (val: string) => {
     handleMetaInputKeywordsChange(val + ';', 'tutorialBelongs', 'keywords')
+    dispatch(
+      changeMetaField({
+        value: '',
+        objectName: 'tutorialBelongs',
+        belongsKeyName: 'keywords',
+      }),
+    )
   }
 
   const handleTeacherSelect = (val: string) => {
@@ -199,19 +206,21 @@ const TutorialsMeta = () => {
                   />
                 </div>
               </div>
-              <div className="flex w-full flex-row items-center justify-between">
-                <div>{`${belongsFields.version.fieldTitle}${
-                  belongsFields.version.required ? '*' : ''
-                }`}</div>
-                <div className="w-9/12">
-                  <MetaIdSelect
-                    handleMetaInputChange={handleMetaIdInputChange}
-                    keyName="version"
-                    objectName="tutorialBelongs"
-                    selectedObject={belongsFields.version}
-                  />
+              {belongsFields.version.list.length > 0 && (
+                <div className="flex w-full flex-row items-center justify-between">
+                  <div>{`${belongsFields.version.fieldTitle}${
+                    belongsFields.version.required ? '*' : ''
+                  }`}</div>
+                  <div className="w-9/12">
+                    <MetaIdSelect
+                      handleMetaInputChange={handleMetaIdInputChange}
+                      keyName="version"
+                      objectName="tutorialBelongs"
+                      selectedObject={belongsFields.version}
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="flex w-full flex-row items-center justify-between">
                 <div>{`${belongsFields.primarySubject.fieldTitle}${
                   belongsFields.primarySubject.required ? '*' : ''
@@ -238,28 +247,20 @@ const TutorialsMeta = () => {
                   />
                 </div>
               </div>
-              <div className="flex w-full flex-row items-center justify-between">
+              {/* <div className="flex w-full flex-row items-center justify-between">
                 <div>{`${belongsFields.level.fieldTitle}${
                   belongsFields.level.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
-                  <select
+                  <input
+                    type="text"
                     value={belongsFields.level.value}
-                    className="w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone"
                     onChange={(e) =>
                       handleMetaInputChange(e.target.value, 'tutorialBelongs', 'level')
                     }
-                  >
-                    <option value="">{belongsFields.level.fieldTitle}</option>
-                    {belongsFields.level.list &&
-                      belongsFields.level.list.map((listItem, index) => (
-                        <option key={index} value={listItem}>
-                          {listItem}
-                        </option>
-                      ))}
-                  </select>
+                  />
                 </div>
-              </div>
+              </div> */}
               <div className="flex w-full flex-row items-center justify-between">
                 <div>{`${belongsFields.keywords.fieldTitle}${
                   belongsFields.keywords.required ? '*' : ''

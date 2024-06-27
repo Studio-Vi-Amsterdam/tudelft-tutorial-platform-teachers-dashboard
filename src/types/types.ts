@@ -22,11 +22,14 @@ export interface DashboardPublishedInterface {
   publish_date: string
   title: string
   type: ArtictesType
+  previewLink: string | null
+  status: 'draft' | 'published' | 'new'
 }
 
 export interface DashboardSectionProps {
   items: DashboardPublishedInterface[]
   heading: string
+  fetched: boolean
 }
 
 interface ElementActionBase {
@@ -323,12 +326,13 @@ export interface TutorialMetaObject {
     image: OnlyValueImageInterface
   }
   subjectsInvolve?: {
-    primaryCategory: OnlyValueInterface
-    secondaryCategory: OnlyValueInterface
+    primaryCategory: MetaFieldIdListInterface
+    secondaryCategory: MetaFieldIdListInterface
   }
 }
 
 export interface EditorState {
+  isEditorLoaded: boolean
   pageType: PageTypeType
   tutorialTop: TutorialTopInterface
   chapters: ChapterInterface[] | []
@@ -380,6 +384,8 @@ export interface DashboardDraftsInterface {
 }
 
 export interface DashboardInterface {
+  isDraftsLoaded: boolean
+  isPublishedLoaded: boolean
   username: string
   drafts: DashboardPublishedInterface[] | []
   published: DashboardPublishedInterface[] | []
@@ -396,7 +402,7 @@ export interface ResponseArticleInterface {
   content?: []
   description?: string
   faculty?: []
-  featured_image?: string
+  featured_image?: string | any
   id?: number
   keywords?: string[]
   level?: string
@@ -405,6 +411,7 @@ export interface ResponseArticleInterface {
   publish_date?: string
   secondary_subject?: boolean | string | number
   software_version?: number[]
+  'software-version'?: string[]
   teachers?: [] | string[]
   title?: string
   useful_links?: string

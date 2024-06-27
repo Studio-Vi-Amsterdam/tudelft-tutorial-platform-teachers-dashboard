@@ -104,3 +104,96 @@ body {
     }
 
 }
+
+.preloader {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.loaderContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.height100 {
+    height: 100%;
+}
+
+.ldsEllipsis {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 50px;
+}
+
+.ldsEllipsis div {
+    position: absolute;
+    top: 33px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #00A6D6;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.ldsEllipsis div:nth-child(1) {
+    left: 8px;
+    animation: lds-ellipsis1 0.6s infinite;
+}
+
+.ldsEllipsis div:nth-child(2) {
+    left: 8px;
+    animation: lds-ellipsis2 0.6s infinite;
+}
+
+.ldsEllipsis div:nth-child(3) {
+    left: 32px;
+    animation: lds-ellipsis2 0.6s infinite;
+}
+
+.ldsEllipsis div:nth-child(4) {
+    left: 56px;
+    animation: lds-ellipsis3 0.6s infinite;
+}
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0.845665 3.1515C1.04093 2.9495 1.35751 2.9495 1.55277 3.1515L5.99922 7.75127L10.4457 3.1515C10.6409 2.9495 10.9575 2.9495 11.1528 3.1515C11.348 3.35349 11.348 3.68099 11.1528 3.88299L6.35277 8.8485C6.259 8.9455 6.13183 9 5.99922 9C5.86661 9 5.73943 8.9455 5.64567 8.8485L0.845665 3.88299C0.650403 3.68099 0.650403 3.35349 0.845665 3.1515Z' fill='%2367676B'/%3E%3C/svg%3E%0A");
+    background-repeat: no-repeat;
+    background-position: right 12px  center;
+    background-size: 12px 12px;
+}
+
+@keyframes lds-ellipsis1 {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes lds-ellipsis3 {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(0);
+    }
+}
+
+@keyframes lds-ellipsis2 {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    100% {
+        transform: translate(24px, 0);
+    }
+}

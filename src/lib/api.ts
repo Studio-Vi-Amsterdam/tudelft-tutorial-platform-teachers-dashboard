@@ -26,6 +26,9 @@ export const articlesAPI = {
   getArticles(type: ArtictesType) {
     return instance.get(`/${type}/`)
   },
+  getPreviewLink(type: ArtictesType, id: number) {
+    return instance.get(`/${type}/preview?id=${id}`)
+  },
   getDraftArticles(type: ArtictesType) {
     return instance.get(`/${type}?status=draft`)
   },
@@ -102,5 +105,8 @@ export const mediaAPI = {
       id,
     }
     return instance.delete('/media/delete', { data: payload })
+  },
+  searchMedia(term: string) {
+    return instance.get(`/media/search/?term=${term}`)
   },
 }

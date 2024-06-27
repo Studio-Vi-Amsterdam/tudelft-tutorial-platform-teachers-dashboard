@@ -25,7 +25,7 @@ const AddNewTutorialButton = () => {
   const handleSubmit = () => {
     if (activeButton) {
       navigate(
-        `/dashboard/my-tutorials?type=${activeButton.split(' ')[0].toLowerCase() + 's'}&id=new`,
+        `/dashboard/my-tutorials?type=${activeButton.split(' ')[0].toLowerCase() + 's'}&id=new&status=new`,
       )
     }
   }
@@ -38,11 +38,11 @@ const AddNewTutorialButton = () => {
           <p>Create new tutorial</p>
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-white sm:max-w-md">
+      <DialogContent className="bg-white sm:max-w-[888px] p-10">
         <DialogHeader>
           <DialogTitle>What are you creating?</DialogTitle>
         </DialogHeader>
-        <div className="flex w-full flex-row flex-wrap gap-x-6 gap-y-6 pb-20">
+        <div className="flex w-full flex-row flex-wrap gap-x-6 gap-y-6 pb-20 mt-6">
           {buttons.map((item, index) => (
             <button
               key={index}
@@ -56,7 +56,7 @@ const AddNewTutorialButton = () => {
           ))}
         </div>
         <DialogFooter>
-          <Button onClick={handleSubmit} disabled={!activeButton}>
+          <Button onClick={handleSubmit} disabled={!activeButton} className="px-10">
             <p>Start</p>
           </Button>
         </DialogFooter>
