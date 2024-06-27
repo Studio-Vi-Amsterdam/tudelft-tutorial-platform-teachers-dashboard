@@ -121,11 +121,21 @@ const TutorialsMeta = () => {
       ? state.editor.meta.tutorialBelongs.keywords.proposedList
       : [],
   )
+  const teachersArr: string[] | [] = useAppSelector((state: RootState) =>
+    state.editor.meta.tutorialResponsible
+      ? state.editor.meta.tutorialResponsible.teachers.proposedList
+      : [],
+  )
+
+  useEffect(() => {
+    setDisplayedTeachers(teachersArr)
+  }, [teachersArr])
   useEffect(() => {
     setDisplayedKeywords(keywordsArr)
   }, [keywordsArr])
 
   const [displayedKeywords, setDisplayedKeywords] = useState<string[]>(keywordsArr)
+  const [displayedTeachers, setDisplayedTeachers] = useState<string[]>(teachersArr)
 
   const handleTeacherInputChange = (teacher: string) => {
     dispatch(
@@ -135,7 +145,17 @@ const TutorialsMeta = () => {
         responsibleKeyName: 'teachers',
       }),
     )
+    const newDisplayedValues = teachersArr
+      .filter((item) => item.toLowerCase().startsWith(teacher.toLowerCase().trim()))
+      .sort((a, b) => a.localeCompare(b))
+
+    if (teacher === '') {
+      setDisplayedTeachers(teachersArr)
+    } else {
+      setDisplayedTeachers(newDisplayedValues)
+    }
   }
+
   const handleKeywordInputChange = (keyword: string) => {
     dispatch(
       changeMetaField({
@@ -167,6 +187,13 @@ const TutorialsMeta = () => {
 
   const handleTeacherSelect = (val: string) => {
     handleMetaInputTeachersChange(val + ';')
+    dispatch(
+      changeMetaField({
+        value: '',
+        objectName: 'tutorialResponsible',
+        responsibleKeyName: 'teachers',
+      }),
+    )
   }
 
   const [addKeywordDialogOpened, setAddKeywordDialogOpened] = useState<boolean>(false)
@@ -419,8 +446,8 @@ const TutorialsMeta = () => {
                             ' flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-white px-2 pb-2 [&>button]:py-2'
                           }
                         >
-                          {responsibleFields.teachers.proposedList &&
-                            responsibleFields.teachers.proposedList.map((item, index) => (
+                          {displayedTeachers &&
+                            displayedTeachers.map((item, index) => (
                               <button
                                 className="w-full text-left hover:bg-tertiary-grey-silver"
                                 key={index}
