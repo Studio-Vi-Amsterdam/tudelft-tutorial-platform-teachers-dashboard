@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useAppSelector } from 'src/redux/hooks'
 import { RootState } from 'src/redux/store'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/Accordion'
@@ -12,10 +12,29 @@ interface EditorSidebarProps {
 const EditorSidebar = (props: EditorSidebarProps) => {
   const chapters = useAppSelector((state: RootState) => state.editor.chapters)
   const isFetched = useAppSelector((state: RootState) => state.editor.isEditorLoaded)
+  const [openAside, setOpenAside] = useState(false)
   return (
-    <div className="relative w-1/4 text-white pr-6">
-      <div className="sticky top-0">
-        <div className="py-10 font-RobotoSlab text-2xl font-medium">Index</div>
+    <div
+      className={`${openAside ? 'max-md:translate-x-0' : 'max-md:-translate-x-full'} md:min-w-[312px] text-white pr-6 max-md:fixed max-md:z-20 top-0 left-0 max-md:h-screen w-[184px] max-md:pt-16 max-md:bg-secondary-navy max-md:pl-6 max-md:pb-6 transition-all duration-500`}
+    >
+      <div
+        onClick={() => setOpenAside(!openAside)}
+        className="absolute top-24 left-full rounded-r bg-secondary-navy md:hidden w-4 h-10 flex items-center justify-center z-10"
+      >
+        <img
+          className={`${openAside ? 'rotate-180' : 'rotate-0'} w-3 transition-all duration-500`}
+          src="/img/open-aside.svg"
+          alt="arrow"
+        />
+      </div>
+      <div
+        onClick={() => setOpenAside(false)}
+        className={`${openAside ? 'opacity-100 visible' : 'opacity-0 invisible'} md:hidden fixed z-[-1] top-0 left-0 bg-[#0C234066]  w-[200vw] h-screen  transition-all duration-500`}
+      ></div>
+      <div className="md:sticky top-0">
+        <div className="py-10 font-RobotoSlab md:text-2xl font-medium text-xl max-md:pb-16">
+          Index
+        </div>
         <div className="flex flex-col">
           {isFetched ? (
             <>
@@ -61,7 +80,7 @@ const EditorSidebar = (props: EditorSidebarProps) => {
           )}
         </div>
       </div>
-      <div className="absolute right-0 top-0 -z-10 h-full w-[300%] bg-secondary-navy"></div>
+      <div className="absolute left-0 top-0 -z-10 h-full w-2/4 bg-secondary-navy max-md:hidden"></div>
     </div>
   )
 }

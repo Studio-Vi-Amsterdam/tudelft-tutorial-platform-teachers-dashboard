@@ -122,8 +122,8 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                   }
                 />
               </div>
-              <div className="w-full flex flex-row justify-between gap-6">
-                <div className="w-1/2">
+              <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
+                <div className="sm:w-1/2">
                   <ExtendedBundledEditor
                     value={element.textImage.text}
                     block={block}
@@ -134,7 +134,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                     layout="textImage"
                   />
                 </div>
-                <div className="w-1/2">
+                <div className="sm:w-1/2">
                   <AddMediaElement
                     mediaType="image"
                     block={props.block}
@@ -172,8 +172,8 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                   }
                 />
               </div>
-              <div className="w-full flex flex-row justify-between gap-6">
-                <div className="w-1/2">
+              <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
+                <div className="sm:w-1/2">
                   <AddMediaElement
                     mediaType="image"
                     block={props.block}
@@ -183,7 +183,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                     layout="imageText"
                   />
                 </div>
-                <div className="w-1/2">
+                <div className="sm:w-1/2">
                   <ExtendedBundledEditor
                     value={element.imageText.text}
                     block={block}
@@ -222,8 +222,8 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                   }
                 />
               </div>
-              <div className="w-full flex flex-row justify-between gap-6">
-                <div className="w-1/2">
+              <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
+                <div className="sm:w-1/2">
                   <AddMediaElement
                     mediaType="video"
                     block={props.block}
@@ -233,7 +233,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                     layout="videoText"
                   />
                 </div>
-                <div className="w-1/2">
+                <div className="sm:w-1/2">
                   <ExtendedBundledEditor
                     value={element.videoText.text}
                     block={block}
@@ -272,8 +272,8 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                   }
                 />
               </div>
-              <div className="w-full flex flex-row justify-between gap-6">
-                <div className="w-1/2">
+              <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
+                <div className="sm:w-1/2">
                   <ExtendedBundledEditor
                     value={element.textVideo.text}
                     block={block}
@@ -284,7 +284,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                     layout="textVideo"
                   />
                 </div>
-                <div className="w-1/2">
+                <div className="sm:w-1/2">
                   <AddMediaElement
                     mediaType="video"
                     block={props.block}
@@ -336,8 +336,8 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
-              <div className="flex w-full flex-row items-center justify-between">
-                <div>Tutorial</div>
+              <div className="flex w-full flex-row items-center justify-between gap-2">
+                <div className="min-w-[104px] max-w-[104px]">Tutorial</div>
                 <div className="w-9/12">
                   <select
                     value={element.tutorialCard.value.title}

@@ -57,7 +57,7 @@ export const MediaPage = () => {
     <main className="container mx-auto md:mb-24 md:mt-20 my-10 mb-16">
       <header className="md:flex justify-between items-end mb-10 sm:mb-20 gap-3">
         <div>
-          <h1 className="font-RobotoSlab text-h2 font-light -tracking-1 mb-4">Media</h1>
+          <h1 className="font-RobotoSlab text-4xl sm:text-h2 font-light -tracking-1 mb-4">Media</h1>
           <p className="text-tertiary-grey-dim max-w-[495px]">
             Browse the published tutorials for content that might be useful for your new tutorial.
           </p>
@@ -106,12 +106,14 @@ export const MediaPage = () => {
         </DialogContent>
       </Dialog>
       <Dialog open={isOpenDelete} onOpenChange={setIsOpenDelete}>
-        <DialogContent className="bg-white max-w-[600px] !rounded p-6 sm:p-10">
-          <h3 className="pt-16 text-h3">Are you sure to delete selected files?</h3>
+        <DialogContent className="bg-white max-w-[600px] !rounded p-10">
+          <h3 className="sm:pt-16 pt-10 text-2xl sm:text-h3">
+            Are you sure to delete selected files?
+          </h3>
           <p className="text-subtext">
             If you delete this file you will not be able to recover it.
           </p>
-          <DialogFooter className="mt-6 !justify-between">
+          <DialogFooter className="mt-6 !justify-between gap-4">
             <Button
               onClick={() => setIsOpenDelete(false)}
               disabled={isFetching}

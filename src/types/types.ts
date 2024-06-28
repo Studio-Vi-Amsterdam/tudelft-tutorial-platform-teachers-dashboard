@@ -372,6 +372,7 @@ export interface AddMediaElementProps extends ElementProps {
   mediaType: MediaVariantType
   listIndex: number | undefined
   layout?: 'textImage' | 'imageText' | 'textVideo' | 'videoText'
+  className?: string
 }
 
 export interface SubchapterImageAction {

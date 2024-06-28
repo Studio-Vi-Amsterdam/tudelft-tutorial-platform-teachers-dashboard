@@ -99,7 +99,7 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
   }
 
   return (
-    <section className="relative flex w-full flex-col gap-y-6 py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver">
+    <section className="relative flex w-full flex-col gap-y-6 py-16 sm:py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver">
       <EditorLabel>
         This section is mandatory for all tutorials and appears on top of the tutorial page.
       </EditorLabel>
