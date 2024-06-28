@@ -15,7 +15,7 @@ const EditorSidebar = (props: EditorSidebarProps) => {
   const [openAside, setOpenAside] = useState(false)
   return (
     <div
-      className={`${openAside ? 'max-md:translate-x-0' : 'max-md:-translate-x-full'} md:min-w-[312px] text-white pr-6 max-md:fixed max-md:z-20 top-0 left-0 h-screen w-[184px] max-md:pt-16 max-md:bg-secondary-navy max-md:pl-6 max-md:pb-6 transition-all duration-500`}
+      className={`${openAside ? 'max-md:translate-x-0' : 'max-md:-translate-x-full'} md:min-w-[312px] text-white pr-6 max-md:fixed max-md:z-20 top-0 left-0 max-md:h-screen w-[184px] max-md:pt-16 max-md:bg-secondary-navy max-md:pl-6 max-md:pb-6 transition-all duration-500`}
     >
       <div
         onClick={() => setOpenAside(!openAside)}
