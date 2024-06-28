@@ -101,7 +101,7 @@ export const FileUpload = (props: FileUploadProps) => {
                 {({ getRootProps, getInputProps }) => (
                   <section
                     {...getRootProps()}
-                    className="flex w-full h-80	bg-tertiary-grey-silver px-20 flex-col items-center h-96 justify-center gap-y-2"
+                    className="flex w-full sm:h-80	bg-tertiary-grey-silver sm:px-20 flex-col items-center sm:h-96 justify-center gap-y-2 p-6"
                   >
                     <input {...getInputProps()} />
                     <div className="flex w-full flex-col items-center justify-center gap-y-2 rounded border border-dashed border-tertiary-grey-stone py-4 text-center text-tertiary-grey-dim">

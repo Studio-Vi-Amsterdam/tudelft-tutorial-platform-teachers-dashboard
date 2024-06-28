@@ -98,7 +98,7 @@ const TutorialButtonsSection = () => {
   }
 
   return (
-    <section className="flex w-full flex-row items-center justify-end gap-x-6 py-14">
+    <section className="flex w-full flex-row items-center justify-end gap-2 gap-y-6 lg:gap-x-6 py-10 sm:py-14 flex-wrap">
       {articleId !== 'new' && (
         <Button variant={'outline'} size={'lg'} onClick={handlePreviewClick}>
           <p>Preview</p>

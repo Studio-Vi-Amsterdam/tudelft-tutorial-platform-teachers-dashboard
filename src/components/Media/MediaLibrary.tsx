@@ -108,8 +108,8 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
   // }
   return (
     <>
-      <div className="flex flex-row items-center justify-between mb-10">
-        <div className="flex flex-row items-center justify-start gap-x-6 [&>button]:flex [&>button]:flex-row [&>button]:gap-x-4 [&>button]:rounded-[4px] [&>button]:bg-background-aliceBlue [&>button]:p-2">
+      <div className="flex flex-row items-center justify-between mb-4 sm:mb-10">
+        <div className="flex flex-row items-center justify-start gap-x-4 sm:gap-x-6 [&>button]:flex [&>button]:flex-row [&>button]:gap-x-4 [&>button]:rounded-[4px] [&>button]:bg-background-aliceBlue [&>button]:p-2">
           <button
             className={`
               ${
@@ -172,7 +172,7 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
         {/*  </div> */}
         {/* </div> */}
       </div>
-      <div className="min-h-[620px]">
+      <div className="md:min-h-[620px]">
         {media && (
           <div className="flex flex-col gap-y-10">
             {isLoading ? (

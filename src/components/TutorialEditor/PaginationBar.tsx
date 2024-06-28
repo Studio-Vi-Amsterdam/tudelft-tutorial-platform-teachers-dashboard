@@ -54,7 +54,7 @@ const PaginationBar = (props: PaginationBarProps) => {
 
   return (
     <div className="flex flex-row items-center justify-center">
-      <div className="flex flex-row gap-x-2 [&>button]:flex [&>button]:h-12 [&>button]:w-12 [&>button]:flex-row [&>button]:items-center [&>button]:justify-center [&>button]:rounded-[4px] [&>button]:text-xl [&>button]:leading-8">
+      <div className="flex flex-row gap-x-2 [&>button]:flex sm:[&>button]:h-12 sm:[&>button]:w-12 [&>button]:h-8 [&>button]:w-8 [&>button]:flex-row [&>button]:items-center [&>button]:justify-center [&>button]:rounded-[4px] sm:[&>button]:text-xl [&>button]:leading-8">
         <button onClick={handlePrevClick} disabled={currentPage === 1 || props.selectMode}>
           <ArrowPrev />
         </button>

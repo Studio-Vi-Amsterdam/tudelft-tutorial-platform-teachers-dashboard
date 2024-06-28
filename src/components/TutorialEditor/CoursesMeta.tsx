@@ -216,18 +216,18 @@ const CoursesMeta = () => {
 
   return (
     <>
-      <section className="relative flex w-full flex-col gap-y-6 py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver">
+      <section className="relative flex w-full flex-col gap-y-6 py-14 sm:py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver">
         <EditorLabel>
           Filling in the subject mandatory to ensure the right navigation. If this tutorial also
           belongs to a course ans software, please also fill that in. This information won’t be
           displayed, but used to place the tutorial in the right place in the sitemap.
         </EditorLabel>
-        <h3 className="font-bold">This course page belongs to</h3>
+        <h3 className="font-bold ms:mb-0 mb-4">This course page belongs to</h3>
         <div className="flex flex-col gap-y-8">
           {belongsFields && (
             <>
-              <div className="flex w-full flex-row items-center justify-between">
-                <div className="min-h-14">{'Course*'}</div>
+              <div className="flex w-full flex-row items-center justify-between gap-2">
+                <div className="min-h-14 min-w-[104px] max-w-[104px]">{'Course*'}</div>
                 <div className="w-9/12">
                   <input
                     value={title}
@@ -237,8 +237,8 @@ const CoursesMeta = () => {
                   />
                 </div>
               </div>
-              <div className="flex w-full flex-row items-center justify-between">
-                <div className="min-h-14">{`${belongsFields.courseCode.fieldTitle}${
+              <div className="flex w-full flex-row items-center justify-between gap-2">
+                <div className="min-h-14 min-w-[104px] max-w-[104px]">{`${belongsFields.courseCode.fieldTitle}${
                   belongsFields.courseCode.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
@@ -252,8 +252,8 @@ const CoursesMeta = () => {
                   />
                 </div>
               </div>
-              <div className="flex w-full flex-row items-center justify-between">
-                <div className="min-h-14">{`${belongsFields.primaryStudy.fieldTitle}${
+              <div className="flex w-full flex-row items-center justify-between gap-2">
+                <div className="min-h-14 min-w-[104px] max-w-[104px]">{`${belongsFields.primaryStudy.fieldTitle}${
                   belongsFields.primaryStudy.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
@@ -267,6 +267,28 @@ const CoursesMeta = () => {
                     <option value="">{belongsFields.primaryStudy.fieldTitle}</option>
                     {belongsFields.primaryStudy.list &&
                       belongsFields.primaryStudy.list.map((listItem, index) => (
+                        <option key={index} value={listItem.title}>
+                          {listItem.title}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </div>
+              <div className="flex w-full flex-row items-center justify-between">
+                <div className="min-h-14">{`${belongsFields.secondaryStudy.fieldTitle}${
+                  belongsFields.secondaryStudy.required ? '*' : ''
+                }`}</div>
+                <div className="w-9/12">
+                  <select
+                    value={belongsFields.secondaryStudy.value.title}
+                    className="w-full p-4 rounded border text-[#96969B] text-base bg-seasalt border-dim"
+                    onChange={(e) =>
+                      handleMetaIdInputChange(e.target.value, 'courseBelongs', 'secondaryStudy')
+                    }
+                  >
+                    <option value="">{belongsFields.secondaryStudy.fieldTitle}</option>
+                    {belongsFields.secondaryStudy.list &&
+                      belongsFields.secondaryStudy.list.map((listItem, index) => (
                         <option key={index} value={listItem.title}>
                           {listItem.title}
                         </option>
@@ -296,77 +318,75 @@ const CoursesMeta = () => {
               {/*    </select> */}
               {/*  </div> */}
               {/* </div> */}
-              <div className="flex w-full flex-row items-start justify-between">
-                <div className="h-14 flex items-center">{`${belongsFields.keywords.fieldTitle}${
+              <div className="flex w-full flex-row items-start justify-between gap-2">
+                <div className="h-14 flex items-center min-w-[104px] max-w-[104px]">{`${belongsFields.keywords.fieldTitle}${
                   belongsFields.keywords.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
-                  <>
-                    <div className="w-full">
-                      <div className="relative mx-auto flex w-full  gap-x-4">
-                        <div className="grow relative z-10">
-                          <input
-                            type="text"
-                            placeholder="search keyword"
-                            value={belongsFields.keywords.value}
-                            onChange={(e) => handleKeywordInputChange(e.target.value)}
-                            className="w-full p-4 rounded border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible"
-                            onFocus={() => setShowDropdown(true)}
-                            onBlur={() =>
-                              setTimeout(() => {
-                                setShowDropdown(false)
-                              }, 100)
+                  <div className="relative mx-auto flex w-full  sm:gap-x-4 gap-1">
+                    <div className="grow relative z-10">
+                      <input
+                        type="text"
+                        placeholder="search keyword"
+                        value={belongsFields.keywords.value}
+                        onChange={(e) => handleKeywordInputChange(e.target.value)}
+                        className="w-full p-4 rounded border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible"
+                        onFocus={() => setShowDropdown(true)}
+                        onBlur={() =>
+                          setTimeout(() => {
+                            setShowDropdown(false)
+                          }, 100)
+                        }
+                      />
+                      {showDropdown &&
+                        displayedKeywords.length > 0 &&
+                        belongsFields.keywords.value.length > 0 && (
+                          <div
+                            className={
+                              ' absolute top-full w-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
                             }
-                          />
-                          {showDropdown &&
-                            displayedKeywords.length > 0 &&
-                            belongsFields.keywords.value.length > 0 && (
-                              <div
-                                className={
-                                  ' absolute top-full w-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
-                                }
-                              >
-                                {displayedKeywords.map((item, index) => (
-                                  <button
-                                    className="w-full text-left hover:bg-tertiary-grey-silver px-4"
-                                    key={index}
-                                    onClick={() => handleKeywordSelect(item)}
-                                  >
-                                    {item}
-                                  </button>
-                                ))}
-                              </div>
-                            )}
-                        </div>
-                        <div className=" h-14">
-                          <Button
-                            className="h-full flex items-center"
-                            variant={'default'}
-                            onClick={() => setAddKeywordDialogOpened(true)}
                           >
-                            <div>+</div>
-                          </Button>
-                        </div>
-                      </div>
+                            {displayedKeywords.map((item, index) => (
+                              <button
+                                className="w-full text-left hover:bg-tertiary-grey-silver px-4"
+                                key={index}
+                                onClick={() => handleKeywordSelect(item)}
+                              >
+                                {item}
+                              </button>
+                            ))}
+                          </div>
+                        )}
                     </div>
-                  </>
+                    <div className=" h-[58px]">
+                      <Button
+                        className="h-full flex items-center"
+                        variant={'default'}
+                        onClick={() => setAddKeywordDialogOpened(true)}
+                      >
+                        <div>+</div>
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="flex w-full flex-row justify-end">
-                <div className="flex w-9/12 flex-row flex-wrap gap-x-2 gap-y-2">
-                  {belongsFields.keywords.list.map((keyword, index) => (
-                    <button
-                      key={index}
-                      className="relative rounded-[4px] bg-tertiary-skyBlue-10 py-1 pl-2 pr-8 before:absolute before:right-2 before:top-1/2 before:h-4 before:w-4 before:-translate-y-1/2 before:bg-cross before:bg-center before:bg-no-repeat"
-                      onClick={() => deleteKeywordFromList(keyword)}
-                    >
-                      {keyword}
-                    </button>
-                  ))}
+              {belongsFields.keywords.list.length > 0 && (
+                <div className="flex w-full flex-row justify-end">
+                  <div className="flex w-[calc(100%-112px)] sm:w-9/12 sm:flex-row flex-col max-sm:items-start flex-wrap gap-x-2 gap-y-2">
+                    {belongsFields.keywords.list.map((keyword, index) => (
+                      <button
+                        key={index}
+                        className="relative rounded-[4px] bg-tertiary-skyBlue-10 py-1 pl-2 pr-8 before:absolute before:right-2 before:top-1/2 before:h-4 before:w-4 before:-translate-y-1/2 before:bg-cross before:bg-center before:bg-no-repeat"
+                        onClick={() => deleteKeywordFromList(keyword)}
+                      >
+                        {keyword}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <div className="flex w-full flex-row items-start justify-between">
-                <div className="h-14 flex items-center">{`${belongsFields.image.fieldTitle}${
+              )}
+              <div className="flex w-full flex-row items-start justify-between gap-2">
+                <div className="h-14 flex items-center min-w-[104px] max-w-[104px]">{`${belongsFields.image.fieldTitle}${
                   belongsFields.image.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
@@ -376,6 +396,7 @@ const CoursesMeta = () => {
                     subchapterIndex={undefined}
                     listIndex={undefined}
                     mediaType="image"
+                    className="without-bg"
                   />
                 </div>
               </div>
@@ -417,8 +438,8 @@ const CoursesMeta = () => {
         <div className="flex flex-col gap-y-8">
           {responsibleFields && (
             <>
-              <div className="flex w-full flex-row items-center justify-between">
-                <div>{`${responsibleFields.faculty.fieldTitle}${
+              <div className="flex w-full flex-row items-center justify-between gap-2">
+                <div className="min-w-[104px] max-w-[104px]">{`${responsibleFields.faculty.fieldTitle}${
                   responsibleFields.faculty.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
@@ -439,8 +460,8 @@ const CoursesMeta = () => {
                   </select>
                 </div>
               </div>
-              <div className="flex w-full flex-row items-center justify-between">
-                <div>{`${responsibleFields.teachers.fieldTitle}${
+              <div className="flex w-full flex-row items-center justify-between gap-2">
+                <div className="min-w-[104px] max-w-[104px]">{`${responsibleFields.teachers.fieldTitle}${
                   responsibleFields.teachers.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
@@ -486,7 +507,7 @@ const CoursesMeta = () => {
                 </div>
               </div>
               <div className="flex w-full flex-row justify-end">
-                <div className="flex w-9/12 flex-row flex-wrap gap-x-2 gap-y-2 pt-4">
+                <div className="flex sm:w-9/12 w-[calc(100%-112px)] flex-row flex-wrap gap-x-2 gap-y-2">
                   {responsibleFields.teachers.list &&
                     responsibleFields.teachers.list.map((keyword, index) => (
                       <button

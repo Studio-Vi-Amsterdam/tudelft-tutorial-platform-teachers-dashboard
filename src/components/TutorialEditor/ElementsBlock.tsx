@@ -2,6 +2,8 @@ import React from 'react'
 import { useAppDispatch } from 'src/redux/hooks'
 import {
   changeSubchapterText,
+  changeSubchapterTitle,
+  changeTutorialCard,
   setElementInfobox,
   setElementText,
 } from 'src/redux/features/editorSlice'
@@ -71,6 +73,26 @@ const ElementsBlock = (props: ElementsBlockProps) => {
     }
   }
 
+  const handleSubchapterTitleChange = (
+    value: string,
+    listIndex: number,
+    layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText',
+    chapterIndex?: number,
+  ) => {
+    if (chapterIndex !== undefined) {
+      dispatch(changeSubchapterTitle({ value, chapterIndex, layout, listIndex }))
+    }
+  }
+
+  const handleSelectTutorialCard = (
+    value: string,
+    block: string,
+    listIndex: number,
+    chapterIndex?: number,
+  ) => {
+    dispatch(changeTutorialCard({ value, block, listIndex, chapterIndex }))
+  }
+
   return (
     <div className="flex w-full flex-col gap-y-6">
       {elements.map((element, index) => (
@@ -82,8 +104,26 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
-              <div className="w-full flex flex-row justify-between gap-6">
-                <div className="w-1/2">
+              <div className="relative w-full mt-4 mb-5 ">
+                <input
+                  type="text"
+                  className={
+                    'w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone'
+                  }
+                  value={element.textImage.title}
+                  placeholder={'Subchapter Title'}
+                  onChange={(e) =>
+                    handleSubchapterTitleChange(
+                      e.target.value,
+                      index,
+                      'textImage',
+                      props.chapterIndex,
+                    )
+                  }
+                />
+              </div>
+              <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
+                <div className="sm:w-1/2">
                   <ExtendedBundledEditor
                     value={element.textImage.text}
                     block={block}
@@ -94,7 +134,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                     layout="textImage"
                   />
                 </div>
-                <div className="w-1/2">
+                <div className="sm:w-1/2">
                   <AddMediaElement
                     mediaType="image"
                     block={props.block}
@@ -114,8 +154,26 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
-              <div className="w-full flex flex-row justify-between gap-6">
-                <div className="w-1/2">
+              <div className="relative w-full mt-4 mb-5 ">
+                <input
+                  type="text"
+                  className={
+                    'w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone'
+                  }
+                  value={element.imageText.title}
+                  placeholder={'Subchapter Title'}
+                  onChange={(e) =>
+                    handleSubchapterTitleChange(
+                      e.target.value,
+                      index,
+                      'imageText',
+                      props.chapterIndex,
+                    )
+                  }
+                />
+              </div>
+              <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
+                <div className="sm:w-1/2">
                   <AddMediaElement
                     mediaType="image"
                     block={props.block}
@@ -125,7 +183,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                     layout="imageText"
                   />
                 </div>
-                <div className="w-1/2">
+                <div className="sm:w-1/2">
                   <ExtendedBundledEditor
                     value={element.imageText.text}
                     block={block}
@@ -146,8 +204,26 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
-              <div className="w-full flex flex-row justify-between gap-6">
-                <div className="w-1/2">
+              <div className="relative w-full mt-4 mb-5 ">
+                <input
+                  type="text"
+                  className={
+                    'w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone'
+                  }
+                  value={element.videoText.title}
+                  placeholder={'Subchapter Title'}
+                  onChange={(e) =>
+                    handleSubchapterTitleChange(
+                      e.target.value,
+                      index,
+                      'videoText',
+                      props.chapterIndex,
+                    )
+                  }
+                />
+              </div>
+              <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
+                <div className="sm:w-1/2">
                   <AddMediaElement
                     mediaType="video"
                     block={props.block}
@@ -157,7 +233,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                     layout="videoText"
                   />
                 </div>
-                <div className="w-1/2">
+                <div className="sm:w-1/2">
                   <ExtendedBundledEditor
                     value={element.videoText.text}
                     block={block}
@@ -178,8 +254,26 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
-              <div className="w-full flex flex-row justify-between gap-6">
-                <div className="w-1/2">
+              <div className="relative w-full mt-4 mb-5 ">
+                <input
+                  type="text"
+                  className={
+                    'w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone'
+                  }
+                  value={element.textVideo.title}
+                  placeholder={'Subchapter Title'}
+                  onChange={(e) =>
+                    handleSubchapterTitleChange(
+                      e.target.value,
+                      index,
+                      'textVideo',
+                      props.chapterIndex,
+                    )
+                  }
+                />
+              </div>
+              <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
+                <div className="sm:w-1/2">
                   <ExtendedBundledEditor
                     value={element.textVideo.text}
                     block={block}
@@ -190,7 +284,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                     layout="textVideo"
                   />
                 </div>
-                <div className="w-1/2">
+                <div className="sm:w-1/2">
                   <AddMediaElement
                     mediaType="video"
                     block={props.block}
@@ -233,6 +327,35 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                 handleTextChange={handleInfoboxElementChange}
                 subchapter={false}
               />
+            </DeleteElementWraper>
+          )}
+          {element.tutorialCard !== undefined && (
+            <DeleteElementWraper
+              block={block}
+              chapterIndex={props.chapterIndex}
+              subchapterIndex={subchapterIndex}
+              elementIndex={index}
+            >
+              <div className="flex w-full flex-row items-center justify-between gap-2">
+                <div className="min-w-[104px] max-w-[104px]">Tutorial</div>
+                <div className="w-9/12">
+                  <select
+                    value={element.tutorialCard.value.title}
+                    className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
+                    onChange={(e) =>
+                      handleSelectTutorialCard(e.target.value, block, index, props.chapterIndex)
+                    }
+                  >
+                    <option value="">Choose tutorial</option>
+                    {element.tutorialCard.proposedList &&
+                      element.tutorialCard.proposedList.map((listItem, index) => (
+                        <option key={index} value={listItem.title}>
+                          {listItem.title}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </div>
             </DeleteElementWraper>
           )}
           {element?.image !== undefined && (

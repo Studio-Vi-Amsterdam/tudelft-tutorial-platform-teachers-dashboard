@@ -123,7 +123,7 @@ export interface TutorialTopElementsObject {
   file?: ElementsFileInterface
   quiz?: QuizElement
   h5pElement?: h5pElementInterface
-  tutorialCard?: string
+  tutorialCard?: TutorialCardInterface
 }
 export interface AddChapterElementInterface {
   val: TutorialTopElementsObject
@@ -170,11 +170,18 @@ export interface TermDialogInterface {
 interface MediaTextImageInterface {
   text: string
   image: MediaObjectInterface
+  title: string
 }
 
 interface MediaTextVideoInterface {
   text: string
+  title: string
   video: MediaObjectInterface
+}
+
+export interface TutorialCardInterface {
+  value: { id: number | undefined; title: string }
+  proposedList: { id: number; title: string }[] | []
 }
 
 export interface ChapterElementsObject {
@@ -182,7 +189,7 @@ export interface ChapterElementsObject {
   infobox?: string
   image?: MediaObjectInterface
   video?: MediaObjectInterface
-  tutorialCard?: string
+  tutorialCard?: TutorialCardInterface
   file?: ElementsFileInterface
   quiz?: QuizElement
   h5pElement?: h5pElementInterface
@@ -365,6 +372,7 @@ export interface AddMediaElementProps extends ElementProps {
   mediaType: MediaVariantType
   listIndex: number | undefined
   layout?: 'textImage' | 'imageText' | 'textVideo' | 'videoText'
+  className?: string
 }
 
 export interface SubchapterImageAction {
@@ -419,6 +427,7 @@ export interface ResponseArticleInterface {
   useful_links?: string
   course_code?: string
   study?: string
+  secondary_study?: string
   category?: string
 }
 export type ResponseBlockName =
@@ -446,6 +455,7 @@ export interface ResponseContentBlock {
     file?: number
     file_url?: string
     title?: string
+    alt?: string
     description?: string
     content_card_row_0_card_title?: string
     content_card_row_0_card_link?: number

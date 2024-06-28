@@ -548,6 +548,7 @@ export const editorSlice = createSlice({
                 type: 'image',
               },
               text: '',
+              title: '',
             },
           },
         ]
@@ -564,6 +565,7 @@ export const editorSlice = createSlice({
                 type: 'image',
               },
               text: '',
+              title: '',
             },
           },
         ]
@@ -580,6 +582,7 @@ export const editorSlice = createSlice({
                 type: 'video',
               },
               text: '',
+              title: '',
             },
           },
         ]
@@ -596,6 +599,7 @@ export const editorSlice = createSlice({
                 type: 'video',
               },
               text: '',
+              title: '',
             },
           },
         ]
@@ -772,6 +776,55 @@ export const editorSlice = createSlice({
           state.meta.subjectsInvolve[action.payload.involvesKeyName].list.find(
             (item) => item.title === action.payload.value,
           ) ?? { id: undefined, title: '' }
+      }
+    },
+    changeSubchapterTitle: (
+      state,
+      action: PayloadAction<{
+        value: string
+        chapterIndex: number
+        listIndex: number
+        layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText'
+      }>,
+    ) => {
+      const { value, chapterIndex, listIndex, layout } = action.payload
+      const chapter = state.chapters[chapterIndex]
+      const elements = chapter?.elements
+      const element = elements ? elements[listIndex] : undefined
+      const layoutItem = element ? element[layout] : undefined
+
+      if (layoutItem && layoutItem.text !== undefined) {
+        layoutItem.title = value
+      }
+    },
+    changeTutorialCard: (
+      state,
+      action: PayloadAction<{
+        value: string
+        block: string
+        listIndex: number
+        chapterIndex?: number
+      }>,
+    ) => {
+      const { value, block, listIndex, chapterIndex } = action.payload
+      if (block === 'tutorialElements') {
+        const elements = state.tutorialTop.elements
+        const element = elements && elements[listIndex]
+        if (element.tutorialCard !== undefined && element.tutorialCard.value !== undefined) {
+          element.tutorialCard.value = element.tutorialCard.proposedList.find(
+            (el) => el.title === value,
+          ) ?? { id: undefined, title: '' }
+        }
+      } else if (block === 'chapterElements' && chapterIndex !== undefined) {
+        const chapter = state.chapters[chapterIndex]
+        const elements = chapter?.elements
+        const element = elements && elements[listIndex]
+
+        if (element.tutorialCard !== undefined && element.tutorialCard.value !== undefined) {
+          element.tutorialCard.value = element.tutorialCard.proposedList.find(
+            (el) => el.title === value,
+          ) ?? { id: undefined, title: '' }
+        }
       }
     },
     changeSubchapterText: (
@@ -1072,8 +1125,10 @@ export const {
   changeSoftwareIdListField,
   addBlankSubchapterToEls,
   changeSubchapterText,
+  changeSubchapterTitle,
   setSubchapterMedia,
   setFeaturedImage,
+  changeTutorialCard,
 } = editorSlice.actions
 
 export default editorSlice.reducer

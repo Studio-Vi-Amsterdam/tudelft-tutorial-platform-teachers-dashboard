@@ -125,7 +125,7 @@ const SoftwaresMeta = () => {
 
   return (
     <>
-      <section className="relative flex w-full flex-col gap-y-6 py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver">
+      <section className="relative flex w-full flex-col gap-y-6 py-14 sm:py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver">
         <EditorLabel>
           Filling in the subject mandatory to ensure the right navigation. If this tutorial also
           belongs to a course ans software, please also fill that in. This information won’t be
@@ -135,8 +135,8 @@ const SoftwaresMeta = () => {
         <div className="flex flex-col gap-y-8">
           {belongsFields && (
             <>
-              <div className="flex w-full flex-row items-center justify-between">
-                <div>{`${belongsFields.softwareVersion.fieldTitle}${
+              <div className="flex w-full flex-row items-center justify-between gap-2">
+                <div className="min-w-[104px] max-w-[104px]">{`${belongsFields.softwareVersion.fieldTitle}${
                   belongsFields.softwareVersion.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
@@ -157,77 +157,75 @@ const SoftwaresMeta = () => {
                   </select>
                 </div>
               </div>
-              <div className="flex w-full flex-row items-start justify-between">
-                <div className="h-14 flex items-center">{`${belongsFields.keywords.fieldTitle}${
+              <div className="flex w-full flex-row items-start justify-between gap-2">
+                <div className="h-14 flex items-center min-w-[104px] max-w-[104px]">{`${belongsFields.keywords.fieldTitle}${
                   belongsFields.keywords.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
-                  <>
-                    <div className="w-full">
-                      <div className="relative mx-auto flex w-full  gap-x-4">
-                        <div className="grow relative z-10">
-                          <input
-                            type="text"
-                            placeholder="search keyword"
-                            className="w-full p-4 rounded border placeholder:text-[#96969B] text-base bg-seasalt border-dim"
-                            value={belongsFields.keywords.value}
-                            onChange={(e) => handleKeywordInputChange(e.target.value)}
-                            onFocus={() => setShowDropdown(true)}
-                            onBlur={() =>
-                              setTimeout(() => {
-                                setShowDropdown(false)
-                              }, 100)
+                  <div className="relative mx-auto flex w-full gap-1  sm:gap-x-4">
+                    <div className="grow relative z-10">
+                      <input
+                        type="text"
+                        placeholder="search keyword"
+                        className="w-full p-4 rounded border placeholder:text-[#96969B] text-base bg-seasalt border-dim"
+                        value={belongsFields.keywords.value}
+                        onChange={(e) => handleKeywordInputChange(e.target.value)}
+                        onFocus={() => setShowDropdown(true)}
+                        onBlur={() =>
+                          setTimeout(() => {
+                            setShowDropdown(false)
+                          }, 100)
+                        }
+                      />
+                      {showDropdown &&
+                        displayedKeywords.length > 0 &&
+                        belongsFields.keywords.value.length > 0 && (
+                          <div
+                            className={
+                              ' absolute top-full w-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
                             }
-                          />
-                          {showDropdown &&
-                            displayedKeywords.length > 0 &&
-                            belongsFields.keywords.value.length > 0 && (
-                              <div
-                                className={
-                                  ' absolute top-full w-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
-                                }
-                              >
-                                {displayedKeywords.map((item, index) => (
-                                  <button
-                                    className="w-full text-left hover:bg-tertiary-grey-silver px-4"
-                                    key={index}
-                                    onClick={() => handleKeywordSelect(item)}
-                                  >
-                                    {item}
-                                  </button>
-                                ))}
-                              </div>
-                            )}
-                        </div>
-                        <div className="h-14">
-                          <Button
-                            className="h-full flex items-center"
-                            variant={'default'}
-                            onClick={() => setAddKeywordDialogOpened(true)}
                           >
-                            <div>+</div>
-                          </Button>
-                        </div>
-                      </div>
+                            {displayedKeywords.map((item, index) => (
+                              <button
+                                className="w-full text-left hover:bg-tertiary-grey-silver px-4"
+                                key={index}
+                                onClick={() => handleKeywordSelect(item)}
+                              >
+                                {item}
+                              </button>
+                            ))}
+                          </div>
+                        )}
                     </div>
-                  </>
+                    <div className="h-[58px]">
+                      <Button
+                        className="h-full flex items-center"
+                        variant={'default'}
+                        onClick={() => setAddKeywordDialogOpened(true)}
+                      >
+                        <div>+</div>
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="flex w-full flex-row justify-end">
-                <div className="flex w-9/12 flex-row flex-wrap gap-x-2 gap-y-2 pt-4">
-                  {belongsFields.keywords.list.map((keyword, index) => (
-                    <button
-                      key={index}
-                      className="relative rounded-[4px] bg-tertiary-skyBlue-10 py-1 pl-2 pr-8 before:absolute before:right-2 before:top-1/2 before:h-4 before:w-4 before:-translate-y-1/2 before:bg-cross before:bg-center before:bg-no-repeat"
-                      onClick={() => deleteKeywordFromList(keyword)}
-                    >
-                      {keyword}
-                    </button>
-                  ))}
+              {belongsFields.keywords.list.length > 0 && (
+                <div className="flex w-full flex-row justify-end">
+                  <div className="flex sm:w-9/12 w-[calc(100%-112px)] sm:flex-row flex-col max-sm:items-start flex-wrap gap-x-2 gap-y-2">
+                    {belongsFields.keywords.list.map((keyword, index) => (
+                      <button
+                        key={index}
+                        className="relative rounded-[4px] bg-tertiary-skyBlue-10 py-1 pl-2 pr-8 before:absolute before:right-2 before:top-1/2 before:h-4 before:w-4 before:-translate-y-1/2 before:bg-cross before:bg-center before:bg-no-repeat"
+                        onClick={() => deleteKeywordFromList(keyword)}
+                      >
+                        {keyword}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <div className="flex w-full flex-row items-start justify-between">
-                <div className="h-14 flex items-center">{`${belongsFields.image.fieldTitle}${
+              )}
+              <div className="flex w-full flex-row items-start justify-between gap-2">
+                <div className="h-14 flex items-center min-w-[104px] max-w-[104px]">{`${belongsFields.image.fieldTitle}${
                   belongsFields.image.required ? '*' : ''
                 }`}</div>
                 <div className="w-9/12">
@@ -237,6 +235,7 @@ const SoftwaresMeta = () => {
                     subchapterIndex={undefined}
                     listIndex={undefined}
                     mediaType="image"
+                    className="without-bg"
                   />
                 </div>
               </div>

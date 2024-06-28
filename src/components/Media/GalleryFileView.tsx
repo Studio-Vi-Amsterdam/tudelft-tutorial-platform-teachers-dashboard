@@ -14,7 +14,7 @@ const GalleryFileView = (props: GalleryFileViewProps) => {
 
   return (
     <>
-      <div className="grid grid-cols-3 gap-x-6 gap-y-6 ">
+      <div className="grid grid-cols-2 sm:grid-cols-3 sm:gap-6 gap-1.5">
         {currentItems?.map((item, index) => {
           const isSelected = selectedFile === index
           return (
@@ -30,7 +30,9 @@ const GalleryFileView = (props: GalleryFileViewProps) => {
           )
         })}
       </div>
-      <p>Please add a title to every image by selecting each from the overview.</p>
+      <p className="mt-6 text-stone">
+        Please add a title to every image by selecting each from the overview.
+      </p>
       {selectedFile !== null && (
         <div>
           <label>Title</label>

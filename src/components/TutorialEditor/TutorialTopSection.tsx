@@ -13,6 +13,7 @@ import AddElementBlock from './AddElementBlock'
 import ElementsBlock from './ElementsBlock'
 import BundledEditor from './BundledEditor'
 import { AddElementsType } from 'src/types/types'
+import { articlesAPI } from 'src/lib/api'
 
 interface TutorialTopSectionProps {
   tutorialTitle: string
@@ -40,17 +41,65 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
   }
 
   // const tutorialElements: AddElementsType[] = ['text', 'infobox', 'image', 'video', 'file']
-  const tutorialElements: AddElementsType[] = ['text', 'infobox', 'image', 'video']
-  const handleAddTutorialElement = (value: string): void => {
+  const tutorialElements: AddElementsType[] = [
+    'text',
+    'infobox',
+    'image',
+    'video',
+    'tutorial cards',
+  ]
+  const handleAddTutorialElement = async (val: string): Promise<void> => {
     const payload: any = {}
 
-    payload[value] = ''
+    payload[val] = ''
 
-    dispatch(addTutorialElements(payload))
+    if (val === 'quiz') {
+      payload[val] = {
+        question: '',
+        answers: [
+          { answer: '', isCorrect: '1' },
+          { answer: '', isCorrect: '0' },
+          { answer: '', isCorrect: '0' },
+          { answer: '', isCorrect: '0' },
+        ],
+        answersCount: 4,
+      }
+      dispatch(addTutorialElements(payload))
+    } else if (val === 'h5p element') {
+      payload.h5pElement = {
+        value: '',
+        error: '',
+      }
+      dispatch(addTutorialElements(payload))
+    } else if (val === 'tutorial cards') {
+      try {
+        const response = await articlesAPI.getArticles('tutorials')
+        const tutorials = response.data.map((item: any) => ({
+          id: item.id,
+          title: item.title,
+        }))
+        payload.tutorialCard = {
+          value: { id: undefined, title: '' },
+          proposedList: tutorials,
+        }
+      } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+          payload.tutorialCard = {
+            value: { id: undefined, title: '' },
+            proposedList: [],
+          }
+        } else {
+          console.error(error)
+        }
+      }
+      dispatch(addTutorialElements(payload))
+    } else {
+      dispatch(addTutorialElements(payload))
+    }
   }
 
   return (
-    <section className="relative flex w-full flex-col gap-y-6 py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver">
+    <section className="relative flex w-full flex-col gap-y-6 py-16 sm:py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver">
       <EditorLabel>
         This section is mandatory for all tutorials and appears on top of the tutorial page.
       </EditorLabel>

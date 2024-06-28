@@ -70,7 +70,7 @@ const Dashboard = () => {
             type,
             status: 'published',
           }))
-        } catch (error) {
+        } catch (error: any) {
           console.error(error)
           return []
         }
@@ -124,33 +124,35 @@ const Dashboard = () => {
 
   if (isAuthenticated) {
     return (
-      <main className="container mx-auto my-12 sm:mb-24 sm:mt-20 flex flex-auto flex-col gap-10 sm:gap-y-16">
-        <div className="sm:flex flex-row items-center justify-between">
-          <h2 className="font-RobotoSlab text-h2 font-light -tracking-1 sm:mb-0 mb-6">
+      <main className="container mx-auto mt-14 mb-20 sm:mb-24 sm:mt-20 flex flex-auto flex-col gap-16 sm:gap-y-16">
+        <div className="sm:flex flex-row items-center justify-between max-sm:mb-4">
+          <h2 className="font-RobotoSlab text-4xl sm:text-h2 font-light -tracking-1 sm:mb-0 mb-8 ">
             Hello there!
           </h2>
           <AddNewTutorialButton />
         </div>
         {hardcodeTestData?.onboarding && (
           <section className="flex flex-col">
-            <h3 className="mb-6 text-h3 -tracking-1 text-primary-skyBlue">Onboarding</h3>
+            <h3 className="mb-6 text-h3 -tracking-1 text-primary-skyBlue max-sm:text-2xl">
+              Onboarding
+            </h3>
             <div className=" grid lg:grid-cols-2 gap-6">
               {hardcodeTestData.onboarding.map((item, index) => (
                 <div
                   key={index}
-                  className="flex sm:flex-row flex-col-reverse justify-between gap-x-8 bg-background-aliceBlue p-6 sm:p-8"
+                  className="flex sm:flex-row flex-col-reverse justify-between gap-x-8 bg-background-aliceBlue p-6 sm:p-8 rounded"
                 >
                   <div className="flex flex-col">
                     <div className="flex flex-col gap-y-4 ">
                       <h4 className="font-RobotoSlab text-2xl font-medium">{item.name}</h4>
-                      <p className="text-primary-subtext">{item.text}</p>
+                      <p className="text-[#666666]">{item.text}</p>
                     </div>
-                    <button className="sm:mt-14 mt-6 max-sm:w-6">
+                    <button className="sm:mt-14 mt-6 ">
                       <img src="/img/arrow-right.svg" alt={`Navigate to ${item.name}`} />
                     </button>
                   </div>
-                  <div className="flex items-center sm:justify-center sm:mb-0 mb-6 max-sm:w-[100px]">
-                    <img src={item.imgSrc} className="object-contain" alt={item.name} />
+                  <div className="flex items-center sm:justify-center sm:mb-0 mb-6 max-sm:w-[160px]">
+                    <img src={item.imgSrc} className="object-contain w-full" alt={item.name} />
                   </div>
                 </div>
               ))}

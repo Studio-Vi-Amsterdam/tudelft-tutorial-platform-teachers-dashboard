@@ -12,6 +12,7 @@ body {
     min-height: 100%;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 @layer base {
@@ -108,6 +109,17 @@ p,li {
     a {
         color: #00A6D6;
     }
+}
+.container {
+    @media (max-width: 639px) {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+}
+.dialog-custom {
+    display: flex;
+    align-items: safe center;
+    justify-content: center;
 }
 
 .preloader {

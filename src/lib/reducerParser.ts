@@ -116,6 +116,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
         image_url: chapter.image?.url,
         image: chapter.image?.id,
         content: chapter.text,
+        alt: chapter.title,
       },
     }
   } else if (chapter.layout === 'image right') {
@@ -125,6 +126,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
         image_url: chapter.image?.url,
         image: chapter.image?.id,
         content: chapter.text,
+        alt: chapter.title,
       },
     }
   } else if (chapter.layout === 'video left') {
@@ -134,6 +136,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
         video: chapter.video?.id,
         video_url: chapter.video?.url,
         content: chapter.text,
+        alt: chapter.title,
       },
     }
   } else if (chapter.layout === 'video right') {
@@ -143,6 +146,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
         video: chapter.video?.id,
         video_url: chapter.video?.url,
         content: chapter.text,
+        alt: chapter.title,
       },
     }
   } else {
@@ -157,6 +161,21 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
 
 export const reducerParser = {
   async parseToReducer(response: ResponseArticleInterface, articleType: ArtictesType) {
+    let shortTutorials: any[] = []
+    try {
+      const response = await articlesAPI.getArticles('tutorials')
+      const tutorials = response.data.map((item: any) => ({
+        id: item.id,
+        title: item.title,
+      }))
+      shortTutorials = tutorials
+    } catch (error: any) {
+      if (error.response && error.response.status === 404) {
+        shortTutorials = []
+      } else {
+        console.error(error)
+      }
+    }
     const parsedElements = (elements: ResponseContentBlock[]): TutorialTopElementsObject[] => {
       return elements
         .map((block) => {
@@ -246,6 +265,7 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
+                  title: block.block_data.alt ? block.block_data.alt : '',
                 },
               }
             case 'tu-delft-image-text':
@@ -264,6 +284,7 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
+                  title: block.block_data.alt ? block.block_data.alt : '',
                 },
               }
             case 'tu-delft-video-text':
@@ -282,6 +303,21 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
+                  title: block.block_data.alt ? block.block_data.alt : '',
+                },
+              }
+            case 'tu-delft-content-card':
+              return {
+                tutorialCard: {
+                  proposedList: shortTutorials,
+                  value:
+                    block.block_data.content_card_row_0_card_title &&
+                    block.block_data.content_card_row_0_card_link
+                      ? {
+                          id: block.block_data.content_card_row_0_card_link,
+                          title: block.block_data.content_card_row_0_card_title,
+                        }
+                      : { id: undefined, title: '' },
                 },
               }
             case 'tu-delft-text-video':
@@ -300,6 +336,7 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
+                  title: block.block_data.alt ? block.block_data.alt : '',
                 },
               }
             default:
@@ -539,7 +576,11 @@ export const reducerParser = {
               fieldTitle: 'Secondary Study',
               list: info.study ? info.study : [{ id: undefined, title: '' }],
               required: false,
-              value: response.study ? response.study : '' /* To change */,
+              value: response.study
+                ? info.study.filter(
+                    (el: { id: string; title: string }) => el.id === response.secondary_study,
+                  )[0]
+                : '',
             },
           },
           courseResponsible: {
@@ -689,6 +730,20 @@ export const reducerParser = {
               },
             }
           }
+          if (item.tutorialCard) {
+            return {
+              block_name: 'tu-delft-content-card',
+              block_data: {
+                content_card_row_0_card_title: item.tutorialCard.value.title,
+                content_card_row_0_card_link: item.tutorialCard.value.id,
+                content_card_row_1_card_title: item.tutorialCard.value.title,
+                content_card_row_1_card_link: item.tutorialCard.value.id,
+                content_card_row_2_card_title: item.tutorialCard.value.title,
+                content_card_row_2_card_link: item.tutorialCard.value.id,
+                content_card_row: 3,
+              },
+            }
+          }
           if (item.h5pElement) {
             return {
               block_name: 'tu-delft-h5p',
@@ -722,6 +777,7 @@ export const reducerParser = {
                 image: item.imageText.image.id,
                 image_url: item.imageText.image.url,
                 content: item.imageText.text,
+                title: item.imageText.title,
               },
             }
           }
@@ -732,6 +788,7 @@ export const reducerParser = {
                 image: item.textImage.image.id,
                 image_url: item.textImage.image.url,
                 content: item.textImage.text,
+                title: item.textImage.title,
               },
             }
           }
@@ -742,6 +799,7 @@ export const reducerParser = {
                 video: item.textVideo.video.id,
                 video_url: item.textVideo.video.url,
                 content: item.textVideo.text,
+                title: item.textVideo.title,
               },
             }
           }
@@ -752,6 +810,7 @@ export const reducerParser = {
                 video: item.videoText.video.id,
                 video_url: item.videoText.video.url,
                 content: item.videoText.text,
+                title: item.videoText.title,
               },
             }
           }
@@ -819,6 +878,7 @@ export const reducerParser = {
         chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
         course_code: editorState.meta.courseBelongs?.courseCode.value ?? '',
         study: editorState.meta.courseBelongs?.primaryStudy.value.id ?? '',
+        secondary_study: editorState.meta.courseBelongs?.secondaryStudy.value.id ?? '',
         keywords: editorState.meta.courseBelongs?.keywords.list ?? [],
         featured_image: editorState.meta.courseBelongs?.image.value.id ?? null,
         faculty: editorState.meta.courseResponsible?.faculty.value ?? null,

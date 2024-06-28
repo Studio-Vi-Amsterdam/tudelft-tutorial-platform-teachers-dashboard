@@ -17,6 +17,7 @@ import ChapterContent from './ChapterContent'
 import SubchapterContent from './SubchapterContent'
 import ChapterMenu from './ChapterMenu'
 import NewAddSubchapter from './NewAddSubchapter'
+import { articlesAPI } from 'src/lib/api'
 
 interface ChapterSectionProps {
   chapter: ChapterInterface
@@ -65,10 +66,11 @@ const ChapterSection = (props: ChapterSectionProps) => {
       )
   }
 
-  const handleAddElement = (val: string, index?: number) => {
+  const handleAddElement = async (val: string, index?: number) => {
     const payload: any = {}
 
     payload[val] = ''
+
     if (val === 'quiz') {
       payload[val] = {
         question: '',
@@ -80,15 +82,36 @@ const ChapterSection = (props: ChapterSectionProps) => {
         ],
         answersCount: 4,
       }
-      index !== undefined && dispatch(addChapterElement({ val: payload, chapterIndex: index }))
     } else if (val === 'h5p element') {
       payload.h5pElement = {
         value: '',
         error: '',
       }
-      index !== undefined && dispatch(addChapterElement({ val: payload, chapterIndex: index }))
-    } else {
-      index !== undefined && dispatch(addChapterElement({ val: payload, chapterIndex: index }))
+    } else if (val === 'tutorial cards') {
+      try {
+        const response = await articlesAPI.getArticles('tutorials')
+        const tutorials = response.data.map((item: any) => ({
+          id: item.id,
+          title: item.title,
+        }))
+        payload.tutorialCard = {
+          value: { id: undefined, title: '' },
+          proposedList: tutorials,
+        }
+      } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+          payload.tutorialCard = {
+            value: { id: undefined, title: '' },
+            proposedList: [],
+          }
+        } else {
+          console.error(error)
+        }
+      }
+    }
+
+    if (index !== undefined) {
+      dispatch(addChapterElement({ val: payload, chapterIndex: index }))
     }
   }
 
@@ -114,11 +137,12 @@ const ChapterSection = (props: ChapterSectionProps) => {
     'video',
     // 'file',
     'h5p element',
+    'tutorial cards',
     // 'quiz',
   ]
 
   return (
-    <section className="relative flex w-full flex-col gap-y-6 py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver">
+    <section className="relative flex w-full flex-col gap-y-6 py-14 sm:py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver">
       <EditorLabel>This section is a chapter of your tutorial.</EditorLabel>
       <ChapterMenu
         index={index}
