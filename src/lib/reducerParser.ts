@@ -163,8 +163,9 @@ export const reducerParser = {
   async parseToReducer(response: ResponseArticleInterface, articleType: ArtictesType) {
     let shortTutorials: any[] = []
     try {
-      const response = await articlesAPI.getArticles('tutorials')
-      const tutorials = response.data.map((item: any) => ({
+      const tutorialsResponse = await articlesAPI.getArticles('tutorials')
+
+      const tutorials = tutorialsResponse.data.map((item: any) => ({
         id: item.id,
         title: item.title,
       }))
@@ -412,7 +413,11 @@ export const reducerParser = {
     if (articleType === 'tutorials') {
       const info = await getInfo(articleType as ArtictesType)
       const softwareVersions = await getSoftwareVersions()
-
+      const coursesResponse = await articlesAPI.getArticles('courses')
+      const courses = coursesResponse.data.map((item: any) => ({
+        id: item.id,
+        title: item.title,
+      }))
       reducerObject = {
         tutorialTop: {
           title: response.title ? response.title : '',
@@ -428,12 +433,25 @@ export const reducerParser = {
         },
         meta: {
           tutorialBelongs: {
+            course: {
+              fieldTitle: 'Course',
+              required: true,
+              list: courses,
+              value: response.course
+                ? courses.find((item: any) => item.id === response.course) ?? {
+                    id: undefined,
+                    title: '',
+                  }
+                : { id: undefined, title: '' },
+            },
             primary: {
               fieldTitle: 'Primary software used',
               required: true,
               list: info.data.softwares.length > 0 ? info.data.softwares : [],
               value: response.primary_software
-                ? info.data.softwares.find((item: any) => item.id === response.primary_software)
+                ? info.data.softwares.find(
+                    (item: any) => item.id === response.primary_software,
+                  ) ?? { id: undefined, title: '' }
                 : { id: undefined, title: '' },
             },
             version: {
@@ -736,11 +754,7 @@ export const reducerParser = {
               block_data: {
                 content_card_row_0_card_title: item.tutorialCard.value.title,
                 content_card_row_0_card_link: item.tutorialCard.value.id,
-                content_card_row_1_card_title: item.tutorialCard.value.title,
-                content_card_row_1_card_link: item.tutorialCard.value.id,
-                content_card_row_2_card_title: item.tutorialCard.value.title,
-                content_card_row_2_card_link: item.tutorialCard.value.id,
-                content_card_row: 3,
+                content_card_row: 1,
               },
             }
           }
@@ -853,6 +867,7 @@ export const reducerParser = {
             ? parseElementsToContent(editorState.tutorialTop.elements)
             : [],
         useful_links: editorState.tutorialBottom.text,
+        course: editorState.meta?.tutorialBelongs?.course.value.id ?? undefined,
         primary_software: editorState.meta?.tutorialBelongs?.primary.value.id ?? null,
         software_version: [editorState.meta?.tutorialBelongs?.version.value.id] ?? null,
         primary_subject: editorState.meta?.tutorialBelongs?.primarySubject.value?.id ?? null,

@@ -3,12 +3,12 @@ import { MetaFieldIdListInterface, ObjectNameType } from 'src/types/types'
 
 interface MetaIdSelectProps {
   selectedObject: MetaFieldIdListInterface
-  keyName: 'primary' | 'version' | 'primarySubject' | 'secondarySubject'
+  keyName: 'primary' | 'version' | 'primarySubject' | 'secondarySubject' | 'course'
   objectName: ObjectNameType
   handleMetaInputChange: (
     value: string,
     objectName: ObjectNameType,
-    belongsKeyName?: 'primary' | 'version' | 'primarySubject' | 'secondarySubject',
+    belongsKeyName?: 'primary' | 'version' | 'primarySubject' | 'secondarySubject' | 'course',
   ) => void
 }
 

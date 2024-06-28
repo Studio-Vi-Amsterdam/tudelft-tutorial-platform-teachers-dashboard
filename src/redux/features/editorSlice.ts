@@ -81,6 +81,7 @@ export const editorSlice = createSlice({
         parsedObject: EditorState | undefined
         articleType?: ArtictesType
         info?: any
+        coursesList?: any
       }>,
     ) => {
       if (action.payload.parsedObject === undefined) {
@@ -90,10 +91,16 @@ export const editorSlice = createSlice({
         state.tutorialBottom = initialState.tutorialBottom
         state.tutorialTop = initialState.tutorialTop
         if (action.payload.articleType && action.payload.info) {
-          const info = action.payload.info
+          const { info, coursesList } = action.payload
           if (action.payload.articleType === 'tutorials') {
             state.meta = {
               tutorialBelongs: {
+                course: {
+                  fieldTitle: 'Course',
+                  required: true,
+                  list: coursesList,
+                  value: { id: undefined, title: '' },
+                },
                 primary: {
                   fieldTitle: 'Primary software used',
                   required: true,
@@ -715,7 +722,7 @@ export const editorSlice = createSlice({
       state,
       action: PayloadAction<{
         value: string
-        belongsKeyName: 'primary' | 'version' | 'primarySubject' | 'secondarySubject'
+        belongsKeyName: 'primary' | 'version' | 'primarySubject' | 'secondarySubject' | 'course'
       }>,
     ) => {
       if (state.meta.tutorialBelongs) {

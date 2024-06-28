@@ -101,7 +101,7 @@ const TutorialsMeta = () => {
   const handleMetaIdInputChange = (
     value: string,
     objectName: ObjectNameType,
-    belongsKeyName?: 'primary' | 'version' | 'primarySubject' | 'secondarySubject',
+    belongsKeyName?: 'primary' | 'version' | 'primarySubject' | 'secondarySubject' | 'course',
   ) => {
     if (belongsKeyName) {
       dispatch(changeMetaListIdValue({ value, belongsKeyName }))
@@ -222,6 +222,19 @@ const TutorialsMeta = () => {
         <div className="flex flex-col gap-y-8">
           {belongsFields && (
             <>
+              <div className="flex w-full flex-row items-center justify-between gap-2">
+                <div className="min-w-[104px] max-w-[104px]">{`${belongsFields.course.fieldTitle}${
+                  belongsFields.course.required ? '*' : ''
+                }`}</div>
+                <div className="w-9/12">
+                  <MetaIdSelect
+                    handleMetaInputChange={handleMetaIdInputChange}
+                    keyName="course"
+                    objectName="tutorialBelongs"
+                    selectedObject={belongsFields.course}
+                  />
+                </div>
+              </div>
               <div className="flex w-full flex-row items-center justify-between gap-2">
                 <div className="min-w-[104px] max-w-[104px]">{`${belongsFields.primary.fieldTitle}${
                   belongsFields.primary.required ? '*' : ''

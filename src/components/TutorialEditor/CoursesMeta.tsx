@@ -13,7 +13,6 @@ import {
   deleteTeacher,
   removeKeywordFromProposed,
   removeTeacherFromProposed,
-  setTutorialTitle,
 } from 'src/redux/features/editorSlice'
 import { ObjectNameType, TutorialMetaObject, TutorialResponsibleInterface } from 'src/types/types'
 import { Button } from '../ui/Button'
@@ -27,7 +26,6 @@ const CoursesMeta = () => {
   const responsibleFields = useAppSelector(
     (state: RootState) => state.editor.meta.courseResponsible,
   )
-  const title = useAppSelector((state: RootState) => state.editor.tutorialTop.title)
   const dispatch = useAppDispatch()
 
   const handleMetaInputChange = (
@@ -58,9 +56,6 @@ const CoursesMeta = () => {
         courseBelongsKeyName,
       }),
     )
-  }
-  const handleChangeTitle = (val: string) => {
-    dispatch(setTutorialTitle(val))
   }
 
   const handleMetaIdInputChange = (
@@ -226,17 +221,6 @@ const CoursesMeta = () => {
         <div className="flex flex-col gap-y-8">
           {belongsFields && (
             <>
-              <div className="flex w-full flex-row items-center justify-between gap-2">
-                <div className="min-h-14 min-w-[104px] max-w-[104px]">{'Course*'}</div>
-                <div className="w-9/12">
-                  <input
-                    value={title}
-                    placeholder={'Course'}
-                    onChange={(e) => handleChangeTitle(e.target.value)}
-                    className="w-full p-4 rounded border placeholder:text-[#96969B] text-base bg-seasalt border-dim"
-                  />
-                </div>
-              </div>
               <div className="flex w-full flex-row items-center justify-between gap-2">
                 <div className="min-h-14 min-w-[104px] max-w-[104px]">{`${belongsFields.courseCode.fieldTitle}${
                   belongsFields.courseCode.required ? '*' : ''
