@@ -120,3 +120,9 @@ export const mediaAPI = {
     return instance.get(`/media/search/?term=${term}`)
   },
 }
+
+export const userAPI = {
+  getUser() {
+    return instance.get('/user/')
+  },
+}
