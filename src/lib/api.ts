@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { ArtictesType } from 'src/types/types'
-import { getAuthToken } from './cookies'
+import { getAuthToken, removeAuthToken } from './cookies'
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_BACKEND_URL,
@@ -18,6 +18,16 @@ instance.interceptors.request.use(
     return config
   },
   (error) => {
+    return Promise.reject(error)
+  },
+)
+
+instance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      removeAuthToken()
+    }
     return Promise.reject(error)
   },
 )
