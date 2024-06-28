@@ -430,6 +430,7 @@ export interface ResponseArticleInterface {
   study?: string
   secondary_study?: string
   category?: string
+  secondary_category?: string
   course?: number
 }
 export type ResponseBlockName =

@@ -47,26 +47,26 @@ const SubjectsMeta = () => {
                   </select>
                 </div>
               </div>
-              {/* <div className="flex w-full flex-row items-center justify-between"> */}
-              {/*  <div>{`${belongsFields.secondaryCategory.fieldTitle}${ */}
-              {/*    belongsFields.secondaryCategory.required ? '*' : '' */}
-              {/*  }`}</div> */}
-              {/*  <div className="w-9/12"> */}
-              {/*    <select */}
-              {/*      value={belongsFields.secondaryCategory.value.title} */}
-              {/*      className="w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone" */}
-              {/*      onChange={(e) => handleMetaIdInputChange(e.target.value, 'secondaryCategory')} */}
-              {/*    > */}
-              {/*      <option value="">{belongsFields.secondaryCategory.fieldTitle}</option> */}
-              {/*      {belongsFields.secondaryCategory.list && */}
-              {/*        belongsFields.secondaryCategory.list.map((listItem, index) => ( */}
-              {/*          <option key={index} value={listItem?.title}> */}
-              {/*            {listItem?.title} */}
-              {/*          </option> */}
-              {/*        ))} */}
-              {/*    </select> */}
-              {/*  </div> */}
-              {/* </div> */}
+              <div className="flex w-full flex-row items-center justify-between gap-2">
+                <div className="min-w-[104px] max-w-[104px]">{`${belongsFields.secondaryCategory.fieldTitle}${
+                  belongsFields.secondaryCategory.required ? '*' : ''
+                }`}</div>
+                <div className="w-9/12">
+                  <select
+                    value={belongsFields.secondaryCategory.value.title}
+                    className="w-full p-4 rounded text-[#96969B] border text-base bg-seasalt border-dim"
+                    onChange={(e) => handleMetaIdInputChange(e.target.value, 'secondaryCategory')}
+                  >
+                    <option value="">{belongsFields.secondaryCategory.fieldTitle}</option>
+                    {belongsFields.secondaryCategory.list &&
+                      belongsFields.secondaryCategory.list.map((listItem, index) => (
+                        <option key={index} value={listItem?.title}>
+                          {listItem?.title}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </div>
             </>
           )}
         </div>

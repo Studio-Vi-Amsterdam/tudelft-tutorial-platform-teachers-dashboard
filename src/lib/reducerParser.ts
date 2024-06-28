@@ -692,12 +692,21 @@ export const reducerParser = {
               fieldTitle: 'Primary category',
               list: info.categories ?? [],
               required: true,
-              value: response.category ?? { id: undefined, title: '' },
+              value: response.category
+                ? info.categories.find(
+                    (item: any) => item.id === parseInt(response.category as string),
+                  ) ?? { id: undefined, title: '' }
+                : { id: undefined, title: '' },
             },
             secondaryCategory: {
               fieldTitle: 'Secondary category',
               required: false,
-              value: '' /* TO DO */,
+              list: info.categories ?? [],
+              value: response.secondary_category
+                ? info.categories.find(
+                    (item: any) => item.id === parseInt(response.secondary_category as string),
+                  ) ?? { id: undefined, title: '' }
+                : { id: undefined, title: '' },
             },
           },
         },
@@ -911,7 +920,8 @@ export const reducerParser = {
             : [],
         useful_links: editorState.tutorialBottom.text,
         chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
-        category: editorState.meta.subjectsInvolve?.primaryCategory.value ?? null,
+        category: editorState.meta.subjectsInvolve?.primaryCategory.value.id ?? null,
+        secondary_category: editorState.meta.subjectsInvolve?.secondaryCategory.value.id ?? null,
       }
     } else if (articleType === 'softwares') {
       parsedObject = {
