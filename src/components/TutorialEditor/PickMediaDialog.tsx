@@ -14,6 +14,7 @@ import {
 interface PickMediaDialogProps extends AddMediaElementProps {
   dialogOpened: boolean
   setDialogOpened: React.Dispatch<React.SetStateAction<boolean>>
+  className?: string
 }
 
 const PickMediaDialog = (props: PickMediaDialogProps) => {
@@ -80,7 +81,7 @@ const PickMediaDialog = (props: PickMediaDialogProps) => {
 
   return (
     <Dialog open={dialogOpened} onOpenChange={setDialogOpened}>
-      <DialogContent className="w-full max-w-5xl flex-col bg-white pt-20">
+      <DialogContent className=" max-w-5xl flex-col bg-white pt-20 w-[90%]">
         <MediaLibrary
           isPopup={true}
           itemsPerPage={8}

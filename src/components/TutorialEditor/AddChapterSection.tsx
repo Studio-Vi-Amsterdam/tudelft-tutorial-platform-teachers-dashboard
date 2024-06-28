@@ -49,7 +49,7 @@ const AddChapterSection = (props: AddChapterSectionProps) => {
       className={`${
         props.isSubchapter
           ? ''
-          : ' py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver'
+          : 'py-14 sm:py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver'
       } relative flex w-full flex-col gap-y-6 `}
     >
       {!props.isSubchapter && (
@@ -58,12 +58,12 @@ const AddChapterSection = (props: AddChapterSectionProps) => {
       {isChapterCreating && (
         <div className="flex bg-seasalt flex-col gap-y-4 rounded-[8px] border-[2px] border-dashed border-tertiary-grey-dim py-6">
           <h4 className="text-center">Choose layout</h4>
-          <div className="flex flex-row flex-wrap justify-center gap-x-10 gap-y-4">
+          <div className="flex flex-col max-sm:items-center sm:flex-row flex-wrap justify-center gap-10 gap-x-10 sm:gap-y-4">
             {chapterLayout.map((layoutType: LayoutChapterType, index: number) => (
               <button
                 key={index}
                 onClick={() => createChapter(layoutType)}
-                className="flex w-1/4 flex-col items-start gap-y-1"
+                className="flex w-[184px] sm:w-1/4 flex-col items-start gap-y-1"
               >
                 <div
                   className={`${

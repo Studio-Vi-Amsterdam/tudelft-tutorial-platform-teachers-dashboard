@@ -121,7 +121,7 @@ const BlogEditor = () => {
     return (
       <main className="container mx-auto flex flex-auto flex-row justify-between">
         <EditorSidebar tutorialTitle={tutorialTitle} />
-        <div className="flex w-3/4 flex-col items-start pl-28">
+        <div className="flex w-full flex-col items-start md:pl-12 lg:pl-28 bg-white">
           {isFetched ? (
             <>
               <TutorialButtonsSection />

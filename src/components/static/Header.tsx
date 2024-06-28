@@ -34,7 +34,10 @@ const Header = () => {
             <ul className="flex flex-col sm:flex-row sm:gap-0 gap-6 [&>li>button]:relative [&>li>button]:text-base [&>li>button]:transition-all [&>li>button]:duration-300 [&>li>button]:before:absolute [&>li>button]:before:-bottom-[6px] [&>li>button]:before:h-[2px] [&>li>button]:before:w-full [&>li>button]:before:transition-all [&>li>button]:before:duration-300 [&>li]:cursor-pointer  sm:[&>li]:px-8">
               <li>
                 <button
-                  onClick={() => navigate('dashboard')}
+                  onClick={() => {
+                    navigate('dashboard')
+                    setIsShowNav(false)
+                  }}
                   className={`${
                     pathname.split('/').find((item) => item === 'media')
                       ? 'text-tertiary-grey-dim before:bg-transparent'
@@ -46,7 +49,10 @@ const Header = () => {
               </li>
               <li>
                 <button
-                  onClick={() => navigate('dashboard/media')}
+                  onClick={() => {
+                    navigate('dashboard/media')
+                    setIsShowNav(false)
+                  }}
                   className={`${
                     pathname.split('/').find((item) => item === 'media')
                       ? 'text-primary before:bg-black'

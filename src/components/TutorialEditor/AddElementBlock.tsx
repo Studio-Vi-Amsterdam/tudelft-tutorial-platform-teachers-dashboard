@@ -26,9 +26,9 @@ const AddElementBlock = (props: AddElementBlockProps) => {
   }
 
   return (
-    <div className="flex w-full flex-row gap-x-6">
-      <div className="w-1/3 whitespace-nowrap">
-        <Button variant={'outline'} onClick={handleAddTutorialElementClick}>
+    <div className="sm:flex w-full flex-row sm:gap-6 grid grid-cols-2 gap-2">
+      <div className="sm:w-1/3 whitespace-nowrap">
+        <Button className="max-sm:px-4" variant={'outline'} onClick={handleAddTutorialElementClick}>
           <div>+</div>
           <p>Add element</p>
         </Button>
@@ -36,7 +36,12 @@ const AddElementBlock = (props: AddElementBlockProps) => {
       {addElementsActive && (
         <div className="flex flex-row flex-wrap gap-x-2 gap-y-2">
           {elements.map((el, index) => (
-            <Button variant={'elements'} key={index} onClick={() => handleAddElement(el)}>
+            <Button
+              className="sm:justify-center justify-start"
+              variant={'elements'}
+              key={index}
+              onClick={() => handleAddElement(el)}
+            >
               <p className="capitalize">{el}</p>
             </Button>
           ))}

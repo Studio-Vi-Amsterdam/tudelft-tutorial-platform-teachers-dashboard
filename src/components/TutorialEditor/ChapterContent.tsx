@@ -38,11 +38,11 @@ const ChapterContent = (props: ChapterContentProps) => {
           chapter.layout === '1 column'
             ? 'flex-col'
             : chapter.layout.split(' ')[1] === 'left'
-              ? 'flex-row-reverse'
-              : 'flex-row'
-        } flex gap-x-6`}
+              ? 'flex-col sm:flex-row-reverse'
+              : 'flex-col sm:flex-row'
+        } flex gap-6`}
       >
-        <div className={`${chapter.layout === '1 column' ? ' w-full' : ' w-1/2 '}`}>
+        <div className={`${chapter.layout === '1 column' ? ' w-full' : ' sm:w-1/2 '}`}>
           <ExtendedBundledEditor
             handleInputChange={handleChapterTextInputChange}
             chapterIndex={chapterIndex}
@@ -52,7 +52,7 @@ const ChapterContent = (props: ChapterContentProps) => {
           />
         </div>
         {chapter.layout !== '1 column' && (
-          <div className="w-1/2">
+          <div className="sm:w-1/2">
             {chapter.layout.split(' ')[0] === 'video' && (
               <AddMediaElement
                 block="chapterMedia"

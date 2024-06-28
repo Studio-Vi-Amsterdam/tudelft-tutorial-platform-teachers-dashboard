@@ -56,8 +56,8 @@ const SubchapterContent = (props: SubchapterContentProps) => {
               subchapter.layout === '1 column'
                 ? 'flex-col'
                 : subchapter.layout.split(' ')[1] === 'left'
-                  ? 'flex-row-reverse'
-                  : 'flex-row'
+                  ? 'flex-col sm:flex-row-reverse'
+                  : 'flex-col sm:flex-row'
             } flex gap-x-6`}
           >
             <div className={`${subchapter.layout === '1 column' ? ' w-full' : ' w-1/2 '}`}>
