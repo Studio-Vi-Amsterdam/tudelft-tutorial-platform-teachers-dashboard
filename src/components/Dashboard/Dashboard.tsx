@@ -70,7 +70,7 @@ const Dashboard = () => {
             type,
             status: 'published',
           }))
-        } catch (error) {
+        } catch (error: any) {
           console.error(error)
           return []
         }

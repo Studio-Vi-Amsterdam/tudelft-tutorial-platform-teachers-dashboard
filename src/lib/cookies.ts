@@ -11,4 +11,5 @@ export const getAuthToken = (): string | undefined => {
 
 export const removeAuthToken = () => {
   Cookies.remove('tuDelft-token')
+  window.location.replace('https://alt.viamsterdam.dev/tudelft-tutorials-staging/wp/wp-admin/')
 }

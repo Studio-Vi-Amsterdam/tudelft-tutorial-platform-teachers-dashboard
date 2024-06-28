@@ -10,7 +10,7 @@ import ChapterSection from './ChapterSection'
 import EditorSidebar from './EditorSidebar'
 import TutorialBottomSection from './TutorialBottomSection'
 import { articlesAPI, taxonomiesAPI } from 'src/lib/api'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { getInfo, reducerParser } from 'src/lib/reducerParser'
 import {
   setEditorLoaded,
@@ -23,6 +23,7 @@ import CoursesMeta from './CoursesMeta'
 import SoftwaresMeta from './SoftwaresMeta'
 import SubjectsMeta from './SubjectsMeta'
 import Preloader from '../ui/Preloader'
+import { useToast } from 'src/lib/use-toast'
 
 const BlogEditor = () => {
   const dispatch = useAppDispatch()
@@ -30,7 +31,8 @@ const BlogEditor = () => {
   const params = new URLSearchParams(useLocation().search)
   const articleType = params.get('type')
   const articleId = params.get('id')
-
+  const navigate = useNavigate()
+  const { toast } = useToast()
   useEffect(() => {
     const fetchData = async () => {
       dispatch(setEditorLoaded(false))
@@ -38,22 +40,47 @@ const BlogEditor = () => {
         const keywordsResponse = await taxonomiesAPI
           .getKeywords()
           .then((res) => res.data && res.data.map((item: ResponseKeyword) => item.name))
+          .catch((error) => {
+            console.error(error)
+            return []
+          })
 
         if (articleId !== 'new') {
           const response = await articlesAPI
             .getSingleArticle(articleType as ArtictesType, parseInt(articleId))
             .then((res) => res.data)
+            .catch((error) => {
+              if (error.response?.status === 404) {
+                toast({
+                  title: 'Article not found',
+                  description: 'Redirected to Dashboard',
+                  variant: 'destructive',
+                })
+                navigate('/dashboard')
+              }
+            })
 
-          const newObject = await reducerParser.parseToReducer(
-            response,
-            articleType as ArtictesType,
-          )
-
-          dispatch(setNewState({ parsedObject: newObject as EditorState }))
+          if (response) {
+            const newObject = await reducerParser.parseToReducer(
+              response,
+              articleType as ArtictesType,
+            )
+            dispatch(setNewState({ parsedObject: newObject as EditorState }))
+          }
           dispatch(setEditorLoaded(true))
         } else if (articleId === 'new') {
           let info = {}
-          const extraInfo = await getInfo(articleType as ArtictesType)
+          const extraInfo = await getInfo(articleType as ArtictesType).catch((error) => {
+            console.error(error)
+            return {
+              data: {},
+              study: [],
+              software_versions: [],
+              keywords: [],
+              teachers: [],
+              categories: [],
+            }
+          })
 
           if (articleType === 'tutorials') {
             info = {
@@ -105,14 +132,13 @@ const BlogEditor = () => {
           dispatch(setEditorLoaded(true))
         }
         dispatch(setKeywordsProposedList(keywordsResponse))
-        dispatch(setEditorLoaded(true))
       }
     }
 
     if (isAuthenticated) {
       fetchData()
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated, articleType, articleId])
 
   const tutorialTitle = useAppSelector((state: RootState) => state.editor.tutorialTop.title)
   const chapters = useAppSelector((state: RootState) => state.editor.chapters)
