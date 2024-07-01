@@ -810,17 +810,24 @@ export const editorSlice = createSlice({
         value: string
         block: string
         listIndex: number
+        isUrl: boolean
         chapterIndex?: number
+        name?: string
       }>,
     ) => {
-      const { value, block, listIndex, chapterIndex } = action.payload
+      const { value, block, listIndex, chapterIndex, isUrl, name } = action.payload
       if (block === 'tutorialElements') {
         const elements = state.tutorialTop.elements
         const element = elements && elements[listIndex]
         if (element.tutorialCard !== undefined && element.tutorialCard.value !== undefined) {
-          element.tutorialCard.value = element.tutorialCard.proposedList.find(
-            (el) => el.title === value,
-          ) ?? { id: undefined, title: '' }
+          if (isUrl) {
+            element.tutorialCard.value.id = undefined
+            element.tutorialCard.value[`${name as 'title' | 'url'}`] = value
+          } else {
+            element.tutorialCard.value = element.tutorialCard.proposedList.find(
+              (el) => el.title === value,
+            ) ?? { id: undefined, title: '' }
+          }
         }
       } else if (block === 'chapterElements' && chapterIndex !== undefined) {
         const chapter = state.chapters[chapterIndex]
@@ -828,9 +835,13 @@ export const editorSlice = createSlice({
         const element = elements && elements[listIndex]
 
         if (element.tutorialCard !== undefined && element.tutorialCard.value !== undefined) {
-          element.tutorialCard.value = element.tutorialCard.proposedList.find(
-            (el) => el.title === value,
-          ) ?? { id: undefined, title: '' }
+          if (isUrl) {
+            element.tutorialCard.value[`${name as 'title' | 'url'}`] = value
+          } else {
+            element.tutorialCard.value = element.tutorialCard.proposedList.find(
+              (el) => el.title === value,
+            ) ?? { id: undefined, title: '' }
+          }
         }
       }
     },

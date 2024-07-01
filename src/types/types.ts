@@ -177,7 +177,7 @@ interface MediaTextVideoInterface {
 }
 
 export interface TutorialCardInterface {
-  value: { id: number | undefined; title: string }
+  value: { id: number | undefined; title: string; url?: string }
   proposedList: { id: number; title: string }[] | []
 }
 

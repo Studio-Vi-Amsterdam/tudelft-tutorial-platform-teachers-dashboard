@@ -266,7 +266,7 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
-                  title: block.block_data.alt ? block.block_data.alt : '',
+                  title: block.block_data.title ? block.block_data.title : '',
                 },
               }
             case 'tu-delft-image-text':
@@ -285,7 +285,7 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
-                  title: block.block_data.alt ? block.block_data.alt : '',
+                  title: block.block_data.title ? block.block_data.title : '',
                 },
               }
             case 'tu-delft-video-text':
@@ -304,21 +304,20 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
-                  title: block.block_data.alt ? block.block_data.alt : '',
+                  title: block.block_data.title ? block.block_data.title : '',
                 },
               }
             case 'tu-delft-content-card':
               return {
                 tutorialCard: {
                   proposedList: shortTutorials,
-                  value:
-                    block.block_data.content_card_row_0_card_title &&
-                    block.block_data.content_card_row_0_card_link
-                      ? {
-                          id: block.block_data.content_card_row_0_card_link,
-                          title: block.block_data.content_card_row_0_card_title,
-                        }
-                      : { id: undefined, title: '' },
+                  value: block.block_data.content_card_row_0_card_title
+                    ? {
+                        id: block.block_data.content_card_row_0_card_link,
+                        url: block.block_data.content_card_row_0_card_link_url,
+                        title: block.block_data.content_card_row_0_card_title,
+                      }
+                    : { id: undefined, title: '' },
                 },
               }
             case 'tu-delft-text-video':
@@ -337,7 +336,7 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
-                  title: block.block_data.alt ? block.block_data.alt : '',
+                  title: block.block_data.title ? block.block_data.title : '',
                 },
               }
             case 'tu-delft-download':
@@ -424,8 +423,14 @@ export const reducerParser = {
     if (articleType === 'tutorials') {
       const info = await getInfo(articleType as ArtictesType)
       const softwareVersions = await getSoftwareVersions()
-      const coursesResponse = await articlesAPI.getArticles('courses')
-      const courses = coursesResponse.data.map((item: any) => ({
+      const coursesResponse = await articlesAPI
+        .getArticles('courses')
+        .then((res) => res.data)
+        .catch((error) => {
+          console.error(error)
+          return []
+        })
+      const courses = coursesResponse.map((item: any) => ({
         id: item.id,
         title: item.title,
       }))
@@ -769,15 +774,17 @@ export const reducerParser = {
                 },
               }
             }
-            if (item.tutorialCard) {
-              return {
-                block_name: 'tu-delft-content-card',
-                block_data: {
-                  content_card_row_0_card_title: item.tutorialCard.value.title,
-                  content_card_row_0_card_link: item.tutorialCard.value.id,
-                  content_card_row: 1,
-                },
-              }
+          }
+          if (item.tutorialCard) {
+            return {
+              block_name: 'tu-delft-content-card',
+              block_data: {
+                content_card_row_0_card_title: item.tutorialCard.value.title,
+                content_card_row_0_card_link: item.tutorialCard.value.id,
+                content_card_row_0_card_link_url: item.tutorialCard.value.url,
+                content_card_row: 1,
+              },
+
             }
             if (item.h5pElement) {
               return {

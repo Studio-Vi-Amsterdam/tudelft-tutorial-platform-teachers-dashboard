@@ -29,25 +29,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const data = await authAPI.auth(authKey).then((res) => res.data)
       if (data) {
-        setAuthToken(data.data.token, data.data.expires)
+        setAuthToken(data.data.token)
         setIsAuthenticated(true)
-      } else {
-        window.location.replace(
-          'https://alt.viamsterdam.dev/tudelft-tutorials-staging/wp/wp-admin/',
-        )
       }
     } catch (error) {
-      window.location.replace('https://alt.viamsterdam.dev/tudelft-tutorials-staging/wp/wp-admin/')
+      console.log(error)
     }
   }
 
   const logout = () => {
     removeAuthToken()
     setIsAuthenticated(false)
-    window.location.replace('https://alt.viamsterdam.dev/tudelft-tutorials-staging/wp/wp-admin/')
   }
   const searchParams = new URLSearchParams(window.location.search)
   const authKey = searchParams.get('auth_key')
+
   useEffect(() => {
     const fetchData = async () => {
       if (authKey) {
@@ -65,6 +61,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       fetchData()
     }
   }, [])
+
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
