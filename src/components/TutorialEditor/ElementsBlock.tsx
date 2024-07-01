@@ -1,6 +1,7 @@
 import React from 'react'
 import { useAppDispatch } from 'src/redux/hooks'
 import {
+  addTutorialCard,
   changeSubchapterText,
   changeSubchapterTitle,
   changeTutorialCard,
@@ -15,6 +16,7 @@ import DeleteElementWraper from './DeleteElementWraper'
 import QuizElement from './QuizElement'
 import H5pElement from './H5pElement'
 import FileElement from './FileElement'
+import { Button } from '../ui/Button'
 
 interface ElementsBlockProps {
   elements: Array<ChapterElementsObject>
@@ -88,9 +90,18 @@ const ElementsBlock = (props: ElementsBlockProps) => {
     value: string,
     block: string,
     listIndex: number,
+    nestedIndex: number,
     chapterIndex?: number,
   ) => {
-    dispatch(changeTutorialCard({ value, block, listIndex, chapterIndex }))
+    dispatch(changeTutorialCard({ value, block, listIndex, nestedIndex, chapterIndex }))
+  }
+
+  const handleAddTutorialCardToGroup = (
+    block: string,
+    listIndex: number,
+    chapterIndex?: number,
+  ) => {
+    dispatch(addTutorialCard({ block, listIndex, chapterIndex }))
   }
 
   return (
@@ -329,7 +340,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               />
             </DeleteElementWraper>
           )}
-          {element.tutorialCard !== undefined && (
+          {/* {element.tutorialCard !== undefined && (
             <DeleteElementWraper
               block={block}
               chapterIndex={props.chapterIndex}
@@ -355,6 +366,55 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                       ))}
                   </select>
                 </div>
+              </div>
+            </DeleteElementWraper>
+          )} */}
+          {element.tutorialCards !== undefined && (
+            <DeleteElementWraper
+              block={block}
+              chapterIndex={props.chapterIndex}
+              subchapterIndex={subchapterIndex}
+              elementIndex={index}
+            >
+              <div className="flex w-full flex-col items-start justify-between gap-4 bg-tertiary-skyBlue-10">
+                {element.tutorialCards.map((el, nestedIndex) => (
+                  <div
+                    key={nestedIndex}
+                    className="flex w-full flex-row items-center justify-between gap-2"
+                  >
+                    <div className="min-w-[104px] max-w-[104px]">Tutorial</div>
+                    <div className="w-9/12">
+                      <select
+                        value={el.value.title}
+                        className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
+                        onChange={(e) =>
+                          handleSelectTutorialCard(
+                            e.target.value,
+                            block,
+                            index,
+                            nestedIndex,
+                            props.chapterIndex,
+                          )
+                        }
+                      >
+                        <option value="">Choose tutorial</option>
+                        {el.proposedList &&
+                          el.proposedList.map((listItem, index) => (
+                            <option key={index} value={listItem.title}>
+                              {listItem.title}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                  </div>
+                ))}
+                <Button
+                  variant={'dashed'}
+                  onClick={() => handleAddTutorialCardToGroup(block, index, chapterIndex)}
+                >
+                  <div>+</div>
+                  <p>Add Card</p>
+                </Button>
               </div>
             </DeleteElementWraper>
           )}

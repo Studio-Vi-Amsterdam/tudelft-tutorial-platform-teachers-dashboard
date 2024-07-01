@@ -121,6 +121,7 @@ export interface TutorialTopElementsObject {
   quiz?: QuizElement
   h5pElement?: h5pElementInterface
   tutorialCard?: TutorialCardInterface
+  tutorialCards?: TutorialCardInterface[]
 }
 export interface AddChapterElementInterface {
   val: TutorialTopElementsObject
@@ -187,6 +188,7 @@ export interface ChapterElementsObject {
   image?: MediaObjectInterface
   video?: MediaObjectInterface
   tutorialCard?: TutorialCardInterface
+  tutorialCards?: TutorialCardInterface[]
   file?: ElementsFileInterface
   quiz?: QuizElement
   h5pElement?: h5pElementInterface

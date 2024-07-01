@@ -94,16 +94,20 @@ const ChapterSection = (props: ChapterSectionProps) => {
           id: item.id,
           title: item.title,
         }))
-        payload.tutorialCard = {
-          value: { id: undefined, title: '' },
-          proposedList: tutorials,
-        }
+        payload.tutorialCards = [
+          {
+            value: { id: undefined, title: '' },
+            proposedList: tutorials,
+          },
+        ]
       } catch (error: any) {
         if (error.response && error.response.status === 404) {
-          payload.tutorialCard = {
-            value: { id: undefined, title: '' },
-            proposedList: [],
-          }
+          payload.tutorialCards = [
+            {
+              value: { id: undefined, title: '' },
+              proposedList: [],
+            },
+          ]
         } else {
           console.error(error)
         }
