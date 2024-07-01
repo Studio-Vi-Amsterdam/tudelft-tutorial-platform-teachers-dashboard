@@ -12,7 +12,7 @@ import {
   ResponseKeyword,
   TutorialTopElementsObject,
 } from 'src/types/types'
-import { articlesAPI, chaptersAPI, mediaAPI, taxonomiesAPI } from './api'
+import { articlesAPI, chaptersAPI, taxonomiesAPI } from './api'
 
 export const getSoftwares = async () => {
   try {
@@ -345,7 +345,8 @@ export const reducerParser = {
                 file: {
                   title: block.block_data.title ? block.block_data.title : '',
                   file: {
-                    path: block.block_data.file_url ? block.block_data.file_url : '',
+                    id: block.block_data.file,
+                    url: block.block_data.file_url,
                   },
                   description: block.block_data.description ? block.block_data.description : '',
                 },
@@ -732,13 +733,6 @@ export const reducerParser = {
     articleType?: ArtictesType,
   ) {
     const parseElementsToContent = async (elements: ChapterElementsObject[]) => {
-      const uploadFile = async (file: any) => {
-        const formData = new FormData()
-        formData.append('file', file.file)
-        formData.append('title', file.title)
-        return await mediaAPI.uploadFiles(formData).then((res) => res.data.data)
-      }
-
       const content = await Promise.all(
         elements
           .map(async (item) => {
@@ -856,16 +850,11 @@ export const reducerParser = {
               }
             }
             if (item.file) {
-              console.log('payload', item.file)
-
-              const response = await uploadFile(item.file)
-              console.log('File response', response)
-
               return {
                 block_name: 'tu-delft-download',
                 block_data: {
-                  file: await response.id,
-                  file_url: await response.url,
+                  file: item.file.file?.id,
+                  file_url: item.file.file?.url,
                   title: item.file.title,
                   description: item.file.description,
                 },
