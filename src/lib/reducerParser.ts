@@ -266,7 +266,7 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
-                  title: block.block_data.alt ? block.block_data.alt : '',
+                  title: block.block_data.title ? block.block_data.title : '',
                 },
               }
             case 'tu-delft-image-text':
@@ -285,7 +285,7 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
-                  title: block.block_data.alt ? block.block_data.alt : '',
+                  title: block.block_data.title ? block.block_data.title : '',
                 },
               }
             case 'tu-delft-video-text':
@@ -304,7 +304,7 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
-                  title: block.block_data.alt ? block.block_data.alt : '',
+                  title: block.block_data.title ? block.block_data.title : '',
                 },
               }
             case 'tu-delft-content-card':
@@ -337,7 +337,7 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
-                  title: block.block_data.alt ? block.block_data.alt : '',
+                  title: block.block_data.title ? block.block_data.title : '',
                 },
               }
             default:
