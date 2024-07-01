@@ -311,14 +311,13 @@ export const reducerParser = {
               return {
                 tutorialCard: {
                   proposedList: shortTutorials,
-                  value:
-                    block.block_data.content_card_row_0_card_title &&
-                    block.block_data.content_card_row_0_card_link
-                      ? {
-                          id: block.block_data.content_card_row_0_card_link,
-                          title: block.block_data.content_card_row_0_card_title,
-                        }
-                      : { id: undefined, title: '' },
+                  value: block.block_data.content_card_row_0_card_title
+                    ? {
+                        id: block.block_data.content_card_row_0_card_link,
+                        url: block.block_data.content_card_row_0_card_link_url,
+                        title: block.block_data.content_card_row_0_card_title,
+                      }
+                    : { id: undefined, title: '' },
                 },
               }
             case 'tu-delft-text-video':
@@ -769,6 +768,7 @@ export const reducerParser = {
               block_data: {
                 content_card_row_0_card_title: item.tutorialCard.value.title,
                 content_card_row_0_card_link: item.tutorialCard.value.id,
+                content_card_row_0_card_link_url: item.tutorialCard.value.url,
                 content_card_row: 1,
               },
             }
