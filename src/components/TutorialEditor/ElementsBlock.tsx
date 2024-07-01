@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useAppDispatch } from 'src/redux/hooks'
 import {
   addTutorialCard,
@@ -28,7 +28,9 @@ interface ElementsBlockProps {
 const ElementsBlock = (props: ElementsBlockProps) => {
   const { elements, block, chapterIndex, subchapterIndex } = props
   const dispatch = useAppDispatch()
-
+  const [checkedCustomTutorialCard, setCheckedCustomTutorialCard] = useState(
+    elements.map(() => false),
+  )
   const handleTextElementChange = (value: string, index?: number, block?: string): void => {
     if (block !== undefined && index !== undefined) {
       dispatch(
@@ -90,18 +92,20 @@ const ElementsBlock = (props: ElementsBlockProps) => {
     value: string,
     block: string,
     listIndex: number,
-    nestedIndex: number,
+    isUrl: boolean,
     chapterIndex?: number,
+    name?: string,
   ) => {
-    dispatch(changeTutorialCard({ value, block, listIndex, nestedIndex, chapterIndex }))
+    dispatch(changeTutorialCard({ value, block, listIndex, isUrl, chapterIndex, name }))
   }
 
-  const handleAddTutorialCardToGroup = (
-    block: string,
-    listIndex: number,
-    chapterIndex?: number,
+  const handleChangeCustomTutorialCard = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
   ) => {
-    dispatch(addTutorialCard({ block, listIndex, chapterIndex }))
+    const newChecked = [...checkedCustomTutorialCard]
+    newChecked[index] = e.target.checked
+    setCheckedCustomTutorialCard(newChecked)
   }
 
   return (
@@ -350,26 +354,89 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               <div className="flex w-full flex-row items-center justify-between gap-2">
                 <div className="min-w-[104px] max-w-[104px]">Tutorial</div>
                 <div className="w-9/12">
-                  <select
-                    value={element.tutorialCard.value.title}
-                    className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
-                    onChange={(e) =>
-                      handleSelectTutorialCard(e.target.value, block, index, props.chapterIndex)
-                    }
-                  >
-                    <option value="">Choose tutorial</option>
-                    {element.tutorialCard.proposedList &&
-                      element.tutorialCard.proposedList.map((listItem, index) => (
-                        <option key={index} value={listItem.title}>
-                          {listItem.title}
-                        </option>
-                      ))}
-                  </select>
+                  <label>
+                    <input
+                      type="checkbox"
+                      name={`use-custom-url-${props.chapterIndex}-${index}`}
+                      defaultChecked={
+                        !!(
+                          element.tutorialCard.value.id === undefined &&
+                          element.tutorialCard.value.url
+                        )
+                      }
+                      onChange={(e) => handleChangeCustomTutorialCard(e, index)}
+                    />
+                    Use custom url
+                  </label>
+                  {!checkedCustomTutorialCard[index] ? (
+                    <select
+                      value={element.tutorialCard.value.title}
+                      className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
+                      onChange={(e) =>
+                        handleSelectTutorialCard(
+                          e.target.value,
+                          block,
+                          index,
+                          false,
+                          props.chapterIndex,
+                        )
+                      }
+                    >
+                      <option value="">Choose tutorial</option>
+                      {element.tutorialCard.proposedList &&
+                        element.tutorialCard.proposedList.map((listItem, index) => (
+                          <option key={index} value={listItem.title}>
+                            {listItem.title}
+                          </option>
+                        ))}
+                    </select>
+                  ) : (
+                    <>
+                      <label className="block mt-3 mb-1">Title</label>
+                      <input
+                        type="text"
+                        className={
+                          'w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone'
+                        }
+                        value={element.tutorialCard.value.title}
+                        placeholder={'Title'}
+                        onChange={(e) => {
+                          handleSelectTutorialCard(
+                            e.target.value,
+                            block,
+                            index,
+                            true,
+                            props.chapterIndex,
+                            'title',
+                          )
+                        }}
+                      />
+                      <label className="block mt-3 mb-1">Url</label>
+                      <input
+                        type="text"
+                        className={
+                          'w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone'
+                        }
+                        value={element.tutorialCard.value.url}
+                        placeholder={'Url'}
+                        onChange={(e) => {
+                          handleSelectTutorialCard(
+                            e.target.value,
+                            block,
+                            index,
+                            true,
+                            props.chapterIndex,
+                            'url',
+                          )
+                        }}
+                      />
+                    </>
+                  )}
                 </div>
               </div>
             </DeleteElementWraper>
           )} */}
-          {element.tutorialCards !== undefined && (
+          {/* {element.tutorialCards !== undefined && (
             <DeleteElementWraper
               block={block}
               chapterIndex={props.chapterIndex}
@@ -417,7 +484,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                 </Button>
               </div>
             </DeleteElementWraper>
-          )}
+          )} */}
           {element?.image !== undefined && (
             <DeleteElementWraper
               block={block}
