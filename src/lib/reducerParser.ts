@@ -903,7 +903,7 @@ export const reducerParser = {
         faculty: editorState.meta?.tutorialResponsible?.faculty.value,
         keywords: editorState.meta?.tutorialBelongs?.keywords.list,
         teachers: editorState.meta?.tutorialResponsible?.teachers.list,
-        chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
+        chapters: editorState.chapters && (await parseChaptersToRequest(editorState.chapters)),
         featured_image: editorState.meta?.tutorialBelongs?.image.value.id ?? null,
       }
     } else if (articleType === 'courses') {
@@ -917,7 +917,7 @@ export const reducerParser = {
             ? await parseElementsToContent(editorState.tutorialTop.elements)
             : [],
         useful_links: editorState.tutorialBottom.text,
-        chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
+        chapters: editorState.chapters && (await parseChaptersToRequest(editorState.chapters)),
         course_code: editorState.meta.courseBelongs?.courseCode.value ?? '',
         study: editorState.meta.courseBelongs?.primaryStudy.value.id ?? '',
         secondary_study: editorState.meta.courseBelongs?.secondaryStudy.value.id ?? '',
@@ -937,7 +937,7 @@ export const reducerParser = {
             ? await parseElementsToContent(editorState.tutorialTop.elements)
             : [],
         useful_links: editorState.tutorialBottom.text,
-        chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
+        chapters: editorState.chapters && (await parseChaptersToRequest(editorState.chapters)),
         category: editorState.meta.subjectsInvolve?.primaryCategory.value.id ?? null,
         secondary_category: editorState.meta.subjectsInvolve?.secondaryCategory.value.id ?? null,
       }
@@ -952,7 +952,7 @@ export const reducerParser = {
             ? await parseElementsToContent(editorState.tutorialTop.elements)
             : [],
         useful_links: editorState.tutorialBottom.text,
-        chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
+        chapters: editorState.chapters && (await parseChaptersToRequest(editorState.chapters)),
         software_version:
           editorState.meta.softwareBelongs?.softwareVersion.value.title &&
           editorState.meta.softwareBelongs?.softwareVersion.value.title.length > 0
