@@ -3,20 +3,14 @@ import Dropzone from 'react-dropzone'
 import { setFileElement } from 'src/redux/features/editorSlice'
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
 import { RootState } from 'src/redux/store'
-import { CustomFileInterface, QuizElementProps } from 'src/types/types'
+import { QuizElementProps } from 'src/types/types'
 import TextInput from '../ui/TextInput'
 
 const FileElement = (props: QuizElementProps) => {
-  const [fileData, setFileData] = useState<CustomFileInterface | null>(null)
+  const [fileData, setFileData] = useState<File | null>(null)
 
   const handleSetFileData = (arg0: any) => {
-    setFileData({
-      name: arg0.name,
-      lastModified: arg0.lastModified,
-      path: arg0.path,
-      size: arg0.size,
-      type: arg0.type,
-    })
+    setFileData(arg0)
   }
 
   const [fileTitle, setFileTitle] = useState<string>('')
@@ -38,6 +32,8 @@ const FileElement = (props: QuizElementProps) => {
   )
   useEffect(() => {
     if (fileState) {
+      console.log(fileState)
+
       setFileData(fileState.file)
       setFileTitle(fileState.title)
       setFileDescription(fileState.description)

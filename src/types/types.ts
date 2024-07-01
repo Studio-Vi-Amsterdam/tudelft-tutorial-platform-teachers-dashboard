@@ -93,7 +93,7 @@ export interface CustomFileInterface {
   type: string
 }
 interface ElementsFileInterface {
-  file: CustomFileInterface | null
+  file: File | null
   title: string
   description: string
 }

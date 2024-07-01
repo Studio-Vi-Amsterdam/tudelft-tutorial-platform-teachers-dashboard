@@ -47,6 +47,7 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
     'image',
     'video',
     'tutorial cards',
+    'file',
   ]
   const handleAddTutorialElement = async (val: string): Promise<void> => {
     const payload: any = {}

@@ -59,8 +59,8 @@ const TutorialButtonsSection = () => {
     }
   }
 
-  const testPublishClick = () => {
-    const parsedObject = reducerParser.parseFromReducer(
+  const testPublishClick = async () => {
+    const parsedObject = await reducerParser.parseFromReducer(
       tutorial,
       'publish',
       articleId !== 'new' ? articleId ?? undefined : undefined,
@@ -69,8 +69,8 @@ const TutorialButtonsSection = () => {
     sendRequest(parsedObject)
   }
 
-  const testDraftClick = () => {
-    const parsedObject = reducerParser.parseFromReducer(
+  const testDraftClick = async () => {
+    const parsedObject = await reducerParser.parseFromReducer(
       tutorial,
       'draft',
       articleId !== 'new' ? articleId ?? undefined : undefined,
