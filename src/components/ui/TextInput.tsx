@@ -10,6 +10,7 @@ interface TextInputProps {
   readonly?: boolean
   className?: string
   element?: 'textarea'
+  disabled?: boolean
 }
 
 const TextInput = (props: TextInputProps) => {
@@ -42,6 +43,7 @@ const TextInput = (props: TextInputProps) => {
         value={props.value}
         placeholder={props.placeholder}
         onChange={(e) => props.handleChange(e.target.value, props?.index, props?.subchapterIndex)}
+        disabled={props.disabled}
         readOnly={props?.readonly}
       />
       {props?.headingType && (
@@ -60,6 +62,7 @@ const TextInput = (props: TextInputProps) => {
         value={props.value}
         placeholder={props.placeholder}
         onChange={(e) => props.handleChange(e.target.value, props?.index, props?.subchapterIndex)}
+        disabled={props.disabled}
         readOnly={props?.readonly}
       />
       {props?.headingType && (

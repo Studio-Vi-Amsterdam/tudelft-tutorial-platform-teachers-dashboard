@@ -86,11 +86,8 @@ export interface ElementH5PActionInterface extends ElementActionBase {
   h5pElement: h5pElementInterface
 }
 export interface CustomFileInterface {
-  path: string
-  name: string
-  lastModified: number
-  size: number
-  type: string
+  id: number
+  url: string
 }
 interface ElementsFileInterface {
   file: CustomFileInterface | null

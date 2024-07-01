@@ -339,6 +339,17 @@ export const reducerParser = {
                   title: block.block_data.title ? block.block_data.title : '',
                 },
               }
+            case 'tu-delft-download':
+              return {
+                file: {
+                  title: block.block_data.title ? block.block_data.title : '',
+                  file: {
+                    id: block.block_data.file,
+                    url: block.block_data.file_url,
+                  },
+                  description: block.block_data.description ? block.block_data.description : '',
+                },
+              }
             default:
               return null
           }
@@ -720,46 +731,48 @@ export const reducerParser = {
 
     return reducerObject as EditorState
   },
-  parseFromReducer(
+  async parseFromReducer(
     editorState: EditorState,
     status: 'publish' | 'draft',
     id?: string,
     articleType?: ArtictesType,
   ) {
-    const parseElementsToContent = (elements: ChapterElementsObject[]) => {
-      const content = elements
-        .map((item) => {
-          if (item.text) {
-            return {
-              block_name: 'tu-delft-text',
-              block_data: {
-                content: item.text,
-              },
+    const parseElementsToContent = async (elements: ChapterElementsObject[]) => {
+      const content = await Promise.all(
+        elements
+          .map(async (item) => {
+            if (item.text) {
+              return {
+                block_name: 'tu-delft-text',
+                block_data: {
+                  content: item.text,
+                },
+              }
             }
-          }
-          if (item.infobox) {
-            return {
-              block_name: 'tu-delft-info-box',
-              block_data: {
-                content: item.infobox,
-              },
+            if (item.infobox) {
+              return {
+                block_name: 'tu-delft-info-box',
+                block_data: {
+                  content: item.infobox,
+                },
+              }
             }
-          }
-          if (item.quiz) {
-            return {
-              block_name: 'tu-delft-quiz',
-              block_data: {
-                question: item.quiz.question,
-                answers_0_answer: item.quiz.answers[0].answer,
-                answers_0_is_correct: item.quiz.answers[0].isCorrect,
-                answers_1_answer: item.quiz.answers[1].answer,
-                answers_1_is_correct: item.quiz.answers[1].isCorrect,
-                answers_2_answer: item.quiz.answers[2].answer,
-                answers_2_is_correct: item.quiz.answers[2].isCorrect,
-                answers_3_answer: item.quiz.answers[3].answer,
-                answers_3_is_correct: item.quiz.answers[3].isCorrect,
-                answers: item.quiz.answersCount,
-              },
+            if (item.quiz) {
+              return {
+                block_name: 'tu-delft-quiz',
+                block_data: {
+                  question: item.quiz.question,
+                  answers_0_answer: item.quiz.answers[0].answer,
+                  answers_0_is_correct: item.quiz.answers[0].isCorrect,
+                  answers_1_answer: item.quiz.answers[1].answer,
+                  answers_1_is_correct: item.quiz.answers[1].isCorrect,
+                  answers_2_answer: item.quiz.answers[2].answer,
+                  answers_2_is_correct: item.quiz.answers[2].isCorrect,
+                  answers_3_answer: item.quiz.answers[3].answer,
+                  answers_3_is_correct: item.quiz.answers[3].isCorrect,
+                  answers: item.quiz.answersCount,
+                },
+              }
             }
           }
           if (item.tutorialCard) {
@@ -771,103 +784,109 @@ export const reducerParser = {
                 content_card_row_0_card_link_url: item.tutorialCard.value.url,
                 content_card_row: 1,
               },
+
             }
-          }
-          if (item.h5pElement) {
-            return {
-              block_name: 'tu-delft-h5p',
-              block_data: {
-                source: item.h5pElement.value,
-              },
+            if (item.h5pElement) {
+              return {
+                block_name: 'tu-delft-h5p',
+                block_data: {
+                  source: item.h5pElement.value,
+                },
+              }
             }
-          }
-          if (item.image) {
-            return {
-              block_name: 'tu-delft-image',
-              block_data: {
-                image: item.image.id,
-                image_url: item.image.url,
-              },
+            if (item.image) {
+              return {
+                block_name: 'tu-delft-image',
+                block_data: {
+                  image: item.image.id,
+                  image_url: item.image.url,
+                },
+              }
             }
-          }
-          if (item.video) {
-            return {
-              block_name: 'tu-delft-video',
-              block_data: {
-                video: item.video.id,
-                video_url: item.video.url,
-              },
+            if (item.video) {
+              return {
+                block_name: 'tu-delft-video',
+                block_data: {
+                  video: item.video.id,
+                  video_url: item.video.url,
+                },
+              }
             }
-          }
-          if (item.imageText) {
-            return {
-              block_name: 'tu-delft-image-text',
-              block_data: {
-                image: item.imageText.image.id,
-                image_url: item.imageText.image.url,
-                content: item.imageText.text,
-                title: item.imageText.title,
-              },
+            if (item.imageText) {
+              return {
+                block_name: 'tu-delft-image-text',
+                block_data: {
+                  image: item.imageText.image.id,
+                  image_url: item.imageText.image.url,
+                  content: item.imageText.text,
+                  title: item.imageText.title,
+                },
+              }
             }
-          }
-          if (item.textImage) {
-            return {
-              block_name: 'tu-delft-text-image',
-              block_data: {
-                image: item.textImage.image.id,
-                image_url: item.textImage.image.url,
-                content: item.textImage.text,
-                title: item.textImage.title,
-              },
+            if (item.textImage) {
+              return {
+                block_name: 'tu-delft-text-image',
+                block_data: {
+                  image: item.textImage.image.id,
+                  image_url: item.textImage.image.url,
+                  content: item.textImage.text,
+                  title: item.textImage.title,
+                },
+              }
             }
-          }
-          if (item.textVideo) {
-            return {
-              block_name: 'tu-delft-text-video',
-              block_data: {
-                video: item.textVideo.video.id,
-                video_url: item.textVideo.video.url,
-                content: item.textVideo.text,
-                title: item.textVideo.title,
-              },
+            if (item.textVideo) {
+              return {
+                block_name: 'tu-delft-text-video',
+                block_data: {
+                  video: item.textVideo.video.id,
+                  video_url: item.textVideo.video.url,
+                  content: item.textVideo.text,
+                  title: item.textVideo.title,
+                },
+              }
             }
-          }
-          if (item.videoText) {
-            return {
-              block_name: 'tu-delft-video-text',
-              block_data: {
-                video: item.videoText.video.id,
-                video_url: item.videoText.video.url,
-                content: item.videoText.text,
-                title: item.videoText.title,
-              },
+            if (item.videoText) {
+              return {
+                block_name: 'tu-delft-video-text',
+                block_data: {
+                  video: item.videoText.video.id,
+                  video_url: item.videoText.video.url,
+                  content: item.videoText.text,
+                  title: item.videoText.title,
+                },
+              }
             }
-          }
-          if (item.file) {
-            return {
-              block_name: 'tu-delft-download',
-              block_data: {
-                file: 212 /* Hardcoded. Must be changed after Media resolve */,
-                title: item.file.title,
-                description: item.file.description,
-              },
+            if (item.file) {
+              return {
+                block_name: 'tu-delft-download',
+                block_data: {
+                  file: item.file.file?.id,
+                  file_url: item.file.file?.url,
+                  title: item.file.title,
+                  description: item.file.description,
+                },
+              }
             }
-          }
-          return null
-        })
-        .filter(Boolean)
+            return null
+          })
+          .filter(Boolean),
+      )
+
       return content
     }
-    const parseChaptersToRequest = (chapters: ChapterInterface[]) => {
-      const content = chapters.map((chapter) => {
-        const els = parseElementsToContent(chapter.elements)
-        const firstEl = getFirstChapterElement(chapter)
-        return {
-          id: chapter.id ? chapter.id : undefined,
-          title: chapter.title,
-          content: [firstEl, ...els],
-        }
-      })
+
+    const parseChaptersToRequest = async (chapters: ChapterInterface[]) => {
+      const content = await Promise.all(
+        chapters.map(async (chapter) => {
+          const els = await parseElementsToContent(chapter.elements)
+          const firstEl = getFirstChapterElement(chapter)
+          return {
+            id: chapter.id ? chapter.id : undefined,
+            title: chapter.title,
+            content: [firstEl, ...els],
+          }
+        }),
+      )
       return content
     }
     let parsedObject = {}
@@ -879,7 +898,7 @@ export const reducerParser = {
         description: editorState.tutorialTop.description,
         content:
           editorState.tutorialTop.elements.length !== 0
-            ? parseElementsToContent(editorState.tutorialTop.elements)
+            ? await parseElementsToContent(editorState.tutorialTop.elements)
             : [],
         useful_links: editorState.tutorialBottom.text,
         course: editorState.meta?.tutorialBelongs?.course.value.id ?? undefined,
@@ -902,7 +921,7 @@ export const reducerParser = {
         description: editorState.tutorialTop.description,
         content:
           editorState.tutorialTop.elements.length !== 0
-            ? parseElementsToContent(editorState.tutorialTop.elements)
+            ? await parseElementsToContent(editorState.tutorialTop.elements)
             : [],
         useful_links: editorState.tutorialBottom.text,
         chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
@@ -922,7 +941,7 @@ export const reducerParser = {
         description: editorState.tutorialTop.description,
         content:
           editorState.tutorialTop.elements.length !== 0
-            ? parseElementsToContent(editorState.tutorialTop.elements)
+            ? await parseElementsToContent(editorState.tutorialTop.elements)
             : [],
         useful_links: editorState.tutorialBottom.text,
         chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
@@ -937,7 +956,7 @@ export const reducerParser = {
         description: editorState.tutorialTop.description,
         content:
           editorState.tutorialTop.elements.length !== 0
-            ? parseElementsToContent(editorState.tutorialTop.elements)
+            ? await parseElementsToContent(editorState.tutorialTop.elements)
             : [],
         useful_links: editorState.tutorialBottom.text,
         chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
