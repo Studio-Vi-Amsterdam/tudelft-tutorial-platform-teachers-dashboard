@@ -413,8 +413,14 @@ export const reducerParser = {
     if (articleType === 'tutorials') {
       const info = await getInfo(articleType as ArtictesType)
       const softwareVersions = await getSoftwareVersions()
-      const coursesResponse = await articlesAPI.getArticles('courses')
-      const courses = coursesResponse.data.map((item: any) => ({
+      const coursesResponse = await articlesAPI
+        .getArticles('courses')
+        .then((res) => res.data)
+        .catch((error) => {
+          console.error(error)
+          return []
+        })
+      const courses = coursesResponse.map((item: any) => ({
         id: item.id,
         title: item.title,
       }))
