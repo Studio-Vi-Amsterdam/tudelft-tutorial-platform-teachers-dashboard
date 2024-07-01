@@ -163,8 +163,9 @@ export const reducerParser = {
   async parseToReducer(response: ResponseArticleInterface, articleType: ArtictesType) {
     let shortTutorials: any[] = []
     try {
-      const response = await articlesAPI.getArticles('tutorials')
-      const tutorials = response.data.map((item: any) => ({
+      const tutorialsResponse = await articlesAPI.getArticles('tutorials')
+
+      const tutorials = tutorialsResponse.data.map((item: any) => ({
         id: item.id,
         title: item.title,
       }))
@@ -265,7 +266,7 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
-                  title: block.block_data.alt ? block.block_data.alt : '',
+                  title: block.block_data.title ? block.block_data.title : '',
                 },
               }
             case 'tu-delft-image-text':
@@ -284,7 +285,7 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
-                  title: block.block_data.alt ? block.block_data.alt : '',
+                  title: block.block_data.title ? block.block_data.title : '',
                 },
               }
             case 'tu-delft-video-text':
@@ -303,7 +304,7 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
-                  title: block.block_data.alt ? block.block_data.alt : '',
+                  title: block.block_data.title ? block.block_data.title : '',
                 },
               }
             case 'tu-delft-content-card':
@@ -336,7 +337,7 @@ export const reducerParser = {
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
                   },
-                  title: block.block_data.alt ? block.block_data.alt : '',
+                  title: block.block_data.title ? block.block_data.title : '',
                 },
               }
             default:
@@ -412,7 +413,17 @@ export const reducerParser = {
     if (articleType === 'tutorials') {
       const info = await getInfo(articleType as ArtictesType)
       const softwareVersions = await getSoftwareVersions()
-
+      const coursesResponse = await articlesAPI
+        .getArticles('courses')
+        .then((res) => res.data)
+        .catch((error) => {
+          console.error(error)
+          return []
+        })
+      const courses = coursesResponse.map((item: any) => ({
+        id: item.id,
+        title: item.title,
+      }))
       reducerObject = {
         tutorialTop: {
           title: response.title ? response.title : '',
@@ -428,12 +439,25 @@ export const reducerParser = {
         },
         meta: {
           tutorialBelongs: {
+            course: {
+              fieldTitle: 'Course',
+              required: true,
+              list: courses,
+              value: response.course
+                ? courses.find((item: any) => item.id === response.course) ?? {
+                    id: undefined,
+                    title: '',
+                  }
+                : { id: undefined, title: '' },
+            },
             primary: {
               fieldTitle: 'Primary software used',
               required: true,
               list: info.data.softwares.length > 0 ? info.data.softwares : [],
               value: response.primary_software
-                ? info.data.softwares.find((item: any) => item.id === response.primary_software)
+                ? info.data.softwares.find(
+                    (item: any) => item.id === response.primary_software,
+                  ) ?? { id: undefined, title: '' }
                 : { id: undefined, title: '' },
             },
             version: {
@@ -674,12 +698,21 @@ export const reducerParser = {
               fieldTitle: 'Primary category',
               list: info.categories ?? [],
               required: true,
-              value: response.category ?? { id: undefined, title: '' },
+              value: response.category
+                ? info.categories.find(
+                    (item: any) => item.id === parseInt(response.category as string),
+                  ) ?? { id: undefined, title: '' }
+                : { id: undefined, title: '' },
             },
             secondaryCategory: {
               fieldTitle: 'Secondary category',
               required: false,
-              value: '' /* TO DO */,
+              list: info.categories ?? [],
+              value: response.secondary_category
+                ? info.categories.find(
+                    (item: any) => item.id === parseInt(response.secondary_category as string),
+                  ) ?? { id: undefined, title: '' }
+                : { id: undefined, title: '' },
             },
           },
         },
@@ -736,11 +769,7 @@ export const reducerParser = {
               block_data: {
                 content_card_row_0_card_title: item.tutorialCard.value.title,
                 content_card_row_0_card_link: item.tutorialCard.value.id,
-                content_card_row_1_card_title: item.tutorialCard.value.title,
-                content_card_row_1_card_link: item.tutorialCard.value.id,
-                content_card_row_2_card_title: item.tutorialCard.value.title,
-                content_card_row_2_card_link: item.tutorialCard.value.id,
-                content_card_row: 3,
+                content_card_row: 1,
               },
             }
           }
@@ -853,6 +882,7 @@ export const reducerParser = {
             ? parseElementsToContent(editorState.tutorialTop.elements)
             : [],
         useful_links: editorState.tutorialBottom.text,
+        course: editorState.meta?.tutorialBelongs?.course.value.id ?? undefined,
         primary_software: editorState.meta?.tutorialBelongs?.primary.value.id ?? null,
         software_version: [editorState.meta?.tutorialBelongs?.version.value.id] ?? null,
         primary_subject: editorState.meta?.tutorialBelongs?.primarySubject.value?.id ?? null,
@@ -896,7 +926,8 @@ export const reducerParser = {
             : [],
         useful_links: editorState.tutorialBottom.text,
         chapters: editorState.chapters && parseChaptersToRequest(editorState.chapters),
-        category: editorState.meta.subjectsInvolve?.primaryCategory.value ?? null,
+        category: editorState.meta.subjectsInvolve?.primaryCategory.value.id ?? null,
+        secondary_category: editorState.meta.subjectsInvolve?.secondaryCategory.value.id ?? null,
       }
     } else if (articleType === 'softwares') {
       parsedObject = {

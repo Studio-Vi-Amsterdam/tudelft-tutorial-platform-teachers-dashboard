@@ -301,6 +301,7 @@ export type ObjectNameType =
   | 'subjectsInvolve'
 
 export interface EditorBelongsInterface {
+  course: MetaFieldIdListInterface
   primary: PrimarySoftInterface
   version: MetaFieldIdListInterface
   primarySubject: MetaFieldIdListInterface
@@ -429,6 +430,8 @@ export interface ResponseArticleInterface {
   study?: string
   secondary_study?: string
   category?: string
+  secondary_category?: string
+  course?: number
 }
 export type ResponseBlockName =
   | 'tu-delft-text'

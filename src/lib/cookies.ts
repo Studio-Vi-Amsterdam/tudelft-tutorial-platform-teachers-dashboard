@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 
-export const setAuthToken = (token: string, expire: number) => {
-  const expires = new Date(expire * 1000)
+export const setAuthToken = (token: string) => {
+  const expires = 1
   Cookies.set('tuDelft-token', token, { expires })
 }
 

@@ -5,8 +5,8 @@ import {
   DashboardPublishedInterface,
   HardcodeTestDataInterface,
 } from 'src/types/types'
-import { useEffect } from 'react'
-import { articlesAPI } from 'src/lib/api'
+import { useEffect, useState } from 'react'
+import { articlesAPI, userAPI } from 'src/lib/api'
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
 import { setDashboardFetched, setDrafts, setPublished } from 'src/redux/features/dashboardSlice'
 import { RootState } from 'src/redux/store'
@@ -37,6 +37,7 @@ const Dashboard = () => {
   const isDraftsFetched = useAppSelector((state: RootState) => state.dashboard.isDraftsLoaded)
   const isPublishedFetched = useAppSelector((state: RootState) => state.dashboard.isPublishedLoaded)
   const { isAuthenticated } = useAuth()
+  const [username, setUsername] = useState<string>('there')
 
   useEffect(() => {
     const fetchPreviewLink = async (type: ArtictesType, id: number): Promise<string | null> => {
@@ -46,6 +47,17 @@ const Dashboard = () => {
       } catch (error) {
         console.error(`Error fetching preview link for ${type} with id ${id}:`, error)
         return null
+      }
+    }
+
+    const fetchUsername = async () => {
+      try {
+        const response = await userAPI
+          .getUser()
+          .then((res) => (res.data.first_name ? res.data.first_name : 'there'))
+        setUsername(response)
+      } catch (error) {
+        return 'there'
       }
     }
 
@@ -62,6 +74,7 @@ const Dashboard = () => {
     }
 
     const fetchData = async () => {
+      await fetchUsername()
       const fetchArticles = async (type: ArtictesType): Promise<DashboardPublishedInterface[]> => {
         try {
           const response = await articlesAPI.getArticles(type)
@@ -127,7 +140,7 @@ const Dashboard = () => {
       <main className="container mx-auto mt-14 mb-20 sm:mb-24 sm:mt-20 flex flex-auto flex-col gap-16 sm:gap-y-16">
         <div className="sm:flex flex-row items-center justify-between max-sm:mb-4">
           <h2 className="font-RobotoSlab text-4xl sm:text-h2 font-light -tracking-1 sm:mb-0 mb-8 ">
-            Hello there!
+            Hello {username}!
           </h2>
           <AddNewTutorialButton />
         </div>
