@@ -10,6 +10,8 @@ import {
   ResponseChapterInterface,
   ResponseContentBlock,
   ResponseKeyword,
+  TransformedDataTutorialCards,
+  TutorialCardInterface,
   TutorialTopElementsObject,
 } from 'src/types/types'
 import { articlesAPI, chaptersAPI, taxonomiesAPI } from './api'
@@ -308,17 +310,31 @@ export const reducerParser = {
                 },
               }
             case 'tu-delft-content-card':
+              // eslint-disable-next-line no-case-declarations
+              const tutorialCards = []
+              // eslint-disable-next-line no-case-declarations
+              const blockData = block.block_data
+              if (blockData.content_card_row !== undefined) {
+                for (let i = 0; i < blockData.content_card_row; i++) {
+                  const card: TutorialCardInterface = {
+                    value: {
+                      id: blockData[`content_card_row_${i}_card_link`],
+                      title: blockData[`content_card_row_${i}_card_title`],
+                    },
+                    proposedList: shortTutorials,
+                  }
+
+                  const cardLinkUrl = blockData[`content_card_row_${i}_card_link_url`]
+                  if (cardLinkUrl) {
+                    card.value.url = cardLinkUrl
+                  }
+
+                  tutorialCards.push(card)
+                }
+              }
+
               return {
-                tutorialCard: {
-                  proposedList: shortTutorials,
-                  value: block.block_data.content_card_row_0_card_title
-                    ? {
-                        id: block.block_data.content_card_row_0_card_link,
-                        url: block.block_data.content_card_row_0_card_link_url,
-                        title: block.block_data.content_card_row_0_card_title,
-                      }
-                    : { id: undefined, title: '' },
-                },
+                tutorialCards,
               }
             case 'tu-delft-text-video':
               return {
@@ -774,17 +790,21 @@ export const reducerParser = {
                 },
               }
             }
-          }
-          if (item.tutorialCard) {
-            return {
-              block_name: 'tu-delft-content-card',
-              block_data: {
-                content_card_row_0_card_title: item.tutorialCard.value.title,
-                content_card_row_0_card_link: item.tutorialCard.value.id,
-                content_card_row_0_card_link_url: item.tutorialCard.value.url,
-                content_card_row: 1,
-              },
-
+            if (item.tutorialCards) {
+              const transformedData: TransformedDataTutorialCards = item.tutorialCards.reduce(
+                (acc: TransformedDataTutorialCards, card, index) => {
+                  acc[`content_card_row_${index}_card_title`] = card.value.title
+                  acc[`content_card_row_${index}_card_link`] =
+                    card.value.id !== undefined ? card.value.id : null
+                  acc[`content_card_row_${index}_card_link_url`] = card.value.url ?? ''
+                  return acc
+                },
+                { content_card_row: item.tutorialCards.length },
+              )
+              return {
+                block_name: 'tu-delft-content-card',
+                block_data: transformedData,
+              }
             }
             if (item.h5pElement) {
               return {

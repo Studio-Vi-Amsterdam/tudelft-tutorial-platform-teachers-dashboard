@@ -843,22 +843,26 @@ export const editorSlice = createSlice({
         block: string
         listIndex: number
         isUrl: boolean
+        nestedIndex: number
         chapterIndex?: number
         name?: string
       }>,
     ) => {
-      const { value, block, listIndex, chapterIndex, isUrl, name } = action.payload
+      const { value, block, listIndex, nestedIndex, chapterIndex, isUrl, name } = action.payload
       if (block === 'tutorialElements') {
         const elements = state.tutorialTop.elements
         const element = elements && elements[listIndex]
-        if (element.tutorialCard !== undefined && element.tutorialCard.value !== undefined) {
+        if (
+          element.tutorialCards !== undefined &&
+          element.tutorialCards[nestedIndex].value !== undefined
+        ) {
           if (isUrl) {
-            element.tutorialCard.value.id = undefined
-            element.tutorialCard.value[`${name as 'title' | 'url'}`] = value
+            element.tutorialCards[nestedIndex].value.id = undefined
+            element.tutorialCards[nestedIndex].value[`${name as 'title' | 'url'}`] = value
           } else {
-            element.tutorialCard.value = element.tutorialCard.proposedList.find(
-              (el) => el.title === value,
-            ) ?? { id: undefined, title: '' }
+            element.tutorialCards[nestedIndex].value = element.tutorialCards[
+              nestedIndex
+            ].proposedList.find((el) => el.title === value) ?? { id: undefined, title: '' }
           }
         }
       } else if (block === 'chapterElements' && chapterIndex !== undefined) {
@@ -866,13 +870,16 @@ export const editorSlice = createSlice({
         const elements = chapter?.elements
         const element = elements && elements[listIndex]
 
-        if (element.tutorialCard !== undefined && element.tutorialCard.value !== undefined) {
+        if (
+          element.tutorialCards !== undefined &&
+          element.tutorialCards[nestedIndex].value !== undefined
+        ) {
           if (isUrl) {
-            element.tutorialCard.value[`${name as 'title' | 'url'}`] = value
+            element.tutorialCards[nestedIndex].value[`${name as 'title' | 'url'}`] = value
           } else {
-            element.tutorialCard.value = element.tutorialCard.proposedList.find(
-              (el) => el.title === value,
-            ) ?? { id: undefined, title: '' }
+            element.tutorialCards[nestedIndex].value = element.tutorialCards[
+              nestedIndex
+            ].proposedList.find((el) => el.title === value) ?? { id: undefined, title: '' }
           }
         }
       }
