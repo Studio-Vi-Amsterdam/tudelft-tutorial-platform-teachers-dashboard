@@ -3,7 +3,6 @@ import { useAppDispatch } from 'src/redux/hooks'
 import {
   changeSubchapterText,
   changeSubchapterTitle,
-  changeTutorialCard,
   setElementInfobox,
   setElementText,
 } from 'src/redux/features/editorSlice'
@@ -15,6 +14,7 @@ import DeleteElementWraper from './DeleteElementWraper'
 import QuizElement from './QuizElement'
 import H5pElement from './H5pElement'
 import FileElement from './FileElement'
+import TutorialCardsElement from './TutorialCardsElement'
 
 interface ElementsBlockProps {
   elements: Array<ChapterElementsObject>
@@ -82,15 +82,6 @@ const ElementsBlock = (props: ElementsBlockProps) => {
     if (chapterIndex !== undefined) {
       dispatch(changeSubchapterTitle({ value, chapterIndex, layout, listIndex }))
     }
-  }
-
-  const handleSelectTutorialCard = (
-    value: string,
-    block: string,
-    listIndex: number,
-    chapterIndex?: number,
-  ) => {
-    dispatch(changeTutorialCard({ value, block, listIndex, chapterIndex }))
   }
 
   return (
@@ -329,33 +320,19 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               />
             </DeleteElementWraper>
           )}
-          {element.tutorialCard !== undefined && (
+          {element.tutorialCards !== undefined && (
             <DeleteElementWraper
               block={block}
               chapterIndex={props.chapterIndex}
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
-              <div className="flex w-full flex-row items-center justify-between gap-2">
-                <div className="min-w-[104px] max-w-[104px]">Tutorial</div>
-                <div className="w-9/12">
-                  <select
-                    value={element.tutorialCard.value.title}
-                    className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
-                    onChange={(e) =>
-                      handleSelectTutorialCard(e.target.value, block, index, props.chapterIndex)
-                    }
-                  >
-                    <option value="">Choose tutorial</option>
-                    {element.tutorialCard.proposedList &&
-                      element.tutorialCard.proposedList.map((listItem, index) => (
-                        <option key={index} value={listItem.title}>
-                          {listItem.title}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-              </div>
+              <TutorialCardsElement
+                block={block}
+                chapterIndex={chapterIndex}
+                index={index}
+                tutorialCards={element.tutorialCards}
+              />
             </DeleteElementWraper>
           )}
           {element?.image !== undefined && (

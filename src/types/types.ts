@@ -86,11 +86,8 @@ export interface ElementH5PActionInterface extends ElementActionBase {
   h5pElement: h5pElementInterface
 }
 export interface CustomFileInterface {
-  path: string
-  name: string
-  lastModified: number
-  size: number
-  type: string
+  id: number
+  url: string
 }
 interface ElementsFileInterface {
   file: CustomFileInterface | null
@@ -115,6 +112,12 @@ export interface MoveChapterInterface {
   moveTo: 'up' | 'down'
   parentIndex?: number
 }
+
+export interface TutorialCardInterface {
+  value: { id: number | undefined; title: string; url?: string }
+  proposedList: { id: number; title: string }[] | []
+}
+
 export interface TutorialTopElementsObject {
   text?: string
   infobox?: string
@@ -124,6 +127,7 @@ export interface TutorialTopElementsObject {
   quiz?: QuizElement
   h5pElement?: h5pElementInterface
   tutorialCard?: TutorialCardInterface
+  tutorialCards?: TutorialCardInterface[]
 }
 export interface AddChapterElementInterface {
   val: TutorialTopElementsObject
@@ -179,17 +183,13 @@ interface MediaTextVideoInterface {
   video: MediaObjectInterface
 }
 
-export interface TutorialCardInterface {
-  value: { id: number | undefined; title: string }
-  proposedList: { id: number; title: string }[] | []
-}
-
 export interface ChapterElementsObject {
   text?: string
   infobox?: string
   image?: MediaObjectInterface
   video?: MediaObjectInterface
   tutorialCard?: TutorialCardInterface
+  tutorialCards?: TutorialCardInterface[]
   file?: ElementsFileInterface
   quiz?: QuizElement
   h5pElement?: h5pElementInterface
@@ -198,6 +198,11 @@ export interface ChapterElementsObject {
   textVideo?: MediaTextVideoInterface
   videoText?: MediaTextVideoInterface
   column?: string
+}
+
+export interface TransformedDataTutorialCards {
+  [key: string]: string | number | null
+  content_card_row: number
 }
 
 // interface ColumnTextInterface {
@@ -447,41 +452,45 @@ export type ResponseBlockName =
   | 'tu-delft-quiz'
   | 'tu-delft-h5p'
 export type BoolString = '0' | '1'
+
+export interface ResponseBlockData {
+  content?: string
+  image?: number
+  image_url?: string
+  video?: number
+  video_url?: string
+  file?: number
+  file_url?: string
+  title?: string
+  alt?: string
+  description?: string
+  /* content_card_row_0_card_title?: string
+  content_card_row_0_card_link?: number
+  content_card_row_0_card_link_url?: string
+  content_card_row_1_card_title?: string
+  content_card_row_1_card_link?: number
+  content_card_row_1_card_link_url?: string
+  content_card_row_2_card_title?: string
+  content_card_row_2_card_link_url?: string
+  content_card_row_2_card_link?: number
+  content_card_row?: number */
+  question?: string
+  answers_0_answer?: string
+  answers_0_is_correct?: BoolString
+  answers_1_answer?: string
+  answers_1_is_correct?: BoolString
+  answers_2_answer?: string
+  answers_2_is_correct?: BoolString
+  answers_3_answer?: string
+  answers_3_is_correct?: BoolString
+  answers?: 4
+  source?: string
+  [key: string]: any
+}
+
 export interface ResponseContentBlock {
   block_name: ResponseBlockName
-  block_data: {
-    content?: string
-    image?: number
-    image_url?: string
-    video?: number
-    video_url?: string
-    file?: number
-    file_url?: string
-    title?: string
-    alt?: string
-    description?: string
-    content_card_row_0_card_title?: string
-    content_card_row_0_card_link?: number
-    content_card_row_0_card_link_url?: string
-    content_card_row_1_card_title?: string
-    content_card_row_1_card_link?: number
-    content_card_row_1_card_link_url?: string
-    content_card_row_2_card_title?: string
-    content_card_row_2_card_link_url?: string
-    content_card_row_2_card_link?: number
-    content_card_row?: number
-    question?: string
-    answers_0_answer?: string
-    answers_0_is_correct?: BoolString
-    answers_1_answer?: string
-    answers_1_is_correct?: BoolString
-    answers_2_answer?: string
-    answers_2_is_correct?: BoolString
-    answers_3_answer?: string
-    answers_3_is_correct?: BoolString
-    answers?: 4
-    source?: string
-  }
+  block_data: ResponseBlockData
 }
 export interface ResponseChapterInterface {
   id: number

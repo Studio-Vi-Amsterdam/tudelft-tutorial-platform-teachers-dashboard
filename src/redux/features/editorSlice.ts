@@ -20,6 +20,7 @@ import {
   MoveChapterInterface,
   SubchapterImageAction,
   SubchapterTextFieldActionInterface,
+  TutorialCardInterface,
   TutorialMetaObject,
   TutorialResponsibleInterface,
   TutorialTopElementsObject,
@@ -804,33 +805,82 @@ export const editorSlice = createSlice({
         layoutItem.title = value
       }
     },
+    addTutorialCard: (
+      state,
+      action: PayloadAction<{
+        block: string
+        listIndex: number
+        chapterIndex?: number
+      }>,
+    ) => {
+      const { block, listIndex, chapterIndex } = action.payload
+      if (block === 'tutorialElements') {
+        const elements = state.tutorialTop.elements
+        const element = elements && elements[listIndex]
+        if (element.tutorialCards !== undefined) {
+          const newObject: TutorialCardInterface = {
+            value: { id: undefined, title: '' },
+            proposedList: element.tutorialCards[0].proposedList,
+          }
+          element.tutorialCards = [...element.tutorialCards, newObject]
+        }
+      } else if (block === 'chapterElements' && chapterIndex !== undefined) {
+        const elements = state.chapters[chapterIndex].elements
+        const element = elements && elements[listIndex]
+        if (element.tutorialCards !== undefined) {
+          const newObject: TutorialCardInterface = {
+            value: { id: undefined, title: '' },
+            proposedList: element.tutorialCards[0].proposedList,
+          }
+          element.tutorialCards = [...element.tutorialCards, newObject]
+        }
+      }
+    },
     changeTutorialCard: (
       state,
       action: PayloadAction<{
         value: string
         block: string
         listIndex: number
+        isUrl: boolean
+        nestedIndex: number
         chapterIndex?: number
+        name?: string
       }>,
     ) => {
-      const { value, block, listIndex, chapterIndex } = action.payload
+      const { value, block, listIndex, nestedIndex, chapterIndex, isUrl, name } = action.payload
       if (block === 'tutorialElements') {
         const elements = state.tutorialTop.elements
         const element = elements && elements[listIndex]
-        if (element.tutorialCard !== undefined && element.tutorialCard.value !== undefined) {
-          element.tutorialCard.value = element.tutorialCard.proposedList.find(
-            (el) => el.title === value,
-          ) ?? { id: undefined, title: '' }
+        if (
+          element.tutorialCards !== undefined &&
+          element.tutorialCards[nestedIndex].value !== undefined
+        ) {
+          if (isUrl) {
+            element.tutorialCards[nestedIndex].value.id = undefined
+            element.tutorialCards[nestedIndex].value[`${name as 'title' | 'url'}`] = value
+          } else {
+            element.tutorialCards[nestedIndex].value = element.tutorialCards[
+              nestedIndex
+            ].proposedList.find((el) => el.title === value) ?? { id: undefined, title: '' }
+          }
         }
       } else if (block === 'chapterElements' && chapterIndex !== undefined) {
         const chapter = state.chapters[chapterIndex]
         const elements = chapter?.elements
         const element = elements && elements[listIndex]
 
-        if (element.tutorialCard !== undefined && element.tutorialCard.value !== undefined) {
-          element.tutorialCard.value = element.tutorialCard.proposedList.find(
-            (el) => el.title === value,
-          ) ?? { id: undefined, title: '' }
+        if (
+          element.tutorialCards !== undefined &&
+          element.tutorialCards[nestedIndex].value !== undefined
+        ) {
+          if (isUrl) {
+            element.tutorialCards[nestedIndex].value[`${name as 'title' | 'url'}`] = value
+          } else {
+            element.tutorialCards[nestedIndex].value = element.tutorialCards[
+              nestedIndex
+            ].proposedList.find((el) => el.title === value) ?? { id: undefined, title: '' }
+          }
         }
       }
     },
@@ -1136,6 +1186,7 @@ export const {
   setSubchapterMedia,
   setFeaturedImage,
   changeTutorialCard,
+  addTutorialCard,
 } = editorSlice.actions
 
 export default editorSlice.reducer

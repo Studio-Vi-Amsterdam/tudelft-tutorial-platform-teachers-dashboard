@@ -65,7 +65,6 @@ export const FileUpload = (props: FileUploadProps) => {
       files.map((el, index) => {
         const title = filesTitles.filter((el) => el.index === index)
         const formData = new FormData()
-
         formData.append('file', el)
         formData.append('title', title[0].val)
         mediaAPI.uploadFiles(formData).then((res) => {
