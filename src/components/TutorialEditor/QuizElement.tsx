@@ -53,7 +53,7 @@ const QuizElement = (props: QuizElementProps) => {
 
   return quiz ? (
     <div className="flex w-full flex-col rounded-[4px] border border-dim [&>div>input]:border-b [&>div>input]:border-[#999999] [&>div>input]:bg-transparent [&>div>p]:text-xs [&>div>p]:leading-5 [&>div]:gap-y-2 [&>div]:py-4">
-      <div className="flex w-full flex-col bg-tertiary-grey-silver p-4">
+      <div className="flex w-full flex-col bg-tertiary-grey-silver p-4 rounded-[3px]">
         <p>Question</p>
         <input
           type="text"
