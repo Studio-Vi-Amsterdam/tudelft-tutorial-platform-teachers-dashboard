@@ -102,6 +102,7 @@ export default function BundledEditor(props: any) {
       separator: '',
     })
   }
+
   tinymce.PluginManager.add('command', (editor) => {
     const openDialog = () =>
       setCommandDialog({
@@ -147,10 +148,87 @@ export default function BundledEditor(props: any) {
       },
     })
   })
+  const editorStyles = `
+  .tooltip {
+    color: #009b77;
+    display: inline-block;
+    position: relative;
+  }
+
+  .tooltip:hover span {
+    transform: translateY(calc(-100% - 5px)) scale(1);
+  }
+
+  .tooltip span {
+    color: #000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 20rem;
+    max-width: 20rem;
+    background-color: #e5f5f1;
+    border-radius: 4px;
+    border: 1px solid #009b77;
+    padding: 8px;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, .0588235294);
+    transition: .5s cubic-bezier(0.15, 0, 0, 1);
+    transform-origin: left bottom;
+    transform: translateY(calc(-100% - 5px)) scale(0);
+  }
+
+  .buttons-combination {
+    display: flex;
+    width: fit-content;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .buttons-combination__button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .buttons-combination__button span {
+    display: inline-block;
+    color: #67676b;
+    line-height: 2;
+    border: 1px solid #96969b;
+    background-color: #eff1f3;
+    border-radius: 2px;
+    padding: 0 4px 2px 4px;
+    box-sizing: border-box;
+  }
+
+  .buttons-combination--with-arrows .buttons-combination__button:not(:last-child):after {
+    display: inline-block;
+    padding: 0 0px 0 0;
+    width: 40px;
+    background-image: url('/img/arrow-gray.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 30px;
+    content: "";
+  }
+
+  .buttons-combination__button:not(:last-child):after {
+    display: inline-block;
+    padding: 0 0px 0 0;
+    width: 40px;
+    background-image: url('/img/plus.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 30px;
+    content: "";
+}
+  `
+
   return (
     <>
       {props?.subchapter && props.subchapter === true ? (
         <Editor
+          init={{ content_style: editorStyles }}
           licenseKey="gpl"
           value={props.value}
           onEditorChange={(newValue) =>
@@ -161,6 +239,13 @@ export default function BundledEditor(props: any) {
       ) : (
         <Editor
           licenseKey="gpl"
+          init={{
+            menubar: props.customInit && props.customInit.menubar,
+            resize: props.customInit && props.customInit.resize,
+            plugins: props.customInit && props.customInit.plugins,
+            toolbar: props.customInit && props.customInit.toolbar,
+            content_style: editorStyles,
+          }}
           value={props.value}
           onEditorChange={(newValue) => props.handleChange(newValue, props?.index, props?.block)}
           {...props}

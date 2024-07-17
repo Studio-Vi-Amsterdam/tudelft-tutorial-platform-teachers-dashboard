@@ -37,7 +37,7 @@ const AddElementBlock = (props: AddElementBlockProps) => {
         <div className="flex flex-row flex-wrap gap-x-2 gap-y-2">
           {elements.map((el, index) => (
             <Button
-              className="sm:justify-center justify-start"
+              className="sm:justify-center !px-6 !text-left !justify-start !items-start"
               variant={'elements'}
               key={index}
               onClick={() => handleAddElement(el)}

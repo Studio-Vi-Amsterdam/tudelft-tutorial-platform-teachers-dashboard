@@ -185,6 +185,25 @@ select {
     background-size: 12px 12px;
 }
 
+.buttons-combination {
+    display: flex;
+    width: fit-content;
+    flex-direction: row;
+    padding: 20px;
+    background-color: var(--palatinate-purple);
+  }
+
+  .buttons-combination__button span {
+    display: inline-block;
+    color: #67676b;
+    line-height: 2;
+    border: 1px solid #96969b;
+    background-color: #eff1f3;
+    border-radius: 2px;
+    padding: 0 4px 2px 4px;
+    box-sizing: border-box;
+  }
+  
 @keyframes lds-ellipsis1 {
     0% {
         transform: scale(0);

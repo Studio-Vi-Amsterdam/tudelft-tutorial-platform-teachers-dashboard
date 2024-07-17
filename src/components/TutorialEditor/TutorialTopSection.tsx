@@ -40,7 +40,6 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
     dispatch(setTutorialDescription(value))
   }
 
-  // const tutorialElements: AddElementsType[] = ['text', 'infobox', 'image', 'video', 'file']
   const tutorialElements: AddElementsType[] = [
     'text',
     'infobox',
@@ -117,11 +116,10 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       <BundledEditor
         value={tutorialDescription}
         handleChange={handleTutorialDescriptionInputChange}
-        init={{
+        customInit={{
           menubar: false,
           resize: true,
           plugins: ['table', 'lists', 'link', 'code', 'autoresize', 'command', 'term'],
-
           toolbar: 'bullist numlist link code table command term',
         }}
       />
