@@ -1,5 +1,5 @@
 import { Editor } from '@tinymce/tinymce-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CommandDialogInterface, TermDialogInterface } from 'src/types/types'
 import CommandDialog from './CommandDialog'
 import TermDialog from './TermDialog'
@@ -42,6 +42,7 @@ import 'tinymce/plugins/emoticons/js/emojis'
 import 'tinymce/skins/content/default/content'
 import 'tinymce/skins/ui/oxide/content'
 import '@codecogs/eqneditor-tinymce6'
+import axios from 'axios'
 
 export default function BundledEditor(props: any) {
   const [commandDialog, setCommandDialog] = useState<CommandDialogInterface>({
@@ -57,6 +58,16 @@ export default function BundledEditor(props: any) {
     select: null,
     explanation: '',
   })
+  const [styles, setStyles] = useState('')
+
+  const getFiles = async () => {
+    const res = await axios.get('/editor-styles.css')
+    setStyles(res.data)
+  }
+
+  useEffect(() => {
+    getFiles()
+  }, [])
 
   const setCommandDialogOpened = (val: boolean) => {
     setCommandDialog({ ...commandDialog, isOpen: val })
@@ -147,83 +158,10 @@ export default function BundledEditor(props: any) {
       },
     })
   })
-  const editorStyles = `
-  .tooltip {
-    color: #009b77;
-    display: inline-block;
-    position: relative;
+
+  if (!styles) {
+    return null
   }
-
-  .tooltip:hover span {
-    transform: translateY(calc(-100% - 5px)) scale(1);
-  }
-
-  .tooltip span {
-    color: #000;
-    position: absolute;
-    top: 0;
-    left: 0;
-    min-width: 20rem;
-    max-width: 20rem;
-    background-color: #e5f5f1;
-    border-radius: 4px;
-    border: 1px solid #009b77;
-    padding: 8px;
-    box-sizing: border-box;
-    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, .0588235294);
-    transition: .5s cubic-bezier(0.15, 0, 0, 1);
-    transform-origin: left bottom;
-    transform: translateY(calc(-100% - 5px)) scale(0);
-  }
-
-  .buttons-combination {
-    display: flex;
-    width: fit-content;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .buttons-combination__button {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .buttons-combination__button span {
-    display: inline-block;
-    color: #67676b;
-    line-height: 2;
-    border: 1px solid #96969b;
-    background-color: #eff1f3;
-    border-radius: 2px;
-    padding: 0 4px 2px 4px;
-    box-sizing: border-box;
-  }
-
-  .buttons-combination--with-arrows .buttons-combination__button:not(:last-child):after {
-    display: inline-block;
-    padding: 0 0px 0 0;
-    width: 40px;
-    background-image: url('/img/arrow-gray.svg');
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 30px;
-    content: "";
-  }
-
-  .buttons-combination__button:not(:last-child):after {
-    display: inline-block;
-    padding: 0 0px 0 0;
-    width: 40px;
-    background-image: url('/img/plus.svg');
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 30px;
-    content: "";
-}
-
-
-  `
 
   return (
     <>
@@ -233,8 +171,7 @@ export default function BundledEditor(props: any) {
           resize: props.customInit && props.customInit.resize,
           plugins: props.customInit && props.customInit.plugins,
           toolbar: props.customInit && props.customInit.toolbar,
-          content_style: editorStyles,
-          codesample_global_prismjs: true,
+          content_style: styles,
           codesample_languages: [
             { text: 'HTML/XML', value: 'markup' },
             { text: 'JavaScript', value: 'javascript' },
