@@ -120,8 +120,17 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
         customInit={{
           menubar: false,
           resize: true,
-          plugins: ['table', 'lists', 'link', 'code', 'autoresize', 'command', 'term'],
-          toolbar: 'bullist numlist link code table command term',
+          plugins: [
+            'table',
+            'lists',
+            'link',
+            'code',
+            'autoresize',
+            'command',
+            'term',
+            'codesample',
+          ],
+          toolbar: 'bullist numlist link code table command term codesample',
         }}
       />
       <Tip>

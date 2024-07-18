@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { CommandDialogInterface, TermDialogInterface } from 'src/types/types'
 import CommandDialog from './CommandDialog'
 import TermDialog from './TermDialog'
-
 // Required imports for Editor
 import tinymce from 'tinymce'
 import 'tinymce/models/dom/model'
@@ -222,35 +221,45 @@ export default function BundledEditor(props: any) {
     height: 30px;
     content: "";
 }
+
+
   `
 
   return (
     <>
-      {props?.subchapter && props.subchapter === true ? (
-        <Editor
-          init={{ content_style: editorStyles }}
-          licenseKey="gpl"
-          value={props.value}
-          onEditorChange={(newValue) =>
-            props.handleChange(newValue, props?.index, props?.layout, props?.subchapterIndex)
-          }
-          {...props}
-        />
-      ) : (
-        <Editor
-          licenseKey="gpl"
-          init={{
-            menubar: props.customInit && props.customInit.menubar,
-            resize: props.customInit && props.customInit.resize,
-            plugins: props.customInit && props.customInit.plugins,
-            toolbar: props.customInit && props.customInit.toolbar,
-            content_style: editorStyles,
-          }}
-          value={props.value}
-          onEditorChange={(newValue) => props.handleChange(newValue, props?.index, props?.block)}
-          {...props}
-        />
-      )}
+      <Editor
+        init={{
+          menubar: props.customInit && props.customInit.menubar,
+          resize: props.customInit && props.customInit.resize,
+          plugins: props.customInit && props.customInit.plugins,
+          toolbar: props.customInit && props.customInit.toolbar,
+          content_style: editorStyles,
+          codesample_global_prismjs: true,
+          codesample_languages: [
+            { text: 'HTML/XML', value: 'markup' },
+            { text: 'JavaScript', value: 'javascript' },
+            { text: 'CSS', value: 'css' },
+            { text: 'PHP', value: 'php' },
+            { text: 'Ruby', value: 'ruby' },
+            { text: 'Python', value: 'python' },
+            { text: 'Java', value: 'java' },
+            { text: 'C', value: 'c' },
+            { text: 'C#', value: 'csharp' },
+            { text: 'C++', value: 'cpp' },
+          ],
+        }}
+        licenseKey="gpl"
+        value={props.value}
+        onEditorChange={
+          props?.subchapter && props.subchapter === true
+            ? (newValue) =>
+                props.handleChange(newValue, props?.index, props?.layout, props?.subchapterIndex)
+            : (newValue) => {
+                props.handleChange(newValue, props?.index, props?.block)
+              }
+        }
+        {...props}
+      />
       <TermDialog
         termDialog={termDialog}
         handleSubmitTerm={handleSubmitTerm}
