@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { LayoutChapterType } from 'src/types/types'
 import { Button } from '../ui/Button'
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
+import { useAppDispatch } from 'src/redux/hooks'
 import { addBlankSubchapterToEls } from 'src/redux/features/editorSlice'
-import { RootState } from 'src/redux/store'
+import LayoutButton from './LayoutButton'
 
 interface NewAddSubchapterProps {
   chapterIndex: number
@@ -18,6 +18,7 @@ const NewAddSubchapter = (props: NewAddSubchapterProps) => {
     setIsChapterCreating(true)
   }
   const subchapterLayout: LayoutChapterType[] = [
+    '1 column',
     'image left',
     'image right',
     'video left',
@@ -33,57 +34,31 @@ const NewAddSubchapter = (props: NewAddSubchapterProps) => {
       )
     }
   }
-  const store = useAppSelector((state: RootState) => state.editor)
-  useEffect(() => {
-    console.log(store)
-  }, [store])
   return (
     <section
-      className={`${isAddChapterButtonShow ? '' : 'sm:py-20 pt-14 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver'}   relative flex w-full flex-col gap-y-6 `}
+      className={`relative flex w-full flex-col gap-y-6 ${
+        isAddChapterButtonShow
+          ? ''
+          : 'sm:py-20 pt-14 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver'
+      }`}
     >
       {isChapterCreating && (
-        <div className="flex bg-seasalt flex-col gap-y-4 rounded-[8px] border-[2px] border-dashed border-tertiary-grey-dim py-6">
+        <div className="flex flex-col gap-y-4 rounded-[8px] border-[2px] border-dashed border-tertiary-grey-dim bg-seasalt py-6">
           <h4 className="text-center">Choose layout</h4>
           <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-10 gap-x-10 sm:gap-y-4 max-sm:items-center">
-            {subchapterLayout.map((layoutType: LayoutChapterType, index: number) => (
-              <button
+            {subchapterLayout.map((layoutType, index) => (
+              <LayoutButton
                 key={index}
+                layoutType={layoutType}
                 onClick={() => createChapter(layoutType)}
-                className="flex w-[184px] sm:w-1/4 flex-col items-start gap-y-1"
-              >
-                <div
-                  className={`${
-                    layoutType !== '1 column'
-                      ? layoutType.split(' ')[1] === 'left'
-                        ? 'flex-row-reverse'
-                        : 'flex-row'
-                      : 'flex-col'
-                  } flex w-full gap-x-2 gap-y-2 rounded-[4px] border-[2px] border-tertiary-grey-stone p-2`}
-                >
-                  <>
-                    <div className="flex h-[72px] w-1/2 flex-col justify-between [&>div]:h-[6px] [&>div]:w-full [&>div]:bg-tertiary-grey-stone">
-                      <div></div>
-                      <div></div>
-                      <div></div>
-                      <div></div>
-                      <div></div>
-                    </div>
-                    <div className="flex h-[72px] w-1/2 items-center justify-center bg-tertiary-grey-stone">
-                      {layoutType.split(' ')[0] === 'video' && (
-                        <div className="h-4 w-[13px] bg-play bg-center bg-no-repeat"></div>
-                      )}
-                    </div>
-                  </>
-                </div>
-                <p className="text-sm text-tertiary-grey-dim">{layoutType}</p>
-              </button>
+              />
             ))}
           </div>
         </div>
       )}
 
       {isAddChapterButtonShow && (
-        <Button variant={'dashed'} onClick={showChooseLayoutBlock}>
+        <Button variant="dashed" onClick={showChooseLayoutBlock}>
           <div>+</div>
           <p>Add subchapter</p>
         </Button>

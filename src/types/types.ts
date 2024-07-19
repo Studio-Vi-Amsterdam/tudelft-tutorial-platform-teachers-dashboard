@@ -183,6 +183,11 @@ interface MediaTextVideoInterface {
   video: MediaObjectInterface
 }
 
+interface TextLayoutInterface {
+  text: string
+  title: string
+}
+
 export interface ChapterElementsObject {
   text?: string
   infobox?: string
@@ -193,6 +198,7 @@ export interface ChapterElementsObject {
   file?: ElementsFileInterface
   quiz?: QuizElement
   h5pElement?: h5pElementInterface
+  textLayout?: TextLayoutInterface
   textImage?: MediaTextImageInterface
   imageText?: MediaTextImageInterface
   textVideo?: MediaTextVideoInterface

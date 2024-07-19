@@ -55,7 +55,7 @@ const H5pElement = (props: QuizElementProps) => {
       <p>h5p element</p>
       <TextInput
         handleChange={handleChangeInput}
-        placeholder="Insert the h5p embed code here"
+        placeholder="Insert the video URL here"
         value={localH5PElement.value}
         element="textarea"
       />
