@@ -4,7 +4,7 @@ import { AddElementsType, ChapterInterface } from 'src/types/types'
 import ElementsBlock from './ElementsBlock'
 import AddElementBlock from './AddElementBlock'
 import AddMediaElement from './AddMediaElement'
-import ExtendedBundledEditor from './ExtendedBundledEditor'
+import BundledEditor from './BundledEditor'
 
 interface ChapterContentProps {
   chapter: ChapterInterface
@@ -43,12 +43,11 @@ const ChapterContent = (props: ChapterContentProps) => {
         } flex gap-6`}
       >
         <div className={`${chapter.layout === '1 column' ? ' w-full' : ' sm:w-1/2 '}`}>
-          <ExtendedBundledEditor
-            handleInputChange={handleChapterTextInputChange}
-            chapterIndex={chapterIndex}
+          <BundledEditor
+            handleChange={handleChapterTextInputChange}
+            index={chapterIndex}
             value={chapter.text}
-            subchapter={false}
-            subchapterIndex={undefined}
+            extended
           />
         </div>
         {chapter.layout !== '1 column' && (

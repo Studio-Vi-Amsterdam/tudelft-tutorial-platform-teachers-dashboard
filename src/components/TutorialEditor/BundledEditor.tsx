@@ -159,6 +159,23 @@ export default function BundledEditor(props: any) {
     })
   })
 
+  const plugins = props.extended
+    ? [
+        'table',
+        'lists',
+        'link',
+        'codesample',
+        'autoresize',
+        'command',
+        'term',
+        'codesample',
+        'mark',
+      ]
+    : ['table', 'lists', 'link', 'autoresize', 'command']
+
+  const reducedToolbar = 'bullist numlist link bold italic underline mark table'
+  const toolbar = props.extended ? reducedToolbar + ' codesample command term' : reducedToolbar
+
   if (!styles) {
     return null
   }
@@ -167,10 +184,10 @@ export default function BundledEditor(props: any) {
     <>
       <Editor
         init={{
-          menubar: props.customInit && props.customInit.menubar,
-          resize: props.customInit && props.customInit.resize,
-          plugins: props.customInit && props.customInit.plugins,
-          toolbar: props.customInit && props.customInit.toolbar,
+          menubar: false,
+          resize: props.extended ? true : undefined,
+          plugins,
+          toolbar,
           content_style: styles,
           codesample_languages: [
             { text: 'HTML/XML', value: 'markup' },
