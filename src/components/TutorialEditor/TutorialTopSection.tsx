@@ -117,12 +117,7 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       <BundledEditor
         value={tutorialDescription}
         handleChange={handleTutorialDescriptionInputChange}
-        customInit={{
-          menubar: false,
-          resize: true,
-          plugins: ['table', 'lists', 'link', 'code', 'autoresize', 'command', 'term'],
-          toolbar: 'bullist numlist link code table command term',
-        }}
+        extended
       />
       <Tip>
         <p>

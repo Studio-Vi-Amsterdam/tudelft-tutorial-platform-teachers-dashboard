@@ -8,13 +8,12 @@ import {
 } from 'src/redux/features/editorSlice'
 import { ChapterElementsObject } from 'src/types/types'
 import AddMediaElement from './AddMediaElement'
-import ExtendedBundledEditor from './ExtendedBundledEditor'
-import ReducedBundledEditor from './ReducedBundledEditor'
 import DeleteElementWraper from './DeleteElementWraper'
 import QuizElement from './QuizElement'
 import H5pElement from './H5pElement'
 import FileElement from './FileElement'
 import TutorialCardsElement from './TutorialCardsElement'
+import BundledEditor from './BundledEditor'
 
 interface ElementsBlockProps {
   elements: Array<ChapterElementsObject>
@@ -115,14 +114,15 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               </div>
               <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
                 <div className="sm:w-1/2">
-                  <ExtendedBundledEditor
+                  <BundledEditor
                     value={element.textImage.text}
                     block={block}
-                    chapterIndex={props.chapterIndex}
-                    handleSubchapterTextChange={handleSubchapterTextChange}
+                    index={props.chapterIndex}
+                    handleChange={handleSubchapterTextChange}
                     subchapter={true}
                     subchapterIndex={index}
                     layout="textImage"
+                    extended
                   />
                 </div>
                 <div className="sm:w-1/2">
@@ -175,14 +175,15 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                   />
                 </div>
                 <div className="sm:w-1/2">
-                  <ExtendedBundledEditor
+                  <BundledEditor
                     value={element.imageText.text}
                     block={block}
-                    chapterIndex={props.chapterIndex}
-                    handleSubchapterTextChange={handleSubchapterTextChange}
+                    index={props.chapterIndex}
+                    handleChange={handleSubchapterTextChange}
                     subchapter={true}
                     subchapterIndex={index}
                     layout="imageText"
+                    extended
                   />
                 </div>
               </div>
@@ -225,14 +226,15 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                   />
                 </div>
                 <div className="sm:w-1/2">
-                  <ExtendedBundledEditor
+                  <BundledEditor
                     value={element.videoText.text}
                     block={block}
-                    chapterIndex={props.chapterIndex}
-                    handleSubchapterTextChange={handleSubchapterTextChange}
+                    index={props.chapterIndex}
+                    handleChange={handleSubchapterTextChange}
                     subchapter={true}
                     subchapterIndex={index}
                     layout="videoText"
+                    extended
                   />
                 </div>
               </div>
@@ -265,14 +267,15 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               </div>
               <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
                 <div className="sm:w-1/2">
-                  <ExtendedBundledEditor
+                  <BundledEditor
                     value={element.textVideo.text}
                     block={block}
-                    chapterIndex={props.chapterIndex}
-                    handleSubchapterTextChange={handleSubchapterTextChange}
+                    index={props.chapterIndex}
+                    handleChange={handleSubchapterTextChange}
                     subchapter={true}
                     subchapterIndex={index}
                     layout="textVideo"
+                    extended
                   />
                 </div>
                 <div className="sm:w-1/2">
@@ -295,12 +298,12 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
-              <ExtendedBundledEditor
+              <BundledEditor
                 value={element.text}
                 block={block}
-                chapterIndex={index}
-                handleTextChange={handleTextElementChange}
-                subchapter={false}
+                index={index}
+                handleChange={handleTextElementChange}
+                extended
               />
             </DeleteElementWraper>
           )}
@@ -311,12 +314,11 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
-              <ReducedBundledEditor
+              <BundledEditor
                 value={element.infobox}
                 block={block}
-                chapterIndex={index}
-                handleTextChange={handleInfoboxElementChange}
-                subchapter={false}
+                index={index}
+                handleChange={handleInfoboxElementChange}
               />
             </DeleteElementWraper>
           )}

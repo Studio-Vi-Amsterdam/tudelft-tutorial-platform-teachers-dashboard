@@ -5,7 +5,7 @@ import TextInput from '../ui/TextInput'
 import ChapterMenu from './ChapterMenu'
 import { deleteChapter, duplicateChapter, moveChapter } from 'src/redux/features/editorSlice'
 import AddMediaElement from './AddMediaElement'
-import ExtendedBundledEditor from './ExtendedBundledEditor'
+import BundledEditor from './BundledEditor'
 
 interface SubchapterContentProps {
   subchapters: SubchapterInterface[]
@@ -61,12 +61,13 @@ const SubchapterContent = (props: SubchapterContentProps) => {
             } flex gap-x-6`}
           >
             <div className={`${subchapter.layout === '1 column' ? ' w-full' : ' w-1/2 '}`}>
-              <ExtendedBundledEditor
-                handleInputChange={handleSubchapterTextInputChange}
+              <BundledEditor
+                handleChange={handleSubchapterTextInputChange}
                 subchapter={true}
                 value={subchapter.text}
-                chapterIndex={chapterIndex}
+                index={chapterIndex}
                 subchapterIndex={subchapterIndex}
+                extended
               />
             </div>
             {subchapter.layout !== '1 column' && (

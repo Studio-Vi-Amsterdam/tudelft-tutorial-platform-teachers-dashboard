@@ -1,9 +1,8 @@
 import { Editor } from '@tinymce/tinymce-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CommandDialogInterface, TermDialogInterface } from 'src/types/types'
 import CommandDialog from './CommandDialog'
 import TermDialog from './TermDialog'
-
 // Required imports for Editor
 import tinymce from 'tinymce'
 import 'tinymce/models/dom/model'
@@ -43,6 +42,7 @@ import 'tinymce/plugins/emoticons/js/emojis'
 import 'tinymce/skins/content/default/content'
 import 'tinymce/skins/ui/oxide/content'
 import '@codecogs/eqneditor-tinymce6'
+import axios from 'axios'
 
 export default function BundledEditor(props: any) {
   const [commandDialog, setCommandDialog] = useState<CommandDialogInterface>({
@@ -58,6 +58,16 @@ export default function BundledEditor(props: any) {
     select: null,
     explanation: '',
   })
+  const [styles, setStyles] = useState('')
+
+  const getFiles = async () => {
+    const res = await axios.get('/editor-styles.css')
+    setStyles(res.data)
+  }
+
+  useEffect(() => {
+    getFiles()
+  }, [])
 
   const setCommandDialogOpened = (val: boolean) => {
     setCommandDialog({ ...commandDialog, isOpen: val })
@@ -148,109 +158,62 @@ export default function BundledEditor(props: any) {
       },
     })
   })
-  const editorStyles = `
-  .tooltip {
-    color: #009b77;
-    display: inline-block;
-    position: relative;
-  }
 
-  .tooltip:hover span {
-    transform: translateY(calc(-100% - 5px)) scale(1);
-  }
+  const plugins = props.extended
+    ? [
+        'table',
+        'lists',
+        'link',
+        'codesample',
+        'autoresize',
+        'command',
+        'term',
+        'codesample',
+        'mark',
+      ]
+    : ['table', 'lists', 'link', 'autoresize', 'command']
 
-  .tooltip span {
-    color: #000;
-    position: absolute;
-    top: 0;
-    left: 0;
-    min-width: 20rem;
-    max-width: 20rem;
-    background-color: #e5f5f1;
-    border-radius: 4px;
-    border: 1px solid #009b77;
-    padding: 8px;
-    box-sizing: border-box;
-    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, .0588235294);
-    transition: .5s cubic-bezier(0.15, 0, 0, 1);
-    transform-origin: left bottom;
-    transform: translateY(calc(-100% - 5px)) scale(0);
-  }
+  const reducedToolbar = 'bullist numlist link bold italic underline mark table'
+  const toolbar = props.extended ? reducedToolbar + ' codesample command term' : reducedToolbar
 
-  .buttons-combination {
-    display: flex;
-    width: fit-content;
-    flex-direction: row;
-    align-items: center;
+  if (!styles) {
+    return null
   }
-
-  .buttons-combination__button {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .buttons-combination__button span {
-    display: inline-block;
-    color: #67676b;
-    line-height: 2;
-    border: 1px solid #96969b;
-    background-color: #eff1f3;
-    border-radius: 2px;
-    padding: 0 4px 2px 4px;
-    box-sizing: border-box;
-  }
-
-  .buttons-combination--with-arrows .buttons-combination__button:not(:last-child):after {
-    display: inline-block;
-    padding: 0 0px 0 0;
-    width: 40px;
-    background-image: url('/img/arrow-gray.svg');
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 30px;
-    content: "";
-  }
-
-  .buttons-combination__button:not(:last-child):after {
-    display: inline-block;
-    padding: 0 0px 0 0;
-    width: 40px;
-    background-image: url('/img/plus.svg');
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 30px;
-    content: "";
-}
-  `
 
   return (
     <>
-      {props?.subchapter && props.subchapter === true ? (
-        <Editor
-          init={{ content_style: editorStyles }}
-          licenseKey="gpl"
-          value={props.value}
-          onEditorChange={(newValue) =>
-            props.handleChange(newValue, props?.index, props?.layout, props?.subchapterIndex)
-          }
-          {...props}
-        />
-      ) : (
-        <Editor
-          licenseKey="gpl"
-          init={{
-            menubar: props.customInit && props.customInit.menubar,
-            resize: props.customInit && props.customInit.resize,
-            plugins: props.customInit && props.customInit.plugins,
-            toolbar: props.customInit && props.customInit.toolbar,
-            content_style: editorStyles,
-          }}
-          value={props.value}
-          onEditorChange={(newValue) => props.handleChange(newValue, props?.index, props?.block)}
-          {...props}
-        />
-      )}
+      <Editor
+        init={{
+          menubar: false,
+          resize: props.extended ? true : undefined,
+          plugins,
+          toolbar,
+          content_style: styles,
+          codesample_languages: [
+            { text: 'HTML/XML', value: 'markup' },
+            { text: 'JavaScript', value: 'javascript' },
+            { text: 'CSS', value: 'css' },
+            { text: 'PHP', value: 'php' },
+            { text: 'Ruby', value: 'ruby' },
+            { text: 'Python', value: 'python' },
+            { text: 'Java', value: 'java' },
+            { text: 'C', value: 'c' },
+            { text: 'C#', value: 'csharp' },
+            { text: 'C++', value: 'cpp' },
+          ],
+        }}
+        licenseKey="gpl"
+        value={props.value}
+        onEditorChange={
+          props?.subchapter && props.subchapter === true
+            ? (newValue) =>
+                props.handleChange(newValue, props?.index, props?.layout, props?.subchapterIndex)
+            : (newValue) => {
+                props.handleChange(newValue, props?.index, props?.block)
+              }
+        }
+        {...props}
+      />
       <TermDialog
         termDialog={termDialog}
         handleSubmitTerm={handleSubmitTerm}

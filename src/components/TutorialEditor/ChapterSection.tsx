@@ -142,7 +142,7 @@ const ChapterSection = (props: ChapterSectionProps) => {
     'file',
     'h5p element',
     'tutorial cards',
-    // 'quiz',
+    'quiz',
   ]
 
   return (
