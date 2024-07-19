@@ -57,7 +57,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
   const handleSubchapterTextChange = (
     val: string,
     index: number,
-    layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText',
+    layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText' | 'textLayout',
     listIndex: number,
   ) => {
     if (index !== undefined && listIndex !== undefined && layout !== undefined) {
@@ -75,7 +75,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
   const handleSubchapterTitleChange = (
     value: string,
     listIndex: number,
-    layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText',
+    layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText' | 'textLayout',
     chapterIndex?: number,
   ) => {
     if (chapterIndex !== undefined) {
@@ -87,6 +87,47 @@ const ElementsBlock = (props: ElementsBlockProps) => {
     <div className="flex w-full flex-col gap-y-6">
       {elements.map((element, index) => (
         <div className="w-full" key={index}>
+          {element?.textLayout !== undefined && (
+            <DeleteElementWraper
+              block={block}
+              chapterIndex={props.chapterIndex}
+              subchapterIndex={subchapterIndex}
+              elementIndex={index}
+            >
+              <div className="relative w-full mt-4 mb-5 ">
+                <input
+                  type="text"
+                  className={
+                    'w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone'
+                  }
+                  value={element.textLayout.title}
+                  placeholder={'Subchapter Title'}
+                  onChange={(e) =>
+                    handleSubchapterTitleChange(
+                      e.target.value,
+                      index,
+                      'textLayout',
+                      props.chapterIndex,
+                    )
+                  }
+                />
+              </div>
+              <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
+                <div className="w-full">
+                  <BundledEditor
+                    value={element.textLayout.text}
+                    block={block}
+                    index={props.chapterIndex}
+                    handleChange={handleSubchapterTextChange}
+                    subchapter={true}
+                    subchapterIndex={index}
+                    layout="textLayout"
+                    extended
+                  />
+                </div>
+              </div>
+            </DeleteElementWraper>
+          )}
           {element?.textImage !== undefined && (
             <DeleteElementWraper
               block={block}

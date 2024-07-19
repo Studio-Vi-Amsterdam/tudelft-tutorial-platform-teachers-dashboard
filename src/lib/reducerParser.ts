@@ -184,8 +184,17 @@ export const reducerParser = {
         .map((block) => {
           switch (block.block_name) {
             case 'tu-delft-text':
-              return {
-                text: block.block_data.content,
+              if (!block.block_data.title === undefined) {
+                return {
+                  text: block.block_data.content,
+                }
+              } else {
+                return {
+                  textLayout: {
+                    text: block.block_data.content,
+                    title: block.block_data.title,
+                  },
+                }
               }
             case 'tu-delft-info-box':
               return {
@@ -829,6 +838,15 @@ export const reducerParser = {
                 block_data: {
                   video: item.video.id,
                   video_url: item.video.url,
+                },
+              }
+            }
+            if (item.textLayout) {
+              return {
+                block_name: 'tu-delft-text',
+                block_data: {
+                  content: item.textLayout.text,
+                  title: item.textLayout.title ?? undefined,
                 },
               }
             }

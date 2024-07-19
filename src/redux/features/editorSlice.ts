@@ -543,7 +543,17 @@ export const editorSlice = createSlice({
       }
     },
     addBlankSubchapterToEls: (state, action: PayloadAction<BlankSubchapterActionInterface>) => {
-      if (action.payload.chapterType === 'image left') {
+      if (action.payload.chapterType === '1 column') {
+        state.chapters[action.payload.chapterIndex].elements = [
+          ...(state.chapters[action.payload.chapterIndex].elements || []),
+          {
+            textLayout: {
+              text: '',
+              title: '',
+            },
+          },
+        ]
+      } else if (action.payload.chapterType === 'image left') {
         state.chapters[action.payload.chapterIndex].elements = [
           ...(state.chapters[action.payload.chapterIndex].elements || []),
           {
@@ -792,7 +802,7 @@ export const editorSlice = createSlice({
         value: string
         chapterIndex: number
         listIndex: number
-        layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText'
+        layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText' | 'textLayout'
       }>,
     ) => {
       const { value, chapterIndex, listIndex, layout } = action.payload
@@ -890,7 +900,7 @@ export const editorSlice = createSlice({
         value: string
         chapterIndex: number
         listIndex: number
-        layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText'
+        layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText' | 'textLayout'
       }>,
     ) => {
       const { chapterIndex, listIndex, layout, value } = action.payload

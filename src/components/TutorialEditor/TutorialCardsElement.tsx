@@ -51,17 +51,18 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
   }
 
   return (
-    <div className="flex w-full flex-col items-start justify-between gap-4 bg-transparent pt-10">
+    <div className="flex w-full flex-col items-start justify-between gap-5 bg-transparent pt-10">
       {tutorialCards.map((el, nestedIndex) => (
         <div key={nestedIndex} className="flex w-full flex-row items-center justify-between gap-2">
           <div className="min-w-[104px] max-w-[104px]">Tutorial</div>
           <div className="w-9/12">
-            <label>
+            <label className="flex flex-row gap-x-3 mb-3 items-center">
               <input
                 type="checkbox"
                 name={`use-custom-url-${chapterIndex}-${index}-${nestedIndex}`}
                 checked={checkedCustomTutorialCard[nestedIndex] || false}
                 onChange={(e) => handleChangeCustomTutorialCard(e, nestedIndex)}
+                className="w-6 h-6 border-2 bg-white rounded-sm border-stone after:!bg-primary-skyBlue after:!border-primary-skyBlue after:!opacity-90 after:!bg-check after:!bg-center after:!bg-no-repeat"
               />
               Use custom url
             </label>
@@ -89,11 +90,10 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
                   ))}
               </select>
             ) : (
-              <>
-                <label className="block mt-3 mb-1">Title</label>
+              <div className="flex flex-col gap-y-3">
                 <input
                   type="text"
-                  className="w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone"
+                  className="w-full p-4 rounded border placeholder:text-[#96969B] text-base bg-seasalt border-dim"
                   value={el.value.title}
                   placeholder="Title"
                   onChange={(e) =>
@@ -108,10 +108,9 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
                     )
                   }
                 />
-                <label className="block mt-3 mb-1">Url</label>
                 <input
                   type="text"
-                  className="w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone"
+                  className="w-full p-4 rounded border placeholder:text-[#96969B] text-base bg-seasalt border-dim"
                   value={el.value.url}
                   placeholder="Url"
                   onChange={(e) =>
@@ -126,7 +125,7 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
                     )
                   }
                 />
-              </>
+              </div>
             )}
           </div>
         </div>
