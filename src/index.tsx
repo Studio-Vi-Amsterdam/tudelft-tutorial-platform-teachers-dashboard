@@ -17,8 +17,9 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <Provider store={store}>
     <Router>
-      <Header />
       <AuthProvider>
+        <Header />
+
         <Routes>
           <Route path="/" element={<Navigate to={'/dashboard'} />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -26,8 +27,9 @@ root.render(
           <Route path="/dashboard/media" Component={() => <MediaPage />} />
           <Route path="/login" element={<>Please log in</>} />
         </Routes>
+
+        <Footer />
       </AuthProvider>
-      <Footer />
     </Router>
     <Toaster />
   </Provider>,

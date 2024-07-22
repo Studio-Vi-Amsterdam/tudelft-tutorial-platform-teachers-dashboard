@@ -5,8 +5,8 @@ import {
   DashboardPublishedInterface,
   HardcodeTestDataInterface,
 } from 'src/types/types'
-import { useEffect, useState } from 'react'
-import { articlesAPI, userAPI } from 'src/lib/api'
+import { useEffect } from 'react'
+import { articlesAPI } from 'src/lib/api'
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
 import { setDashboardFetched, setDrafts, setPublished } from 'src/redux/features/dashboardSlice'
 import { RootState } from 'src/redux/store'
@@ -36,8 +36,7 @@ const Dashboard = () => {
   const drafts = useAppSelector((state: RootState) => state.dashboard.drafts)
   const isDraftsFetched = useAppSelector((state: RootState) => state.dashboard.isDraftsLoaded)
   const isPublishedFetched = useAppSelector((state: RootState) => state.dashboard.isPublishedLoaded)
-  const { isAuthenticated } = useAuth()
-  const [username, setUsername] = useState<string>('there')
+  const { isAuthenticated, username } = useAuth()
 
   useEffect(() => {
     const fetchPreviewLink = async (type: ArtictesType, id: number): Promise<string | null> => {
@@ -47,17 +46,6 @@ const Dashboard = () => {
       } catch (error) {
         console.error(`Error fetching preview link for ${type} with id ${id}:`, error)
         return null
-      }
-    }
-
-    const fetchUsername = async () => {
-      try {
-        const response = await userAPI
-          .getUser()
-          .then((res) => (res.data.first_name ? res.data.first_name : 'there'))
-        setUsername(response)
-      } catch (error) {
-        return 'there'
       }
     }
 
@@ -74,7 +62,6 @@ const Dashboard = () => {
     }
 
     const fetchData = async () => {
-      await fetchUsername()
       const fetchArticles = async (type: ArtictesType): Promise<DashboardPublishedInterface[]> => {
         try {
           const response = await articlesAPI.getArticles(type)

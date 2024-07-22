@@ -1,11 +1,13 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import { authAPI } from './api'
 import { getAuthToken, removeAuthToken, setAuthToken } from './cookies'
+import { fetchUsername } from './fetchUser'
 
 interface AuthContextType {
   isAuthenticated: boolean
   login: (authKey: string) => Promise<void>
   logout: () => void
+  username: string
 }
 
 interface AuthProviderProps {
@@ -20,10 +22,12 @@ const AuthContext = createContext<AuthContextType>({
   logout: () => {
     console.log('Logout')
   },
+  username: 'there',
 })
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
+  const [username, setUsername] = useState<string>('there')
 
   const login = async (authKey: string) => {
     try {
@@ -45,9 +49,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const authKey = searchParams.get('auth_key')
 
   useEffect(() => {
+    const getUsername = async () => {
+      await fetchUsername(setUsername)
+    }
     const fetchData = async () => {
       if (authKey) {
         await login(authKey)
+        getUsername()
       } else {
         window.location.replace(
           'https://alt.viamsterdam.dev/tudelft-tutorials-staging/wp/wp-admin/',
@@ -57,13 +65,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const token = getAuthToken()
     if (token) {
       setIsAuthenticated(true)
+      getUsername()
     } else if (!token) {
       fetchData()
     }
   }, [])
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, username }}>
       {children}
     </AuthContext.Provider>
   )
