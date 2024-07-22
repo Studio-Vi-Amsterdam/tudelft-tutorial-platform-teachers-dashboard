@@ -5,6 +5,7 @@ import { RootState } from 'src/redux/store'
 import PickMediaDialog from './PickMediaDialog'
 import { AddMediaElementProps } from 'src/types/types'
 import {
+  deleteMediaFromArray,
   setElementImage,
   setElementVideo,
   setFeaturedImage,
@@ -120,6 +121,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
   }, [openedMenu])
 
   const handleClearMedia = () => {
+    mediaDataState && mediaDataState.id && dispatch(deleteMediaFromArray(mediaDataState.id))
     if (
       props.block === 'tutorialMeta' ||
       props.block === 'courseMeta' ||

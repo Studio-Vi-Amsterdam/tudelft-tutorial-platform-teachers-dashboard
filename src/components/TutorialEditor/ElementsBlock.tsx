@@ -417,6 +417,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
               styles="bg-white top-3 right-1 w-6 h-6"
+              file={element.file.file?.id}
             >
               <FileElement
                 block={props.block}

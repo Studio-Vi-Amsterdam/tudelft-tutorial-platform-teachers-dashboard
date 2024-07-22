@@ -357,6 +357,7 @@ export interface EditorState {
   chapters: ChapterInterface[] | []
   tutorialBottom: TutorialBottomInterface
   meta: TutorialMetaObject
+  mediaIds: number[] | []
 }
 
 export interface MediaState {
@@ -443,6 +444,7 @@ export interface ResponseArticleInterface {
   category?: string
   secondary_category?: string
   course?: number
+  mediaIds: number[] | []
 }
 export type ResponseBlockName =
   | 'tu-delft-text'
@@ -470,16 +472,6 @@ export interface ResponseBlockData {
   title?: string
   alt?: string
   description?: string
-  /* content_card_row_0_card_title?: string
-  content_card_row_0_card_link?: number
-  content_card_row_0_card_link_url?: string
-  content_card_row_1_card_title?: string
-  content_card_row_1_card_link?: number
-  content_card_row_1_card_link_url?: string
-  content_card_row_2_card_title?: string
-  content_card_row_2_card_link_url?: string
-  content_card_row_2_card_link?: number
-  content_card_row?: number */
   question?: string
   answers_0_answer?: string
   answers_0_is_correct?: BoolString

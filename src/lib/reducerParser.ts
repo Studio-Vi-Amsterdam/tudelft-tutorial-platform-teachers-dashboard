@@ -571,6 +571,7 @@ export const reducerParser = {
             },
           },
         },
+        mediaIds: response.mediaIds,
       }
     } else if (articleType === 'courses') {
       const info = await getInfo(articleType)
@@ -659,6 +660,7 @@ export const reducerParser = {
             },
           },
         },
+        mediaIds: response.mediaIds,
       }
     } else if (articleType === 'softwares') {
       const info = await getInfo(articleType)
@@ -710,6 +712,7 @@ export const reducerParser = {
             },
           },
         },
+        mediaIds: response.mediaIds,
       }
     } else if (articleType === 'subjects') {
       const info = await getInfo(articleType)
@@ -751,6 +754,7 @@ export const reducerParser = {
             },
           },
         },
+        mediaIds: response.mediaIds,
       }
     }
 
@@ -932,6 +936,7 @@ export const reducerParser = {
       parsedObject = {
         id: id !== undefined ? parseInt(id) : undefined,
         status,
+        mediaIds: editorState.mediaIds,
         title: editorState.tutorialTop.title,
         description: editorState.tutorialTop.description,
         content:
@@ -955,6 +960,7 @@ export const reducerParser = {
       parsedObject = {
         id: id !== undefined ? parseInt(id) : undefined,
         status,
+        mediaIds: editorState.mediaIds,
         title: editorState.tutorialTop.title,
         description: editorState.tutorialTop.description,
         content:
@@ -975,6 +981,7 @@ export const reducerParser = {
       parsedObject = {
         id: id !== undefined ? parseInt(id) : undefined,
         status,
+        mediaIds: editorState.mediaIds,
         title: editorState.tutorialTop.title,
         description: editorState.tutorialTop.description,
         content:
@@ -989,6 +996,7 @@ export const reducerParser = {
     } else if (articleType === 'softwares') {
       parsedObject = {
         id: id !== undefined ? parseInt(id) : undefined,
+        mediaIds: editorState.mediaIds,
         status,
         title: editorState.tutorialTop.title,
         description: editorState.tutorialTop.description,
