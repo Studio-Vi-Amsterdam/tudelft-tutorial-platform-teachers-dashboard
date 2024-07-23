@@ -48,6 +48,7 @@ export interface MediaObjectInterface {
   format: string
   title: string
   publishDate: string
+  description: string
 }
 
 export interface ElementTextActionInterface extends ElementActionBase {
