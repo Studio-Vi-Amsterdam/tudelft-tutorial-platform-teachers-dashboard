@@ -571,7 +571,7 @@ export const reducerParser = {
             },
           },
         },
-        mediaIds: response.mediaIds,
+        mediaIds: response.mediaIds ?? [],
       }
     } else if (articleType === 'courses') {
       const info = await getInfo(articleType)
@@ -660,7 +660,7 @@ export const reducerParser = {
             },
           },
         },
-        mediaIds: response.mediaIds,
+        mediaIds: response.mediaIds ?? [],
       }
     } else if (articleType === 'softwares') {
       const info = await getInfo(articleType)
@@ -712,7 +712,7 @@ export const reducerParser = {
             },
           },
         },
-        mediaIds: response.mediaIds,
+        mediaIds: response.mediaIds ?? [],
       }
     } else if (articleType === 'subjects') {
       const info = await getInfo(articleType)
@@ -754,7 +754,7 @@ export const reducerParser = {
             },
           },
         },
-        mediaIds: response.mediaIds,
+        mediaIds: response.mediaIds ?? [],
       }
     }
 
