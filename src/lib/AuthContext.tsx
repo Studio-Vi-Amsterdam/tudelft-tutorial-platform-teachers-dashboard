@@ -57,9 +57,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         await login(authKey)
         getUsername()
       } else {
-        window.location.replace(
-          'https://alt.viamsterdam.dev/tudelft-tutorials-staging/wp/wp-admin/',
-        )
+        window.location.replace(process.env.REACT_APP_WP_ADMIN_URL ?? '')
       }
     }
     const token = getAuthToken()
