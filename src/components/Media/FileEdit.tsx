@@ -6,7 +6,7 @@ import TextInput from '../ui/TextInput'
 import { Button } from '../ui/Button'
 import { mediaAPI } from 'src/lib/api'
 import { useToast } from 'src/lib/use-toast'
-import AddVideoThumbnail from './AddVideoThumbnail'
+import ChangeVideoThumbnail from './ChangeVideoThumbnail'
 
 interface FileEditProps {
   selectedMedia: MediaObjectInterface | undefined
@@ -94,7 +94,7 @@ const FileEdit = (props: FileEditProps) => {
               />
             </div>
           </div>
-          <AddVideoThumbnail selectedMedia={selectedMedia} setFile={setFile} />
+          <ChangeVideoThumbnail selectedMedia={selectedMedia} setFile={setFile} />
         </div>
       </div>
       <DialogFooter className="flex sm:flex-row flex-col gap-4 justify-between mt-6 sm:mt-12">

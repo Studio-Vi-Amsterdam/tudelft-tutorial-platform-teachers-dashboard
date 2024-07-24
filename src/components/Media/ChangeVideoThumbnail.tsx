@@ -1,38 +1,44 @@
-import React, { useEffect } from 'react'
-import { useDropzone } from 'react-dropzone'
+import React, { useEffect, useState } from 'react'
+import { MediaObjectInterface } from 'src/types/types'
 import MediaPreviewTemplate from './MediaPreviewTemplate'
-import { FileThumbnailInterface } from 'src/types/types'
+import { useDropzone } from 'react-dropzone'
 
-interface AddVideoThumbnailProps {
-  file: FileThumbnailInterface | null
-  setThumbnail: (value: File) => void
+interface ChangeVideoThumbnailProps {
+  selectedMedia: MediaObjectInterface | undefined
+  setFile: (value: React.SetStateAction<File | null>) => void
 }
 
-const AddVideoThumbnail = (props: AddVideoThumbnailProps) => {
-  const { file, setThumbnail } = props
+const ChangeVideoThumbnail = (props: ChangeVideoThumbnailProps) => {
+  const { selectedMedia, setFile } = props
+  const [path, setPath] = useState<string | null>(null)
+
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     accept: {
       'image/jpeg': ['.jpeg', '.png'],
     },
     maxFiles: 1,
   })
+
   useEffect(() => {
     if (acceptedFiles.length > 0) {
-      setThumbnail(acceptedFiles[0])
+      setFile(acceptedFiles[0])
+      setPath(URL.createObjectURL(acceptedFiles[0]))
     }
   }, [acceptedFiles])
 
-  return (
-    <div className="w-9/12 mt-4">
+  return selectedMedia && selectedMedia.type === 'video' ? (
+    <div>
       <label className="mb-2 block">Thumbnail</label>
       <div className="w-full flex flex-row gap-x-2">
-        {file && file.file ? (
+        {selectedMedia.thumbnail ? (
           <MediaPreviewTemplate
-            item={{ url: URL.createObjectURL(file.file), type: 'image' }}
+            item={{ url: selectedMedia.thumbnail, type: 'image' }}
             styles="w-1/2"
           />
+        ) : path ? (
+          <MediaPreviewTemplate item={{ url: path, type: 'image' }} styles="w-1/2" />
         ) : (
-          <></>
+          <p className="w-1/2 flex items-center justify-start font-semibold">No Thumbnail there</p>
         )}
         <div className="flex w-1/2 bg-tertiary-grey-silver flex-col items-center justify-center border border-dashed border-tertiary-grey-stone gap-y-2">
           <div
@@ -42,13 +48,15 @@ const AddVideoThumbnail = (props: AddVideoThumbnailProps) => {
             <input {...getInputProps()} />
             <p className="cursor-pointer text-center text-base">
               Drag n drop image here, or click to <br />
-              {file ? 'change' : 'set'} thumbnail
+              {selectedMedia.thumbnail ? 'change' : 'set'} thumbnail
             </p>
           </div>
         </div>
       </div>
     </div>
+  ) : (
+    <></>
   )
 }
 
-export default AddVideoThumbnail
+export default ChangeVideoThumbnail

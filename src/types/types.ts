@@ -498,3 +498,8 @@ export interface ResponseChapterInterface {
   content: ResponseContentBlock[]
   belongs_to: boolean | number
 }
+
+export interface FileThumbnailInterface {
+  index: number
+  file: File | null
+}
