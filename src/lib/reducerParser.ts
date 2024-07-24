@@ -424,6 +424,7 @@ export const reducerParser = {
                   title: '',
                   publishDate: '',
                   description: chapter.content[0].block_data.description ?? '',
+                  thumbnail: chapter.content[0].block_data.thumbnail ?? undefined,
                 }
               : undefined,
           image:
@@ -437,6 +438,7 @@ export const reducerParser = {
                   title: '',
                   publishDate: '',
                   description: chapter.content[0].block_data.description ?? '',
+                  thumbnail: chapter.content[0].block_data.thumbnail ?? undefined,
                 }
               : undefined,
         }

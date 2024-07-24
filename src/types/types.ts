@@ -49,6 +49,7 @@ export interface MediaObjectInterface {
   title: string
   publishDate: string
   description: string
+  thumbnail: string | undefined
 }
 
 export interface ElementTextActionInterface extends ElementActionBase {
