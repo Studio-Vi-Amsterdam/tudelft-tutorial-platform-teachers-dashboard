@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Dropzone from 'react-dropzone'
-import { setFileElement } from 'src/redux/features/editorSlice'
+import { appendMediaToArray, setFileElement } from 'src/redux/features/editorSlice'
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
 import { RootState } from 'src/redux/store'
 import { CustomFileInterface, QuizElementProps } from 'src/types/types'
@@ -16,6 +16,8 @@ const FileElement = (props: QuizElementProps) => {
   const [fileTitle, setFileTitle] = useState<string>('')
   const [fileDescription, setFileDescription] = useState<string>('')
 
+  const dispatch = useAppDispatch()
+
   const handleSetFileData = async (file: any) => {
     setIsFetching(true)
     const formData = new FormData()
@@ -28,6 +30,7 @@ const FileElement = (props: QuizElementProps) => {
           id: res.data.data.id,
           url: res.data.data.url,
         })
+        dispatch(appendMediaToArray(res.data.data.id))
         toast({
           title: 'Success!',
           description: `File uploaded with ID: ${res.data.data.id}`,
@@ -58,9 +61,7 @@ const FileElement = (props: QuizElementProps) => {
             props.listIndex
           ].file,
   )
-  useEffect(() => {
-    console.log('FileState:', fileState)
-  }, [fileState])
+
   useEffect(() => {
     if (fileState) {
       setFileData(fileState.file)
@@ -68,8 +69,6 @@ const FileElement = (props: QuizElementProps) => {
       setFileDescription(fileState.description)
     }
   }, [fileState])
-
-  const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (fileData !== null) {

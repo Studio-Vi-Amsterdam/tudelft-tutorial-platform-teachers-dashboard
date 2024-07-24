@@ -170,11 +170,14 @@ export default function BundledEditor(props: any) {
         'term',
         'codesample',
         'mark',
+        'eqneditor',
       ]
     : ['table', 'lists', 'link', 'autoresize', 'command']
 
   const reducedToolbar = 'bullist numlist link bold italic underline mark table'
-  const toolbar = props.extended ? reducedToolbar + ' codesample command term' : reducedToolbar
+  const toolbar = props.extended
+    ? reducedToolbar + ' codesample command term eqneditor'
+    : reducedToolbar
 
   if (!styles) {
     return null

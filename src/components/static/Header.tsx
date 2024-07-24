@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import ProfilePill from './ProfilePill'
 
 const Header = () => {
   const location = useLocation()
@@ -63,17 +64,7 @@ const Header = () => {
                 </button>
               </li>
             </ul>
-            <div className="sm:ml-10 flex items-center justify-between ">
-              <div className=" flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-secondary-navy text-white">
-                ML
-              </div>
-              {isMobileView && (
-                <div
-                  onClick={() => setIsShowNav(false)}
-                  className="after:absolute cursor-pointer w-6 h-6 relative after:content-[''] after:top-1/2 after:left-1/2 after:w-full after:h-0.5 after:bg-black after:-translate-x-1/2 after:-translate-y-1/2 after:rotate-45 before:absolute  before:content-[''] before:top-1/2 before:left-1/2 before:w-full before:h-0.5 before:bg-black before:-translate-x-1/2 before:-translate-y-1/2 before:-rotate-45"
-                ></div>
-              )}
-            </div>
+            <ProfilePill isMobileView={isMobileView} setIsShowNav={setIsShowNav} />
           </nav>
         )}
         {isMobileView && (

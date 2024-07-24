@@ -42,6 +42,15 @@ const initialState: EditorState = {
     text: '',
   },
   meta: {},
+  mediaIds: [],
+}
+
+const removeFirstOccurrence = (array: number[], value: number): number[] => {
+  const index = array.indexOf(value)
+  if (index !== -1) {
+    return [...array.slice(0, index), ...array.slice(index + 1)]
+  }
+  return array
 }
 
 const setElementProperty = (state: any, action: PayloadAction<any>, property: keyof Element) => {
@@ -91,6 +100,7 @@ export const editorSlice = createSlice({
         state.pageType = initialState.pageType
         state.tutorialBottom = initialState.tutorialBottom
         state.tutorialTop = initialState.tutorialTop
+        state.mediaIds = initialState.mediaIds
         if (action.payload.articleType && action.payload.info) {
           const { info, coursesList } = action.payload
           if (action.payload.articleType === 'tutorials') {
@@ -150,6 +160,7 @@ export const editorSlice = createSlice({
                     type: 'image',
                     id: undefined,
                     url: '',
+                    description: '',
                   },
                 },
                 level: {
@@ -199,6 +210,7 @@ export const editorSlice = createSlice({
                     type: 'image',
                     id: undefined,
                     url: '',
+                    description: '',
                   },
                 },
                 keywords: {
@@ -257,6 +269,7 @@ export const editorSlice = createSlice({
                     type: 'image',
                     id: undefined,
                     url: '',
+                    description: '',
                   },
                 },
                 keywords: {
@@ -299,6 +312,7 @@ export const editorSlice = createSlice({
         state.pageType = action.payload.parsedObject.pageType
         state.tutorialBottom = action.payload.parsedObject.tutorialBottom
         state.tutorialTop = action.payload.parsedObject.tutorialTop
+        state.mediaIds = action.payload.parsedObject.mediaIds
       }
     },
     setTutorialTitle: (state, action: PayloadAction<string>) => {
@@ -466,6 +480,7 @@ export const editorSlice = createSlice({
                 publishDate: '',
                 title: '',
                 type: 'video',
+                description: '',
               },
               elements: [],
               subchapters: [],
@@ -485,6 +500,7 @@ export const editorSlice = createSlice({
                 publishDate: '',
                 title: '',
                 type: 'image',
+                description: '',
               },
               elements: [],
               subchapters: [],
@@ -518,6 +534,7 @@ export const editorSlice = createSlice({
                 publishDate: '',
                 title: '',
                 type: 'video',
+                description: '',
               },
               elements: [],
             },
@@ -535,6 +552,7 @@ export const editorSlice = createSlice({
                 publishDate: '',
                 title: '',
                 type: 'image',
+                description: '',
               },
               elements: [],
             },
@@ -564,6 +582,7 @@ export const editorSlice = createSlice({
                 publishDate: '',
                 title: '',
                 type: 'image',
+                description: '',
               },
               text: '',
               title: '',
@@ -581,6 +600,7 @@ export const editorSlice = createSlice({
                 publishDate: '',
                 title: '',
                 type: 'image',
+                description: '',
               },
               text: '',
               title: '',
@@ -598,6 +618,7 @@ export const editorSlice = createSlice({
                 publishDate: '',
                 title: '',
                 type: 'video',
+                description: '',
               },
               text: '',
               title: '',
@@ -615,6 +636,7 @@ export const editorSlice = createSlice({
                 publishDate: '',
                 title: '',
                 type: 'video',
+                description: '',
               },
               text: '',
               title: '',
@@ -1145,6 +1167,14 @@ export const editorSlice = createSlice({
         state.meta.courseBelongs.image.value = data
       }
     },
+    appendMediaToArray: (state, action: PayloadAction<number>) => {
+      state.mediaIds = [...state.mediaIds, action.payload]
+    },
+    deleteMediaFromArray(state, action: PayloadAction<number>) {
+      if (Array.isArray(state.mediaIds)) {
+        state.mediaIds = removeFirstOccurrence(state.mediaIds, action.payload)
+      }
+    },
   },
 })
 
@@ -1197,6 +1227,8 @@ export const {
   setFeaturedImage,
   changeTutorialCard,
   addTutorialCard,
+  appendMediaToArray,
+  deleteMediaFromArray,
 } = editorSlice.actions
 
 export default editorSlice.reducer

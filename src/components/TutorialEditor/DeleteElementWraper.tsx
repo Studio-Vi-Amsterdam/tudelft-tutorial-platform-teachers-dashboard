@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { deleteElement } from 'src/redux/features/editorSlice'
+import { deleteElement, deleteMediaFromArray } from 'src/redux/features/editorSlice'
 import { useAppDispatch } from 'src/redux/hooks'
 import { ElementProps } from 'src/types/types'
 import {
@@ -18,6 +18,7 @@ interface DeleteElementWraperProps extends ElementProps {
   children: React.ReactNode
   elementIndex: number
   styles?: string
+  file?: number
 }
 
 const DeleteElementWraper = (props: DeleteElementWraperProps) => {
@@ -44,6 +45,9 @@ const DeleteElementWraper = (props: DeleteElementWraperProps) => {
   }, [openedMenu])
 
   const handleDeleteElement = () => {
+    if (props.file) {
+      dispatch(deleteMediaFromArray(props.file))
+    }
     dispatch(
       deleteElement({
         block: props.block,

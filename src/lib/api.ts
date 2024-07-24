@@ -119,6 +119,9 @@ export const mediaAPI = {
   searchMedia(term: string) {
     return instance.get(`/media/search/?term=${term}`)
   },
+  updateMedia(payload: any) {
+    return instance.put('/media/update', payload)
+  },
 }
 
 export const userAPI = {

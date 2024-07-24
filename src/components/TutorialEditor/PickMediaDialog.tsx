@@ -5,6 +5,7 @@ import { MediaLibrary } from '../Media/MediaLibrary'
 import { Button } from '../ui/Button'
 import { useAppDispatch } from 'src/redux/hooks'
 import {
+  appendMediaToArray,
   setElementImage,
   setElementVideo,
   setFeaturedImage,
@@ -67,6 +68,7 @@ const PickMediaDialog = (props: PickMediaDialogProps) => {
         }
       }
     }
+    selectedMedia && selectedMedia.id && dispatch(appendMediaToArray(selectedMedia.id))
     setDialogOpened(false)
     setSelectedMedia(undefined)
   }

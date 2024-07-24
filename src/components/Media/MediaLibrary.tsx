@@ -6,6 +6,8 @@ import GalleryListView from '../TutorialEditor/GalleryListView'
 import PaginationBar from '../TutorialEditor/PaginationBar'
 import { MediaObjectInterface } from '../../types/types'
 import Preloader from '../ui/Preloader'
+import { Dialog } from '../ui/Dialog'
+import FileEdit from './FileEdit'
 
 interface MediaLibraryProps {
   itemsPerPage?: number
@@ -46,6 +48,7 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
           format: serverItem.media_type.split('/')[1],
           title: serverItem.title,
           publishDate: serverItem.published,
+          description: serverItem.description,
         }
       })
       setMedia(newMedia)
@@ -106,6 +109,15 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
   //     setIsLoading(false)
   //   }
   // }
+
+  const [mediaEditOpen, setMediaEditOpen] = useState<boolean>(false)
+  const [selectedMedia, setSelectedMedia] = useState<MediaObjectInterface | undefined>(undefined)
+
+  const handleOpenEditMediaPopup = (media: MediaObjectInterface) => {
+    setMediaEditOpen(true)
+    setSelectedMedia(media)
+  }
+
   return (
     <>
       <div className="flex flex-row items-center justify-between mb-4 sm:mb-10">
@@ -188,7 +200,9 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
                     mediaToDelete={props.mediaToDelete}
                     handleMultipleSelect={props.handleMultipleSelect}
                     // eslint-disable-next-line @typescript-eslint/no-empty-function
-                    handleSelectMedia={props.handleSelectMedia ? props.handleSelectMedia : () => {}}
+                    handleSelectMedia={
+                      props.handleSelectMedia ? props.handleSelectMedia : handleOpenEditMediaPopup
+                    }
                     selectedMedia={props.selectedMedia}
                     hideVideo={props.hideVideo}
                     column={props.column}
@@ -201,7 +215,9 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
                     mediaToDelete={props.mediaToDelete}
                     handleMultipleSelect={props.handleMultipleSelect}
                     // eslint-disable-next-line @typescript-eslint/no-empty-function
-                    handleSelectMedia={props.handleSelectMedia ? props.handleSelectMedia : () => {}}
+                    handleSelectMedia={
+                      props.handleSelectMedia ? props.handleSelectMedia : handleOpenEditMediaPopup
+                    }
                     selectedMedia={props.selectedMedia}
                   />
                 )}
@@ -220,6 +236,13 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
           </div>
         )}
       </div>
+      <Dialog open={mediaEditOpen} onOpenChange={setMediaEditOpen}>
+        <FileEdit
+          selectedMedia={selectedMedia}
+          setMediaEditOpen={setMediaEditOpen}
+          setSelectedMedia={setSelectedMedia}
+        />
+      </Dialog>
     </>
   )
 }

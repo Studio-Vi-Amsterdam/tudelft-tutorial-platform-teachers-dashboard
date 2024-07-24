@@ -69,7 +69,7 @@ const TutorialButtonsSection = () => {
     sendRequest(parsedObject)
   }
 
-  const testDraftClick = async () => {
+  const handleDraftClick = async () => {
     const parsedObject = await reducerParser.parseFromReducer(
       tutorial,
       'draft',
@@ -104,7 +104,7 @@ const TutorialButtonsSection = () => {
           <p>Preview</p>
         </Button>
       )}
-      <Button variant={'outline'} size={'lg'} onClick={testDraftClick}>
+      <Button variant={'outline'} size={'lg'} onClick={handleDraftClick}>
         {status === 'new' ? (
           <p>Save as draft</p>
         ) : status === 'draft' ? (
