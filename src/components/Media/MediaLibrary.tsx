@@ -196,6 +196,7 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
                 {viewType === 'block' && (
                   <GalleryBlockView
                     selectMode={props.selectMode}
+                    isPopup={props.isPopup}
                     currentItems={media}
                     mediaToDelete={props.mediaToDelete}
                     handleMultipleSelect={props.handleMultipleSelect}
@@ -211,6 +212,7 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
                 {viewType === 'list' && (
                   <GalleryListView
                     selectMode={props.selectMode}
+                    isPopup={props.isPopup}
                     currentItems={media}
                     mediaToDelete={props.mediaToDelete}
                     handleMultipleSelect={props.handleMultipleSelect}

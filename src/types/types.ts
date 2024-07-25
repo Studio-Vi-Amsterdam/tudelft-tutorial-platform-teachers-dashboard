@@ -367,6 +367,7 @@ export interface MediaState {
 }
 
 export interface GalleryViewProps {
+  isPopup?: boolean
   handleMultipleSelect: (item: MediaObjectInterface) => void
   mediaToDelete: MediaObjectInterface[] | undefined
   selectMode?: boolean
