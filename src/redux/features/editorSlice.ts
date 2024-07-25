@@ -732,6 +732,52 @@ export const editorSlice = createSlice({
         }
       }
     },
+    moveElement: (
+      state,
+      action: PayloadAction<{
+        index: number
+        block: string
+        position: 'up' | 'down'
+        chapterIndex?: number
+      }>,
+    ) => {
+      const { block, index, position, chapterIndex } = action.payload
+      const newIndex = position === 'up' ? index - 1 : index + 1
+      if (block === 'chapter' && chapterIndex !== undefined) {
+        if (position === 'up' && index > 0) {
+          ;[
+            state.chapters[chapterIndex].elements[newIndex],
+            state.chapters[chapterIndex].elements[index],
+          ] = [
+            state.chapters[chapterIndex].elements[index],
+            state.chapters[chapterIndex].elements[newIndex],
+          ]
+        } else if (
+          position === 'down' &&
+          index < state.chapters[chapterIndex].elements.length - 1
+        ) {
+          ;[
+            state.chapters[chapterIndex].elements[index],
+            state.chapters[chapterIndex].elements[newIndex],
+          ] = [
+            state.chapters[chapterIndex].elements[newIndex],
+            state.chapters[chapterIndex].elements[index],
+          ]
+        }
+      } else if (block === 'tutorialTop') {
+        if (position === 'up' && index > 0) {
+          ;[state.tutorialTop.elements[newIndex], state.tutorialTop.elements[index]] = [
+            state.tutorialTop.elements[index],
+            state.tutorialTop.elements[newIndex],
+          ]
+        } else if (position === 'down' && index < state.tutorialTop.elements.length - 1) {
+          ;[state.tutorialTop.elements[index], state.tutorialTop.elements[newIndex]] = [
+            state.tutorialTop.elements[newIndex],
+            state.tutorialTop.elements[index],
+          ]
+        }
+      }
+    },
     duplicateChapter: (state, action: PayloadAction<{ index: number; parentIndex?: number }>) => {
       const index = action.payload.index
       const parentIndex = action.payload.parentIndex
@@ -1240,6 +1286,7 @@ export const {
   addTutorialCard,
   appendMediaToArray,
   deleteMediaFromArray,
+  moveElement,
 } = editorSlice.actions
 
 export default editorSlice.reducer
