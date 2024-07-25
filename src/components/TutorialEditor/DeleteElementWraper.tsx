@@ -85,7 +85,7 @@ const DeleteElementWraper = (props: DeleteElementWraperProps) => {
         >
           <AlertDialog>
             <AlertDialogTrigger>
-              <button className="w-6 h-6 bg-delete bg-no-repeat bg-center self-center bg-transparent text-black"></button>
+              <div className="w-6 h-6 bg-delete bg-no-repeat bg-center self-center bg-transparent text-black"></div>
             </AlertDialogTrigger>
             <AlertDialogContent className="bg-white">
               <AlertDialogHeader>
