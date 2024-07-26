@@ -37,7 +37,7 @@ const initialState: EditorState = {
   },
   chapters: [],
   tutorialBottom: {
-    title: '',
+    title: 'Useful links',
     titleType: 'h2',
     text: '',
   },

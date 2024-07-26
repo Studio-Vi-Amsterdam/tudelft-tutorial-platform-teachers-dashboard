@@ -472,7 +472,7 @@ export const reducerParser = {
         },
         chapters: response.chapters ? await parseChapters(response.chapters) : [],
         tutorialBottom: {
-          title: 'Useful Links',
+          title: response.useful_links_title ? response.useful_links_title : 'Useful links',
           titleType: 'h2',
           text: response.useful_links ? response.useful_links : '',
         },
@@ -588,7 +588,7 @@ export const reducerParser = {
         },
         chapters: response.chapters ? await parseChapters(response.chapters) : [],
         tutorialBottom: {
-          title: 'Useful Links',
+          title: response.useful_links_title ? response.useful_links_title : 'Useful links',
           titleType: 'h2',
           text: response.useful_links ? response.useful_links : '',
         },
@@ -678,7 +678,7 @@ export const reducerParser = {
         },
         chapters: response.chapters ? await parseChapters(response.chapters) : [],
         tutorialBottom: {
-          title: 'Useful Links',
+          title: response.useful_links_title ? response.useful_links_title : 'Useful links',
           titleType: 'h2',
           text: response.useful_links ? response.useful_links : '',
         },
@@ -730,7 +730,7 @@ export const reducerParser = {
         },
         chapters: response.chapters ? await parseChapters(response.chapters) : [],
         tutorialBottom: {
-          title: 'Useful Links',
+          title: response.useful_links_title ? response.useful_links_title : 'Useful links',
           titleType: 'h2',
           text: response.useful_links ? response.useful_links : '',
         },
@@ -948,9 +948,13 @@ export const reducerParser = {
             ? await parseElementsToContent(editorState.tutorialTop.elements)
             : [],
         useful_links: editorState.tutorialBottom.text,
+        useful_links_title:
+          editorState.tutorialBottom.title.trim().length !== 0
+            ? editorState.tutorialBottom.title
+            : 'Useful links',
         course: editorState.meta?.tutorialBelongs?.course.value.id ?? undefined,
         primary_software: editorState.meta?.tutorialBelongs?.primary.value.id ?? null,
-        software_version: [editorState.meta?.tutorialBelongs?.version.value.id] ?? null,
+        software_version: [editorState.meta?.tutorialBelongs?.version.value.id],
         primary_subject: editorState.meta?.tutorialBelongs?.primarySubject.value?.id ?? null,
         secondary_subject: editorState.meta?.tutorialBelongs?.secondarySubject.value?.id ?? null,
         level: editorState.meta?.tutorialBelongs?.level.value ?? null,
@@ -972,6 +976,10 @@ export const reducerParser = {
             ? await parseElementsToContent(editorState.tutorialTop.elements)
             : [],
         useful_links: editorState.tutorialBottom.text,
+        useful_links_title:
+          editorState.tutorialBottom.title.trim().length !== 0
+            ? editorState.tutorialBottom.title
+            : 'Useful links',
         chapters: editorState.chapters && (await parseChaptersToRequest(editorState.chapters)),
         course_code: editorState.meta.courseBelongs?.courseCode.value ?? '',
         study: editorState.meta.courseBelongs?.primaryStudy.value.id ?? '',
@@ -993,6 +1001,10 @@ export const reducerParser = {
             ? await parseElementsToContent(editorState.tutorialTop.elements)
             : [],
         useful_links: editorState.tutorialBottom.text,
+        useful_links_title:
+          editorState.tutorialBottom.title.trim().length !== 0
+            ? editorState.tutorialBottom.title
+            : 'Useful links',
         chapters: editorState.chapters && (await parseChaptersToRequest(editorState.chapters)),
         category: editorState.meta.subjectsInvolve?.primaryCategory.value.id ?? null,
         secondary_category: editorState.meta.subjectsInvolve?.secondaryCategory.value.id ?? null,
@@ -1009,6 +1021,10 @@ export const reducerParser = {
             ? await parseElementsToContent(editorState.tutorialTop.elements)
             : [],
         useful_links: editorState.tutorialBottom.text,
+        useful_links_title:
+          editorState.tutorialBottom.title.trim().length !== 0
+            ? editorState.tutorialBottom.title
+            : 'Useful links',
         chapters: editorState.chapters && (await parseChaptersToRequest(editorState.chapters)),
         software_version:
           editorState.meta.softwareBelongs?.softwareVersion.value.title &&

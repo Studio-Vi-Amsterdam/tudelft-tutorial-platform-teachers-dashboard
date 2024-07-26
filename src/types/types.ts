@@ -441,6 +441,7 @@ export interface ResponseArticleInterface {
   teachers?: [] | string[]
   title?: string
   useful_links?: string
+  useful_links_title?: string
   course_code?: string
   study?: string
   secondary_study?: string
