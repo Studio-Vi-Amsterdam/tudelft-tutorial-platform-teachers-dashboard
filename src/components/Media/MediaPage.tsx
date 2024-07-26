@@ -32,6 +32,7 @@ export const MediaPage = () => {
   }
   const handleDeleteFiles = async () => {
     setIsFetching(true)
+
     const handleAfterDelete = () => {
       setIsFetching(false)
       toast({
@@ -42,10 +43,42 @@ export const MediaPage = () => {
       setIsOpenSelect(false)
       setIsOpenDelete(false)
     }
-    if (mediaToDelete !== undefined) {
-      mediaToDelete.forEach((el) => {
-        el.id && mediaAPI.deleteFile(el.id).then((res) => res.status === 200 && handleAfterDelete())
+
+    const handleError = (error: any) => {
+      setIsFetching(false)
+      setIsOpenSelect(false)
+      setIsOpenDelete(false)
+      toast({
+        title: 'Error',
+        description: 'An error occurred while deleting files.',
+        variant: 'destructive',
       })
+      console.error(error)
+    }
+
+    if (mediaToDelete !== undefined) {
+      try {
+        const deletePromises = mediaToDelete.map((el) => {
+          if (el.id) {
+            return mediaAPI.deleteFile(el.id)
+          }
+          return Promise.resolve()
+        })
+
+        const results = await Promise.all(deletePromises)
+
+        const allSuccessful = results.every((res) => res && res.status === 200)
+
+        if (allSuccessful) {
+          handleAfterDelete()
+        } else {
+          handleError(new Error('Not all files were deleted successfully'))
+        }
+      } catch (error) {
+        handleError(error)
+      }
+    } else {
+      setIsFetching(false)
     }
   }
 
