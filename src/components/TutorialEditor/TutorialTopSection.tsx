@@ -48,6 +48,7 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
     'tutorial cards',
     'file',
     'quiz',
+    'h5p element',
   ]
   const handleAddTutorialElement = async (val: string): Promise<void> => {
     const payload: any = {}
