@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DialogContent, DialogFooter } from '../ui/Dialog'
 import { MediaObjectInterface } from 'src/types/types'
 import MediaPreviewTemplate from './MediaPreviewTemplate'
@@ -12,6 +12,7 @@ interface FileEditProps {
   selectedMedia: MediaObjectInterface | undefined
   setSelectedMedia: (value: React.SetStateAction<MediaObjectInterface | undefined>) => void
   setMediaEditOpen: (value: React.SetStateAction<boolean>) => void
+  onFetching: (val: boolean) => void
 }
 
 const FileEdit = (props: FileEditProps) => {
@@ -19,6 +20,10 @@ const FileEdit = (props: FileEditProps) => {
   const [file, setFile] = useState<File | null>(null)
   const [isFetching, setIsFetching] = useState<boolean>(false)
   const { toast } = useToast()
+
+  useEffect(() => {
+    props.onFetching(isFetching)
+  }, [isFetching])
 
   const sendMediaChangeRequest = (media: MediaObjectInterface) => {
     mediaAPI.updateMedia(media).then((res) => {
