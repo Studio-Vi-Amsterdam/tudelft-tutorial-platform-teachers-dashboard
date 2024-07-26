@@ -165,7 +165,7 @@ export const reducerParser = {
   async parseToReducer(response: ResponseArticleInterface, articleType: ArtictesType) {
     let shortTutorials: any[] = []
     try {
-      const tutorialsResponse = await articlesAPI.getArticles('tutorials')
+      const tutorialsResponse = await articlesAPI.getAllArticles('tutorials')
 
       const tutorials = tutorialsResponse.data.map((item: any) => ({
         id: item.id,

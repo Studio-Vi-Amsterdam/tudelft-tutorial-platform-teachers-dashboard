@@ -6,7 +6,7 @@ import TextInput from '../ui/TextInput'
 import { Button } from '../ui/Button'
 import { mediaAPI } from 'src/lib/api'
 import { useToast } from 'src/lib/use-toast'
-import ChangeVideoThumbnail from './ChangeVideoThumbnail'
+// import ChangeVideoThumbnail from './ChangeVideoThumbnail'
 
 interface FileEditProps {
   selectedMedia: MediaObjectInterface | undefined
@@ -17,7 +17,7 @@ interface FileEditProps {
 
 const FileEdit = (props: FileEditProps) => {
   const { selectedMedia, setSelectedMedia, setMediaEditOpen } = props
-  const [file, setFile] = useState<File | null>(null)
+  const [file] = useState<File | null>(null)
   const [isFetching, setIsFetching] = useState<boolean>(false)
   const { toast } = useToast()
 
@@ -83,23 +83,23 @@ const FileEdit = (props: FileEditProps) => {
               />
             </div>
           </div>
-          <div>
-            <label className="mb-2 block">Description</label>
-            <div className="w-full">
-              <TextInput
-                value={selectedMedia.description}
-                handleChange={(value: string) =>
-                  setSelectedMedia({
-                    ...selectedMedia,
-                    description: value,
-                  })
-                }
-                placeholder="Description"
-                className="w-full block !border-[#67676B] rounded-lg !leading-5"
-              />
-            </div>
-          </div>
-          <ChangeVideoThumbnail selectedMedia={selectedMedia} setFile={setFile} />
+          {/* <div> */}
+          {/*  <label className="mb-2 block">Description</label> */}
+          {/*  <div className="w-full"> */}
+          {/*    <TextInput */}
+          {/*      value={selectedMedia.description} */}
+          {/*      handleChange={(value: string) => */}
+          {/*        setSelectedMedia({ */}
+          {/*          ...selectedMedia, */}
+          {/*          description: value, */}
+          {/*        }) */}
+          {/*      } */}
+          {/*      placeholder="Description" */}
+          {/*      className="w-full block !border-[#67676B] rounded-lg !leading-5" */}
+          {/*    /> */}
+          {/*  </div> */}
+          {/* </div> */}
+          {/* <ChangeVideoThumbnail selectedMedia={selectedMedia} setFile={setFile} /> */}
         </div>
       </div>
       <DialogFooter className="flex sm:flex-row flex-col gap-4 justify-between mt-6 sm:mt-12">

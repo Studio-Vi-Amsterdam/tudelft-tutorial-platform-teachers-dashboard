@@ -36,6 +36,9 @@ export const articlesAPI = {
   getArticles(type: ArtictesType) {
     return instance.get(`/${type}/`)
   },
+  getAllArticles(type: ArtictesType) {
+    return instance.get(`/${type}/all`)
+  },
   getPreviewLink(type: ArtictesType, id: number) {
     return instance.get(`/${type}/preview?id=${id}`)
   },

@@ -14,6 +14,7 @@ export const MediaPage = () => {
   const [isFetching, setIsFetching] = useState<boolean>(false)
   const { toast } = useToast()
   const [mediaToDelete, setMediaToDelete] = useState<MediaObjectInterface[] | undefined>(undefined)
+
   const handleMultipleSelect = (item: MediaObjectInterface) => {
     setMediaToDelete((prevState) => {
       if (!Array.isArray(prevState)) {
@@ -32,6 +33,7 @@ export const MediaPage = () => {
   }
   const handleDeleteFiles = async () => {
     setIsFetching(true)
+
     const handleAfterDelete = () => {
       setIsFetching(false)
       toast({
@@ -42,11 +44,44 @@ export const MediaPage = () => {
       setIsOpenSelect(false)
       setIsOpenDelete(false)
     }
-    if (mediaToDelete !== undefined) {
-      mediaToDelete.forEach((el) => {
-        el.id && mediaAPI.deleteFile(el.id).then((res) => res.status === 200 && handleAfterDelete())
+
+    const handleError = (error: any) => {
+      setIsFetching(false)
+      setIsOpenSelect(false)
+      setIsOpenDelete(false)
+      toast({
+        title: 'Error',
+        description: 'An error occurred while deleting files.',
+        variant: 'destructive',
       })
+      console.error(error)
     }
+
+    if (mediaToDelete !== undefined) {
+      try {
+        const deletePromises = mediaToDelete.map((el) => {
+          if (el.id) {
+            return mediaAPI.deleteFile(el.id)
+          }
+          return Promise.resolve()
+        })
+
+        const results = await Promise.all(deletePromises)
+
+        const allSuccessful = results.every((res) => res && res.status === 200)
+
+        if (allSuccessful) {
+          handleAfterDelete()
+        } else {
+          handleError(new Error('Not all files were deleted successfully'))
+        }
+      } catch (error) {
+        handleError(error)
+      }
+    } else {
+      setIsFetching(false)
+    }
+    setMediaToDelete(undefined)
   }
 
   const handleFetching = (val: boolean) => {
@@ -73,7 +108,10 @@ export const MediaPage = () => {
           {isOpenSelect ? (
             <Button
               onClick={() => setIsOpenDelete(true)}
-              disabled={mediaToDelete !== undefined && mediaToDelete.length === 0}
+              disabled={
+                mediaToDelete === undefined ||
+                (mediaToDelete !== undefined && mediaToDelete.length === 0)
+              }
               className="px-10 whitespace-nowrap max-sm:w-full flex justify-center"
             >
               Delete
