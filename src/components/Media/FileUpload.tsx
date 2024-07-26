@@ -6,7 +6,7 @@ import GalleryFileView from './GalleryFileView'
 import { mediaAPI } from '../../lib/api'
 import { useToast } from 'src/lib/use-toast'
 import MediaPreviewTemplate from './MediaPreviewTemplate'
-import AddVideoThumbnail from './AddVideoThumbnail'
+// import AddVideoThumbnail from './AddVideoThumbnail'
 import { FileThumbnailInterface } from 'src/types/types'
 
 interface FileUploadProps {
@@ -155,12 +155,12 @@ export const FileUpload = (props: FileUploadProps) => {
                 />
               </div>
             </div>
-            {files[0].type.split('/')[0] === 'video' && (
-              <AddVideoThumbnail
-                file={filesThumbnails.find((item) => item.index === 0) ?? null}
-                setThumbnail={(value: File) => handleSetFilesThumbnails(value, 0)}
-              />
-            )}
+            {/* {files[0].type.split('/')[0] === 'video' && ( */}
+            {/*  <AddVideoThumbnail */}
+            {/*    file={filesThumbnails.find((item) => item.index === 0) ?? null} */}
+            {/*    setThumbnail={(value: File) => handleSetFilesThumbnails(value, 0)} */}
+            {/*  /> */}
+            {/* )} */}
           </div>
         )}
       </div>
