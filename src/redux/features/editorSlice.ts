@@ -37,7 +37,7 @@ const initialState: EditorState = {
   },
   chapters: [],
   tutorialBottom: {
-    title: '',
+    title: 'Useful links',
     titleType: 'h2',
     text: '',
   },
@@ -161,6 +161,7 @@ export const editorSlice = createSlice({
                     id: undefined,
                     url: '',
                     description: '',
+                    thumbnail: undefined,
                   },
                 },
                 level: {
@@ -211,6 +212,7 @@ export const editorSlice = createSlice({
                     id: undefined,
                     url: '',
                     description: '',
+                    thumbnail: undefined,
                   },
                 },
                 keywords: {
@@ -270,6 +272,7 @@ export const editorSlice = createSlice({
                     id: undefined,
                     url: '',
                     description: '',
+                    thumbnail: undefined,
                   },
                 },
                 keywords: {
@@ -481,6 +484,7 @@ export const editorSlice = createSlice({
                 title: '',
                 type: 'video',
                 description: '',
+                thumbnail: undefined,
               },
               elements: [],
               subchapters: [],
@@ -501,6 +505,7 @@ export const editorSlice = createSlice({
                 title: '',
                 type: 'image',
                 description: '',
+                thumbnail: undefined,
               },
               elements: [],
               subchapters: [],
@@ -535,6 +540,7 @@ export const editorSlice = createSlice({
                 title: '',
                 type: 'video',
                 description: '',
+                thumbnail: undefined,
               },
               elements: [],
             },
@@ -553,6 +559,7 @@ export const editorSlice = createSlice({
                 title: '',
                 type: 'image',
                 description: '',
+                thumbnail: undefined,
               },
               elements: [],
             },
@@ -583,6 +590,7 @@ export const editorSlice = createSlice({
                 title: '',
                 type: 'image',
                 description: '',
+                thumbnail: undefined,
               },
               text: '',
               title: '',
@@ -601,6 +609,7 @@ export const editorSlice = createSlice({
                 title: '',
                 type: 'image',
                 description: '',
+                thumbnail: undefined,
               },
               text: '',
               title: '',
@@ -619,6 +628,7 @@ export const editorSlice = createSlice({
                 title: '',
                 type: 'video',
                 description: '',
+                thumbnail: undefined,
               },
               text: '',
               title: '',
@@ -637,6 +647,7 @@ export const editorSlice = createSlice({
                 title: '',
                 type: 'video',
                 description: '',
+                thumbnail: undefined,
               },
               text: '',
               title: '',
@@ -717,6 +728,52 @@ export const editorSlice = createSlice({
           ] = [
             state.chapters[parentIndex].subchapters[newIndex],
             state.chapters[parentIndex].subchapters[index],
+          ]
+        }
+      }
+    },
+    moveElement: (
+      state,
+      action: PayloadAction<{
+        index: number
+        block: string
+        position: 'up' | 'down'
+        chapterIndex?: number
+      }>,
+    ) => {
+      const { block, index, position, chapterIndex } = action.payload
+      const newIndex = position === 'up' ? index - 1 : index + 1
+      if (block === 'chapter' && chapterIndex !== undefined) {
+        if (position === 'up' && index > 0) {
+          ;[
+            state.chapters[chapterIndex].elements[newIndex],
+            state.chapters[chapterIndex].elements[index],
+          ] = [
+            state.chapters[chapterIndex].elements[index],
+            state.chapters[chapterIndex].elements[newIndex],
+          ]
+        } else if (
+          position === 'down' &&
+          index < state.chapters[chapterIndex].elements.length - 1
+        ) {
+          ;[
+            state.chapters[chapterIndex].elements[index],
+            state.chapters[chapterIndex].elements[newIndex],
+          ] = [
+            state.chapters[chapterIndex].elements[newIndex],
+            state.chapters[chapterIndex].elements[index],
+          ]
+        }
+      } else if (block === 'tutorialTop') {
+        if (position === 'up' && index > 0) {
+          ;[state.tutorialTop.elements[newIndex], state.tutorialTop.elements[index]] = [
+            state.tutorialTop.elements[index],
+            state.tutorialTop.elements[newIndex],
+          ]
+        } else if (position === 'down' && index < state.tutorialTop.elements.length - 1) {
+          ;[state.tutorialTop.elements[index], state.tutorialTop.elements[newIndex]] = [
+            state.tutorialTop.elements[newIndex],
+            state.tutorialTop.elements[index],
           ]
         }
       }
@@ -1229,6 +1286,7 @@ export const {
   addTutorialCard,
   appendMediaToArray,
   deleteMediaFromArray,
+  moveElement,
 } = editorSlice.actions
 
 export default editorSlice.reducer

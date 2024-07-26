@@ -6,6 +6,8 @@ import GalleryFileView from './GalleryFileView'
 import { mediaAPI } from '../../lib/api'
 import { useToast } from 'src/lib/use-toast'
 import MediaPreviewTemplate from './MediaPreviewTemplate'
+import AddVideoThumbnail from './AddVideoThumbnail'
+import { FileThumbnailInterface } from 'src/types/types'
 
 interface FileUploadProps {
   setIsOpen: (arg0: boolean) => void
@@ -14,11 +16,15 @@ interface FileUploadProps {
 
 export const FileUpload = (props: FileUploadProps) => {
   const emptyFileTitles = { index: 0, val: '' }
+  const emptyFileThumbnails = { index: 0, file: null }
   const [isFetching, setIsFetching] = useState<boolean>(false)
   const [paths, setPaths] = useState<{ url: string; type: string }[]>([])
   const [files, setFiles] = useState<File[] | null>(null)
   const [filesTitles, setFilesTitles] = useState<{ index: number; val: string }[]>([
     emptyFileTitles,
+  ])
+  const [filesThumbnails, setFilesThumbnails] = useState<FileThumbnailInterface[]>([
+    emptyFileThumbnails,
   ])
   const [errorMessage] = useState<string>('')
   const [selectedFile, setSelectedFile] = useState<number | null>(null)
@@ -47,6 +53,16 @@ export const FileUpload = (props: FileUploadProps) => {
     })
   }
 
+  const handleSetFilesThumbnails = (thumbnail: File, index: number) => {
+    setFilesThumbnails((prevState) => {
+      const updatedState = prevState.map((item) =>
+        item.index === index ? { ...item, file: thumbnail } : item,
+      )
+      const indexExists = updatedState.some((item) => item.index === index)
+      return indexExists ? updatedState : [...updatedState, { index, file: thumbnail }]
+    })
+  }
+
   const handleSelectFile = (item: number, deleteItem: boolean) => {
     setSelectedFile(!deleteItem ? item : null)
   }
@@ -56,6 +72,7 @@ export const FileUpload = (props: FileUploadProps) => {
     setSelectedFile(null)
     setPaths([])
     setFilesTitles([emptyFileTitles])
+    setFilesThumbnails([emptyFileThumbnails])
   }
 
   const handleUploadFiles = () => {
@@ -64,9 +81,11 @@ export const FileUpload = (props: FileUploadProps) => {
       // eslint-disable-next-line array-callback-return
       files.map((el, index) => {
         const title = filesTitles.filter((el) => el.index === index)
+        const thumbnail = filesThumbnails.filter((el) => el.index === index)
         const formData = new FormData()
         formData.append('file', el)
-        formData.append('title', title[0].val)
+        formData.append('title', title[0].val ?? '')
+        thumbnail && thumbnail[0].file && formData.append('thumbnail', thumbnail[0].file)
         mediaAPI.uploadFiles(formData).then((res) => {
           if (res.status === 200) {
             toast({
@@ -100,7 +119,7 @@ export const FileUpload = (props: FileUploadProps) => {
                 {({ getRootProps, getInputProps }) => (
                   <section
                     {...getRootProps()}
-                    className="flex w-full sm:h-80	bg-tertiary-grey-silver sm:px-20 flex-col items-center sm:h-96 justify-center gap-y-2 p-6"
+                    className="flex w-full sm:h-80	bg-tertiary-grey-silver sm:px-20 flex-col items-center justify-center gap-y-2 p-6"
                   >
                     <input {...getInputProps()} />
                     <div className="flex w-full flex-col items-center justify-center gap-y-2 rounded border border-dashed border-tertiary-grey-stone py-4 text-center text-tertiary-grey-dim">
@@ -124,16 +143,24 @@ export const FileUpload = (props: FileUploadProps) => {
           {files?.length === 1 && <MediaPreviewTemplate item={paths[0]} styles="w-full" />}
         </div>
         {files?.length === 1 && (
-          <div>
-            <label className="mb-2 block">Title</label>
-            <div className="w-full">
-              <TextInput
-                value={filesTitles !== undefined ? filesTitles[0].val : ''}
-                handleChange={(value) => handleSetFilesTitles(value, 0)}
-                placeholder="Title"
-                className="w-full block !border-[#67676B] rounded-lg !leading-5"
-              />
+          <div className="w-full flex flex-col gap-y-2">
+            <div>
+              <label className="mb-2 block">Title</label>
+              <div className="w-full">
+                <TextInput
+                  value={filesTitles !== undefined ? filesTitles[0].val : ''}
+                  handleChange={(value) => handleSetFilesTitles(value, 0)}
+                  placeholder="Title"
+                  className="w-full block !border-[#67676B] rounded-lg !leading-5"
+                />
+              </div>
             </div>
+            {files[0].type.split('/')[0] === 'video' && (
+              <AddVideoThumbnail
+                file={filesThumbnails.find((item) => item.index === 0) ?? null}
+                setThumbnail={(value: File) => handleSetFilesThumbnails(value, 0)}
+              />
+            )}
           </div>
         )}
       </div>
@@ -146,6 +173,8 @@ export const FileUpload = (props: FileUploadProps) => {
             fileTitles={filesTitles}
             onSetFileTitles={handleSetFilesTitles}
             selectedFile={selectedFile}
+            filesThumbnails={filesThumbnails}
+            onSetFileThumbnails={handleSetFilesThumbnails}
           />
         </div>
       )}

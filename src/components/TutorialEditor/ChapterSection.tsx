@@ -1,20 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import EditorLabel from '../ui/EditorLabel'
 import { AddElementsType, ChapterInterface } from 'src/types/types'
 import { useAppDispatch } from 'src/redux/hooks'
 import {
   addChapterElement,
-  addSubchapterElement,
   deleteChapter,
   duplicateChapter,
   moveChapter,
   setChapterText,
   setChapterTitle,
-  setSubchapterText,
-  setSubchapterTitle,
 } from 'src/redux/features/editorSlice'
 import ChapterContent from './ChapterContent'
-import SubchapterContent from './SubchapterContent'
 import ChapterMenu from './ChapterMenu'
 import NewAddSubchapter from './NewAddSubchapter'
 import { articlesAPI } from 'src/lib/api'
@@ -26,7 +22,6 @@ interface ChapterSectionProps {
 
 const ChapterSection = (props: ChapterSectionProps) => {
   const { chapter, index } = props
-  const [, setAddSubchapterElementsActive] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()
 
@@ -34,36 +29,8 @@ const ChapterSection = (props: ChapterSectionProps) => {
     dispatch(setChapterText({ chapterIndex: index, text: val }))
   }
 
-  const handleSubchapterTextInputChange = (
-    val: string,
-    index: number,
-    subchapterIndex: number,
-  ): void => {
-    index !== undefined &&
-      subchapterIndex !== undefined &&
-      dispatch(
-        setSubchapterText({
-          chapterIndex: index,
-          subchapterIndex,
-          text: val,
-        }),
-      )
-  }
-
   const handleChangeChapterTitle = (val: string, index?: number) => {
     index !== undefined && dispatch(setChapterTitle({ chapterIndex: index, text: val }))
-  }
-
-  const handleChangeSubchapterTitle = (val: string, index?: number, subchapterIndex?: number) => {
-    index !== undefined &&
-      subchapterIndex !== undefined &&
-      dispatch(
-        setSubchapterTitle({
-          chapterIndex: index,
-          text: val,
-          subchapterIndex,
-        }),
-      )
   }
 
   const handleAddElement = async (val: string, index?: number) => {
@@ -119,21 +86,6 @@ const ChapterSection = (props: ChapterSectionProps) => {
     }
   }
 
-  const handleAddSubchapterElement = (val: string, index?: number, subchapterIndex?: number) => {
-    const payload: any = {}
-    payload[val] = ''
-    index !== undefined &&
-      subchapterIndex !== undefined &&
-      dispatch(
-        addSubchapterElement({
-          val: payload,
-          chapterIndex: index,
-          subchapterIndex,
-        }),
-      )
-    setAddSubchapterElementsActive(false)
-  }
-
   const elements: AddElementsType[] = [
     'text',
     'infobox',
@@ -161,15 +113,6 @@ const ChapterSection = (props: ChapterSectionProps) => {
         handleChangeChapterTitle={handleChangeChapterTitle}
         handleChapterTextInputChange={handleChapterTextInputChange}
         chapterIndex={index}
-      />
-      <SubchapterContent
-        chapterIndex={index}
-        chapterTitle={chapter.title}
-        elements={elements}
-        handleAddSubchapterElement={handleAddSubchapterElement}
-        handleChangeSubchapterTitle={handleChangeSubchapterTitle}
-        handleSubchapterTextInputChange={handleSubchapterTextInputChange}
-        subchapters={chapter.subchapters}
       />
       <NewAddSubchapter chapterIndex={index} />
     </section>

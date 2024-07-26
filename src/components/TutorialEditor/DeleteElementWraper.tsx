@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { deleteElement, deleteMediaFromArray } from 'src/redux/features/editorSlice'
+import { deleteElement, deleteMediaFromArray, moveElement } from 'src/redux/features/editorSlice'
 import { useAppDispatch } from 'src/redux/hooks'
 import { ElementProps } from 'src/types/types'
 import {
@@ -58,6 +58,17 @@ const DeleteElementWraper = (props: DeleteElementWraperProps) => {
     )
   }
 
+  const handleMoveElement = (position: 'up' | 'down') => {
+    dispatch(
+      moveElement({
+        index: props.elementIndex,
+        block: props.chapterIndex !== undefined ? 'chapter' : 'tutorialTop',
+        position,
+        chapterIndex: props.chapterIndex,
+      }),
+    )
+  }
+
   return (
     <div className="relative h-full w-full">
       <div
@@ -90,6 +101,12 @@ const DeleteElementWraper = (props: DeleteElementWraperProps) => {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
+          <button className="bg-arrow" onClick={() => handleMoveElement('down')}></button>
+          <button
+            className="rotate-180 bg-arrow"
+            disabled={props.elementIndex === 0}
+            onClick={() => handleMoveElement('up')}
+          ></button>
         </div>
         <div className={`${openedMenu ? 'pl-1' : ''} flex items-center justify-center `}>
           <button

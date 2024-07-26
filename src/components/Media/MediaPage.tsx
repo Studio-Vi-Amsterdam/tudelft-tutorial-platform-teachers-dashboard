@@ -95,6 +95,7 @@ export const MediaPage = () => {
         isFetching={isFetching}
         handleMultipleSelect={handleMultipleSelect}
         mediaToDelete={mediaToDelete}
+        onFetching={handleFetching}
       />
 
       <Dialog open={isOpenUpload} onOpenChange={(val) => setIsOpenUpload(val)}>

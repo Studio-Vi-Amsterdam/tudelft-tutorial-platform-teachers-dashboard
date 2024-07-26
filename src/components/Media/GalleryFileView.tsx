@@ -1,6 +1,8 @@
 import React from 'react'
 import TextInput from '../ui/TextInput'
 import MediaPreviewTemplate from './MediaPreviewTemplate'
+import { FileThumbnailInterface } from 'src/types/types'
+import AddVideoThumbnail from './AddVideoThumbnail'
 
 interface GalleryFileViewProps {
   currentItems: { url: string; type: string }[]
@@ -8,9 +10,19 @@ interface GalleryFileViewProps {
   onSetFileTitles: (title: string, index: number) => void
   fileTitles: { index: number; val: string }[]
   handleSelectFile: (index: number, deleteItem: boolean) => void
+  filesThumbnails: FileThumbnailInterface[]
+  onSetFileThumbnails: (thumbnail: File, index: number) => void
 }
 const GalleryFileView = (props: GalleryFileViewProps) => {
-  const { currentItems, onSetFileTitles, fileTitles, selectedFile, handleSelectFile } = props
+  const {
+    currentItems,
+    onSetFileTitles,
+    fileTitles,
+    selectedFile,
+    handleSelectFile,
+    filesThumbnails,
+    onSetFileThumbnails,
+  } = props
 
   return (
     <>
@@ -34,15 +46,23 @@ const GalleryFileView = (props: GalleryFileViewProps) => {
         Please add a title to every image by selecting each from the overview.
       </p>
       {selectedFile !== null && (
-        <div>
-          <label>Title</label>
-          <div className="w-9/12">
-            <TextInput
-              value={fileTitles[selectedFile]?.val ?? ''}
-              handleChange={(value) => onSetFileTitles(value, selectedFile)}
-              placeholder="Title"
-            />
+        <div className="w-full flex flex-col">
+          <div>
+            <label>Title</label>
+            <div className="w-9/12">
+              <TextInput
+                value={fileTitles[selectedFile]?.val ?? ''}
+                handleChange={(value) => onSetFileTitles(value, selectedFile)}
+                placeholder="Title"
+              />
+            </div>
           </div>
+          {currentItems[selectedFile].type === 'video' && (
+            <AddVideoThumbnail
+              file={filesThumbnails.find((item) => item.index === selectedFile) ?? null}
+              setThumbnail={(value: File) => onSetFileThumbnails(value, selectedFile)}
+            />
+          )}
         </div>
       )}
     </>

@@ -49,6 +49,7 @@ export interface MediaObjectInterface {
   title: string
   publishDate: string
   description: string
+  thumbnail: string | undefined
 }
 
 export interface ElementTextActionInterface extends ElementActionBase {
@@ -366,6 +367,7 @@ export interface MediaState {
 }
 
 export interface GalleryViewProps {
+  isPopup?: boolean
   handleMultipleSelect: (item: MediaObjectInterface) => void
   mediaToDelete: MediaObjectInterface[] | undefined
   selectMode?: boolean
@@ -439,6 +441,7 @@ export interface ResponseArticleInterface {
   teachers?: [] | string[]
   title?: string
   useful_links?: string
+  useful_links_title?: string
   course_code?: string
   study?: string
   secondary_study?: string
@@ -496,4 +499,9 @@ export interface ResponseChapterInterface {
   title: string
   content: ResponseContentBlock[]
   belongs_to: boolean | number
+}
+
+export interface FileThumbnailInterface {
+  index: number
+  file: File | null
 }

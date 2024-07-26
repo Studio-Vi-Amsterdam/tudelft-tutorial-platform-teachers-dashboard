@@ -20,6 +20,7 @@ interface MediaLibraryProps {
   mediaToDelete: MediaObjectInterface[] | undefined
   column?: string
   hideVideo?: boolean
+  onFetching?: (val: boolean) => void
 }
 
 export const MediaLibrary = (props: MediaLibraryProps) => {
@@ -196,6 +197,7 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
                 {viewType === 'block' && (
                   <GalleryBlockView
                     selectMode={props.selectMode}
+                    isPopup={props.isPopup}
                     currentItems={media}
                     mediaToDelete={props.mediaToDelete}
                     handleMultipleSelect={props.handleMultipleSelect}
@@ -211,6 +213,7 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
                 {viewType === 'list' && (
                   <GalleryListView
                     selectMode={props.selectMode}
+                    isPopup={props.isPopup}
                     currentItems={media}
                     mediaToDelete={props.mediaToDelete}
                     handleMultipleSelect={props.handleMultipleSelect}
@@ -237,11 +240,14 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
         )}
       </div>
       <Dialog open={mediaEditOpen} onOpenChange={setMediaEditOpen}>
-        <FileEdit
-          selectedMedia={selectedMedia}
-          setMediaEditOpen={setMediaEditOpen}
-          setSelectedMedia={setSelectedMedia}
-        />
+        {props.onFetching && (
+          <FileEdit
+            selectedMedia={selectedMedia}
+            setMediaEditOpen={setMediaEditOpen}
+            setSelectedMedia={setSelectedMedia}
+            onFetching={props.onFetching}
+          />
+        )}
       </Dialog>
     </>
   )
