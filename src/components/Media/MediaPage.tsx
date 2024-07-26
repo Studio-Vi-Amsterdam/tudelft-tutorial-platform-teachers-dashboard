@@ -14,6 +14,7 @@ export const MediaPage = () => {
   const [isFetching, setIsFetching] = useState<boolean>(false)
   const { toast } = useToast()
   const [mediaToDelete, setMediaToDelete] = useState<MediaObjectInterface[] | undefined>(undefined)
+
   const handleMultipleSelect = (item: MediaObjectInterface) => {
     setMediaToDelete((prevState) => {
       if (!Array.isArray(prevState)) {
@@ -80,6 +81,7 @@ export const MediaPage = () => {
     } else {
       setIsFetching(false)
     }
+    setMediaToDelete(undefined)
   }
 
   const handleFetching = (val: boolean) => {
@@ -106,7 +108,10 @@ export const MediaPage = () => {
           {isOpenSelect ? (
             <Button
               onClick={() => setIsOpenDelete(true)}
-              disabled={mediaToDelete !== undefined && mediaToDelete.length === 0}
+              disabled={
+                mediaToDelete === undefined ||
+                (mediaToDelete !== undefined && mediaToDelete.length === 0)
+              }
               className="px-10 whitespace-nowrap max-sm:w-full flex justify-center"
             >
               Delete

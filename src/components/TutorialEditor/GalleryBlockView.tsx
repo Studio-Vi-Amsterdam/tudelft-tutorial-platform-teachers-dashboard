@@ -14,13 +14,16 @@ const GalleryBlockView = (props: GalleryViewProps) => {
           className={`
             ${
               selectedMedia === item ? '' : 'before:!hidden'
-            } ${props.selectMode ? 'after:w-6 after:h-6 after:absolute after:border-2 after:bg-white after:rounded-sm after:border-stone after:top-2 after:right-2 after:z-10' : ' group '} 
+            } ${props.selectMode && item?.isOwner ? 'after:w-6 after:h-6 after:absolute after:border-2 after:bg-white after:rounded-sm after:border-stone after:top-2 after:right-2 after:z-10' : ' group '} 
           ${props.mediaToDelete !== undefined && props.mediaToDelete.includes(item) && 'after:!bg-primary-skyBlue after:!border-primary-skyBlue after:!opacity-90 after:!bg-check after:!bg-center after:!bg-no-repeat'}
           relative  before:absolute before:left-0 before:top-0 before:h-full before:w-full before:bg-black before:opacity-50 before:z-10`}
           onClick={
-            props.selectMode
+            props.selectMode && item.isOwner
               ? () => props.handleMultipleSelect(item)
-              : () => handleSelectMedia(item)
+              : !props.selectMode
+                ? () => handleSelectMedia(item)
+                : // eslint-disable-next-line @typescript-eslint/no-empty-function
+                  () => {}
           }
         >
           {!props.selectMode && !props.isPopup && (

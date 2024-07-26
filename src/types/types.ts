@@ -50,6 +50,7 @@ export interface MediaObjectInterface {
   publishDate: string
   description: string
   thumbnail: string | undefined
+  isOwner?: boolean
 }
 
 export interface ElementTextActionInterface extends ElementActionBase {

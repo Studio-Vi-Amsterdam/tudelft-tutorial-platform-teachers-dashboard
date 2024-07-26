@@ -50,6 +50,7 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
           title: serverItem.title,
           publishDate: serverItem.published,
           description: serverItem.description,
+          isOwner: serverItem.is_media_owner,
         }
       })
       setMedia(newMedia)
