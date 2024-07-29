@@ -542,7 +542,7 @@ export const reducerParser = {
             level: {
               fieldTitle: 'Level',
               required: false,
-              list: [],
+              list: ['Beginner', 'Intermediate', 'Advanced', 'Expert'],
               value: response.level ? response.level : '',
             },
           },

@@ -166,7 +166,7 @@ export const editorSlice = createSlice({
                 level: {
                   fieldTitle: 'Level',
                   required: false,
-                  list: [],
+                  list: ['Beginner', 'Intermediate', 'Advanced', 'Expert'],
                   value: '',
                 },
               },
