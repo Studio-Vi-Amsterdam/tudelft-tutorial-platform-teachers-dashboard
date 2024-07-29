@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { addTutorialCard, changeTutorialCard } from 'src/redux/features/editorSlice'
 import { useAppDispatch } from 'src/redux/hooks'
 import { TutorialCardInterface } from 'src/types/types'
@@ -18,10 +18,6 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
   const [checkedCustomTutorialCard, setCheckedCustomTutorialCard] = useState(
     tutorialCards.map((item) => item.value.url !== undefined),
   )
-
-  useEffect(() => {
-    console.log(tutorialCards)
-  }, [tutorialCards])
 
   const handleSelectTutorialCard = (
     value: string,
