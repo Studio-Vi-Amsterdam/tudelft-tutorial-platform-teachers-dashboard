@@ -43,6 +43,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = () => {
     removeAuthToken()
+    window.location.replace(process.env.REACT_APP_HOMEPAGE_URL ?? '')
     setIsAuthenticated(false)
   }
   const searchParams = new URLSearchParams(window.location.search)
