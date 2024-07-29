@@ -452,17 +452,7 @@ export const reducerParser = {
     if (articleType === 'tutorials') {
       const info = await getInfo(articleType as ArtictesType)
       const softwareVersions = await getSoftwareVersions()
-      const coursesResponse = await articlesAPI
-        .getArticles('courses')
-        .then((res) => res.data)
-        .catch((error) => {
-          console.error(error)
-          return []
-        })
-      const courses = coursesResponse.map((item: any) => ({
-        id: item.id,
-        title: item.title,
-      }))
+
       reducerObject = {
         tutorialTop: {
           title: response.title ? response.title : '',
@@ -481,9 +471,9 @@ export const reducerParser = {
             course: {
               fieldTitle: 'Course',
               required: true,
-              list: courses,
+              list: info.data.courses.length > 0 ? info.data.courses : [],
               value: response.course
-                ? courses.find((item: any) => item.id === response.course) ?? {
+                ? info.data.courses.find((item: any) => item.id === response.course) ?? {
                     id: undefined,
                     title: '',
                   }

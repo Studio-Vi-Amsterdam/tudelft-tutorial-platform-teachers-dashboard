@@ -70,13 +70,6 @@ const BlogEditor = () => {
           dispatch(setEditorLoaded(true))
         } else if (articleId === 'new') {
           let info = {}
-          const coursesList = await articlesAPI
-            .getArticles('courses')
-            .then((res) => res.data)
-            .catch((error) => {
-              console.error(error)
-              return []
-            })
           const extraInfo = await getInfo(articleType as ArtictesType).catch((error) => {
             console.error(error)
             return {
@@ -91,6 +84,7 @@ const BlogEditor = () => {
 
           if (articleType === 'tutorials') {
             info = {
+              courses: extraInfo.data.courses.length > 0 ? extraInfo.data.courses : [],
               software: extraInfo.data.softwares.length > 0 ? extraInfo.data.softwares : [],
               subjects: extraInfo.data.subjects.length > 0 ? extraInfo.data.subjects : [],
               keywords:
@@ -134,13 +128,6 @@ const BlogEditor = () => {
               parsedObject: undefined,
               articleType: articleType as ArtictesType,
               info,
-              coursesList:
-                coursesList.length > 0
-                  ? coursesList.map((item: { id: number; title: string }) => ({
-                      id: item.id,
-                      title: item.title,
-                    }))
-                  : [],
             }),
           )
           dispatch(setEditorLoaded(true))
