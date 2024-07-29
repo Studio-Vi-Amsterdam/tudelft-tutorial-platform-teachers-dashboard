@@ -91,7 +91,6 @@ export const editorSlice = createSlice({
         parsedObject: EditorState | undefined
         articleType?: ArtictesType
         info?: any
-        coursesList?: any
       }>,
     ) => {
       if (action.payload.parsedObject === undefined) {
@@ -102,14 +101,14 @@ export const editorSlice = createSlice({
         state.tutorialTop = initialState.tutorialTop
         state.mediaIds = initialState.mediaIds
         if (action.payload.articleType && action.payload.info) {
-          const { info, coursesList } = action.payload
+          const { info } = action.payload
           if (action.payload.articleType === 'tutorials') {
             state.meta = {
               tutorialBelongs: {
                 course: {
                   fieldTitle: 'Course',
                   required: true,
-                  list: coursesList,
+                  list: info.courses,
                   value: { id: undefined, title: '' },
                 },
                 primary: {

@@ -333,7 +333,7 @@ export const reducerParser = {
                     proposedList: shortTutorials,
                   }
 
-                  const cardLinkUrl = blockData[`content_card_row_${i}_card_link_url`]
+                  const cardLinkUrl = blockData[`content_card_row_${i}_card_custom_link`]
                   if (cardLinkUrl) {
                     card.value.url = cardLinkUrl
                   }
@@ -452,17 +452,7 @@ export const reducerParser = {
     if (articleType === 'tutorials') {
       const info = await getInfo(articleType as ArtictesType)
       const softwareVersions = await getSoftwareVersions()
-      const coursesResponse = await articlesAPI
-        .getArticles('courses')
-        .then((res) => res.data)
-        .catch((error) => {
-          console.error(error)
-          return []
-        })
-      const courses = coursesResponse.map((item: any) => ({
-        id: item.id,
-        title: item.title,
-      }))
+
       reducerObject = {
         tutorialTop: {
           title: response.title ? response.title : '',
@@ -481,9 +471,9 @@ export const reducerParser = {
             course: {
               fieldTitle: 'Course',
               required: true,
-              list: courses,
+              list: info.data.courses.length > 0 ? info.data.courses : [],
               value: response.course
-                ? courses.find((item: any) => item.id === response.course) ?? {
+                ? info.data.courses.find((item: any) => item.id === response.course) ?? {
                     id: undefined,
                     title: '',
                   }
@@ -810,10 +800,15 @@ export const reducerParser = {
             if (item.tutorialCards) {
               const transformedData: TransformedDataTutorialCards = item.tutorialCards.reduce(
                 (acc: TransformedDataTutorialCards, card, index) => {
+                  const isCustomLink = card.value.url !== undefined ? '_custom' : ''
                   acc[`content_card_row_${index}_card_title`] = card.value.title
-                  acc[`content_card_row_${index}_card_link`] =
-                    card.value.id !== undefined ? card.value.id : null
-                  acc[`content_card_row_${index}_card_link_url`] = card.value.url ?? ''
+                  acc[`content_card_row_${index}_card${isCustomLink}_link`] =
+                    card.value.url !== undefined
+                      ? card.value.url
+                      : card.value.id !== undefined
+                        ? card.value.id
+                        : ''
+                  acc[`content_card_row_${index}_is_custom_link`] = card.value.url !== undefined
                   return acc
                 },
                 { content_card_row: item.tutorialCards.length },
