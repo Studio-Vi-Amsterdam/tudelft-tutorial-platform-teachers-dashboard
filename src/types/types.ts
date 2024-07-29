@@ -210,7 +210,7 @@ export interface ChapterElementsObject {
 }
 
 export interface TransformedDataTutorialCards {
-  [key: string]: string | number | null
+  [key: string]: string | number | boolean | null
   content_card_row: number
 }
 

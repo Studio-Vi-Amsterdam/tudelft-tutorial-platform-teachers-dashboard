@@ -812,8 +812,13 @@ export const reducerParser = {
                 (acc: TransformedDataTutorialCards, card, index) => {
                   acc[`content_card_row_${index}_card_title`] = card.value.title
                   acc[`content_card_row_${index}_card_link`] =
-                    card.value.id !== undefined ? card.value.id : null
+                    card.value.url !== undefined
+                      ? card.value.url
+                      : card.value.id !== undefined
+                        ? card.value.id
+                        : ''
                   acc[`content_card_row_${index}_card_link_url`] = card.value.url ?? ''
+                  acc[`content_card_row_${index}_is_custom_link`] = card.value.url !== undefined
                   return acc
                 },
                 { content_card_row: item.tutorialCards.length },
