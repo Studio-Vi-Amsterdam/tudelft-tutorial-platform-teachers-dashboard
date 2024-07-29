@@ -810,8 +810,9 @@ export const reducerParser = {
             if (item.tutorialCards) {
               const transformedData: TransformedDataTutorialCards = item.tutorialCards.reduce(
                 (acc: TransformedDataTutorialCards, card, index) => {
+                  const isCustomLink = card.value.url !== undefined ? '_custom' : ''
                   acc[`content_card_row_${index}_card_title`] = card.value.title
-                  acc[`content_card_row_${index}_card_link`] =
+                  acc[`content_card_row_${index}_card${isCustomLink}_link`] =
                     card.value.url !== undefined
                       ? card.value.url
                       : card.value.id !== undefined
