@@ -333,7 +333,7 @@ export const reducerParser = {
                     proposedList: shortTutorials,
                   }
 
-                  const cardLinkUrl = blockData[`content_card_row_${i}_card_link_url`]
+                  const cardLinkUrl = blockData[`content_card_row_${i}_card_custom_link`]
                   if (cardLinkUrl) {
                     card.value.url = cardLinkUrl
                   }
@@ -818,7 +818,6 @@ export const reducerParser = {
                       : card.value.id !== undefined
                         ? card.value.id
                         : ''
-                  acc[`content_card_row_${index}_card_link_url`] = card.value.url ?? ''
                   acc[`content_card_row_${index}_is_custom_link`] = card.value.url !== undefined
                   return acc
                 },
