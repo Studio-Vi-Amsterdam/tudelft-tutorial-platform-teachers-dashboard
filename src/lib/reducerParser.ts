@@ -808,7 +808,8 @@ export const reducerParser = {
                       : card.value.id !== undefined
                         ? card.value.id
                         : ''
-                  acc[`content_card_row_${index}_is_custom_link`] = card.value.url !== undefined
+                  acc[`content_card_row_${index}_card_is_custom_link`] =
+                    card.value.url !== undefined
                   return acc
                 },
                 { content_card_row: item.tutorialCards.length },
