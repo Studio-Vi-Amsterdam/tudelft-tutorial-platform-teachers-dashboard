@@ -83,7 +83,7 @@ const FileEdit = (props: FileEditProps) => {
               />
             </div>
           </div>
-          <div>
+          {/* <div>
             <label className="mb-2 block">Description</label>
             <div className="w-full">
               <TextInput
@@ -98,7 +98,7 @@ const FileEdit = (props: FileEditProps) => {
                 className="w-full block !border-[#67676B] rounded-lg !leading-5"
               />
             </div>
-          </div>
+          </div> */}
           {/* <ChangeVideoThumbnail selectedMedia={selectedMedia} setFile={setFile} /> */}
         </div>
       </div>
