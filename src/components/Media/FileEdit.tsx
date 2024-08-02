@@ -83,22 +83,22 @@ const FileEdit = (props: FileEditProps) => {
               />
             </div>
           </div>
-          {/* <div> */}
-          {/*  <label className="mb-2 block">Description</label> */}
-          {/*  <div className="w-full"> */}
-          {/*    <TextInput */}
-          {/*      value={selectedMedia.description} */}
-          {/*      handleChange={(value: string) => */}
-          {/*        setSelectedMedia({ */}
-          {/*          ...selectedMedia, */}
-          {/*          description: value, */}
-          {/*        }) */}
-          {/*      } */}
-          {/*      placeholder="Description" */}
-          {/*      className="w-full block !border-[#67676B] rounded-lg !leading-5" */}
-          {/*    /> */}
-          {/*  </div> */}
-          {/* </div> */}
+          <div>
+            <label className="mb-2 block">Description</label>
+            <div className="w-full">
+              <TextInput
+                value={selectedMedia.description}
+                handleChange={(value: string) =>
+                  setSelectedMedia({
+                    ...selectedMedia,
+                    description: value,
+                  })
+                }
+                placeholder="Description"
+                className="w-full block !border-[#67676B] rounded-lg !leading-5"
+              />
+            </div>
+          </div>
           {/* <ChangeVideoThumbnail selectedMedia={selectedMedia} setFile={setFile} /> */}
         </div>
       </div>

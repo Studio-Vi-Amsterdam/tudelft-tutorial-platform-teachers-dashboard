@@ -40,6 +40,20 @@ interface ElementActionBase {
 }
 export type MediaVariantType = 'image' | 'video'
 
+interface MediaObjectParent {
+  id?: number
+  link: string
+  url?: string
+  type: MediaVariantType
+  format: string
+  title: string
+  publishDate: string
+  description: string
+  isOwner?: boolean
+}
+
+export interface ThumbnailInterface extends MediaObjectParent {}
+
 export interface MediaObjectInterface {
   id?: number
   link: string
@@ -49,7 +63,7 @@ export interface MediaObjectInterface {
   title: string
   publishDate: string
   description: string
-  thumbnail: string | undefined
+  thumbnail?: ThumbnailInterface
   isOwner?: boolean
 }
 
@@ -68,6 +82,16 @@ export interface ElementImageActionInterface extends ElementActionBase {
 export interface ElementVideoActionInterface extends ElementActionBase {
   video: MediaObjectInterface
 }
+
+export type SubchapterLayout = 'textImage' | 'imageText' | 'textVideo' | 'videoText'
+
+export interface ThumbnailActionInterface {
+  index: number
+  thumbnail: ThumbnailInterface
+  chapterIndex?: number
+  layout?: SubchapterLayout
+}
+
 export interface QuizAnswer {
   answer: string
   isCorrect: '0' | '1'
@@ -388,14 +412,21 @@ export interface ElementProps {
 export interface AddMediaElementProps extends ElementProps {
   mediaType: MediaVariantType
   listIndex: number | undefined
-  layout?: 'textImage' | 'imageText' | 'textVideo' | 'videoText'
+  layout?: SubchapterLayout
   className?: string
+}
+
+export interface PickMediaDialogProps extends AddMediaElementProps {
+  dialogOpened: boolean
+  setDialogOpened: React.Dispatch<React.SetStateAction<boolean>>
+  className?: string
+  elementId?: number
 }
 
 export interface SubchapterImageAction {
   chapterIndex: number
   listIndex: number
-  layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText'
+  layout: SubchapterLayout
   media: MediaObjectInterface
 }
 

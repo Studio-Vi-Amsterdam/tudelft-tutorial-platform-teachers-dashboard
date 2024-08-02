@@ -20,6 +20,7 @@ import {
   MoveChapterInterface,
   SubchapterImageAction,
   SubchapterTextFieldActionInterface,
+  ThumbnailActionInterface,
   TutorialCardInterface,
   TutorialMetaObject,
   TutorialResponsibleInterface,
@@ -160,7 +161,6 @@ export const editorSlice = createSlice({
                     id: undefined,
                     url: '',
                     description: '',
-                    thumbnail: undefined,
                   },
                 },
                 level: {
@@ -211,7 +211,6 @@ export const editorSlice = createSlice({
                     id: undefined,
                     url: '',
                     description: '',
-                    thumbnail: undefined,
                   },
                 },
                 keywords: {
@@ -271,7 +270,6 @@ export const editorSlice = createSlice({
                     id: undefined,
                     url: '',
                     description: '',
-                    thumbnail: undefined,
                   },
                 },
                 keywords: {
@@ -421,6 +419,30 @@ export const editorSlice = createSlice({
         'video',
       )
     },
+    setVideoThumbnail: (state, action: PayloadAction<ThumbnailActionInterface>) => {
+      const { index, layout, thumbnail, chapterIndex } = action.payload
+      if (chapterIndex !== undefined) {
+        const chapter = state.chapters[chapterIndex]
+        const elements = chapter?.elements
+        const element = elements ? elements[index] : undefined
+        if (layout === 'textVideo' || layout === 'videoText') {
+          const layoutItem = element ? element[layout] : undefined
+          if (layoutItem && layoutItem.video !== undefined) {
+            layoutItem.video.thumbnail = thumbnail
+          }
+        } else {
+          if (element && element.video !== undefined) {
+            element.video.thumbnail = thumbnail
+          }
+        }
+      } else {
+        const elements = state.tutorialTop?.elements
+        const element = elements ? elements[index] : undefined
+        if (element && element.video !== undefined) {
+          element.video.thumbnail = thumbnail
+        }
+      }
+    },
     setElementQuiz: (state, action: PayloadAction<ElementQuizActionInterface>) => {
       setElementProperty(
         state,
@@ -483,7 +505,14 @@ export const editorSlice = createSlice({
                 title: '',
                 type: 'video',
                 description: '',
-                thumbnail: undefined,
+                thumbnail: {
+                  description: '',
+                  format: '',
+                  type: 'image',
+                  link: '',
+                  publishDate: '',
+                  title: '',
+                },
               },
               elements: [],
               subchapters: [],
@@ -504,7 +533,6 @@ export const editorSlice = createSlice({
                 title: '',
                 type: 'image',
                 description: '',
-                thumbnail: undefined,
               },
               elements: [],
               subchapters: [],
@@ -539,7 +567,6 @@ export const editorSlice = createSlice({
                 title: '',
                 type: 'video',
                 description: '',
-                thumbnail: undefined,
               },
               elements: [],
             },
@@ -558,7 +585,6 @@ export const editorSlice = createSlice({
                 title: '',
                 type: 'image',
                 description: '',
-                thumbnail: undefined,
               },
               elements: [],
             },
@@ -589,7 +615,6 @@ export const editorSlice = createSlice({
                 title: '',
                 type: 'image',
                 description: '',
-                thumbnail: undefined,
               },
               text: '',
               title: '',
@@ -608,7 +633,6 @@ export const editorSlice = createSlice({
                 title: '',
                 type: 'image',
                 description: '',
-                thumbnail: undefined,
               },
               text: '',
               title: '',
@@ -627,7 +651,14 @@ export const editorSlice = createSlice({
                 title: '',
                 type: 'video',
                 description: '',
-                thumbnail: undefined,
+                thumbnail: {
+                  description: '',
+                  format: '',
+                  type: 'image',
+                  link: '',
+                  publishDate: '',
+                  title: '',
+                },
               },
               text: '',
               title: '',
@@ -646,7 +677,14 @@ export const editorSlice = createSlice({
                 title: '',
                 type: 'video',
                 description: '',
-                thumbnail: undefined,
+                thumbnail: {
+                  description: '',
+                  format: '',
+                  type: 'image',
+                  link: '',
+                  publishDate: '',
+                  title: '',
+                },
               },
               text: '',
               title: '',
@@ -1286,6 +1324,7 @@ export const {
   appendMediaToArray,
   deleteMediaFromArray,
   moveElement,
+  setVideoThumbnail,
 } = editorSlice.actions
 
 export default editorSlice.reducer
