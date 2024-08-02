@@ -137,6 +137,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
       block_data: {
         video: chapter.video?.id,
         video_url: chapter.video?.url,
+        thumbnail: chapter.video?.thumbnail?.id,
         content: chapter.text,
         alt: chapter.title,
       },
@@ -147,6 +148,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
       block_data: {
         video: chapter.video?.id,
         video_url: chapter.video?.url,
+        thumbnail: chapter.video?.thumbnail?.id,
         content: chapter.text,
         alt: chapter.title,
       },
@@ -259,6 +261,16 @@ export const reducerParser = {
                     : 'unknown',
                   title: block.block_data.content ? block.block_data.content : '',
                   publishDate: 'hardcode',
+                  thumbnail: {
+                    id: block.block_data.thumbnail,
+                    url: block.block_data.thumbnail_url ?? '',
+                    description: '',
+                    format: '',
+                    type: 'image',
+                    link: block.block_data.thumbnail_url ?? '',
+                    publishDate: '',
+                    title: '',
+                  },
                 },
               }
             case 'tu-delft-text-image':
@@ -314,6 +326,16 @@ export const reducerParser = {
                       : 'unknown',
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
+                    thumbnail: {
+                      id: block.block_data.thumbnail,
+                      url: block.block_data.thumbnail_url ?? '',
+                      description: '',
+                      format: '',
+                      type: 'image',
+                      link: block.block_data.thumbnail_url ?? '',
+                      publishDate: '',
+                      title: '',
+                    },
                   },
                   title: block.block_data.title ? block.block_data.title : '',
                 },
@@ -360,6 +382,16 @@ export const reducerParser = {
                       : 'unknown',
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
+                    thumbnail: {
+                      id: block.block_data.thumbnail,
+                      url: block.block_data.thumbnail_url ?? '',
+                      description: '',
+                      format: '',
+                      type: 'image',
+                      link: block.block_data.thumbnail_url ?? '',
+                      publishDate: '',
+                      title: '',
+                    },
                   },
                   title: block.block_data.title ? block.block_data.title : '',
                 },
@@ -842,6 +874,7 @@ export const reducerParser = {
                 block_data: {
                   video: item.video.id,
                   video_url: item.video.url,
+                  thumbnail: item.video.thumbnail?.id ?? null,
                 },
               }
             }
@@ -882,6 +915,7 @@ export const reducerParser = {
                 block_data: {
                   video: item.textVideo.video.id,
                   video_url: item.textVideo.video.url,
+                  thumbnail: item.textVideo.video.id,
                   content: item.textVideo.text,
                   title: item.textVideo.title,
                 },
@@ -893,6 +927,7 @@ export const reducerParser = {
                 block_data: {
                   video: item.videoText.video.id,
                   video_url: item.videoText.video.url,
+                  thumbnail: item.videoText.video.id,
                   content: item.videoText.text,
                   title: item.videoText.title,
                 },

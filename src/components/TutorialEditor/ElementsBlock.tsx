@@ -14,6 +14,7 @@ import H5pElement from './H5pElement'
 import FileElement from './FileElement'
 import TutorialCardsElement from './TutorialCardsElement'
 import BundledEditor from './BundledEditor'
+import SelectThumbnail from './SelectThumbnail'
 
 interface ElementsBlockProps {
   elements: Array<ChapterElementsObject>
@@ -257,14 +258,23 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               </div>
               <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
                 <div className="sm:w-1/2">
-                  <AddMediaElement
-                    mediaType="video"
-                    block={props.block}
-                    chapterIndex={props.chapterIndex}
-                    subchapterIndex={props.subchapterIndex}
-                    listIndex={index}
-                    layout="videoText"
-                  />
+                  <div className="w-full flex flex-col gap-y-4">
+                    <AddMediaElement
+                      mediaType="video"
+                      block={props.block}
+                      chapterIndex={props.chapterIndex}
+                      subchapterIndex={props.subchapterIndex}
+                      listIndex={index}
+                      layout="videoText"
+                    />
+                    <SelectThumbnail
+                      video={element.videoText.video}
+                      chapterIndex={props.chapterIndex}
+                      subchapterIndex={props.subchapterIndex}
+                      listIndex={index}
+                      layout="videoText"
+                    />
+                  </div>
                 </div>
                 <div className="sm:w-1/2">
                   <BundledEditor
@@ -320,14 +330,23 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                   />
                 </div>
                 <div className="sm:w-1/2">
-                  <AddMediaElement
-                    mediaType="video"
-                    block={props.block}
-                    chapterIndex={props.chapterIndex}
-                    subchapterIndex={props.subchapterIndex}
-                    listIndex={index}
-                    layout="textVideo"
-                  />
+                  <div className="w-full flex flex-col gap-y-4">
+                    <AddMediaElement
+                      mediaType="video"
+                      block={props.block}
+                      chapterIndex={props.chapterIndex}
+                      subchapterIndex={props.subchapterIndex}
+                      listIndex={index}
+                      layout="textVideo"
+                    />
+                    <SelectThumbnail
+                      video={element.textVideo.video}
+                      chapterIndex={props.chapterIndex}
+                      subchapterIndex={props.subchapterIndex}
+                      listIndex={index}
+                      layout="textVideo"
+                    />
+                  </div>
                 </div>
               </div>
             </DeleteElementWraper>
@@ -401,13 +420,21 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
-              <AddMediaElement
-                mediaType="video"
-                block={props.block}
-                chapterIndex={props.chapterIndex}
-                subchapterIndex={props.subchapterIndex}
-                listIndex={index}
-              />
+              <div className="w-full flex flex-col gap-y-4">
+                <AddMediaElement
+                  mediaType="video"
+                  block={props.block}
+                  chapterIndex={props.chapterIndex}
+                  subchapterIndex={props.subchapterIndex}
+                  listIndex={index}
+                />
+                <SelectThumbnail
+                  video={element.video}
+                  chapterIndex={props.chapterIndex}
+                  subchapterIndex={props.subchapterIndex}
+                  listIndex={index}
+                />
+              </div>
             </DeleteElementWraper>
           )}
           {element?.file !== undefined && (

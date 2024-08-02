@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Dialog, DialogContent, DialogFooter } from '../ui/Dialog'
-import { AddMediaElementProps, MediaObjectInterface } from 'src/types/types'
+import { MediaObjectInterface, PickMediaDialogProps } from 'src/types/types'
 import { MediaLibrary } from '../Media/MediaLibrary'
 import { Button } from '../ui/Button'
 import { useAppDispatch } from 'src/redux/hooks'
@@ -11,12 +11,6 @@ import {
   setFeaturedImage,
   setSubchapterMedia,
 } from 'src/redux/features/editorSlice'
-
-interface PickMediaDialogProps extends AddMediaElementProps {
-  dialogOpened: boolean
-  setDialogOpened: React.Dispatch<React.SetStateAction<boolean>>
-  className?: string
-}
 
 const PickMediaDialog = (props: PickMediaDialogProps) => {
   const { dialogOpened, setDialogOpened } = props
