@@ -915,7 +915,7 @@ export const reducerParser = {
                 block_data: {
                   video: item.textVideo.video.id,
                   video_url: item.textVideo.video.url,
-                  thumbnail: item.textVideo.video.id,
+                  thumbnail: item.textVideo.video.thumbnail?.id,
                   content: item.textVideo.text,
                   title: item.textVideo.title,
                 },
@@ -927,7 +927,7 @@ export const reducerParser = {
                 block_data: {
                   video: item.videoText.video.id,
                   video_url: item.videoText.video.url,
-                  thumbnail: item.videoText.video.id,
+                  thumbnail: item.videoText.video.thumbnail?.id,
                   content: item.videoText.text,
                   title: item.videoText.title,
                 },
