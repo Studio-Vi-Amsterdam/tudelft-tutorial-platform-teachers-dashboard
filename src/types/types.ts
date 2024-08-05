@@ -65,6 +65,7 @@ export interface MediaObjectInterface {
   description: string
   thumbnail?: ThumbnailInterface
   isOwner?: boolean
+  hasZoom?: boolean
 }
 
 export interface ElementTextActionInterface extends ElementActionBase {

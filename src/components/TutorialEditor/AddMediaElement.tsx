@@ -161,6 +161,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
             type: 'image',
             description: '',
             thumbnail: undefined,
+            hasZoom: false,
           },
         }),
       )
@@ -179,6 +180,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
               type: 'image',
               description: '',
               thumbnail: undefined,
+              hasZoom: false,
             },
             index: props.listIndex,
             subchapterIndex: props.subchapterIndex,
@@ -206,6 +208,56 @@ const AddMediaElement = (props: AddMediaElementProps) => {
       }
     }
     changeOpenState()
+  }
+
+  const handleChangeZoomFlag = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (
+      props.layout !== undefined &&
+      props.chapterIndex !== undefined &&
+      props.listIndex !== undefined &&
+      mediaDataState !== undefined
+    ) {
+      dispatch(
+        setSubchapterMedia({
+          chapterIndex: props.chapterIndex,
+          layout: props.layout,
+          listIndex: props.listIndex,
+          media: {
+            format: mediaDataState.format,
+            link: mediaDataState.url ?? mediaDataState.link,
+            url: mediaDataState.url ?? mediaDataState.link,
+            publishDate: mediaDataState.publishDate,
+            title: mediaDataState.title,
+            type: 'image',
+            description: mediaDataState.description,
+            thumbnail: undefined,
+            hasZoom: e.target.checked,
+          },
+        }),
+      )
+    } else if (mediaDataState !== undefined) {
+      if (props.mediaType === 'image') {
+        dispatch(
+          setElementImage({
+            block: props.block,
+            nestedIndex: props.chapterIndex,
+            image: {
+              format: mediaDataState.format,
+              link: mediaDataState.url ?? mediaDataState.link,
+              url: mediaDataState.url ?? mediaDataState.link,
+              publishDate: mediaDataState.publishDate,
+              title: mediaDataState.title,
+              type: 'image',
+              description: mediaDataState.description,
+              thumbnail: undefined,
+              hasZoom: e.target.checked,
+            },
+            index: props.listIndex,
+            subchapterIndex: props.subchapterIndex,
+          }),
+        )
+      }
+    }
   }
 
   return (
@@ -266,16 +318,6 @@ const AddMediaElement = (props: AddMediaElementProps) => {
           </Button>
         </div>
       )}
-      {/* <div className="flex flex-row gap-2">
-        <input
-          className="appearance-none w-6 h-6  border-2 bg-white rounded-sm border-stone checked:!bg-primary-skyBlue checked:!border-primary-skyBlue checked:!opacity-90 checked:!bg-check checked:!bg-center checked:!bg-no-repeat"
-          type="checkbox"
-          id="show"
-        />
-        <label htmlFor="show" className="text-stone">
-          Show subtitles
-        </label>
-      </div> */}
       <PickMediaDialog
         block={props.block}
         chapterIndex={props.chapterIndex}
@@ -286,6 +328,22 @@ const AddMediaElement = (props: AddMediaElementProps) => {
         subchapterIndex={props.subchapterIndex}
         layout={props.layout}
       />
+      {props.mediaType === 'image' &&
+        mediaDataState !== undefined &&
+        props.block !== 'tutorialMeta' &&
+        props.block !== 'courseMeta' &&
+        props.block !== 'softwareMeta' && (
+          <div className="flex flex-row gap-x-2">
+            <input
+              type="checkbox"
+              className="w-6 h-6 border-2 bg-white rounded-sm border-stone after:!bg-primary-skyBlue after:!border-primary-skyBlue after:!opacity-90 after:!bg-check after:!bg-center after:!bg-no-repeat"
+              checked={mediaDataState.hasZoom || false}
+              onChange={(e) => handleChangeZoomFlag(e)}
+            />
+
+            <label>Has Image Zoom</label>
+          </div>
+        )}
     </div>
   )
 }
