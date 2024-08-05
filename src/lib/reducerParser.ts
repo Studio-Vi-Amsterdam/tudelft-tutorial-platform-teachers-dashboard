@@ -117,6 +117,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
       block_data: {
         image_url: chapter.image?.url,
         image: chapter.image?.id,
+        hasZoom: chapter.image?.hasZoom ?? false,
         content: chapter.text,
         alt: chapter.title,
       },
@@ -127,6 +128,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
       block_data: {
         image_url: chapter.image?.url,
         image: chapter.image?.id,
+        hasZoom: chapter.image?.hasZoom ?? false,
         content: chapter.text,
         alt: chapter.title,
       },
@@ -246,6 +248,7 @@ export const reducerParser = {
                     : 'unknown',
                   title: block.block_data.content ? block.block_data.content : '',
                   publishDate: 'hardcode',
+                  hasZoom: block.block_data.image_has_image_zoom ?? false,
                 },
               }
             case 'tu-delft-video':
@@ -288,6 +291,7 @@ export const reducerParser = {
                       : 'unknown',
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
+                    hasZoom: block.block_data.image_has_image_zoom ?? false,
                   },
                   title: block.block_data.title ? block.block_data.title : '',
                 },
@@ -307,6 +311,7 @@ export const reducerParser = {
                       : 'unknown',
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
+                    hasZoom: block.block_data.image_has_image_zoom ?? false,
                   },
                   title: block.block_data.title ? block.block_data.title : '',
                 },
@@ -471,6 +476,7 @@ export const reducerParser = {
                   publishDate: '',
                   description: chapter.content[0].block_data.description ?? '',
                   thumbnail: chapter.content[0].block_data.thumbnail ?? undefined,
+                  hasZoom: chapter.content[0].block_data.hasZoom ?? false,
                 }
               : undefined,
         }
@@ -865,6 +871,7 @@ export const reducerParser = {
                 block_data: {
                   image: item.image.id,
                   image_url: item.image.url,
+                  image_has_image_zoom: item.image.hasZoom ?? false,
                 },
               }
             }
@@ -893,6 +900,7 @@ export const reducerParser = {
                 block_data: {
                   image: item.imageText.image.id,
                   image_url: item.imageText.image.url,
+                  image_has_image_zoom: item.imageText.image.hasZoom ?? false,
                   content: item.imageText.text,
                   title: item.imageText.title,
                 },
@@ -904,6 +912,7 @@ export const reducerParser = {
                 block_data: {
                   image: item.textImage.image.id,
                   image_url: item.textImage.image.url,
+                  image_has_image_zoom: item.textImage.image.hasZoom ?? false,
                   content: item.textImage.text,
                   title: item.textImage.title,
                 },
