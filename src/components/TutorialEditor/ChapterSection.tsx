@@ -56,7 +56,7 @@ const ChapterSection = (props: ChapterSectionProps) => {
       }
     } else if (val === 'tutorial cards') {
       try {
-        const response = await articlesAPI.getArticles('tutorials')
+        const response = await articlesAPI.getAllArticles('tutorials')
         const tutorials = response.data.map((item: any) => ({
           id: item.id,
           title: item.title,
