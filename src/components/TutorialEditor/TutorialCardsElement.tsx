@@ -83,11 +83,22 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
               >
                 <option value="">Choose tutorial</option>
                 {el.proposedList &&
-                  el.proposedList.map((listItem, idx) => (
-                    <option key={idx} value={listItem.title}>
-                      {listItem.title}
-                    </option>
-                  ))}
+                  el.proposedList.length > 0 &&
+                  [...el.proposedList]
+                    .sort(function (a, b) {
+                      if (a.title < b.title) {
+                        return -1
+                      }
+                      if (a.title > b.title) {
+                        return 1
+                      }
+                      return 0
+                    })
+                    .map((listItem, idx) => (
+                      <option key={idx} value={listItem.title}>
+                        {listItem.title}
+                      </option>
+                    ))}
               </select>
             ) : (
               <div className="flex flex-col gap-y-3">
