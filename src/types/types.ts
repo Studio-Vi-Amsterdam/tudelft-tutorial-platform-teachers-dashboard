@@ -10,7 +10,7 @@ export type AddElementsType =
   | 'infobox'
   | 'image'
   | 'video'
-  | 'file'
+  | 'download file'
   | 'quiz'
   | 'h5p element'
   | 'tutorial cards'

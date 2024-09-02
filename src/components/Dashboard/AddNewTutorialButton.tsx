@@ -35,7 +35,7 @@ const AddNewTutorialButton = () => {
       <DialogTrigger asChild>
         <Button>
           <div>+</div>
-          <p>Create new tutorial</p>
+          <p>Create new page</p>
         </Button>
       </DialogTrigger>
       <DialogContent className="bg-white sm:max-w-[888px] p-10">
