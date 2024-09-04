@@ -54,6 +54,7 @@ const ChapterSection = (props: ChapterSectionProps) => {
         value: '',
         error: '',
       }
+      delete payload['h5p element']
     } else if (val === 'tutorial cards') {
       try {
         const response = await articlesAPI.getAllArticles('tutorials')
@@ -67,6 +68,7 @@ const ChapterSection = (props: ChapterSectionProps) => {
             proposedList: tutorials,
           },
         ]
+        delete payload['tutorial cards']
       } catch (error: any) {
         if (error.response && error.response.status === 404) {
           payload.tutorialCards = [
@@ -79,6 +81,12 @@ const ChapterSection = (props: ChapterSectionProps) => {
           console.error(error)
         }
       }
+    } else if (val === 'download file') {
+      payload.file = {
+        id: undefined,
+        url: '',
+      }
+      delete payload['download file']
     }
 
     if (index !== undefined) {
@@ -91,7 +99,7 @@ const ChapterSection = (props: ChapterSectionProps) => {
     'infobox',
     'image',
     'video',
-    'file',
+    'download file',
     'h5p element',
     'tutorial cards',
     'quiz',

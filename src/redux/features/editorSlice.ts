@@ -231,7 +231,7 @@ export const editorSlice = createSlice({
                 },
                 secondaryStudy: {
                   fieldTitle: 'Secondary Study',
-                  list: info.primaryStudy,
+                  list: info.secondaryStudy,
                   required: false,
                   value: {
                     id: undefined,
@@ -299,7 +299,7 @@ export const editorSlice = createSlice({
                 secondaryCategory: {
                   fieldTitle: 'Secondary category',
                   required: false,
-                  list: info.categories ?? [],
+                  list: info.secondaryCategories ?? [],
                   value: { id: undefined, title: '' },
                 },
               },

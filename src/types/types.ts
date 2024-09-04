@@ -10,7 +10,7 @@ export type AddElementsType =
   | 'infobox'
   | 'image'
   | 'video'
-  | 'file'
+  | 'download file'
   | 'quiz'
   | 'h5p element'
   | 'tutorial cards'
@@ -141,9 +141,14 @@ export interface MoveChapterInterface {
   parentIndex?: number
 }
 
+export interface ProposedList {
+  id: number
+  title: string
+}
+
 export interface TutorialCardInterface {
   value: { id: number | undefined; title: string; url?: string }
-  proposedList: { id: number; title: string }[] | []
+  proposedList: ProposedList[] | []
 }
 
 export interface TutorialTopElementsObject {

@@ -666,10 +666,10 @@ export const reducerParser = {
             },
             secondaryStudy: {
               fieldTitle: 'Secondary Study',
-              list: info.study ? info.study : [{ id: undefined, title: '' }],
+              list: info.secondary_study ? info.secondary_study : [{ id: undefined, title: '' }],
               required: false,
-              value: response.study
-                ? info.study.filter(
+              value: response.secondary_study
+                ? info.secondary_study.filter(
                     (el: { id: string; title: string }) => el.id === response.secondary_study,
                   )[0]
                 : '',
@@ -748,7 +748,6 @@ export const reducerParser = {
       }
     } else if (articleType === 'subjects') {
       const info = await getInfo(articleType)
-
       reducerObject = {
         tutorialTop: {
           title: response.title ? response.title : '',
@@ -777,9 +776,9 @@ export const reducerParser = {
             secondaryCategory: {
               fieldTitle: 'Secondary category',
               required: false,
-              list: info.categories ?? [],
-              value: response.secondary_category
-                ? info.categories.find(
+              list: info.secondary_categories ?? [],
+              value: info.secondary_categories
+                ? info.secondary_categories.find(
                     (item: any) => item.id === parseInt(response.secondary_category as string),
                   ) ?? { id: undefined, title: '' }
                 : { id: undefined, title: '' },

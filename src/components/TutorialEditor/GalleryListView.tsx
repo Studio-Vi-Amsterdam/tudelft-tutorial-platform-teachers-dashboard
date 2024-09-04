@@ -21,12 +21,15 @@ const GalleryListView = (props: GalleryViewProps) => {
           ${props.mediaToDelete !== undefined && props.mediaToDelete.includes(item) && 'after:!bg-primary-skyBlue after:!bg-check after:!bg-center after:!bg-no-repeat'}  
             relative w-full min-h-24 before:absolute before:left-0 before:top-0 before:h-full before:w-full before:bg-black before:opacity-50 before:z-10 [&>div]:flex max-md:gap-2`}
             onClick={
-              props.selectMode
+              props.selectMode && item.isOwner
                 ? () => props.handleMultipleSelect(item)
-                : () => handleSelectMedia(item)
+                : !props.selectMode && item.isOwner
+                  ? () => handleSelectMedia(item)
+                  : // eslint-disable-next-line @typescript-eslint/no-empty-function
+                    () => {}
             }
           >
-            {!props.selectMode && !props.isPopup && (
+            {!props.selectMode && !props.isPopup && item.isOwner && (
               <div className="absolute w-full h-full bg-[rgba(0,0,0,0.3)] opacity-0 group-hover:opacity-100 transition-opacity flex justify-center items-center">
                 <div className="border-transparent bg-primary-skyBlue z-10 text-primary-white disabled:bg-tertiary-skyBlue-20 flex flex-row items-center justify-center gap-x-6 rounded-[4px] border px-6 py-3 [&>div]:text-2xl transition-colors duration-200 [&>div]:leading-6 [&>p]:text-base">
                   Edit

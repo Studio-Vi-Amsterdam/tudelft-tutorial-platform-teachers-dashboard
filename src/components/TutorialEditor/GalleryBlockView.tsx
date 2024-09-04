@@ -20,13 +20,13 @@ const GalleryBlockView = (props: GalleryViewProps) => {
           onClick={
             props.selectMode && item.isOwner
               ? () => props.handleMultipleSelect(item)
-              : !props.selectMode
+              : !props.selectMode && item.isOwner
                 ? () => handleSelectMedia(item)
                 : // eslint-disable-next-line @typescript-eslint/no-empty-function
                   () => {}
           }
         >
-          {!props.selectMode && !props.isPopup && (
+          {!props.selectMode && !props.isPopup && item.isOwner && (
             <div className="absolute w-full h-full bg-[rgba(0,0,0,0.3)] opacity-0 group-hover:opacity-100 transition-opacity flex justify-center items-center">
               <div className="border-transparent bg-primary-skyBlue z-10 text-primary-white disabled:bg-tertiary-skyBlue-20 flex flex-row items-center justify-center gap-x-6 rounded-[4px] border px-6 py-3 [&>div]:text-2xl transition-colors duration-200 [&>div]:leading-6 [&>p]:text-base">
                 Edit

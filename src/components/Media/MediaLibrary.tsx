@@ -33,7 +33,7 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
 
   useEffect(() => {
     if (!props.isFetching) {
-      handleGetMedia()
+      handleGetMedia(`page=${currentPage}&amount=${itemsPerPage}`)
     }
   }, [props.isFetching])
 

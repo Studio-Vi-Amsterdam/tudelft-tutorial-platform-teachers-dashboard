@@ -46,7 +46,7 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
     'image',
     'video',
     'tutorial cards',
-    'file',
+    'download file',
     'quiz',
     'h5p element',
   ]
@@ -72,6 +72,7 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
         value: '',
         error: '',
       }
+      delete payload['h5p element']
       dispatch(addTutorialElements(payload))
     } else if (val === 'tutorial cards') {
       try {
@@ -98,6 +99,14 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
           console.error(error)
         }
       }
+      delete payload['tutorial cards']
+      dispatch(addTutorialElements(payload))
+    } else if (val === 'download file') {
+      payload.file = {
+        id: undefined,
+        url: '',
+      }
+      delete payload['download file']
       dispatch(addTutorialElements(payload))
     } else {
       dispatch(addTutorialElements(payload))

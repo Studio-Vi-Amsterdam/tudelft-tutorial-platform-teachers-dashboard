@@ -84,8 +84,11 @@ export const FileUpload = (props: FileUploadProps) => {
         const thumbnail = filesThumbnails.filter((el) => el.index === index)
         const formData = new FormData()
         formData.append('file', el)
-        formData.append('title', title[0].val ?? '')
-        thumbnail && thumbnail[0].file && formData.append('thumbnail', thumbnail[0].file)
+        formData.append('title', title[0] !== undefined && title[0].val ? title[0].val : '')
+        thumbnail &&
+          thumbnail[0] !== undefined &&
+          thumbnail[0].file &&
+          formData.append('thumbnail', thumbnail[0].file)
         mediaAPI.uploadFiles(formData).then((res) => {
           if (res.status === 200) {
             toast({
