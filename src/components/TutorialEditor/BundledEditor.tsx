@@ -215,7 +215,6 @@ export default function BundledEditor(props: any) {
                 props.handleChange(newValue, props?.index, props?.block)
               }
         }
-        {...props}
       />
       <TermDialog
         termDialog={termDialog}
