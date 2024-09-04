@@ -23,10 +23,12 @@ const GalleryListView = (props: GalleryViewProps) => {
             onClick={
               props.selectMode && item.isOwner
                 ? () => props.handleMultipleSelect(item)
-                : !props.selectMode && item.isOwner
+                : !props.selectMode && item.isOwner && !props.isPopup
                   ? () => handleSelectMedia(item)
-                  : // eslint-disable-next-line @typescript-eslint/no-empty-function
-                    () => {}
+                  : !props.selectMode && props.isPopup
+                    ? () => handleSelectMedia(item)
+                    : // eslint-disable-next-line @typescript-eslint/no-empty-function
+                      () => {}
             }
           >
             {!props.selectMode && !props.isPopup && item.isOwner && (
