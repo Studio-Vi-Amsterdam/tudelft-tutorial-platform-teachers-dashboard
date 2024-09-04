@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import Dropzone from 'react-dropzone'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
 import { appendMediaToArray, setFileElement } from 'src/redux/features/editorSlice'
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
 import { RootState } from 'src/redux/store'
@@ -88,32 +88,55 @@ const FileElement = (props: QuizElementProps) => {
     }
   }, [fileData, fileTitle, fileDescription])
 
+  const onDrop = useCallback((acceptedFiles: any) => {
+    handleSetFileData(acceptedFiles[0])
+  }, [])
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: {
+      'image/png': ['.jpeg', '.png', '.jpg', '.gif', '.ico', '.webp', '.bmp', '.avif'],
+      'audio/mp3': ['.mp3', '.m4a', '.ogg', '.wav'],
+      'video/avi': ['.avi', '.mpg', '.mov', '.mp4', '.m4v', '.ogv', '.wmv', '.3gp', '.3g2'],
+      'document/pdf': [
+        '.doc',
+        '.docx',
+        '.odt',
+        '.pdf',
+        '.psd',
+        '.ppt',
+        '.pptx',
+        '.pps',
+        '.ppsx',
+        '.xls',
+        '.xlsx',
+      ],
+      'text/txt': ['.txt', '.csv'],
+      'archive/zip': ['.zip', '.gz', '.rar'],
+      'apple/doc': ['.keynote', '.numbers', '.pages'],
+    },
+    onDrop,
+  })
+
   const [errorMessage] = useState<string>('')
   return (
     <div className="flex w-full flex-col gap-y-2">
       {!fileData && !isFetching ? (
         <div className="flex w-full flex-col items-center justify-center py-2">
-          <Dropzone onDrop={(acceptedFiles) => handleSetFileData(acceptedFiles[0])}>
-            {({ getRootProps, getInputProps }) => (
-              <section className="flex w-full flex-col items-center justify-center gap-y-2">
-                <div
-                  {...getRootProps()}
-                  className="flex w-full flex-col items-center justify-center gap-y-2 rounded-[4px] border border-dashed border-tertiary-grey-stone bg-background-seasalt py-2 text-center text-tertiary-grey-dim"
-                >
-                  <input {...getInputProps()} />
-                  <p className="cursor-pointer text-center text-base ">
-                    Drag your file here
-                    <br /> <u>or upload it</u>
-                  </p>
-                  <p className="text-xs leading-5">For multiple files, please use a .zip file</p>
-                </div>
-                <p className="text-xs leading-5 text-tertiary-grey-dim">
-                  Max. upload file size 2GB
-                </p>
-                {errorMessage && <p className="text-xs leading-5 text-red-500">{errorMessage}</p>}
-              </section>
-            )}
-          </Dropzone>
+          <section className="flex w-full flex-col items-center justify-center gap-y-2">
+            <div
+              {...getRootProps({ className: 'dropzone' })}
+              className="flex w-full flex-col items-center justify-center gap-y-2 rounded-[4px] border border-dashed border-tertiary-grey-stone bg-background-seasalt py-2 text-center text-tertiary-grey-dim"
+            >
+              <input {...getInputProps()} />
+              <p className="cursor-pointer text-center text-base ">
+                Drag your file here
+                <br /> <u>or upload it</u>
+              </p>
+              <p className="text-xs leading-5">For multiple files, please use a .zip file</p>
+            </div>
+            <p className="text-xs leading-5 text-tertiary-grey-dim">Max. upload file size 2GB</p>
+            {errorMessage && <p className="text-xs leading-5 text-red-500">{errorMessage}</p>}
+          </section>
         </div>
       ) : !isFetching && fileData ? (
         <div className="mb-8 mt-4 flex w-full flex-row items-center justify-between">
