@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import Dropzone from 'react-dropzone'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
 import TextInput from '../ui/TextInput'
 import { Button } from '../ui/Button'
 import GalleryFileView from './GalleryFileView'
 import { mediaAPI } from '../../lib/api'
 import { useToast } from 'src/lib/use-toast'
 import MediaPreviewTemplate from './MediaPreviewTemplate'
-/* import AddVideoThumbnail from './AddVideoThumbnail' */
 import { FileThumbnailInterface } from 'src/types/types'
 
 interface FileUploadProps {
@@ -17,6 +16,7 @@ interface FileUploadProps {
 export const FileUpload = (props: FileUploadProps) => {
   const emptyFileTitles = { index: 0, val: '' }
   const emptyFileThumbnails = { index: 0, file: null }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isFetching, setIsFetching] = useState<boolean>(false)
   const [paths, setPaths] = useState<{ url: string; type: string }[]>([])
   const [files, setFiles] = useState<File[] | null>(null)
@@ -28,6 +28,7 @@ export const FileUpload = (props: FileUploadProps) => {
   ])
   const [errorMessage] = useState<string>('')
   const [selectedFile, setSelectedFile] = useState<number | null>(null)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { toast } = useToast()
 
   useEffect(() => {
@@ -89,6 +90,7 @@ export const FileUpload = (props: FileUploadProps) => {
           thumbnail[0] !== undefined &&
           thumbnail[0].file &&
           formData.append('thumbnail', thumbnail[0].file)
+        console.log(Array.from(new Set(formData)))
         mediaAPI.uploadFiles(formData).then((res) => {
           if (res.status === 200) {
             toast({
@@ -112,34 +114,58 @@ export const FileUpload = (props: FileUploadProps) => {
     }
   }
 
+  const onDrop = useCallback((acceptedFiles: any) => {
+    handleSetFileData(acceptedFiles)
+  }, [])
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: {
+      'image/png': ['.jpeg', '.png', '.jpg', '.gif', '.ico', '.webp', '.bmp', '.avif'],
+      'audio/mp3': ['.mp3', '.m4a', '.ogg', '.wav'],
+      'video/avi': ['.avi', '.mpg', '.mov', '.mp4', '.m4v', '.ogv', '.wmv', '.3gp', '.3g2'],
+      'document/pdf': [
+        '.doc',
+        '.docx',
+        '.odt',
+        '.pdf',
+        '.psd',
+        '.ppt',
+        '.pptx',
+        '.pps',
+        '.ppsx',
+        '.xls',
+        '.xlsx',
+      ],
+      'text/txt': ['.txt', '.csv'],
+      'archive/zip': ['.zip', '.gz', '.rar'],
+      'apple/doc': ['.keynote', '.numbers', '.pages'],
+    },
+    onDrop,
+  })
+
   return (
     <>
       <div className="grid md:grid-cols-2 gap-8 mt-14">
         <div className="w-full">
           {!files && (
             <div className="flex w-full flex-col items-center justify-center py-2">
-              <Dropzone onDrop={(acceptedFiles) => handleSetFileData(acceptedFiles)}>
-                {({ getRootProps, getInputProps }) => (
-                  <section
-                    {...getRootProps()}
-                    className="flex w-full sm:h-80	bg-tertiary-grey-silver sm:px-20 flex-col items-center justify-center gap-y-2 p-6"
-                  >
-                    <input {...getInputProps()} />
-                    <div className="flex w-full flex-col items-center justify-center gap-y-2 rounded border border-dashed border-tertiary-grey-stone py-4 text-center text-tertiary-grey-dim">
-                      <p className="cursor-pointer text-center text-base ">
-                        Drag your file here
-                        <br /> <u>or upload it</u>
-                      </p>
-                    </div>
-                    <p className="text-xs leading-5 text-tertiary-grey-dim">
-                      Max. upload file size 2GB
-                    </p>
-                    {errorMessage && (
-                      <p className="text-xs leading-5 text-red-500">{errorMessage}</p>
-                    )}
-                  </section>
-                )}
-              </Dropzone>
+              <section className="flex w-full flex-col items-center justify-center gap-y-2">
+                <div
+                  {...getRootProps({ className: 'dropzone' })}
+                  className="flex w-full flex-col items-center justify-center gap-y-2 rounded-[4px] border border-dashed border-tertiary-grey-stone bg-background-seasalt py-2 text-center text-tertiary-grey-dim"
+                >
+                  <input {...getInputProps()} />
+                  <p className="cursor-pointer text-center text-base ">
+                    Drag your file here
+                    <br /> <u>or upload it</u>
+                  </p>
+                  <p className="text-xs leading-5">For multiple files, please use a .zip file</p>
+                </div>
+                <p className="text-xs leading-5 text-tertiary-grey-dim">
+                  Max. upload file size 2GB
+                </p>
+                {errorMessage && <p className="text-xs leading-5 text-red-500">{errorMessage}</p>}
+              </section>
             </div>
           )}
 
