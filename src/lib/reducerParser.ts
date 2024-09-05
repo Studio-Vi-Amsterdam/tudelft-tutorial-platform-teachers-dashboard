@@ -248,7 +248,7 @@ export const reducerParser = {
                     : 'unknown',
                   title: block.block_data.content ? block.block_data.content : '',
                   publishDate: 'hardcode',
-                  hasZoom: block.block_data.image_has_image_zoom ?? false,
+                  hasZoom: block.block_data.has_image_zoom ?? false,
                 },
               }
             case 'tu-delft-video':
@@ -291,7 +291,7 @@ export const reducerParser = {
                       : 'unknown',
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
-                    hasZoom: block.block_data.image_has_image_zoom ?? false,
+                    hasZoom: block.block_data.has_image_zoom ?? false,
                   },
                   title: block.block_data.title ? block.block_data.title : '',
                 },
@@ -311,7 +311,7 @@ export const reducerParser = {
                       : 'unknown',
                     title: block.block_data.content ? block.block_data.content : '',
                     publishDate: 'hardcode',
-                    hasZoom: block.block_data.image_has_image_zoom ?? false,
+                    hasZoom: block.block_data.has_image_zoom ?? false,
                   },
                   title: block.block_data.title ? block.block_data.title : '',
                 },
@@ -540,19 +540,30 @@ export const reducerParser = {
             },
             primarySubject: {
               fieldTitle: 'Primary Subject',
-              list: info.data.subjects.length > 0 ? info.data.subjects : [],
+              list:
+                info.data.subjects !== undefined
+                  ? Object.keys(info.data.subjects).map((key) => ({
+                      id: info.data.subjects[key].term_id,
+                      title: info.data.subjects[key].name,
+                    }))
+                  : [],
               required: true,
               value:
                 response.primary_subject &&
-                info.data.subjects.find((subject: any) => subject.id === response.primary_subject),
+                Object.keys(info.data.subjects)
+                  .map((key) => ({
+                    id: info.data.subjects[key].term_id,
+                    title: info.data.subjects[key].name,
+                  }))
+                  .find((subject: any) => subject.id === response.primary_subject),
             },
             secondarySubject: {
               fieldTitle: 'Secondary Subject',
-              list: info.data.subjects.length > 0 ? info.data.subjects : [],
+              list: info.data.secondary_subjects.length > 0 ? info.data.secondary_subjects : [],
               required: false,
               value:
                 response.secondary_subject &&
-                info.data.subjects.find(
+                info.data.secondary_subjects.find(
                   (subject: any) => subject.id === parseInt(response.secondary_subject as string),
                 ),
             },
@@ -870,7 +881,7 @@ export const reducerParser = {
                 block_data: {
                   image: item.image.id,
                   image_url: item.image.url,
-                  image_has_image_zoom: item.image.hasZoom ?? false,
+                  has_image_zoom: item.image.hasZoom ?? false,
                 },
               }
             }
@@ -899,7 +910,7 @@ export const reducerParser = {
                 block_data: {
                   image: item.imageText.image.id,
                   image_url: item.imageText.image.url,
-                  image_has_image_zoom: item.imageText.image.hasZoom ?? false,
+                  has_image_zoom: item.imageText.image.hasZoom ?? false,
                   content: item.imageText.text,
                   title: item.imageText.title,
                 },
@@ -911,7 +922,7 @@ export const reducerParser = {
                 block_data: {
                   image: item.textImage.image.id,
                   image_url: item.textImage.image.url,
-                  image_has_image_zoom: item.textImage.image.hasZoom ?? false,
+                  has_image_zoom: item.textImage.image.hasZoom ?? false,
                   content: item.textImage.text,
                   title: item.textImage.title,
                 },
