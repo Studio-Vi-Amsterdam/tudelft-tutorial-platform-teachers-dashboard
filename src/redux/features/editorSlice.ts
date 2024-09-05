@@ -135,7 +135,7 @@ export const editorSlice = createSlice({
                 },
                 secondarySubject: {
                   fieldTitle: 'Secondary Subject',
-                  list: info.subjects,
+                  list: info.secondarySubjects,
                   required: false,
                   value: {
                     id: undefined,
