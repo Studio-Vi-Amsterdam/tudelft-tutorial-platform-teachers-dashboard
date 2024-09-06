@@ -692,11 +692,11 @@ export const reducerParser = {
             },
             secondaryStudy: {
               fieldTitle: 'Secondary Study',
-              list: info.study ? info.study : [{ id: undefined, title: '' }],
+              list: info.secondary_study ? info.secondary_study : [{ id: undefined, title: '' }],
               required: false,
               isValid: true,
-              value: response.study
-                ? info.study.filter(
+              value: response.secondary_study
+                ? info.secondary_study.filter(
                     (el: { id: string; title: string }) => el.id === response.secondary_study,
                   )[0]
                 : '',
@@ -811,9 +811,9 @@ export const reducerParser = {
               fieldTitle: 'Secondary category',
               required: false,
               isValid: false,
-              list: info.categories ?? [],
-              value: response.secondary_category
-                ? info.categories.find(
+              list: info.secondary_categories ?? [],
+              value: info.secondary_categories
+                ? info.secondary_categories.find(
                     (item: any) => item.id === parseInt(response.secondary_category as string),
                   ) ?? { id: undefined, title: '' }
                 : { id: undefined, title: '' },

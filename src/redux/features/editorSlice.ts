@@ -323,7 +323,7 @@ export const editorSlice = createSlice({
                   fieldTitle: 'Secondary category',
                   required: false,
                   isValid: true,
-                  list: info.categories ?? [],
+                  list: info.secondaryCategories ?? [],
                   value: { id: undefined, title: '' },
                 },
               },
