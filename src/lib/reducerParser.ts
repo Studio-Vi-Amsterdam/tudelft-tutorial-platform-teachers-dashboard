@@ -188,7 +188,7 @@ export const reducerParser = {
         .map((block) => {
           switch (block.block_name) {
             case 'tu-delft-text':
-              if (!block.block_data.title === undefined) {
+              if (block.block_data.title === undefined) {
                 return {
                   text: block.block_data.content,
                 }
