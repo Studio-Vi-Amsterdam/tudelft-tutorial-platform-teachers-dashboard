@@ -86,7 +86,17 @@ const BlogEditor = () => {
             info = {
               courses: extraInfo.data.courses.length > 0 ? extraInfo.data.courses : [],
               software: extraInfo.data.softwares.length > 0 ? extraInfo.data.softwares : [],
-              subjects: extraInfo.data.subjects.length > 0 ? extraInfo.data.subjects : [],
+              subjects:
+                extraInfo.data.subjects !== undefined
+                  ? Object.keys(extraInfo.data.subjects).map((key) => ({
+                      id: extraInfo.data.subjects[key].term_id,
+                      title: extraInfo.data.subjects[key].name,
+                    }))
+                  : [],
+              secondarySubjects:
+                extraInfo.data.secondary_subjects.length > 0
+                  ? extraInfo.data.secondary_subjects
+                  : [],
               keywords:
                 extraInfo.data.keywords.length > 0
                   ? extraInfo.data.keywords.map(({ title }: any) => title)
