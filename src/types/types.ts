@@ -294,6 +294,7 @@ export interface IdTitleObject {
 interface MetaFieldParentInterface {
   required: boolean
   fieldTitle: string
+  isValid: boolean
   list?: string[] | IdTitleObject[] | []
 }
 
@@ -360,28 +361,43 @@ export interface TutorialResponsibleInterface {
   faculty: MetaFieldListInterface
 }
 
+export interface CourseBelongsInterface {
+  course: OnlyValueInterface
+  courseCode: OnlyValueInterface
+  primaryStudy: MetaFieldIdListInterface
+  secondaryStudy: MetaFieldIdListInterface
+  keywords: KeywordsInterface
+  image: OnlyValueImageInterface
+}
+
+export interface SoftwareBelongsInterface {
+  softwareVersion: MetaFieldIdListInterface
+  keywords: KeywordsInterface
+  image: OnlyValueImageInterface
+}
+
+export interface SubjectsInvolveInterface {
+  primaryCategory: MetaFieldIdListInterface
+  secondaryCategory: MetaFieldIdListInterface
+}
+
 export interface TutorialMetaObject {
   tutorialBelongs?: EditorBelongsInterface
   tutorialResponsible?: TutorialResponsibleInterface
-  courseBelongs?: {
-    course: OnlyValueInterface
-    courseCode: OnlyValueInterface
-    primaryStudy: MetaFieldIdListInterface
-    secondaryStudy: MetaFieldIdListInterface
-    keywords: KeywordsInterface
-    image: OnlyValueImageInterface
-  }
+  courseBelongs?: CourseBelongsInterface
   courseResponsible?: TutorialResponsibleInterface
-  softwareBelongs?: {
-    softwareVersion: MetaFieldIdListInterface
-    keywords: KeywordsInterface
-    image: OnlyValueImageInterface
-  }
-  subjectsInvolve?: {
-    primaryCategory: MetaFieldIdListInterface
-    secondaryCategory: MetaFieldIdListInterface
-  }
+  softwareBelongs?: SoftwareBelongsInterface
+  subjectsInvolve?: SubjectsInvolveInterface
 }
+
+export type AllMetafieldsType =
+  | keyof EditorBelongsInterface
+  | keyof TutorialResponsibleInterface
+  | keyof CourseBelongsInterface
+  | keyof SoftwareBelongsInterface
+  | keyof SubjectsInvolveInterface
+
+export type MetaObjectKeys = keyof TutorialMetaObject
 
 export interface EditorState {
   isEditorLoaded: boolean

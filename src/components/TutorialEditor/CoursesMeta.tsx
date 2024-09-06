@@ -22,6 +22,8 @@ import { taxonomiesAPI } from 'src/lib/api'
 import AddMediaElement from './AddMediaElement'
 
 const CoursesMeta = () => {
+  const errValidationStyle = 'border border-red-500 rounded-sm'
+
   const belongsFields = useAppSelector((state: RootState) => state.editor.meta.courseBelongs)
   const responsibleFields = useAppSelector(
     (state: RootState) => state.editor.meta.courseResponsible,
@@ -225,14 +227,14 @@ const CoursesMeta = () => {
                 <div className="min-h-14 min-w-[104px] max-w-[104px]">{`${belongsFields.courseCode.fieldTitle}${
                   belongsFields.courseCode.required ? '*' : ''
                 }`}</div>
-                <div className="w-9/12">
+                <div className={`w-9/12 ${!belongsFields.course.isValid && errValidationStyle}`}>
                   <input
                     value={belongsFields.courseCode.value}
                     placeholder={belongsFields.courseCode.fieldTitle}
                     onChange={(e) =>
                       handleChangeInput(e.target.value, 'courseBelongs', 'courseCode')
                     }
-                    className="w-full p-4 rounded border placeholder:text-stone text-base bg-seasalt border-dim"
+                    className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
                   />
                 </div>
               </div>
@@ -240,10 +242,12 @@ const CoursesMeta = () => {
                 <div className="min-h-14 min-w-[104px] max-w-[104px]">{`${belongsFields.primaryStudy.fieldTitle}${
                   belongsFields.primaryStudy.required ? '*' : ''
                 }`}</div>
-                <div className="w-9/12">
+                <div
+                  className={`w-9/12 ${!belongsFields.primaryStudy.isValid && errValidationStyle}`}
+                >
                   <select
                     value={belongsFields.primaryStudy.value.title}
-                    className="w-full p-4 rounded border text-[#96969B] text-base bg-seasalt border-dim"
+                    className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
                     onChange={(e) =>
                       handleMetaIdInputChange(e.target.value, 'courseBelongs', 'primaryStudy')
                     }
@@ -259,13 +263,15 @@ const CoursesMeta = () => {
                 </div>
               </div>
               <div className="flex w-full flex-row items-center justify-between">
-                <div className="min-h-14">{`${belongsFields.secondaryStudy.fieldTitle}${
+                <div className="min-h-14 min-w-[104px] max-w-[104px]">{`${belongsFields.secondaryStudy.fieldTitle}${
                   belongsFields.secondaryStudy.required ? '*' : ''
                 }`}</div>
-                <div className="w-9/12">
+                <div
+                  className={`w-9/12 ${!belongsFields.secondaryStudy.isValid && errValidationStyle}`}
+                >
                   <select
                     value={belongsFields.secondaryStudy.value.title}
-                    className="w-full p-4 rounded border text-[#96969B] text-base bg-seasalt border-dim"
+                    className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
                     onChange={(e) =>
                       handleMetaIdInputChange(e.target.value, 'courseBelongs', 'secondaryStudy')
                     }
@@ -314,7 +320,7 @@ const CoursesMeta = () => {
                         placeholder="search keyword"
                         value={belongsFields.keywords.value}
                         onChange={(e) => handleKeywordInputChange(e.target.value)}
-                        className="w-full p-4 rounded border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible"
+                        className={`w-full p-4 rounded border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible ${!belongsFields.keywords.isValid && errValidationStyle}`}
                         onFocus={() => setShowDropdown(true)}
                         onBlur={() =>
                           setTimeout(() => {
@@ -373,7 +379,7 @@ const CoursesMeta = () => {
                 <div className="h-14 flex items-center min-w-[104px] max-w-[104px]">{`${belongsFields.image.fieldTitle}${
                   belongsFields.image.required ? '*' : ''
                 }`}</div>
-                <div className="w-9/12">
+                <div className={`w-9/12 ${!belongsFields.image.isValid && errValidationStyle}`}>
                   <AddMediaElement
                     block="courseMeta"
                     chapterIndex={undefined}
@@ -426,10 +432,12 @@ const CoursesMeta = () => {
                 <div className="min-w-[104px] max-w-[104px]">{`${responsibleFields.faculty.fieldTitle}${
                   responsibleFields.faculty.required ? '*' : ''
                 }`}</div>
-                <div className="w-9/12">
+                <div
+                  className={`w-9/12 ${!responsibleFields.faculty.isValid && errValidationStyle}`}
+                >
                   <select
                     value={responsibleFields.faculty.value}
-                    className="w-full p-4 rounded text-[#96969B] border text-base bg-seasalt border-dim"
+                    className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
                     onChange={(e) =>
                       handleMetaInputChange(e.target.value, 'courseResponsible', 'faculty')
                     }
@@ -455,7 +463,7 @@ const CoursesMeta = () => {
                         <input
                           type="text"
                           placeholder="search teacher"
-                          className="w-full p-4 rounded border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible"
+                          className={`w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone ${!responsibleFields.teachers.isValid && errValidationStyle}`}
                           value={responsibleFields.teachers.value}
                           onChange={(e) => handleTeacherInputChange(e.target.value)}
                           onFocus={() => setShowDropdownTeacher(true)}

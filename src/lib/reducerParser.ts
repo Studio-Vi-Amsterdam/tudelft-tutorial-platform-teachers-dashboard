@@ -510,6 +510,7 @@ export const reducerParser = {
               fieldTitle: 'Course',
               required: true,
               list: info.data.courses.length > 0 ? info.data.courses : [],
+              isValid: !!response.course,
               value: response.course
                 ? info.data.courses.find((item: any) => item.id === response.course) ?? {
                     id: undefined,
@@ -521,6 +522,7 @@ export const reducerParser = {
               fieldTitle: 'Primary software used',
               required: true,
               list: info.data.softwares.length > 0 ? info.data.softwares : [],
+              isValid: !!response.primary_software,
               value: response.primary_software
                 ? info.data.softwares.find(
                     (item: any) => item.id === response.primary_software,
@@ -537,10 +539,12 @@ export const reducerParser = {
                 softwareVersions &&
                 softwareVersions.find((item) => item.id === response.software_version?.[0]),
               required: false,
+              isValid: true,
             },
             primarySubject: {
               fieldTitle: 'Primary Subject',
               list: info.data.subjects.length > 0 ? info.data.subjects : [],
+              isValid: !!response.primary_subject,
               required: true,
               value:
                 response.primary_subject &&
@@ -549,6 +553,7 @@ export const reducerParser = {
             secondarySubject: {
               fieldTitle: 'Secondary Subject',
               list: info.data.subjects.length > 0 ? info.data.subjects : [],
+              isValid: true,
               required: false,
               value:
                 response.secondary_subject &&
@@ -559,6 +564,7 @@ export const reducerParser = {
             keywords: {
               required: true,
               list: response.keywords ? response.keywords : [],
+              isValid: !!response.keywords,
               value: '',
               proposedList: info.data.keywords.length > 0 ? info.data.length : [],
               fieldTitle: 'Keywords',
@@ -566,6 +572,7 @@ export const reducerParser = {
             image: {
               fieldTitle: 'Featured Image',
               required: false,
+              isValid: true,
               value: response.featured_image
                 ? {
                     format: response.featured_image.split('.').pop,
@@ -580,6 +587,7 @@ export const reducerParser = {
             level: {
               fieldTitle: 'Level',
               required: false,
+              isValid: true,
               list: ['Beginner', 'Intermediate', 'Advanced', 'Expert'],
               value: response.level ? response.level : '',
             },
@@ -588,6 +596,7 @@ export const reducerParser = {
             faculty: {
               fieldTitle: 'Faculty',
               required: true,
+              isValid: !!response.faculty,
               value: response.faculty ? response.faculty : '',
               list: info.data.faculties.length > 0 ? info.data.faculties : [],
             },
@@ -595,6 +604,7 @@ export const reducerParser = {
               required: true,
               list: response.teachers ? response.teachers : [],
               value: '',
+              isValid: !!response.teachers,
               proposedList:
                 info.data.teachers.length > 0
                   ? info.data.teachers.map(({ title }: any) => title)
@@ -626,15 +636,18 @@ export const reducerParser = {
               fieldTitle: 'Course',
               required: true,
               value: response.title ? response.title : '',
+              isValid: !!response.title,
             },
             courseCode: {
               fieldTitle: 'Course Code',
               required: true,
+              isValid: !!response.course_code,
               value: response.course_code ? response.course_code : '',
             },
             image: {
               fieldTitle: 'Featured image',
               required: false,
+              isValid: true,
               value: response.featured_image
                 ? {
                     format: response.featured_image.split('.').pop,
@@ -649,6 +662,7 @@ export const reducerParser = {
             keywords: {
               fieldTitle: 'Keywords',
               list: response.keywords ? response.keywords : [],
+              isValid: !!response.keywords,
               proposedList:
                 info.keywords.length > 0 ? info.keywords.map(({ title }: any) => title) : [],
               required: false,
@@ -658,6 +672,7 @@ export const reducerParser = {
               fieldTitle: 'Primary Study',
               list: info.study ? info.study : [{ id: undefined, title: '' }],
               required: true,
+              isValid: !!response.study,
               value: response.study
                 ? info.study.filter(
                     (el: { id: string; title: string }) => el.id === response.study,
@@ -668,6 +683,7 @@ export const reducerParser = {
               fieldTitle: 'Secondary Study',
               list: info.study ? info.study : [{ id: undefined, title: '' }],
               required: false,
+              isValid: true,
               value: response.study
                 ? info.study.filter(
                     (el: { id: string; title: string }) => el.id === response.secondary_study,
@@ -679,6 +695,7 @@ export const reducerParser = {
             faculty: {
               fieldTitle: 'Faculty',
               required: true,
+              isValid: !!response.faculty,
               value: response.faculty ? response.faculty : '',
               list: info.faculty.length > 0 ? info.faculty : [],
             },
@@ -686,6 +703,7 @@ export const reducerParser = {
               required: true,
               list: response.teachers ? response.teachers : [],
               value: '',
+              isValid: !!response.teachers,
               proposedList:
                 info.teachers.length > 0 ? info.teachers.map(({ title }: any) => title) : [],
               fieldTitle: 'Teachers',
@@ -715,6 +733,7 @@ export const reducerParser = {
             image: {
               fieldTitle: 'Featured image',
               required: false,
+              isValid: true,
               value: response.featured_image
                 ? {
                     format: response.featured_image.split('.').pop,
@@ -729,6 +748,7 @@ export const reducerParser = {
             keywords: {
               fieldTitle: 'Keywords',
               list: response.keywords ? response.keywords : [],
+              isValid: !!response.keywords,
               proposedList:
                 info.keywords.length > 0 ? info.keywords.map(({ title }: any) => title) : [],
               required: false,
@@ -737,6 +757,7 @@ export const reducerParser = {
             softwareVersion: {
               fieldTitle: 'Software version',
               required: true,
+              isValid: !!response['software-version'] || { title: response['software-version'] },
               list: info.software_versions
                 ? info.software_versions
                 : [{ id: undefined, title: '' }],
@@ -768,6 +789,7 @@ export const reducerParser = {
               fieldTitle: 'Primary category',
               list: info.categories ?? [],
               required: true,
+              isValid: !!response.category,
               value: response.category
                 ? info.categories.find(
                     (item: any) => item.id === parseInt(response.category as string),
@@ -777,6 +799,7 @@ export const reducerParser = {
             secondaryCategory: {
               fieldTitle: 'Secondary category',
               required: false,
+              isValid: false,
               list: info.categories ?? [],
               value: response.secondary_category
                 ? info.categories.find(

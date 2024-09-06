@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import {
   AddChapterElementInterface,
   AddSubchapterElementInterface,
+  AllMetafieldsType,
   ArtictesType,
   BlankSubchapterActionInterface,
   ChapterTextFieldActionInterface,
@@ -108,18 +109,21 @@ export const editorSlice = createSlice({
               tutorialBelongs: {
                 course: {
                   fieldTitle: 'Course',
+                  isValid: true,
                   required: true,
                   list: info.courses,
                   value: { id: undefined, title: '' },
                 },
                 primary: {
                   fieldTitle: 'Primary software used',
+                  isValid: true,
                   required: true,
                   list: info.software,
                   value: { id: undefined, title: '', version: [] },
                 },
                 version: {
                   fieldTitle: 'Software Version',
+                  isValid: true,
                   list: [],
                   value: { id: undefined, title: '' },
                   required: false,
@@ -127,6 +131,7 @@ export const editorSlice = createSlice({
                 primarySubject: {
                   fieldTitle: 'Primary Subject',
                   list: info.subjects,
+                  isValid: true,
                   required: true,
                   value: {
                     id: undefined,
@@ -136,6 +141,7 @@ export const editorSlice = createSlice({
                 secondarySubject: {
                   fieldTitle: 'Secondary Subject',
                   list: info.subjects,
+                  isValid: true,
                   required: false,
                   value: {
                     id: undefined,
@@ -145,6 +151,7 @@ export const editorSlice = createSlice({
                 keywords: {
                   required: true,
                   list: [],
+                  isValid: true,
                   value: '',
                   proposedList: info.keywords,
                   fieldTitle: 'Keywords',
@@ -152,6 +159,7 @@ export const editorSlice = createSlice({
                 image: {
                   fieldTitle: 'Featured Image',
                   required: false,
+                  isValid: true,
                   value: {
                     format: '',
                     link: '',
@@ -165,6 +173,7 @@ export const editorSlice = createSlice({
                 },
                 level: {
                   fieldTitle: 'Level',
+                  isValid: true,
                   required: false,
                   list: ['Beginner', 'Intermediate', 'Advanced', 'Expert'],
                   value: '',
@@ -173,12 +182,14 @@ export const editorSlice = createSlice({
               tutorialResponsible: {
                 faculty: {
                   fieldTitle: 'Faculty',
+                  isValid: true,
                   required: true,
                   value: '',
                   list: ['Bouwkunde'] /* Hardcoded now, as in design file */,
                 },
                 teachers: {
                   required: true,
+                  isValid: true,
                   list: [],
                   value: '',
                   proposedList: info.teachers,
@@ -191,17 +202,20 @@ export const editorSlice = createSlice({
               courseBelongs: {
                 course: {
                   fieldTitle: 'Course',
+                  isValid: true,
                   required: true,
                   value: '',
                 },
                 courseCode: {
                   fieldTitle: 'Course Code',
                   required: true,
+                  isValid: true,
                   value: '',
                 },
                 image: {
                   fieldTitle: 'Featured image',
                   required: false,
+                  isValid: true,
                   value: {
                     format: '',
                     link: '',
@@ -216,6 +230,7 @@ export const editorSlice = createSlice({
                 keywords: {
                   fieldTitle: 'Keywords',
                   list: [],
+                  isValid: true,
                   proposedList: info.keywords,
                   required: false,
                   value: '',
@@ -224,6 +239,7 @@ export const editorSlice = createSlice({
                   fieldTitle: 'Primary Study',
                   list: info.primaryStudy,
                   required: true,
+                  isValid: true,
                   value: {
                     id: undefined,
                     title: '',
@@ -233,6 +249,7 @@ export const editorSlice = createSlice({
                   fieldTitle: 'Secondary Study',
                   list: info.primaryStudy,
                   required: false,
+                  isValid: true,
                   value: {
                     id: undefined,
                     title: '',
@@ -243,11 +260,13 @@ export const editorSlice = createSlice({
                 faculty: {
                   fieldTitle: 'Faculty',
                   required: true,
+                  isValid: true,
                   value: '',
                   list: ['Bouwkunde'] /* Hardcoded now, as in design file */,
                 },
                 teachers: {
                   required: true,
+                  isValid: true,
                   list: [],
                   value: '',
                   proposedList: info.teachers,
@@ -261,6 +280,7 @@ export const editorSlice = createSlice({
                 image: {
                   fieldTitle: 'Featured image',
                   required: false,
+                  isValid: true,
                   value: {
                     format: '',
                     link: '',
@@ -274,6 +294,7 @@ export const editorSlice = createSlice({
                 },
                 keywords: {
                   fieldTitle: 'Keywords',
+                  isValid: true,
                   list: [],
                   proposedList: info.keywords,
                   required: false,
@@ -282,6 +303,7 @@ export const editorSlice = createSlice({
                 softwareVersion: {
                   fieldTitle: 'Software version',
                   required: true,
+                  isValid: true,
                   list: info.softwareVersions,
                   value: { id: undefined, title: '' },
                 },
@@ -293,12 +315,14 @@ export const editorSlice = createSlice({
                 primaryCategory: {
                   fieldTitle: 'Primary category',
                   required: true,
+                  isValid: true,
                   list: info.categories ?? [],
                   value: { id: undefined, title: '' },
                 },
                 secondaryCategory: {
                   fieldTitle: 'Secondary category',
                   required: false,
+                  isValid: true,
                   list: info.categories ?? [],
                   value: { id: undefined, title: '' },
                 },
@@ -854,6 +878,7 @@ export const editorSlice = createSlice({
     ) => {
       if (state.meta.tutorialBelongs) {
         if (action.payload.belongsKeyName === 'primary') {
+          state.meta.tutorialBelongs.primary.isValid = true
           state.meta.tutorialBelongs.primary.value = state.meta.tutorialBelongs.primary.list.find(
             (item) => item.title === action.payload.value,
           ) ?? { id: undefined, title: '', version: [] }
@@ -864,6 +889,7 @@ export const editorSlice = createSlice({
               )?.version ?? []
           }
         } else {
+          state.meta.tutorialBelongs[action.payload.belongsKeyName].isValid = true
           state.meta.tutorialBelongs[action.payload.belongsKeyName].value =
             state.meta.tutorialBelongs[action.payload.belongsKeyName].list.find(
               (item) => item.title === action.payload.value,
@@ -879,6 +905,7 @@ export const editorSlice = createSlice({
       }>,
     ) => {
       if (state.meta.courseBelongs) {
+        state.meta.courseBelongs[action.payload.belongsKeyName].isValid = true
         state.meta.courseBelongs[action.payload.belongsKeyName].value = state.meta.courseBelongs[
           action.payload.belongsKeyName
         ].list.find((item) => item.title === action.payload.value) ?? { id: undefined, title: '' }
@@ -892,6 +919,7 @@ export const editorSlice = createSlice({
       }>,
     ) => {
       if (state.meta.softwareBelongs) {
+        state.meta.softwareBelongs[action.payload.belongsKeyName].isValid = true
         state.meta.softwareBelongs[action.payload.belongsKeyName].value =
           state.meta.softwareBelongs[action.payload.belongsKeyName].list.find(
             (item) => item.title === action.payload.value,
@@ -906,6 +934,7 @@ export const editorSlice = createSlice({
       }>,
     ) => {
       if (state.meta.subjectsInvolve) {
+        state.meta.subjectsInvolve[action.payload.involvesKeyName].isValid = true
         state.meta.subjectsInvolve[action.payload.involvesKeyName].value =
           state.meta.subjectsInvolve[action.payload.involvesKeyName].list.find(
             (item) => item.title === action.payload.value,
@@ -1049,12 +1078,14 @@ export const editorSlice = createSlice({
         action.payload.belongsKeyName &&
         state.meta.tutorialBelongs
       ) {
+        state.meta.tutorialBelongs[action.payload.belongsKeyName].isValid = true
         state.meta.tutorialBelongs[action.payload.belongsKeyName].value = action.payload.value
       } else if (
         action.payload.objectName === 'tutorialResponsible' &&
         action.payload.responsibleKeyName &&
         state.meta.tutorialResponsible
       ) {
+        state.meta.tutorialResponsible[action.payload.responsibleKeyName].isValid = true
         state.meta.tutorialResponsible[action.payload.responsibleKeyName].value =
           action.payload.value
       } else if (
@@ -1062,18 +1093,21 @@ export const editorSlice = createSlice({
         action.payload.responsibleKeyName &&
         state.meta.courseResponsible
       ) {
+        state.meta.courseResponsible[action.payload.responsibleKeyName].isValid = true
         state.meta.courseResponsible[action.payload.responsibleKeyName].value = action.payload.value
       } else if (
         action.payload.objectName === 'courseBelongs' &&
         action.payload.courseBelongsKeyName &&
         state.meta.courseBelongs
       ) {
+        state.meta.courseBelongs[action.payload.courseBelongsKeyName].isValid = true
         state.meta.courseBelongs[action.payload.courseBelongsKeyName].value = action.payload.value
       } else if (
         action.payload.objectName === 'softwareBelongs' &&
         action.payload.softwareBelongsKeyName &&
         state.meta.softwareBelongs
       ) {
+        state.meta.softwareBelongs[action.payload.softwareBelongsKeyName].isValid = true
         state.meta.softwareBelongs[action.payload.softwareBelongsKeyName].value =
           action.payload.value
       } else if (
@@ -1081,6 +1115,7 @@ export const editorSlice = createSlice({
         action.payload.subjectInvolveKey &&
         state.meta.subjectsInvolve
       ) {
+        state.meta.subjectsInvolve[action.payload.subjectInvolveKey].isValid = true
         state.meta.subjectsInvolve[action.payload.subjectInvolveKey].value.title =
           action.payload.value
       }
@@ -1090,16 +1125,19 @@ export const editorSlice = createSlice({
       action: PayloadAction<{ value: string; objectName: keyof TutorialMetaObject }>,
     ) => {
       if (action.payload.objectName === 'tutorialBelongs' && state.meta.tutorialBelongs) {
+        state.meta.tutorialBelongs.keywords.isValid = true
         state.meta.tutorialBelongs.keywords.list = [
           ...state.meta.tutorialBelongs.keywords.list,
           action.payload.value,
         ]
       } else if (action.payload.objectName === 'courseBelongs' && state.meta.courseBelongs) {
+        state.meta.courseBelongs.keywords.isValid = true
         state.meta.courseBelongs.keywords.list = [
           ...state.meta.courseBelongs.keywords.list,
           action.payload.value,
         ]
       } else if (action.payload.objectName === 'softwareBelongs' && state.meta.softwareBelongs) {
+        state.meta.softwareBelongs.keywords.isValid = true
         state.meta.softwareBelongs.keywords.list = [
           ...state.meta.softwareBelongs.keywords.list,
           action.payload.value,
@@ -1111,6 +1149,7 @@ export const editorSlice = createSlice({
       action: PayloadAction<{ value: string; objectName: keyof TutorialMetaObject }>,
     ) => {
       if (state.meta.tutorialResponsible && action.payload.objectName === 'tutorialResponsible') {
+        state.meta.tutorialResponsible.teachers.isValid = true
         state.meta.tutorialResponsible.teachers.list = [
           ...state.meta.tutorialResponsible.teachers.list,
           action.payload.value,
@@ -1119,6 +1158,7 @@ export const editorSlice = createSlice({
         state.meta.courseResponsible &&
         action.payload.objectName === 'courseResponsible'
       ) {
+        state.meta.courseResponsible.teachers.isValid = true
         state.meta.courseResponsible.teachers.list = [
           ...state.meta.courseResponsible.teachers.list,
           action.payload.value,
@@ -1269,6 +1309,25 @@ export const editorSlice = createSlice({
         state.mediaIds = removeFirstOccurrence(state.mediaIds, action.payload)
       }
     },
+    setMetafieldsValidationErrors: (state, action: PayloadAction<any>) => {
+      const errorsObject = action.payload
+      if (errorsObject) {
+        Object.keys(errorsObject).length > 0 &&
+          Object.keys(errorsObject).forEach((block) => {
+            const blockName = block as keyof typeof state.meta
+            const blockData = state.meta[blockName]
+            if (blockData) {
+              errorsObject[blockName].forEach((field: AllMetafieldsType) => {
+                const fieldName = field as keyof typeof blockData
+                const fieldData = blockData[fieldName] as { isValid: boolean } | undefined
+                if (fieldData) {
+                  fieldData.isValid = false
+                }
+              })
+            }
+          })
+      }
+    },
   },
 })
 
@@ -1325,6 +1384,7 @@ export const {
   deleteMediaFromArray,
   moveElement,
   setVideoThumbnail,
+  setMetafieldsValidationErrors,
 } = editorSlice.actions
 
 export default editorSlice.reducer

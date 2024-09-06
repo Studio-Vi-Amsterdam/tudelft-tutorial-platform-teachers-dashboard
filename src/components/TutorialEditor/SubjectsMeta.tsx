@@ -5,6 +5,8 @@ import { RootState } from 'src/redux/store'
 import { changeSubjectsIdListField } from 'src/redux/features/editorSlice'
 
 const SubjectsMeta = () => {
+  const errValidationStyle = 'border border-red-500 rounded-sm'
+
   const belongsFields = useAppSelector((state: RootState) => state.editor.meta.subjectsInvolve)
   const dispatch = useAppDispatch()
   const handleMetaIdInputChange = (
@@ -31,10 +33,12 @@ const SubjectsMeta = () => {
                 <div className="min-w-[104px] max-w-[104px]">{`${belongsFields.primaryCategory.fieldTitle}${
                   belongsFields.primaryCategory.required ? '*' : ''
                 }`}</div>
-                <div className="w-9/12">
+                <div
+                  className={`w-9/12 ${!belongsFields.primaryCategory.isValid && errValidationStyle}`}
+                >
                   <select
                     value={belongsFields.primaryCategory.value.title}
-                    className="w-full p-4 rounded text-[#96969B] border text-base bg-seasalt border-dim"
+                    className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
                     onChange={(e) => handleMetaIdInputChange(e.target.value, 'primaryCategory')}
                   >
                     <option value="">{belongsFields.primaryCategory.fieldTitle}</option>
@@ -51,10 +55,12 @@ const SubjectsMeta = () => {
                 <div className="min-w-[104px] max-w-[104px]">{`${belongsFields.secondaryCategory.fieldTitle}${
                   belongsFields.secondaryCategory.required ? '*' : ''
                 }`}</div>
-                <div className="w-9/12">
+                <div
+                  className={`w-9/12 ${!belongsFields.secondaryCategory.isValid && errValidationStyle}`}
+                >
                   <select
                     value={belongsFields.secondaryCategory.value.title}
-                    className="w-full p-4 rounded text-[#96969B] border text-base bg-seasalt border-dim"
+                    className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
                     onChange={(e) => handleMetaIdInputChange(e.target.value, 'secondaryCategory')}
                   >
                     <option value="">{belongsFields.secondaryCategory.fieldTitle}</option>
