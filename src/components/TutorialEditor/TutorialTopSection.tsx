@@ -12,11 +12,11 @@ import { RootState } from 'src/redux/store'
 import AddElementBlock from './AddElementBlock'
 import ElementsBlock from './ElementsBlock'
 import BundledEditor from './BundledEditor'
-import { AddElementsType } from 'src/types/types'
+import { AddElementsType, TextElementInterface } from 'src/types/types'
 import { articlesAPI } from 'src/lib/api'
 
 interface TutorialTopSectionProps {
-  tutorialTitle: string
+  tutorialTitle: TextElementInterface
 }
 
 const TutorialTopSection = (props: TutorialTopSectionProps) => {
@@ -41,8 +41,8 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
   }
 
   const tutorialElements: AddElementsType[] = [
-    'text',
-    'infobox',
+    'text block',
+    'infobox block',
     'image',
     'video',
     'tutorial cards',
@@ -54,8 +54,21 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
     const payload: any = {}
 
     payload[val] = ''
-
-    if (val === 'quiz') {
+    if (val === 'text block') {
+      payload.text = {
+        text: '',
+        isValid: true,
+      }
+      delete payload['text block']
+      dispatch(addTutorialElements(payload))
+    } else if (val === 'infobox block') {
+      payload.infobox = {
+        text: '',
+        isValid: true,
+      }
+      delete payload['infobox block']
+      dispatch(addTutorialElements(payload))
+    } else if (val === 'quiz') {
       payload[val] = {
         question: '',
         answers: [
@@ -69,8 +82,9 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       dispatch(addTutorialElements(payload))
     } else if (val === 'h5p element') {
       payload.h5pElement = {
-        value: '',
+        text: '',
         error: '',
+        isValid: true,
       }
       delete payload['h5p element']
       dispatch(addTutorialElements(payload))
@@ -120,14 +134,16 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       </EditorLabel>
       <TextInput
         handleChange={handleTutorialTitleInputChange}
-        value={tutorialTitle}
+        value={tutorialTitle.text}
         placeholder="Tutorial title"
         headingType="h1"
+        notValid={!tutorialTitle.isValid}
       />
       <BundledEditor
-        value={tutorialDescription}
+        value={tutorialDescription.text}
         handleChange={handleTutorialDescriptionInputChange}
         extended
+        notValid={!tutorialDescription.isValid}
       />
       <Tip>
         <p>

@@ -33,7 +33,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
         setElementText({
           block,
           index,
-          text: value,
+          text: { text: value, isValid: true },
           nestedIndex: chapterIndex,
           subchapterIndex,
         }),
@@ -47,7 +47,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
         setElementInfobox({
           block,
           index,
-          infobox: value,
+          infobox: { text: value, isValid: true },
           nestedIndex: chapterIndex,
           subchapterIndex,
         }),
@@ -359,11 +359,12 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               elementIndex={index}
             >
               <BundledEditor
-                value={element.text}
+                value={element.text.text}
                 block={block}
                 index={index}
                 handleChange={handleTextElementChange}
                 extended
+                notValid={!element.text.isValid}
               />
             </DeleteElementWraper>
           )}
@@ -375,10 +376,11 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               elementIndex={index}
             >
               <BundledEditor
-                value={element.infobox}
+                value={element.infobox.text}
                 block={block}
                 index={index}
                 handleChange={handleInfoboxElementChange}
+                notValid={!element.infobox.isValid}
               />
             </DeleteElementWraper>
           )}

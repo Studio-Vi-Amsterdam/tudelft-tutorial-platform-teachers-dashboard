@@ -22,17 +22,18 @@ const H5pElement = (props: QuizElementProps) => {
           ].h5pElement,
   )
   const [localH5PElement, setLocalH5PElement] = useState<h5pElementInterface>(
-    h5pElement || { value: '', error: '' },
+    h5pElement || { text: '', error: '', isValid: true },
   )
 
   const handleChangeInput = (val: string) => {
     if (val.toLowerCase().includes('<script')) {
       setLocalH5PElement({
-        value: val,
+        text: val,
         error: "You can't use <script> tag!",
+        isValid: false,
       })
     } else {
-      setLocalH5PElement({ error: '', value: val })
+      setLocalH5PElement({ error: '', text: val, isValid: val.trim().length > 0 })
     }
   }
 
@@ -56,8 +57,9 @@ const H5pElement = (props: QuizElementProps) => {
       <TextInput
         handleChange={handleChangeInput}
         placeholder="Insert the video URL here"
-        value={localH5PElement.value}
+        value={localH5PElement.text}
         element="textarea"
+        notValid={!localH5PElement.isValid}
       />
       {localH5PElement.error && <p className="text-red-500">{localH5PElement.error}</p>}
     </div>

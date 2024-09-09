@@ -133,6 +133,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
             format: '',
             link: '',
             url: '',
+            isValid: false,
             publishDate: '',
             title: '',
             type: 'image',
@@ -156,6 +157,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
             format: '',
             link: '',
             url: '',
+            isValid: false,
             publishDate: '',
             title: '',
             type: 'image',
@@ -175,6 +177,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
               format: '',
               link: '',
               url: '',
+              isValid: true,
               publishDate: '',
               title: '',
               type: 'image',
@@ -195,6 +198,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
               format: '',
               link: '',
               url: '',
+              isValid: true,
               publishDate: '',
               title: '',
               type: 'video',
@@ -228,6 +232,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
             url: mediaDataState.url ?? mediaDataState.link,
             publishDate: mediaDataState.publishDate,
             title: mediaDataState.title,
+            isValid: true,
             type: 'image',
             description: mediaDataState.description,
             thumbnail: undefined,
@@ -247,6 +252,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
               url: mediaDataState.url ?? mediaDataState.link,
               publishDate: mediaDataState.publishDate,
               title: mediaDataState.title,
+              isValid: true,
               type: 'image',
               description: mediaDataState.description,
               thumbnail: undefined,
@@ -310,7 +316,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
         </div>
       ) : (
         <div
-          className={`${props.className === 'without-bg' ? '' : 'bg-tertiary-grey-silver py-16 justify-center'} flex w-full items-center  `}
+          className={`${props.className === 'without-bg' ? '' : 'bg-tertiary-grey-silver py-16 justify-center'} flex w-full items-center `}
         >
           <Button variant={'outline'} onClick={() => setDialogOpened(true)}>
             <div className={props.className === 'without-bg' ? 'hidden' : ''}>+</div>

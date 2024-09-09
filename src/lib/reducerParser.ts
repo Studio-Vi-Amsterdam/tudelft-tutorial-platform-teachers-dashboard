@@ -159,7 +159,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
     return {
       block_name: 'tu-delft-text',
       block_data: {
-        content: chapter.text,
+        content: chapter.text.text,
       },
     }
   }
@@ -190,7 +190,7 @@ export const reducerParser = {
             case 'tu-delft-text':
               if (block.block_data.title === undefined) {
                 return {
-                  text: block.block_data.content,
+                  text: { text: block.block_data.content, isValid: true },
                 }
               } else {
                 return {
@@ -202,7 +202,10 @@ export const reducerParser = {
               }
             case 'tu-delft-info-box':
               return {
-                infobox: block.block_data.content,
+                infobox: {
+                  text: block.block_data.content,
+                  isValid: true,
+                },
               }
             case 'tu-delft-quiz':
               return {
@@ -232,7 +235,8 @@ export const reducerParser = {
             case 'tu-delft-h5p':
               return {
                 h5pElement: {
-                  value: block.block_data.source,
+                  text: block.block_data.source,
+                  isValid: true,
                 },
               }
             case 'tu-delft-image':
@@ -446,8 +450,8 @@ export const reducerParser = {
         const newChapter: ChapterInterface = {
           id: chapter.id,
           layout: chapterLayout(),
-          title: chapter.title,
-          text: chapter.content[0].block_data.content || '',
+          title: { text: chapter.title, isValid: true },
+          text: { text: chapter.content[0].block_data.content || '', isValid: true },
           elements: chapter.content.length > 0 ? parsedElements(chapter.content.slice(1)) : [],
           subchapters: [],
           video:
@@ -458,6 +462,7 @@ export const reducerParser = {
                   url: chapter.content[0].block_data.video_url || '',
                   type: 'video',
                   format: 'test',
+                  isValid: !!chapter.content[0].block_data.video,
                   title: '',
                   publishDate: '',
                   description: chapter.content[0].block_data.description ?? '',
@@ -472,6 +477,7 @@ export const reducerParser = {
                   link: chapter.content[0].block_data.image_url || '',
                   type: 'image',
                   format: 'test',
+                  isValid: !!chapter.content[0].block_data.image,
                   title: '',
                   publishDate: '',
                   description: chapter.content[0].block_data.description ?? '',
@@ -493,9 +499,15 @@ export const reducerParser = {
 
       reducerObject = {
         tutorialTop: {
-          title: response.title ? response.title : '',
+          title: {
+            text: response.title ? response.title : '',
+            isValid: !!response.title,
+          },
           titleType: 'h1',
-          description: response.description ? response.description : '',
+          description: {
+            text: response.description ? response.description : '',
+            isValid: !!response.description,
+          },
           elements: tutorialTopElements,
         },
         chapters: response.chapters ? await parseChapters(response.chapters) : [],
@@ -630,9 +642,15 @@ export const reducerParser = {
       const info = await getInfo(articleType)
       reducerObject = {
         tutorialTop: {
-          title: response.title ? response.title : '',
+          title: {
+            text: response.title ? response.title : '',
+            isValid: !!response.title,
+          },
           titleType: 'h1',
-          description: response.description ? response.description : '',
+          description: {
+            text: response.description ? response.description : '',
+            isValid: !!response.description,
+          },
           elements: tutorialTopElements,
         },
         chapters: response.chapters ? await parseChapters(response.chapters) : [],
@@ -728,9 +746,15 @@ export const reducerParser = {
 
       reducerObject = {
         tutorialTop: {
-          title: response.title ? response.title : '',
+          title: {
+            text: response.title ? response.title : '',
+            isValid: !!response.title,
+          },
           titleType: 'h1',
-          description: response.description ? response.description : '',
+          description: {
+            text: response.description ? response.description : '',
+            isValid: !!response.description,
+          },
           elements: tutorialTopElements,
         },
         chapters: response.chapters ? await parseChapters(response.chapters) : [],
@@ -783,9 +807,15 @@ export const reducerParser = {
 
       reducerObject = {
         tutorialTop: {
-          title: response.title ? response.title : '',
+          title: {
+            text: response.title ? response.title : '',
+            isValid: !!response.title,
+          },
           titleType: 'h1',
-          description: response.description ? response.description : '',
+          description: {
+            text: response.description ? response.description : '',
+            isValid: !!response.description,
+          },
           elements: tutorialTopElements,
         },
         chapters: response.chapters ? await parseChapters(response.chapters) : [],
@@ -810,7 +840,7 @@ export const reducerParser = {
             secondaryCategory: {
               fieldTitle: 'Secondary category',
               required: false,
-              isValid: false,
+              isValid: true,
               list: info.secondary_categories ?? [],
               value: info.secondary_categories
                 ? info.secondary_categories.find(
@@ -840,7 +870,7 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-text',
                 block_data: {
-                  content: item.text,
+                  content: item.text.text,
                 },
               }
             }
@@ -848,7 +878,7 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-info-box',
                 block_data: {
-                  content: item.infobox,
+                  content: item.infobox.text,
                 },
               }
             }
@@ -895,7 +925,7 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-h5p',
                 block_data: {
-                  source: item.h5pElement.value,
+                  source: item.h5pElement.text,
                 },
               }
             }
@@ -1002,7 +1032,7 @@ export const reducerParser = {
           const firstEl = getFirstChapterElement(chapter)
           return {
             id: chapter.id ? chapter.id : undefined,
-            title: chapter.title,
+            title: chapter.title.text,
             content: [firstEl, ...els],
           }
         }),
@@ -1015,8 +1045,8 @@ export const reducerParser = {
         id: id !== undefined ? parseInt(id) : undefined,
         status,
         mediaIds: editorState.mediaIds,
-        title: editorState.tutorialTop.title,
-        description: editorState.tutorialTop.description,
+        title: editorState.tutorialTop.title.text,
+        description: editorState.tutorialTop.description.text,
         content:
           editorState.tutorialTop.elements.length !== 0
             ? await parseElementsToContent(editorState.tutorialTop.elements)
@@ -1043,8 +1073,8 @@ export const reducerParser = {
         id: id !== undefined ? parseInt(id) : undefined,
         status,
         mediaIds: editorState.mediaIds,
-        title: editorState.tutorialTop.title,
-        description: editorState.tutorialTop.description,
+        title: editorState.tutorialTop.title.text,
+        description: editorState.tutorialTop.description.text,
         content:
           editorState.tutorialTop.elements.length !== 0
             ? await parseElementsToContent(editorState.tutorialTop.elements)
@@ -1068,8 +1098,8 @@ export const reducerParser = {
         id: id !== undefined ? parseInt(id) : undefined,
         status,
         mediaIds: editorState.mediaIds,
-        title: editorState.tutorialTop.title,
-        description: editorState.tutorialTop.description,
+        title: editorState.tutorialTop.title.text,
+        description: editorState.tutorialTop.description.text,
         content:
           editorState.tutorialTop.elements.length !== 0
             ? await parseElementsToContent(editorState.tutorialTop.elements)
@@ -1088,8 +1118,8 @@ export const reducerParser = {
         id: id !== undefined ? parseInt(id) : undefined,
         mediaIds: editorState.mediaIds,
         status,
-        title: editorState.tutorialTop.title,
-        description: editorState.tutorialTop.description,
+        title: editorState.tutorialTop.title.text,
+        description: editorState.tutorialTop.description.text,
         content:
           editorState.tutorialTop.elements.length !== 0
             ? await parseElementsToContent(editorState.tutorialTop.elements)

@@ -29,9 +29,10 @@ const ChapterContent = (props: ChapterContentProps) => {
       <TextInput
         placeholder="Chapter title"
         headingType="h2"
-        value={chapter.title}
+        value={chapter.title.text}
         index={chapterIndex}
         handleChange={handleChangeChapterTitle}
+        notValid={!chapter.title.isValid}
       />
       <div
         className={`${
@@ -46,8 +47,9 @@ const ChapterContent = (props: ChapterContentProps) => {
           <BundledEditor
             handleChange={handleChapterTextInputChange}
             index={chapterIndex}
-            value={chapter.text}
+            value={chapter.text.text}
             extended
+            notValid={!chapter.text.isValid}
           />
         </div>
         {chapter.layout !== '1 column' && (

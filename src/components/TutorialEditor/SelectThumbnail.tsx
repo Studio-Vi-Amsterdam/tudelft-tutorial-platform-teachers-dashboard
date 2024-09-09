@@ -50,6 +50,7 @@ const SelectThumbnail = (props: ThumbProps) => {
           description: '',
           format: '',
           link: '',
+          isValid: true,
           publishDate: '',
           title: '',
           type: 'image',

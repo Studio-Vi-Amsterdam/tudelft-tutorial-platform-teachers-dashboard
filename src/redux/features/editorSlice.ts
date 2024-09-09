@@ -6,6 +6,7 @@ import {
   AllMetafieldsType,
   ArtictesType,
   BlankSubchapterActionInterface,
+  ChapterInterface,
   ChapterTextFieldActionInterface,
   EditorState,
   Element,
@@ -32,9 +33,15 @@ const initialState: EditorState = {
   isEditorLoaded: false,
   pageType: undefined,
   tutorialTop: {
-    title: '',
+    title: {
+      text: '',
+      isValid: true,
+    },
     titleType: 'h1',
-    description: '',
+    description: {
+      text: '',
+      isValid: true,
+    },
     elements: [],
   },
   chapters: [],
@@ -161,6 +168,7 @@ export const editorSlice = createSlice({
                   required: false,
                   isValid: true,
                   value: {
+                    isValid: true,
                     format: '',
                     link: '',
                     publishDate: '',
@@ -218,6 +226,7 @@ export const editorSlice = createSlice({
                   isValid: true,
                   value: {
                     format: '',
+                    isValid: true,
                     link: '',
                     publishDate: '',
                     title: '',
@@ -284,6 +293,7 @@ export const editorSlice = createSlice({
                   value: {
                     format: '',
                     link: '',
+                    isValid: true,
                     publishDate: '',
                     title: '',
                     type: 'image',
@@ -340,10 +350,12 @@ export const editorSlice = createSlice({
       }
     },
     setTutorialTitle: (state, action: PayloadAction<string>) => {
-      state.tutorialTop.title = action.payload
+      state.tutorialTop.title.isValid = action.payload.trim().length > 0
+      state.tutorialTop.title.text = action.payload
     },
     setTutorialDescription: (state, action: PayloadAction<string>) => {
-      state.tutorialTop.description = action.payload
+      state.tutorialTop.description.isValid = action.payload.trim().length > 0
+      state.tutorialTop.description.text = action.payload
     },
     setPageType: (state, action: PayloadAction<string | undefined>) => {
       state.pageType = action.payload
@@ -507,8 +519,8 @@ export const editorSlice = createSlice({
           {
             id: undefined,
             layout: action.payload,
-            title: '',
-            text: '',
+            title: { text: '', isValid: true },
+            text: { text: '', isValid: true },
             elements: [],
             subchapters: [],
           },
@@ -520,12 +532,13 @@ export const editorSlice = createSlice({
             {
               id: undefined,
               layout: action.payload,
-              title: '',
-              text: '',
+              title: { text: '', isValid: true },
+              text: { text: '', isValid: true },
               video: {
                 format: '',
                 link: '',
                 publishDate: '',
+                isValid: true,
                 title: '',
                 type: 'video',
                 description: '',
@@ -533,6 +546,7 @@ export const editorSlice = createSlice({
                   description: '',
                   format: '',
                   type: 'image',
+                  isValid: true,
                   link: '',
                   publishDate: '',
                   title: '',
@@ -548,11 +562,12 @@ export const editorSlice = createSlice({
             {
               id: undefined,
               layout: action.payload,
-              title: '',
-              text: '',
+              title: { text: '', isValid: true },
+              text: { text: '', isValid: true },
               image: {
                 format: '',
                 link: '',
+                isValid: true,
                 publishDate: '',
                 title: '',
                 type: 'image',
@@ -571,8 +586,8 @@ export const editorSlice = createSlice({
           ...(state.chapters[action.payload.chapterIndex].subchapters || []),
           {
             layout: action.payload.chapterType,
-            title: '',
-            text: '',
+            title: { text: '', isValid: true },
+            text: { text: '', isValid: true },
             elements: [],
           },
         ]
@@ -582,12 +597,13 @@ export const editorSlice = createSlice({
             ...(state.chapters[action.payload.chapterIndex].subchapters || []),
             {
               layout: action.payload.chapterType,
-              title: '',
-              text: '',
+              title: { text: '', isValid: true },
+              text: { text: '', isValid: true },
               video: {
                 format: '',
                 link: '',
                 publishDate: '',
+                isValid: true,
                 title: '',
                 type: 'video',
                 description: '',
@@ -600,11 +616,12 @@ export const editorSlice = createSlice({
             ...(state.chapters[action.payload.chapterIndex].subchapters || []),
             {
               layout: action.payload.chapterType,
-              title: '',
-              text: '',
+              title: { text: '', isValid: true },
+              text: { text: '', isValid: true },
               image: {
                 format: '',
                 link: '',
+                isValid: true,
                 publishDate: '',
                 title: '',
                 type: 'image',
@@ -633,6 +650,7 @@ export const editorSlice = createSlice({
           {
             imageText: {
               image: {
+                isValid: true,
                 format: '',
                 link: '',
                 publishDate: '',
@@ -654,6 +672,7 @@ export const editorSlice = createSlice({
                 format: '',
                 link: '',
                 publishDate: '',
+                isValid: true,
                 title: '',
                 type: 'image',
                 description: '',
@@ -673,6 +692,7 @@ export const editorSlice = createSlice({
                 link: '',
                 publishDate: '',
                 title: '',
+                isValid: true,
                 type: 'video',
                 description: '',
                 thumbnail: {
@@ -680,6 +700,7 @@ export const editorSlice = createSlice({
                   format: '',
                   type: 'image',
                   link: '',
+                  isValid: true,
                   publishDate: '',
                   title: '',
                 },
@@ -699,6 +720,7 @@ export const editorSlice = createSlice({
                 link: '',
                 publishDate: '',
                 title: '',
+                isValid: true,
                 type: 'video',
                 description: '',
                 thumbnail: {
@@ -706,6 +728,7 @@ export const editorSlice = createSlice({
                   format: '',
                   type: 'image',
                   link: '',
+                  isValid: true,
                   publishDate: '',
                   title: '',
                 },
@@ -718,19 +741,25 @@ export const editorSlice = createSlice({
       }
     },
     setChapterText: (state, action: PayloadAction<ChapterTextFieldActionInterface>) => {
-      state.chapters[action.payload.chapterIndex].text = action.payload.text
+      state.chapters[action.payload.chapterIndex].text = {
+        text: action.payload.text,
+        isValid: true,
+      }
     },
     setChapterTitle: (state, action: PayloadAction<ChapterTextFieldActionInterface>) => {
-      state.chapters[action.payload.chapterIndex].title = action.payload.text
+      state.chapters[action.payload.chapterIndex].title = {
+        text: action.payload.text,
+        isValid: true,
+      }
     },
     setSubchapterTitle: (state, action: PayloadAction<SubchapterTextFieldActionInterface>) => {
       state.chapters[action.payload.chapterIndex].subchapters[
         action.payload.subchapterIndex
-      ].title = action.payload.text
+      ].title = { text: action.payload.text, isValid: true }
     },
     setSubchapterText: (state, action: PayloadAction<SubchapterTextFieldActionInterface>) => {
       state.chapters[action.payload.chapterIndex].subchapters[action.payload.subchapterIndex].text =
-        action.payload.text
+        { text: action.payload.text, isValid: true }
     },
     addChapterElement: (state, action: PayloadAction<AddChapterElementInterface>) => {
       state.chapters[action.payload.chapterIndex].elements = [
@@ -1328,6 +1357,21 @@ export const editorSlice = createSlice({
           })
       }
     },
+    setTutorialTitleValid: (state, action: PayloadAction<boolean>) => {
+      state.tutorialTop.title.isValid = action.payload
+    },
+    setTutorialDescriptionValid: (state, action: PayloadAction<boolean>) => {
+      state.tutorialTop.description.isValid = action.payload
+    },
+    setValidatedTutorialTopElements: (
+      state,
+      action: PayloadAction<[] | TutorialTopElementsObject[]>,
+    ) => {
+      state.tutorialTop.elements = action.payload
+    },
+    setValidatedChapters: (state, action: PayloadAction<ChapterInterface[] | []>) => {
+      state.chapters = action.payload
+    },
   },
 })
 
@@ -1385,6 +1429,10 @@ export const {
   moveElement,
   setVideoThumbnail,
   setMetafieldsValidationErrors,
+  setTutorialTitleValid,
+  setTutorialDescriptionValid,
+  setValidatedTutorialTopElements,
+  setValidatedChapters,
 } = editorSlice.actions
 
 export default editorSlice.reducer

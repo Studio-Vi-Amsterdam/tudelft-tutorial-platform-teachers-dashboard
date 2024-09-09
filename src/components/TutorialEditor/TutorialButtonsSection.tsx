@@ -4,10 +4,21 @@ import { Button } from 'src/components/ui/Button'
 import { articlesAPI } from 'src/lib/api'
 import { reducerParser } from 'src/lib/reducerParser'
 import { useToast } from 'src/lib/use-toast'
-import { setMetafieldsValidationErrors } from 'src/redux/features/editorSlice'
+import {
+  setMetafieldsValidationErrors,
+  setTutorialDescriptionValid,
+  setTutorialTitleValid,
+  setValidatedChapters,
+  setValidatedTutorialTopElements,
+} from 'src/redux/features/editorSlice'
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
 import { RootState } from 'src/redux/store'
-import { ArtictesType, TutorialMetaObject } from 'src/types/types'
+import {
+  ArtictesType,
+  ChapterElementsObject,
+  TutorialMetaObject,
+  TutorialTopElementsObject,
+} from 'src/types/types'
 
 const TutorialButtonsSection = () => {
   const tutorial = useAppSelector((state: RootState) => state.editor)
@@ -54,6 +65,17 @@ const TutorialButtonsSection = () => {
         ...(subjectsInvolve.length > 0 && { subjectsInvolve }),
       }
     }
+  }
+
+  const tutorialTop = useAppSelector((state: RootState) => state.editor.tutorialTop)
+
+  const checkTutorialTitleValidity = () => {
+    // true if valid
+    return tutorialTop.title.text.trim().length > 0
+  }
+
+  const checkTutorialDescriptionValidity = () => {
+    return tutorialTop.description.text.trim().length > 0
   }
 
   const checkMetafieldsValidity = (metaSection: keyof TutorialMetaObject) => {
@@ -137,16 +159,112 @@ const TutorialButtonsSection = () => {
     }
   }
 
+  const validationErrAlert = () => {
+    toast({
+      title: 'Sending error!',
+      variant: 'destructive',
+      description: 'Fill required fields!',
+    })
+  }
+
+  const tutorialTopElements = useAppSelector(
+    (state: RootState) => state.editor.tutorialTop.elements,
+  )
+
+  const chapters = useAppSelector((state: RootState) => state.editor.chapters)
+
+  interface ValidatedElements {
+    count: number
+    newState: TutorialTopElementsObject[] | ChapterElementsObject[]
+  }
+
+  const validateElements = (
+    elements: TutorialTopElementsObject[] | ChapterElementsObject[],
+  ): ValidatedElements => {
+    let count = 0
+    const parsedElements = elements.map((element) => {
+      if (element.text) {
+        const isValid = element.text.text.trim().length > 0
+        !isValid && count++
+        return { text: { ...element.text, isValid } }
+      } else if (element.infobox) {
+        const isValid = element.infobox.text.trim().length > 0
+        !isValid && count++
+        return {
+          infobox: { ...element.infobox, isValid },
+        }
+      } else if (element.h5pElement) {
+        const isValid = element.h5pElement.text.trim().length > 0
+        !isValid && count++
+        return {
+          h5pElement: {
+            ...element.h5pElement,
+            isValid,
+          },
+        }
+      }
+      return element
+    })
+    return { count, newState: parsedElements }
+  }
+
+  const validateTutorialTopElements = () => {
+    const { newState, count } = validateElements(tutorialTopElements)
+    dispatch(setValidatedTutorialTopElements(newState))
+    return count === 0
+  }
+  const validateChapters = () => {
+    let count = 0
+    const newState = chapters.map((chapter) => {
+      const isTitleValid = chapter.title.text.trim().length > 0
+      !isTitleValid && count++
+      const isTextValid = chapter.text.text.trim().length > 0
+      !isTextValid && count++
+      const parsedElements = validateElements(chapter.elements)
+      count = count + parsedElements.count
+      return {
+        ...chapter,
+        title: { ...chapter.title, isValid: isTitleValid },
+        text: { ...chapter.text, isValid: isTextValid },
+        elements: parsedElements.newState,
+      }
+    })
+    dispatch(setValidatedChapters(newState))
+    return count === 0
+  }
+
   const testPublishClick = async () => {
-    const validationResult = checkTutorialsMetafields(articleType)
-    if (validationResult && Object.keys(validationResult).length > 0) {
-      dispatch(setMetafieldsValidationErrors(validationResult))
-      toast({
-        title: 'Sending error!',
-        variant: 'destructive',
-        description: 'Fill required fields!',
-      })
-    } else {
+    const metafieldsValidationResult = checkTutorialsMetafields(articleType)
+    const tutorialTitleValidationResult = checkTutorialTitleValidity()
+    const tutorialDescriptionValidationResult = checkTutorialDescriptionValidity()
+    const tutTopElValidationResult = validateTutorialTopElements()
+    const chaptersValidationResult = validateChapters()
+    if (!tutorialTitleValidationResult) {
+      dispatch(setTutorialTitleValid(false))
+      validationErrAlert()
+    }
+    if (!tutorialDescriptionValidationResult) {
+      dispatch(setTutorialDescriptionValid(false))
+      validationErrAlert()
+    }
+    if (!tutTopElValidationResult) {
+      validationErrAlert()
+    }
+    if (!chaptersValidationResult) {
+      validationErrAlert()
+    }
+    if (metafieldsValidationResult && Object.keys(metafieldsValidationResult).length > 0) {
+      dispatch(setMetafieldsValidationErrors(metafieldsValidationResult))
+      validationErrAlert()
+    }
+    if (
+      tutorialTitleValidationResult &&
+      tutorialDescriptionValidationResult &&
+      metafieldsValidationResult &&
+      tutTopElValidationResult &&
+      chaptersValidationResult &&
+      Object.keys(metafieldsValidationResult).length === 0
+    ) {
       const parsedObject = await reducerParser.parseFromReducer(
         tutorial,
         'publish',

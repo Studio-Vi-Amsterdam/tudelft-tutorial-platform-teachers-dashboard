@@ -6,8 +6,8 @@ export interface TutorialCard {
 }
 
 export type AddElementsType =
-  | 'text'
-  | 'infobox'
+  | 'text block'
+  | 'infobox block'
   | 'image'
   | 'video'
   | 'download file'
@@ -46,6 +46,7 @@ interface MediaObjectParent {
   url?: string
   type: MediaVariantType
   format: string
+  isValid: boolean
   title: string
   publishDate: string
   description: string
@@ -58,6 +59,7 @@ export interface MediaObjectInterface {
   id?: number
   link: string
   url?: string
+  isValid: boolean
   type: MediaVariantType
   format: string
   title: string
@@ -68,12 +70,17 @@ export interface MediaObjectInterface {
   hasZoom?: boolean
 }
 
-export interface ElementTextActionInterface extends ElementActionBase {
+export interface TextElementInterface {
   text: string
+  isValid: boolean
+}
+
+export interface ElementTextActionInterface extends ElementActionBase {
+  text: TextElementInterface
 }
 
 export interface ElementInfoboxActionInterface extends ElementActionBase {
-  infobox: string
+  infobox: TextElementInterface
 }
 
 export interface ElementImageActionInterface extends ElementActionBase {
@@ -107,8 +114,9 @@ export interface ElementQuizActionInterface extends ElementActionBase {
   quiz: QuizElement
 }
 export interface h5pElementInterface {
-  value: string
+  text: string
   error: string
+  isValid: boolean
 }
 export interface ElementH5PActionInterface extends ElementActionBase {
   h5pElement: h5pElementInterface
@@ -152,8 +160,8 @@ export interface TutorialCardInterface {
 }
 
 export interface TutorialTopElementsObject {
-  text?: string
-  infobox?: string
+  text?: TextElementInterface
+  infobox?: TextElementInterface
   image?: MediaObjectInterface
   video?: MediaObjectInterface
   file?: ElementsFileInterface
@@ -222,8 +230,8 @@ interface TextLayoutInterface {
 }
 
 export interface ChapterElementsObject {
-  text?: string
-  infobox?: string
+  text?: TextElementInterface
+  infobox?: TextElementInterface
   image?: MediaObjectInterface
   video?: MediaObjectInterface
   tutorialCard?: TutorialCardInterface
@@ -265,8 +273,8 @@ export type BlankSubchapterActionInterface = {
 
 interface ChapterBase {
   layout: LayoutChapterType
-  title: string
-  text: string
+  title: TextElementInterface
+  text: TextElementInterface
   video?: MediaObjectInterface
   image?: MediaObjectInterface
   elements: [] | ChapterElementsObject[]
@@ -282,9 +290,9 @@ export interface ChapterInterface extends ChapterBase {
 export type PageTypeType = string | undefined
 
 interface TutorialTopInterface {
-  title: string
+  title: TextElementInterface
   titleType: 'h1'
-  description: string
+  description: TextElementInterface
   elements: [] | TutorialTopElementsObject[]
 }
 export interface IdTitleObject {

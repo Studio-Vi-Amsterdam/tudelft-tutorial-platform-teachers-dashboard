@@ -485,7 +485,7 @@ const TutorialsMeta = () => {
                           onBlur={() =>
                             setTimeout(() => {
                               setShowDropdownTeacher(false)
-                            }, 200)
+                            }, 1000)
                           }
                         />
                         {showDropdownTeacher &&

@@ -38,6 +38,20 @@ const ChapterSection = (props: ChapterSectionProps) => {
 
     payload[val] = ''
 
+    if (val === 'text block') {
+      payload.text = {
+        text: '',
+        isValid: true,
+      }
+      delete payload['text block']
+    }
+    if (val === 'infobox block') {
+      payload.infobox = {
+        text: '',
+        isValid: true,
+      }
+      delete payload['infobox block']
+    }
     if (val === 'quiz') {
       payload[val] = {
         question: '',
@@ -51,7 +65,7 @@ const ChapterSection = (props: ChapterSectionProps) => {
       }
     } else if (val === 'h5p element') {
       payload.h5pElement = {
-        value: '',
+        text: '',
         error: '',
       }
       delete payload['h5p element']
@@ -95,8 +109,8 @@ const ChapterSection = (props: ChapterSectionProps) => {
   }
 
   const elements: AddElementsType[] = [
-    'text',
-    'infobox',
+    'text block',
+    'infobox block',
     'image',
     'video',
     'download file',
