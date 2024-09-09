@@ -117,7 +117,7 @@ export const editorSlice = createSlice({
                 course: {
                   fieldTitle: 'Course',
                   isValid: true,
-                  required: true,
+                  required: false,
                   list: info.courses,
                   value: { id: undefined, title: '' },
                 },

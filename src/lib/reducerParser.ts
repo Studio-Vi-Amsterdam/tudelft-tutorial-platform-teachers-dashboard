@@ -520,9 +520,9 @@ export const reducerParser = {
           tutorialBelongs: {
             course: {
               fieldTitle: 'Course',
-              required: true,
+              required: false,
               list: info.data.courses.length > 0 ? info.data.courses : [],
-              isValid: !!response.course,
+              isValid: true,
               value: response.course
                 ? info.data.courses.find((item: any) => item.id === response.course) ?? {
                     id: undefined,

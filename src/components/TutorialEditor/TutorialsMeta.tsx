@@ -224,7 +224,7 @@ const TutorialsMeta = () => {
         <div className="flex flex-col gap-y-8">
           {belongsFields && (
             <>
-              <div className="flex w-full flex-row items-center justify-between gap-2">
+              {/* <div className="flex w-full flex-row items-center justify-between gap-2">
                 <div className="min-w-[104px] max-w-[104px]">{`${belongsFields.course.fieldTitle}${
                   belongsFields.course.required ? '*' : ''
                 }`}</div>
@@ -236,7 +236,7 @@ const TutorialsMeta = () => {
                     selectedObject={belongsFields.course}
                   />
                 </div>
-              </div>
+              </div> */}
               <div className="flex w-full flex-row items-center justify-between gap-2">
                 <div className="min-w-[104px] max-w-[104px]">{`${belongsFields.primary.fieldTitle}${
                   belongsFields.primary.required ? '*' : ''
