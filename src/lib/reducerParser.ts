@@ -605,7 +605,18 @@ export const reducerParser = {
                     title: '',
                     type: 'image',
                   }
-                : '',
+                : {
+                    format: '',
+                    link: '',
+                    url: '',
+                    isValid: true,
+                    publishDate: '',
+                    title: '',
+                    type: 'image',
+                    description: '',
+                    thumbnail: undefined,
+                    hasZoom: false,
+                  },
             },
             level: {
               fieldTitle: 'Level',
@@ -686,7 +697,18 @@ export const reducerParser = {
                     title: '',
                     type: 'image',
                   }
-                : '',
+                : {
+                    format: '',
+                    link: '',
+                    url: '',
+                    isValid: true,
+                    publishDate: '',
+                    title: '',
+                    type: 'image',
+                    description: '',
+                    thumbnail: undefined,
+                    hasZoom: false,
+                  },
             },
             keywords: {
               fieldTitle: 'Keywords',
@@ -778,7 +800,18 @@ export const reducerParser = {
                     title: '',
                     type: 'image',
                   }
-                : '',
+                : {
+                    format: '',
+                    link: '',
+                    url: '',
+                    isValid: true,
+                    publishDate: '',
+                    title: '',
+                    type: 'image',
+                    description: '',
+                    thumbnail: undefined,
+                    hasZoom: false,
+                  },
             },
             keywords: {
               fieldTitle: 'Keywords',

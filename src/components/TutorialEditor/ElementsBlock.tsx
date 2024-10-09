@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useAppDispatch } from 'src/redux/hooks'
 import {
   changeSubchapterText,
@@ -25,9 +25,6 @@ interface ElementsBlockProps {
 
 const ElementsBlock = (props: ElementsBlockProps) => {
   const { elements, block, chapterIndex, subchapterIndex } = props
-  useEffect(() => {
-    console.log('ElementsBlock', elements)
-  }, [elements])
   const dispatch = useAppDispatch()
   const handleTextElementChange = (value: string, index?: number, block?: string): void => {
     if (block !== undefined && index !== undefined) {

@@ -133,7 +133,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
             format: '',
             link: '',
             url: '',
-            isValid: false,
+            isValid: true,
             publishDate: '',
             title: '',
             type: 'image',
