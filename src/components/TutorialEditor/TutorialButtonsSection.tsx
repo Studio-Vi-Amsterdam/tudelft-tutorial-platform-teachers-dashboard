@@ -149,11 +149,12 @@ const TutorialButtonsSection = () => {
             })
           }
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error(error)
         toast({
           title: 'Something went wrong!',
           variant: 'destructive',
+          description: error.message as string,
         })
       }
     }
@@ -163,7 +164,7 @@ const TutorialButtonsSection = () => {
     toast({
       title: 'Sending error!',
       variant: 'destructive',
-      description: 'Fill required fields!',
+      description: 'Check that all required fields are filled in noted by * and outlined in blue',
     })
   }
 
@@ -199,6 +200,24 @@ const TutorialButtonsSection = () => {
         return {
           h5pElement: {
             ...element.h5pElement,
+            isValid,
+          },
+        }
+      } else if (element.image) {
+        const isValid = !!element.image.id
+        !isValid && count++
+        return {
+          image: {
+            ...element.image,
+            isValid,
+          },
+        }
+      } else if (element.video) {
+        const isValid = !!element.video.id
+        !isValid && count++
+        return {
+          video: {
+            ...element.video,
             isValid,
           },
         }

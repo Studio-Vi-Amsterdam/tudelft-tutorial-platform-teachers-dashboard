@@ -122,6 +122,33 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       }
       delete payload['download file']
       dispatch(addTutorialElements(payload))
+    } else if (val === 'image') {
+      payload.image = {
+        format: '',
+        link: '',
+        url: '',
+        isValid: true,
+        publishDate: '',
+        title: '',
+        type: 'image',
+        description: '',
+        thumbnail: undefined,
+        hasZoom: false,
+      }
+      dispatch(addTutorialElements(payload))
+    } else if (val === 'video') {
+      payload.video = {
+        format: '',
+        link: '',
+        url: '',
+        isValid: true,
+        publishDate: '',
+        title: '',
+        type: 'video',
+        description: '',
+        thumbnail: undefined,
+      }
+      dispatch(addTutorialElements(payload))
     } else {
       dispatch(addTutorialElements(payload))
     }

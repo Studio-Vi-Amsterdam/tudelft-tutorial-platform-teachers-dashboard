@@ -101,6 +101,31 @@ const ChapterSection = (props: ChapterSectionProps) => {
         url: '',
       }
       delete payload['download file']
+    } else if (val === 'image') {
+      payload.image = {
+        format: '',
+        link: '',
+        url: '',
+        isValid: true,
+        publishDate: '',
+        title: '',
+        type: 'image',
+        description: '',
+        thumbnail: undefined,
+        hasZoom: false,
+      }
+    } else if (val === 'video') {
+      payload.video = {
+        format: '',
+        link: '',
+        url: '',
+        isValid: true,
+        publishDate: '',
+        title: '',
+        type: 'video',
+        description: '',
+        thumbnail: undefined,
+      }
     }
 
     if (index !== undefined) {

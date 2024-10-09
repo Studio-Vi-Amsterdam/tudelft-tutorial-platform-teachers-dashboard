@@ -314,15 +314,17 @@ const AddMediaElement = (props: AddMediaElementProps) => {
           </div>
           <MediaPreviewTemplate item={mediaDataState} styles="w-full" />
         </div>
-      ) : (
+      ) : mediaDataState ? (
         <div
-          className={`${props.className === 'without-bg' ? '' : 'bg-tertiary-grey-silver py-16 justify-center'} flex w-full items-center `}
+          className={`${props.className === 'without-bg' ? '' : 'bg-tertiary-grey-silver py-16 justify-center'} ${!mediaDataState.isValid ? 'border border-red-500' : ''} flex w-full items-center `}
         >
           <Button variant={'outline'} onClick={() => setDialogOpened(true)}>
             <div className={props.className === 'without-bg' ? 'hidden' : ''}>+</div>
             <p>Select {props.mediaType} from media library</p>
           </Button>
         </div>
+      ) : (
+        <>No mediaDataState</>
       )}
       <PickMediaDialog
         block={props.block}

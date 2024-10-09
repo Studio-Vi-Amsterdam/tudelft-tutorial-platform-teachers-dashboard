@@ -26,7 +26,6 @@ interface ElementsBlockProps {
 const ElementsBlock = (props: ElementsBlockProps) => {
   const { elements, block, chapterIndex, subchapterIndex } = props
   const dispatch = useAppDispatch()
-
   const handleTextElementChange = (value: string, index?: number, block?: string): void => {
     if (block !== undefined && index !== undefined) {
       dispatch(
