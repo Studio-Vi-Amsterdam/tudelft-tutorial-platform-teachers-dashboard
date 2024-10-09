@@ -193,7 +193,7 @@ export default function BundledEditor(props: any) {
           toolbar,
           content_style: styles,
           codesample_languages: [
-            { text: 'HTML/XML', value: 'markup' },
+            { text: 'HTML/XML', value: 'html' },
             { text: 'JavaScript', value: 'javascript' },
             { text: 'CSS', value: 'css' },
             { text: 'PHP', value: 'php' },
