@@ -59,7 +59,7 @@ const H5pElement = (props: QuizElementProps) => {
         placeholder="Insert the video URL here"
         value={localH5PElement.text}
         element="textarea"
-        notValid={!localH5PElement.isValid}
+        notValid={h5pElement && !h5pElement.isValid}
       />
       {localH5PElement.error && <p className="text-red-500">{localH5PElement.error}</p>}
     </div>
