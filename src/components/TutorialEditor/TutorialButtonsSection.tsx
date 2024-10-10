@@ -221,6 +221,73 @@ const TutorialButtonsSection = () => {
             isValid,
           },
         }
+      } else if (element.textLayout) {
+        const isTitleValid = element.textLayout.title.text.trim().length > 0
+        !isTitleValid && count++
+        const isTextValid = element.textLayout.text.text.trim().length > 0
+        !isTextValid && count++
+        return {
+          textLayout: {
+            title: { ...element.textLayout.title, isValid: isTitleValid },
+            text: { ...element.textLayout.text, isValid: isTextValid },
+          },
+        }
+      } else if (element.imageText) {
+        const isTitleValid = element.imageText.title.text.trim().length > 0
+        !isTitleValid && count++
+        const isTextValid = element.imageText.text.text.trim().length > 0
+        !isTextValid && count++
+        const isImageValid = !!element.imageText.image.id
+        !isImageValid && count++
+        return {
+          imageText: {
+            title: { ...element.imageText.title, isValid: isTitleValid },
+            text: { ...element.imageText.text, isValid: isTextValid },
+            image: { ...element.imageText.image, isValid: isImageValid },
+          },
+        }
+      } else if (element.textImage) {
+        const isTitleValid = element.textImage.title.text.trim().length > 0
+        !isTitleValid && count++
+        const isTextValid = element.textImage.text.text.trim().length > 0
+        !isTextValid && count++
+        const isImageValid = !!element.textImage.image.id
+        !isImageValid && count++
+        return {
+          textImage: {
+            title: { ...element.textImage.title, isValid: isTitleValid },
+            text: { ...element.textImage.text, isValid: isTextValid },
+            image: { ...element.textImage.image, isValid: isImageValid },
+          },
+        }
+      } else if (element.textVideo) {
+        const isTitleValid = element.textVideo.title.text.trim().length > 0
+        !isTitleValid && count++
+        const isTextValid = element.textVideo.text.text.trim().length > 0
+        !isTextValid && count++
+        const isImageValid = !!element.textVideo.video.id
+        !isImageValid && count++
+        return {
+          textVideo: {
+            title: { ...element.textVideo.title, isValid: isTitleValid },
+            text: { ...element.textVideo.text, isValid: isTextValid },
+            video: { ...element.textVideo.video, isValid: isImageValid },
+          },
+        }
+      } else if (element.videoText) {
+        const isTitleValid = element.videoText.title.text.trim().length > 0
+        !isTitleValid && count++
+        const isTextValid = element.videoText.text.text.trim().length > 0
+        !isTextValid && count++
+        const isImageValid = !!element.videoText.video.id
+        !isImageValid && count++
+        return {
+          videoText: {
+            title: { ...element.videoText.title, isValid: isTitleValid },
+            text: { ...element.videoText.text, isValid: isTextValid },
+            video: { ...element.videoText.video, isValid: isImageValid },
+          },
+        }
       }
       return element
     })
@@ -241,11 +308,33 @@ const TutorialButtonsSection = () => {
       !isTextValid && count++
       const parsedElements = validateElements(chapter.elements)
       count = count + parsedElements.count
-      return {
-        ...chapter,
-        title: { ...chapter.title, isValid: isTitleValid },
-        text: { ...chapter.text, isValid: isTextValid },
-        elements: parsedElements.newState,
+      const isImageValid = chapter?.image ? !!chapter.image.id : true
+      !isImageValid && count++
+      const isVideoValid = chapter?.video ? !!chapter.video.id : true
+      !isVideoValid && count++
+      if (chapter.image) {
+        return {
+          ...chapter,
+          title: { ...chapter.title, isValid: isTitleValid },
+          text: { ...chapter.text, isValid: isTextValid },
+          image: { ...chapter.image, isValid: isImageValid },
+          elements: parsedElements.newState,
+        }
+      } else if (chapter.video) {
+        return {
+          ...chapter,
+          title: { ...chapter.title, isValid: isTitleValid },
+          text: { ...chapter.text, isValid: isTextValid },
+          video: { ...chapter.video, isValid: isVideoValid },
+          elements: parsedElements.newState,
+        }
+      } else {
+        return {
+          ...chapter,
+          title: { ...chapter.title, isValid: isTitleValid },
+          text: { ...chapter.text, isValid: isTextValid },
+          elements: parsedElements.newState,
+        }
       }
     })
     dispatch(setValidatedChapters(newState))

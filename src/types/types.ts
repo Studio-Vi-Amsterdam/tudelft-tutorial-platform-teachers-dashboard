@@ -159,6 +159,23 @@ export interface TutorialCardInterface {
   proposedList: ProposedList[] | []
 }
 
+interface TextLayoutInterface {
+  text: TextElementInterface
+  title: TextElementInterface
+}
+
+interface MediaTextImageInterface {
+  text: TextElementInterface
+  image: MediaObjectInterface
+  title: TextElementInterface
+}
+
+interface MediaTextVideoInterface {
+  text: TextElementInterface
+  title: TextElementInterface
+  video: MediaObjectInterface
+}
+
 export interface TutorialTopElementsObject {
   text?: TextElementInterface
   infobox?: TextElementInterface
@@ -169,6 +186,11 @@ export interface TutorialTopElementsObject {
   h5pElement?: h5pElementInterface
   tutorialCard?: TutorialCardInterface
   tutorialCards?: TutorialCardInterface[]
+  textLayout?: TextLayoutInterface
+  textImage?: MediaTextImageInterface
+  imageText?: MediaTextImageInterface
+  textVideo?: MediaTextVideoInterface
+  videoText?: MediaTextVideoInterface
 }
 export interface AddChapterElementInterface {
   val: TutorialTopElementsObject
@@ -211,22 +233,6 @@ export interface TermDialogInterface {
   term: string
   select: string[] | null
   explanation: string
-}
-interface MediaTextImageInterface {
-  text: string
-  image: MediaObjectInterface
-  title: string
-}
-
-interface MediaTextVideoInterface {
-  text: string
-  title: string
-  video: MediaObjectInterface
-}
-
-interface TextLayoutInterface {
-  text: string
-  title: string
 }
 
 export interface ChapterElementsObject {

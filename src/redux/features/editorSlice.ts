@@ -639,8 +639,8 @@ export const editorSlice = createSlice({
           ...(state.chapters[action.payload.chapterIndex].elements || []),
           {
             textLayout: {
-              text: '',
-              title: '',
+              text: { text: '', isValid: true },
+              title: { text: '', isValid: true },
             },
           },
         ]
@@ -658,8 +658,8 @@ export const editorSlice = createSlice({
                 type: 'image',
                 description: '',
               },
-              text: '',
-              title: '',
+              text: { text: '', isValid: true },
+              title: { text: '', isValid: true },
             },
           },
         ]
@@ -677,8 +677,8 @@ export const editorSlice = createSlice({
                 type: 'image',
                 description: '',
               },
-              text: '',
-              title: '',
+              text: { text: '', isValid: true },
+              title: { text: '', isValid: true },
             },
           },
         ]
@@ -705,8 +705,8 @@ export const editorSlice = createSlice({
                   title: '',
                 },
               },
-              text: '',
-              title: '',
+              text: { text: '', isValid: true },
+              title: { text: '', isValid: true },
             },
           },
         ]
@@ -733,8 +733,8 @@ export const editorSlice = createSlice({
                   title: '',
                 },
               },
-              text: '',
-              title: '',
+              text: { text: '', isValid: true },
+              title: { text: '', isValid: true },
             },
           },
         ]
@@ -986,7 +986,8 @@ export const editorSlice = createSlice({
       const layoutItem = element ? element[layout] : undefined
 
       if (layoutItem && layoutItem.text !== undefined) {
-        layoutItem.title = value
+        layoutItem.title.text = value
+        layoutItem.title.isValid = value.trim().length > 0
       }
     },
     addTutorialCard: (
@@ -1086,7 +1087,8 @@ export const editorSlice = createSlice({
         const layoutItem = element ? element[layout] : undefined
 
         if (layoutItem && layoutItem.text !== undefined) {
-          layoutItem.text = value
+          layoutItem.text.text = value
+          layoutItem.text.isValid = value.trim().length > 0
         }
       }
     },
