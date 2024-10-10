@@ -103,9 +103,10 @@ export interface ThumbnailActionInterface {
 export interface QuizAnswer {
   answer: string
   isCorrect: '0' | '1'
+  isValid: boolean
 }
 export interface QuizElement {
-  question: string
+  question: TextElementInterface
   answers: QuizAnswer[]
   answersCount: number
 }

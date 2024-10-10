@@ -70,12 +70,12 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       dispatch(addTutorialElements(payload))
     } else if (val === 'quiz') {
       payload[val] = {
-        question: '',
+        question: { text: '', isValid: true },
         answers: [
-          { answer: '', isCorrect: '1' },
-          { answer: '', isCorrect: '0' },
-          { answer: '', isCorrect: '0' },
-          { answer: '', isCorrect: '0' },
+          { answer: '', isCorrect: '1', isValid: true },
+          { answer: '', isCorrect: '0', isValid: true },
+          { answer: '', isCorrect: '0', isValid: true },
+          { answer: '', isCorrect: '0', isValid: true },
         ],
         answersCount: 4,
       }

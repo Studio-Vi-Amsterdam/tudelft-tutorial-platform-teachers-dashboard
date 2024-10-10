@@ -210,23 +210,27 @@ export const reducerParser = {
             case 'tu-delft-quiz':
               return {
                 quiz: {
-                  question: block.block_data.question,
+                  question: { text: block.block_data.question, isValid: true },
                   answers: [
                     {
                       answer: block.block_data.answers_0_answer,
                       isCorrect: block.block_data.answers_0_is_correct as BoolString,
+                      isValid: true,
                     },
                     {
                       answer: block.block_data.answers_1_answer,
                       isCorrect: block.block_data.answers_1_is_correct as BoolString,
+                      isValid: true,
                     },
                     {
                       answer: block.block_data.answers_2_answer,
                       isCorrect: block.block_data.answers_2_is_correct as BoolString,
+                      isValid: true,
                     },
                     {
                       answer: block.block_data.answers_3_answer,
                       isCorrect: block.block_data.answers_3_is_correct as BoolString,
+                      isValid: true,
                     },
                   ],
                   answersCount: block.block_data.answers,
@@ -944,7 +948,7 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-quiz',
                 block_data: {
-                  question: item.quiz.question,
+                  question: item.quiz.question.text,
                   answers_0_answer: item.quiz.answers[0].answer,
                   answers_0_is_correct: item.quiz.answers[0].isCorrect,
                   answers_1_answer: item.quiz.answers[1].answer,

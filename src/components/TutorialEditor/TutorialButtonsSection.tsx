@@ -245,6 +245,23 @@ const TutorialButtonsSection = () => {
             },
           },
         }
+      } else if (element.quiz) {
+        const isQuestionValid = element.quiz.question.text.trim().length > 0
+        !isQuestionValid && count++
+        return {
+          quiz: {
+            ...element.quiz,
+            question: { ...element.quiz.question, isValid: isQuestionValid },
+            answers: element.quiz.answers.map((answer) => {
+              const isValidAnswer = answer.answer.trim().length > 0
+              !isValidAnswer && count++
+              return {
+                ...answer,
+                isValid: isValidAnswer,
+              }
+            }),
+          },
+        }
       } else if (element.textLayout) {
         const isTitleValid = element.textLayout.title.text.trim().length > 0
         !isTitleValid && count++
