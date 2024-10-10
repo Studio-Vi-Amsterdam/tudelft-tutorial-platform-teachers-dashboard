@@ -262,6 +262,24 @@ const TutorialButtonsSection = () => {
             }),
           },
         }
+      } else if (element.tutorialCards) {
+        return {
+          tutorialCards: element.tutorialCards.map((card) => {
+            const isCardValid =
+              card.value.id !== undefined ||
+              (card.value.url !== undefined &&
+                card.value.url.trim().length > 0 &&
+                card.value.title.trim().length > 0)
+            !isCardValid && count++
+            return {
+              ...card,
+              value: {
+                ...card.value,
+                isValid: isCardValid,
+              },
+            }
+          }),
+        }
       } else if (element.textLayout) {
         const isTitleValid = element.textLayout.title.text.trim().length > 0
         !isTitleValid && count++

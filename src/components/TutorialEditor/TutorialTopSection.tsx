@@ -94,10 +94,11 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
         const tutorials = response.data.map((item: any) => ({
           id: item.id,
           title: item.title,
+          isValid: true,
         }))
         payload.tutorialCards = [
           {
-            value: { id: undefined, title: '' },
+            value: { id: undefined, title: '', isValid: true },
             proposedList: tutorials,
           },
         ]
@@ -105,7 +106,7 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
         if (error.response && error.response.status === 404) {
           payload.tutorialCards = [
             {
-              value: { id: undefined, title: '' },
+              value: { id: undefined, title: '', isValid: true },
               proposedList: [],
             },
           ]

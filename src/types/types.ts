@@ -154,10 +154,11 @@ export interface MoveChapterInterface {
 export interface ProposedList {
   id: number
   title: string
+  isValid: boolean
 }
 
 export interface TutorialCardInterface {
-  value: { id: number | undefined; title: string; url?: string }
+  value: { id: number | undefined; title: string; url?: string; isValid: boolean }
   proposedList: ProposedList[] | []
 }
 

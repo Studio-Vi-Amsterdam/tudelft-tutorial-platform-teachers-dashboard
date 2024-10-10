@@ -1004,7 +1004,7 @@ export const editorSlice = createSlice({
         const element = elements && elements[listIndex]
         if (element.tutorialCards !== undefined) {
           const newObject: TutorialCardInterface = {
-            value: { id: undefined, title: '' },
+            value: { id: undefined, title: '', isValid: true },
             proposedList: element.tutorialCards[0].proposedList,
           }
           element.tutorialCards = [...element.tutorialCards, newObject]
@@ -1014,7 +1014,7 @@ export const editorSlice = createSlice({
         const element = elements && elements[listIndex]
         if (element.tutorialCards !== undefined) {
           const newObject: TutorialCardInterface = {
-            value: { id: undefined, title: '' },
+            value: { id: undefined, title: '', isValid: true },
             proposedList: element.tutorialCards[0].proposedList,
           }
           element.tutorialCards = [...element.tutorialCards, newObject]
@@ -1044,10 +1044,15 @@ export const editorSlice = createSlice({
           if (isUrl) {
             element.tutorialCards[nestedIndex].value.id = undefined
             element.tutorialCards[nestedIndex].value[`${name as 'title' | 'url'}`] = value
+            element.tutorialCards[nestedIndex].value.isValid = value.trim().length > 0
           } else {
             element.tutorialCards[nestedIndex].value = element.tutorialCards[
               nestedIndex
-            ].proposedList.find((el) => el.title === value) ?? { id: undefined, title: '' }
+            ].proposedList.find((el) => el.title === value) ?? {
+              id: undefined,
+              title: '',
+              isValid: false,
+            }
           }
         }
       } else if (block === 'chapterElements' && chapterIndex !== undefined) {
@@ -1064,7 +1069,11 @@ export const editorSlice = createSlice({
           } else {
             element.tutorialCards[nestedIndex].value = element.tutorialCards[
               nestedIndex
-            ].proposedList.find((el) => el.title === value) ?? { id: undefined, title: '' }
+            ].proposedList.find((el) => el.title === value) ?? {
+              id: undefined,
+              title: '',
+              isValid: false,
+            }
           }
         }
       }

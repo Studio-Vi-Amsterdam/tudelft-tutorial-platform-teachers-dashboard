@@ -75,10 +75,11 @@ const ChapterSection = (props: ChapterSectionProps) => {
         const tutorials = response.data.map((item: any) => ({
           id: item.id,
           title: item.title,
+          isValid: true,
         }))
         payload.tutorialCards = [
           {
-            value: { id: undefined, title: '' },
+            value: { id: undefined, title: '', isValid: true },
             proposedList: tutorials,
           },
         ]
@@ -87,7 +88,7 @@ const ChapterSection = (props: ChapterSectionProps) => {
         if (error.response && error.response.status === 404) {
           payload.tutorialCards = [
             {
-              value: { id: undefined, title: '' },
+              value: { id: undefined, title: '', isValid: true },
               proposedList: [],
             },
           ]

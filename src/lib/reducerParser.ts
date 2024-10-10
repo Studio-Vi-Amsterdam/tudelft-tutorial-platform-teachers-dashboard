@@ -383,6 +383,7 @@ export const reducerParser = {
                     value: {
                       id: blockData[`content_card_row_${i}_card_link`],
                       title: blockData[`content_card_row_${i}_card_title`],
+                      isValid: !!blockData[`content_card_row_${i}_card_link`],
                     },
                     proposedList: shortTutorials,
                   }

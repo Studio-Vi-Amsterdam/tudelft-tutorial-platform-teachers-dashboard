@@ -50,6 +50,8 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
     dispatch(addTutorialCard({ block, listIndex, chapterIndex }))
   }
 
+  const errValidationStyle = 'border border-red-500 rounded-sm'
+
   return (
     <div className="flex w-full flex-col items-start justify-between gap-5 bg-transparent pt-10">
       {tutorialCards.map((el, nestedIndex) => (
@@ -69,7 +71,7 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
             {!checkedCustomTutorialCard[nestedIndex] ? (
               <select
                 value={el.value.title}
-                className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4 text-tertiary-grey-stone"
+                className={`${el.value.isValid ? '' : errValidationStyle} w-full rounded-[4px] border border-DIM bg-background-seasalt p-4 text-tertiary-grey-stone`}
                 onChange={(e) =>
                   handleSelectTutorialCard(
                     e.target.value,
@@ -104,7 +106,7 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
               <div className="flex flex-col gap-y-3">
                 <input
                   type="text"
-                  className="w-full p-4 rounded border placeholder:text-[#96969B] text-base bg-seasalt border-dim"
+                  className={`${el.value.isValid || el.value.title?.trim().length > 0 ? '' : errValidationStyle} w-full p-4 rounded border placeholder:text-[#96969B] text-base bg-seasalt border-dim`}
                   value={el.value.title}
                   placeholder="Title"
                   onChange={(e) =>
@@ -121,7 +123,7 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
                 />
                 <input
                   type="text"
-                  className="w-full p-4 rounded border placeholder:text-[#96969B] text-base bg-seasalt border-dim"
+                  className={`${el.value.isValid || (el.value.url && el.value.url?.trim().length > 0) ? '' : errValidationStyle} w-full p-4 rounded border placeholder:text-[#96969B] text-base bg-seasalt border-dim`}
                   value={el.value.url}
                   placeholder="Url"
                   onChange={(e) =>
