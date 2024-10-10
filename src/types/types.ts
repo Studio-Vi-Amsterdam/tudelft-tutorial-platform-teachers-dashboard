@@ -124,11 +124,12 @@ export interface ElementH5PActionInterface extends ElementActionBase {
 export interface CustomFileInterface {
   id: number
   url: string
+  isValid: boolean
 }
 interface ElementsFileInterface {
-  file: CustomFileInterface | null
-  title: string
-  description: string
+  file: CustomFileInterface
+  title: TextElementInterface
+  description: TextElementInterface
 }
 export interface ElementFileActionInterface extends ElementActionBase {
   file: ElementsFileInterface

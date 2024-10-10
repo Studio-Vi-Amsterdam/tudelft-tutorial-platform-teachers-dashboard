@@ -117,8 +117,9 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       dispatch(addTutorialElements(payload))
     } else if (val === 'download file') {
       payload.file = {
-        id: undefined,
-        url: '',
+        file: { id: undefined, url: '', isValid: true },
+        title: { text: '', isValid: true },
+        description: { text: '', isValid: true },
       }
       delete payload['download file']
       dispatch(addTutorialElements(payload))

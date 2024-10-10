@@ -11,6 +11,7 @@ import Preloader from '../ui/Preloader'
 
 const FileElement = (props: QuizElementProps) => {
   const [fileData, setFileData] = useState<CustomFileInterface | null>(null)
+  const errValidationStyle = 'border border-red-500 rounded-sm'
   const [isFetching, setIsFetching] = useState<boolean>(false)
   const { toast } = useToast()
   const [fileTitle, setFileTitle] = useState<string>('')
@@ -29,6 +30,7 @@ const FileElement = (props: QuizElementProps) => {
         setFileData({
           id: res.data.data.id,
           url: res.data.data.url,
+          isValid: !!res.data.data.id,
         })
         dispatch(appendMediaToArray(res.data.data.id))
         toast({
@@ -65,8 +67,8 @@ const FileElement = (props: QuizElementProps) => {
   useEffect(() => {
     if (fileState) {
       setFileData(fileState.file)
-      setFileTitle(fileState.title)
-      setFileDescription(fileState.description)
+      setFileTitle(fileState.title.text)
+      setFileDescription(fileState.description.text)
     }
   }, [fileState])
 
@@ -80,8 +82,8 @@ const FileElement = (props: QuizElementProps) => {
           subchapterIndex: props.subchapterIndex,
           file: {
             file: fileData,
-            description: fileDescription,
-            title: fileTitle,
+            description: { text: fileDescription, isValid: fileDescription.trim().length > 0 },
+            title: { text: fileTitle, isValid: fileTitle.trim().length > 0 },
           },
         }),
       )
@@ -120,12 +122,12 @@ const FileElement = (props: QuizElementProps) => {
   const [errorMessage] = useState<string>('')
   return (
     <div className="flex w-full flex-col gap-y-2">
-      {!fileData && !isFetching ? (
+      {!fileData?.id && !isFetching ? (
         <div className="flex w-full flex-col items-center justify-center py-2">
           <section className="flex w-full flex-col items-center justify-center gap-y-2">
             <div
               {...getRootProps({ className: 'dropzone' })}
-              className="flex w-full flex-col items-center justify-center gap-y-2 rounded-[4px] border border-dashed border-tertiary-grey-stone bg-background-seasalt py-2 text-center text-tertiary-grey-dim"
+              className={`${fileData?.isValid ? 'border border-dashed border-tertiary-grey-stone' : errValidationStyle} flex w-full flex-col items-center justify-center gap-y-2 rounded-[4px] bg-background-seasalt py-2 text-center text-tertiary-grey-dim`}
             >
               <input {...getInputProps()} />
               <p className="cursor-pointer text-center text-base ">
@@ -160,6 +162,7 @@ const FileElement = (props: QuizElementProps) => {
               placeholder={isFetching || fileData === null ? 'First select the file' : 'Title'}
               className="!text-base !p-4"
               disabled={isFetching || fileData === null}
+              notValid={fileState ? !fileState.title.isValid : true}
             />
           </div>
         </div>
@@ -169,9 +172,12 @@ const FileElement = (props: QuizElementProps) => {
             <TextInput
               value={fileDescription}
               handleChange={setFileDescription}
-              placeholder={isFetching || fileData === null ? 'First select the file' : 'Title'}
+              placeholder={
+                isFetching || fileData === null ? 'First select the file' : 'Description'
+              }
               disabled={isFetching || fileData === null}
               className="!text-base !p-4"
+              notValid={fileState ? !fileState.description.isValid : true}
             />
           </div>
         </div>

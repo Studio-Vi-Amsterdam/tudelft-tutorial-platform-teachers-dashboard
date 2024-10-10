@@ -221,6 +221,30 @@ const TutorialButtonsSection = () => {
             isValid,
           },
         }
+      } else if (element.file) {
+        const isFileValid = element.file.file ? !!element.file.file.id : false
+        !isFileValid && count++
+        const isTitleValid = element.file.title.text.trim().length > 0
+        !isTitleValid && count++
+        const isDescriptionValid = element.file.description.text.trim().length > 0
+        !isDescriptionValid && count++
+        return {
+          file: {
+            ...element.file,
+            file: {
+              ...element.file.file,
+              isValid: isFileValid,
+            },
+            title: {
+              ...element.file.title,
+              isValid: isTitleValid,
+            },
+            description: {
+              ...element.file.description,
+              isValid: isDescriptionValid,
+            },
+          },
+        }
       } else if (element.textLayout) {
         const isTitleValid = element.textLayout.title.text.trim().length > 0
         !isTitleValid && count++
