@@ -26,14 +26,13 @@ interface ElementsBlockProps {
 const ElementsBlock = (props: ElementsBlockProps) => {
   const { elements, block, chapterIndex, subchapterIndex } = props
   const dispatch = useAppDispatch()
-
   const handleTextElementChange = (value: string, index?: number, block?: string): void => {
     if (block !== undefined && index !== undefined) {
       dispatch(
         setElementText({
           block,
           index,
-          text: value,
+          text: { text: value, isValid: true },
           nestedIndex: chapterIndex,
           subchapterIndex,
         }),
@@ -47,7 +46,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
         setElementInfobox({
           block,
           index,
-          infobox: value,
+          infobox: { text: value, isValid: true },
           nestedIndex: chapterIndex,
           subchapterIndex,
         }),
@@ -98,10 +97,8 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               <div className="relative w-full mt-4 mb-5 ">
                 <input
                   type="text"
-                  className={
-                    'w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone'
-                  }
-                  value={element.textLayout.title}
+                  className={`${element.textLayout.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                  value={element.textLayout.title.text}
                   placeholder={'Subchapter Title'}
                   onChange={(e) =>
                     handleSubchapterTitleChange(
@@ -116,12 +113,13 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
                 <div className="w-full">
                   <BundledEditor
-                    value={element.textLayout.text}
+                    value={element.textLayout.text.text}
                     block={block}
                     index={props.chapterIndex}
                     handleChange={handleSubchapterTextChange}
                     subchapter={true}
                     subchapterIndex={index}
+                    notValid={!element.textLayout.text.isValid}
                     layout="textLayout"
                     extended
                   />
@@ -139,10 +137,8 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               <div className="relative w-full mt-4 mb-5 ">
                 <input
                   type="text"
-                  className={
-                    'w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone'
-                  }
-                  value={element.textImage.title}
+                  className={`${element.textImage.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                  value={element.textImage.title.text}
                   placeholder={'Subchapter Title'}
                   onChange={(e) =>
                     handleSubchapterTitleChange(
@@ -157,10 +153,11 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
                 <div className="sm:w-1/2">
                   <BundledEditor
-                    value={element.textImage.text}
+                    value={element.textImage.text.text}
                     block={block}
                     index={props.chapterIndex}
                     handleChange={handleSubchapterTextChange}
+                    notValid={!element.textImage.text.isValid}
                     subchapter={true}
                     subchapterIndex={index}
                     layout="textImage"
@@ -190,10 +187,8 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               <div className="relative w-full mt-4 mb-5 ">
                 <input
                   type="text"
-                  className={
-                    'w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone'
-                  }
-                  value={element.imageText.title}
+                  className={`${element.imageText.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                  value={element.imageText.title.text}
                   placeholder={'Subchapter Title'}
                   onChange={(e) =>
                     handleSubchapterTitleChange(
@@ -218,9 +213,10 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                 </div>
                 <div className="sm:w-1/2">
                   <BundledEditor
-                    value={element.imageText.text}
+                    value={element.imageText.text.text}
                     block={block}
                     index={props.chapterIndex}
+                    notValid={!element.imageText.text.isValid}
                     handleChange={handleSubchapterTextChange}
                     subchapter={true}
                     subchapterIndex={index}
@@ -241,10 +237,8 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               <div className="relative w-full mt-4 mb-5 ">
                 <input
                   type="text"
-                  className={
-                    'w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone'
-                  }
-                  value={element.videoText.title}
+                  className={`${element.videoText.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                  value={element.videoText.title.text}
                   placeholder={'Subchapter Title'}
                   onChange={(e) =>
                     handleSubchapterTitleChange(
@@ -278,8 +272,9 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                 </div>
                 <div className="sm:w-1/2">
                   <BundledEditor
-                    value={element.videoText.text}
+                    value={element.videoText.text.text}
                     block={block}
+                    notValid={!element.videoText.text.isValid}
                     index={props.chapterIndex}
                     handleChange={handleSubchapterTextChange}
                     subchapter={true}
@@ -301,10 +296,8 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               <div className="relative w-full mt-4 mb-5 ">
                 <input
                   type="text"
-                  className={
-                    'w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone'
-                  }
-                  value={element.textVideo.title}
+                  className={`${element.textVideo.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                  value={element.textVideo.title.text}
                   placeholder={'Subchapter Title'}
                   onChange={(e) =>
                     handleSubchapterTitleChange(
@@ -319,7 +312,8 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
                 <div className="sm:w-1/2">
                   <BundledEditor
-                    value={element.textVideo.text}
+                    value={element.textVideo.text.text}
+                    notValid={!element.textVideo.text.isValid}
                     block={block}
                     index={props.chapterIndex}
                     handleChange={handleSubchapterTextChange}
@@ -359,11 +353,12 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               elementIndex={index}
             >
               <BundledEditor
-                value={element.text}
+                value={element.text.text}
                 block={block}
                 index={index}
                 handleChange={handleTextElementChange}
                 extended
+                notValid={!element.text.isValid}
               />
             </DeleteElementWraper>
           )}
@@ -375,10 +370,11 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               elementIndex={index}
             >
               <BundledEditor
-                value={element.infobox}
+                value={element.infobox.text}
                 block={block}
                 index={index}
                 handleChange={handleInfoboxElementChange}
+                notValid={!element.infobox.isValid}
               />
             </DeleteElementWraper>
           )}

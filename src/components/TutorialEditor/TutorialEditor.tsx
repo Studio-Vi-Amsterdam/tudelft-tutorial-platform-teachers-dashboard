@@ -159,7 +159,7 @@ const BlogEditor = () => {
   if (isAuthenticated) {
     return (
       <main className="container mx-auto flex flex-auto flex-row justify-between">
-        <EditorSidebar tutorialTitle={tutorialTitle} />
+        <EditorSidebar tutorialTitle={tutorialTitle.text} />
         <div className="flex w-full flex-col items-start md:pl-12 lg:pl-28 bg-white">
           {isFetched ? (
             <>

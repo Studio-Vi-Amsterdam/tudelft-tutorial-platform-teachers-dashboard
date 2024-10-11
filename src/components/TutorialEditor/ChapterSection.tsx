@@ -38,20 +38,34 @@ const ChapterSection = (props: ChapterSectionProps) => {
 
     payload[val] = ''
 
+    if (val === 'text block') {
+      payload.text = {
+        text: '',
+        isValid: true,
+      }
+      delete payload['text block']
+    }
+    if (val === 'infobox block') {
+      payload.infobox = {
+        text: '',
+        isValid: true,
+      }
+      delete payload['infobox block']
+    }
     if (val === 'quiz') {
       payload[val] = {
-        question: '',
+        question: { text: '', isValid: true },
         answers: [
-          { answer: '', isCorrect: '1' },
-          { answer: '', isCorrect: '0' },
-          { answer: '', isCorrect: '0' },
-          { answer: '', isCorrect: '0' },
+          { answer: '', isCorrect: '1', isValid: true },
+          { answer: '', isCorrect: '0', isValid: true },
+          { answer: '', isCorrect: '0', isValid: true },
+          { answer: '', isCorrect: '0', isValid: true },
         ],
         answersCount: 4,
       }
     } else if (val === 'h5p element') {
       payload.h5pElement = {
-        value: '',
+        text: '',
         error: '',
       }
       delete payload['h5p element']
@@ -61,10 +75,11 @@ const ChapterSection = (props: ChapterSectionProps) => {
         const tutorials = response.data.map((item: any) => ({
           id: item.id,
           title: item.title,
+          isValid: true,
         }))
         payload.tutorialCards = [
           {
-            value: { id: undefined, title: '' },
+            value: { id: undefined, title: '', isValid: true },
             proposedList: tutorials,
           },
         ]
@@ -73,7 +88,7 @@ const ChapterSection = (props: ChapterSectionProps) => {
         if (error.response && error.response.status === 404) {
           payload.tutorialCards = [
             {
-              value: { id: undefined, title: '' },
+              value: { id: undefined, title: '', isValid: true },
               proposedList: [],
             },
           ]
@@ -83,10 +98,36 @@ const ChapterSection = (props: ChapterSectionProps) => {
       }
     } else if (val === 'download file') {
       payload.file = {
-        id: undefined,
-        url: '',
+        file: { id: undefined, url: '', isValid: true },
+        title: { text: '', isValid: true },
+        description: { text: '', isValid: true },
       }
       delete payload['download file']
+    } else if (val === 'image') {
+      payload.image = {
+        format: '',
+        link: '',
+        url: '',
+        isValid: true,
+        publishDate: '',
+        title: '',
+        type: 'image',
+        description: '',
+        thumbnail: undefined,
+        hasZoom: false,
+      }
+    } else if (val === 'video') {
+      payload.video = {
+        format: '',
+        link: '',
+        url: '',
+        isValid: true,
+        publishDate: '',
+        title: '',
+        type: 'video',
+        description: '',
+        thumbnail: undefined,
+      }
     }
 
     if (index !== undefined) {
@@ -95,8 +136,8 @@ const ChapterSection = (props: ChapterSectionProps) => {
   }
 
   const elements: AddElementsType[] = [
-    'text',
-    'infobox',
+    'text block',
+    'infobox block',
     'image',
     'video',
     'download file',

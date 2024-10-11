@@ -11,9 +11,11 @@ interface TextInputProps {
   className?: string
   element?: 'textarea'
   disabled?: boolean
+  notValid?: boolean
 }
 
 const TextInput = (props: TextInputProps) => {
+  const errValidStyle = 'border border-red-500 rounded-sm'
   // This switch/case for future fucntionality
   const getHeadingType = (): string | undefined => {
     switch (props?.headingType) {
@@ -39,7 +41,7 @@ const TextInput = (props: TextInputProps) => {
       <textarea
         className={`${props.className} ${
           props?.headingType && 'pr-24'
-        } w-full rounded-[4px] border border-inputBorder  p-2 resize-none h-28 leading-8 placeholder:text-tertiary-grey-stone`}
+        } ${props.notValid && errValidStyle} w-full rounded-[4px] border border-inputBorder  p-2 resize-none h-28 leading-8 placeholder:text-tertiary-grey-stone`}
         value={props.value}
         placeholder={props.placeholder}
         onChange={(e) => props.handleChange(e.target.value, props?.index, props?.subchapterIndex)}
@@ -58,7 +60,7 @@ const TextInput = (props: TextInputProps) => {
         type="text"
         className={`${props.className} ${
           props?.headingType && 'pr-24'
-        } w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+        } ${props.notValid && errValidStyle} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
         value={props.value}
         placeholder={props.placeholder}
         onChange={(e) => props.handleChange(e.target.value, props?.index, props?.subchapterIndex)}

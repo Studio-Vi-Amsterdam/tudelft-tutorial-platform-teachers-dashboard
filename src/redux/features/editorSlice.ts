@@ -3,8 +3,10 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import {
   AddChapterElementInterface,
   AddSubchapterElementInterface,
+  AllMetafieldsType,
   ArtictesType,
   BlankSubchapterActionInterface,
+  ChapterInterface,
   ChapterTextFieldActionInterface,
   EditorState,
   Element,
@@ -31,9 +33,15 @@ const initialState: EditorState = {
   isEditorLoaded: false,
   pageType: undefined,
   tutorialTop: {
-    title: '',
+    title: {
+      text: '',
+      isValid: true,
+    },
     titleType: 'h1',
-    description: '',
+    description: {
+      text: '',
+      isValid: true,
+    },
     elements: [],
   },
   chapters: [],
@@ -108,18 +116,21 @@ export const editorSlice = createSlice({
               tutorialBelongs: {
                 course: {
                   fieldTitle: 'Course',
-                  required: true,
+                  isValid: true,
+                  required: false,
                   list: info.courses,
                   value: { id: undefined, title: '' },
                 },
                 primary: {
                   fieldTitle: 'Primary software used',
+                  isValid: true,
                   required: true,
                   list: info.software,
                   value: { id: undefined, title: '', version: [] },
                 },
                 version: {
                   fieldTitle: 'Software Version',
+                  isValid: true,
                   list: [],
                   value: { id: undefined, title: '' },
                   required: false,
@@ -127,6 +138,7 @@ export const editorSlice = createSlice({
                 primarySubject: {
                   fieldTitle: 'Primary Subject',
                   list: info.subjects,
+                  isValid: true,
                   required: true,
                   value: {
                     id: undefined,
@@ -136,6 +148,7 @@ export const editorSlice = createSlice({
                 secondarySubject: {
                   fieldTitle: 'Secondary Subject',
                   list: info.secondarySubjects,
+                  isValid: true,
                   required: false,
                   value: {
                     id: undefined,
@@ -145,6 +158,7 @@ export const editorSlice = createSlice({
                 keywords: {
                   required: true,
                   list: [],
+                  isValid: true,
                   value: '',
                   proposedList: info.keywords,
                   fieldTitle: 'Keywords',
@@ -152,7 +166,9 @@ export const editorSlice = createSlice({
                 image: {
                   fieldTitle: 'Featured Image',
                   required: false,
+                  isValid: true,
                   value: {
+                    isValid: true,
                     format: '',
                     link: '',
                     publishDate: '',
@@ -165,6 +181,7 @@ export const editorSlice = createSlice({
                 },
                 level: {
                   fieldTitle: 'Level',
+                  isValid: true,
                   required: false,
                   list: ['Beginner', 'Intermediate', 'Advanced', 'Expert'],
                   value: '',
@@ -173,12 +190,14 @@ export const editorSlice = createSlice({
               tutorialResponsible: {
                 faculty: {
                   fieldTitle: 'Faculty',
+                  isValid: true,
                   required: true,
                   value: '',
                   list: ['Bouwkunde'] /* Hardcoded now, as in design file */,
                 },
                 teachers: {
                   required: true,
+                  isValid: true,
                   list: [],
                   value: '',
                   proposedList: info.teachers,
@@ -191,19 +210,23 @@ export const editorSlice = createSlice({
               courseBelongs: {
                 course: {
                   fieldTitle: 'Course',
+                  isValid: true,
                   required: true,
                   value: '',
                 },
                 courseCode: {
                   fieldTitle: 'Course Code',
                   required: true,
+                  isValid: true,
                   value: '',
                 },
                 image: {
                   fieldTitle: 'Featured image',
                   required: false,
+                  isValid: true,
                   value: {
                     format: '',
+                    isValid: true,
                     link: '',
                     publishDate: '',
                     title: '',
@@ -216,6 +239,7 @@ export const editorSlice = createSlice({
                 keywords: {
                   fieldTitle: 'Keywords',
                   list: [],
+                  isValid: true,
                   proposedList: info.keywords,
                   required: false,
                   value: '',
@@ -224,6 +248,7 @@ export const editorSlice = createSlice({
                   fieldTitle: 'Primary Study',
                   list: info.primaryStudy,
                   required: true,
+                  isValid: true,
                   value: {
                     id: undefined,
                     title: '',
@@ -233,6 +258,7 @@ export const editorSlice = createSlice({
                   fieldTitle: 'Secondary Study',
                   list: info.secondaryStudy,
                   required: false,
+                  isValid: true,
                   value: {
                     id: undefined,
                     title: '',
@@ -243,11 +269,13 @@ export const editorSlice = createSlice({
                 faculty: {
                   fieldTitle: 'Faculty',
                   required: true,
+                  isValid: true,
                   value: '',
                   list: ['Bouwkunde'] /* Hardcoded now, as in design file */,
                 },
                 teachers: {
                   required: true,
+                  isValid: true,
                   list: [],
                   value: '',
                   proposedList: info.teachers,
@@ -261,9 +289,11 @@ export const editorSlice = createSlice({
                 image: {
                   fieldTitle: 'Featured image',
                   required: false,
+                  isValid: true,
                   value: {
                     format: '',
                     link: '',
+                    isValid: true,
                     publishDate: '',
                     title: '',
                     type: 'image',
@@ -274,6 +304,7 @@ export const editorSlice = createSlice({
                 },
                 keywords: {
                   fieldTitle: 'Keywords',
+                  isValid: true,
                   list: [],
                   proposedList: info.keywords,
                   required: false,
@@ -282,6 +313,7 @@ export const editorSlice = createSlice({
                 softwareVersion: {
                   fieldTitle: 'Software version',
                   required: true,
+                  isValid: true,
                   list: info.softwareVersions,
                   value: { id: undefined, title: '' },
                 },
@@ -293,12 +325,14 @@ export const editorSlice = createSlice({
                 primaryCategory: {
                   fieldTitle: 'Primary category',
                   required: true,
+                  isValid: true,
                   list: info.categories ?? [],
                   value: { id: undefined, title: '' },
                 },
                 secondaryCategory: {
                   fieldTitle: 'Secondary category',
                   required: false,
+                  isValid: true,
                   list: info.secondaryCategories ?? [],
                   value: { id: undefined, title: '' },
                 },
@@ -316,10 +350,12 @@ export const editorSlice = createSlice({
       }
     },
     setTutorialTitle: (state, action: PayloadAction<string>) => {
-      state.tutorialTop.title = action.payload
+      state.tutorialTop.title.isValid = action.payload.trim().length > 0
+      state.tutorialTop.title.text = action.payload
     },
     setTutorialDescription: (state, action: PayloadAction<string>) => {
-      state.tutorialTop.description = action.payload
+      state.tutorialTop.description.isValid = action.payload.trim().length > 0
+      state.tutorialTop.description.text = action.payload
     },
     setPageType: (state, action: PayloadAction<string | undefined>) => {
       state.pageType = action.payload
@@ -483,8 +519,8 @@ export const editorSlice = createSlice({
           {
             id: undefined,
             layout: action.payload,
-            title: '',
-            text: '',
+            title: { text: '', isValid: true },
+            text: { text: '', isValid: true },
             elements: [],
             subchapters: [],
           },
@@ -496,12 +532,13 @@ export const editorSlice = createSlice({
             {
               id: undefined,
               layout: action.payload,
-              title: '',
-              text: '',
+              title: { text: '', isValid: true },
+              text: { text: '', isValid: true },
               video: {
                 format: '',
                 link: '',
                 publishDate: '',
+                isValid: true,
                 title: '',
                 type: 'video',
                 description: '',
@@ -509,6 +546,7 @@ export const editorSlice = createSlice({
                   description: '',
                   format: '',
                   type: 'image',
+                  isValid: true,
                   link: '',
                   publishDate: '',
                   title: '',
@@ -524,11 +562,12 @@ export const editorSlice = createSlice({
             {
               id: undefined,
               layout: action.payload,
-              title: '',
-              text: '',
+              title: { text: '', isValid: true },
+              text: { text: '', isValid: true },
               image: {
                 format: '',
                 link: '',
+                isValid: true,
                 publishDate: '',
                 title: '',
                 type: 'image',
@@ -547,8 +586,8 @@ export const editorSlice = createSlice({
           ...(state.chapters[action.payload.chapterIndex].subchapters || []),
           {
             layout: action.payload.chapterType,
-            title: '',
-            text: '',
+            title: { text: '', isValid: true },
+            text: { text: '', isValid: true },
             elements: [],
           },
         ]
@@ -558,12 +597,13 @@ export const editorSlice = createSlice({
             ...(state.chapters[action.payload.chapterIndex].subchapters || []),
             {
               layout: action.payload.chapterType,
-              title: '',
-              text: '',
+              title: { text: '', isValid: true },
+              text: { text: '', isValid: true },
               video: {
                 format: '',
                 link: '',
                 publishDate: '',
+                isValid: true,
                 title: '',
                 type: 'video',
                 description: '',
@@ -576,11 +616,12 @@ export const editorSlice = createSlice({
             ...(state.chapters[action.payload.chapterIndex].subchapters || []),
             {
               layout: action.payload.chapterType,
-              title: '',
-              text: '',
+              title: { text: '', isValid: true },
+              text: { text: '', isValid: true },
               image: {
                 format: '',
                 link: '',
+                isValid: true,
                 publishDate: '',
                 title: '',
                 type: 'image',
@@ -598,8 +639,8 @@ export const editorSlice = createSlice({
           ...(state.chapters[action.payload.chapterIndex].elements || []),
           {
             textLayout: {
-              text: '',
-              title: '',
+              text: { text: '', isValid: true },
+              title: { text: '', isValid: true },
             },
           },
         ]
@@ -609,6 +650,7 @@ export const editorSlice = createSlice({
           {
             imageText: {
               image: {
+                isValid: true,
                 format: '',
                 link: '',
                 publishDate: '',
@@ -616,8 +658,8 @@ export const editorSlice = createSlice({
                 type: 'image',
                 description: '',
               },
-              text: '',
-              title: '',
+              text: { text: '', isValid: true },
+              title: { text: '', isValid: true },
             },
           },
         ]
@@ -630,12 +672,13 @@ export const editorSlice = createSlice({
                 format: '',
                 link: '',
                 publishDate: '',
+                isValid: true,
                 title: '',
                 type: 'image',
                 description: '',
               },
-              text: '',
-              title: '',
+              text: { text: '', isValid: true },
+              title: { text: '', isValid: true },
             },
           },
         ]
@@ -649,6 +692,7 @@ export const editorSlice = createSlice({
                 link: '',
                 publishDate: '',
                 title: '',
+                isValid: true,
                 type: 'video',
                 description: '',
                 thumbnail: {
@@ -656,12 +700,13 @@ export const editorSlice = createSlice({
                   format: '',
                   type: 'image',
                   link: '',
+                  isValid: true,
                   publishDate: '',
                   title: '',
                 },
               },
-              text: '',
-              title: '',
+              text: { text: '', isValid: true },
+              title: { text: '', isValid: true },
             },
           },
         ]
@@ -675,6 +720,7 @@ export const editorSlice = createSlice({
                 link: '',
                 publishDate: '',
                 title: '',
+                isValid: true,
                 type: 'video',
                 description: '',
                 thumbnail: {
@@ -682,31 +728,38 @@ export const editorSlice = createSlice({
                   format: '',
                   type: 'image',
                   link: '',
+                  isValid: true,
                   publishDate: '',
                   title: '',
                 },
               },
-              text: '',
-              title: '',
+              text: { text: '', isValid: true },
+              title: { text: '', isValid: true },
             },
           },
         ]
       }
     },
     setChapterText: (state, action: PayloadAction<ChapterTextFieldActionInterface>) => {
-      state.chapters[action.payload.chapterIndex].text = action.payload.text
+      state.chapters[action.payload.chapterIndex].text = {
+        text: action.payload.text,
+        isValid: true,
+      }
     },
     setChapterTitle: (state, action: PayloadAction<ChapterTextFieldActionInterface>) => {
-      state.chapters[action.payload.chapterIndex].title = action.payload.text
+      state.chapters[action.payload.chapterIndex].title = {
+        text: action.payload.text,
+        isValid: true,
+      }
     },
     setSubchapterTitle: (state, action: PayloadAction<SubchapterTextFieldActionInterface>) => {
       state.chapters[action.payload.chapterIndex].subchapters[
         action.payload.subchapterIndex
-      ].title = action.payload.text
+      ].title = { text: action.payload.text, isValid: true }
     },
     setSubchapterText: (state, action: PayloadAction<SubchapterTextFieldActionInterface>) => {
       state.chapters[action.payload.chapterIndex].subchapters[action.payload.subchapterIndex].text =
-        action.payload.text
+        { text: action.payload.text, isValid: true }
     },
     addChapterElement: (state, action: PayloadAction<AddChapterElementInterface>) => {
       state.chapters[action.payload.chapterIndex].elements = [
@@ -854,6 +907,7 @@ export const editorSlice = createSlice({
     ) => {
       if (state.meta.tutorialBelongs) {
         if (action.payload.belongsKeyName === 'primary') {
+          state.meta.tutorialBelongs.primary.isValid = true
           state.meta.tutorialBelongs.primary.value = state.meta.tutorialBelongs.primary.list.find(
             (item) => item.title === action.payload.value,
           ) ?? { id: undefined, title: '', version: [] }
@@ -864,6 +918,7 @@ export const editorSlice = createSlice({
               )?.version ?? []
           }
         } else {
+          state.meta.tutorialBelongs[action.payload.belongsKeyName].isValid = true
           state.meta.tutorialBelongs[action.payload.belongsKeyName].value =
             state.meta.tutorialBelongs[action.payload.belongsKeyName].list.find(
               (item) => item.title === action.payload.value,
@@ -879,6 +934,7 @@ export const editorSlice = createSlice({
       }>,
     ) => {
       if (state.meta.courseBelongs) {
+        state.meta.courseBelongs[action.payload.belongsKeyName].isValid = true
         state.meta.courseBelongs[action.payload.belongsKeyName].value = state.meta.courseBelongs[
           action.payload.belongsKeyName
         ].list.find((item) => item.title === action.payload.value) ?? { id: undefined, title: '' }
@@ -892,6 +948,7 @@ export const editorSlice = createSlice({
       }>,
     ) => {
       if (state.meta.softwareBelongs) {
+        state.meta.softwareBelongs[action.payload.belongsKeyName].isValid = true
         state.meta.softwareBelongs[action.payload.belongsKeyName].value =
           state.meta.softwareBelongs[action.payload.belongsKeyName].list.find(
             (item) => item.title === action.payload.value,
@@ -906,6 +963,7 @@ export const editorSlice = createSlice({
       }>,
     ) => {
       if (state.meta.subjectsInvolve) {
+        state.meta.subjectsInvolve[action.payload.involvesKeyName].isValid = true
         state.meta.subjectsInvolve[action.payload.involvesKeyName].value =
           state.meta.subjectsInvolve[action.payload.involvesKeyName].list.find(
             (item) => item.title === action.payload.value,
@@ -928,7 +986,8 @@ export const editorSlice = createSlice({
       const layoutItem = element ? element[layout] : undefined
 
       if (layoutItem && layoutItem.text !== undefined) {
-        layoutItem.title = value
+        layoutItem.title.text = value
+        layoutItem.title.isValid = value.trim().length > 0
       }
     },
     addTutorialCard: (
@@ -945,7 +1004,7 @@ export const editorSlice = createSlice({
         const element = elements && elements[listIndex]
         if (element.tutorialCards !== undefined) {
           const newObject: TutorialCardInterface = {
-            value: { id: undefined, title: '' },
+            value: { id: undefined, title: '', isValid: true },
             proposedList: element.tutorialCards[0].proposedList,
           }
           element.tutorialCards = [...element.tutorialCards, newObject]
@@ -955,7 +1014,7 @@ export const editorSlice = createSlice({
         const element = elements && elements[listIndex]
         if (element.tutorialCards !== undefined) {
           const newObject: TutorialCardInterface = {
-            value: { id: undefined, title: '' },
+            value: { id: undefined, title: '', isValid: true },
             proposedList: element.tutorialCards[0].proposedList,
           }
           element.tutorialCards = [...element.tutorialCards, newObject]
@@ -985,10 +1044,15 @@ export const editorSlice = createSlice({
           if (isUrl) {
             element.tutorialCards[nestedIndex].value.id = undefined
             element.tutorialCards[nestedIndex].value[`${name as 'title' | 'url'}`] = value
+            element.tutorialCards[nestedIndex].value.isValid = value.trim().length > 0
           } else {
             element.tutorialCards[nestedIndex].value = element.tutorialCards[
               nestedIndex
-            ].proposedList.find((el) => el.title === value) ?? { id: undefined, title: '' }
+            ].proposedList.find((el) => el.title === value) ?? {
+              id: undefined,
+              title: '',
+              isValid: false,
+            }
           }
         }
       } else if (block === 'chapterElements' && chapterIndex !== undefined) {
@@ -1005,7 +1069,11 @@ export const editorSlice = createSlice({
           } else {
             element.tutorialCards[nestedIndex].value = element.tutorialCards[
               nestedIndex
-            ].proposedList.find((el) => el.title === value) ?? { id: undefined, title: '' }
+            ].proposedList.find((el) => el.title === value) ?? {
+              id: undefined,
+              title: '',
+              isValid: false,
+            }
           }
         }
       }
@@ -1028,7 +1096,8 @@ export const editorSlice = createSlice({
         const layoutItem = element ? element[layout] : undefined
 
         if (layoutItem && layoutItem.text !== undefined) {
-          layoutItem.text = value
+          layoutItem.text.text = value
+          layoutItem.text.isValid = value.trim().length > 0
         }
       }
     },
@@ -1049,12 +1118,14 @@ export const editorSlice = createSlice({
         action.payload.belongsKeyName &&
         state.meta.tutorialBelongs
       ) {
+        state.meta.tutorialBelongs[action.payload.belongsKeyName].isValid = true
         state.meta.tutorialBelongs[action.payload.belongsKeyName].value = action.payload.value
       } else if (
         action.payload.objectName === 'tutorialResponsible' &&
         action.payload.responsibleKeyName &&
         state.meta.tutorialResponsible
       ) {
+        state.meta.tutorialResponsible[action.payload.responsibleKeyName].isValid = true
         state.meta.tutorialResponsible[action.payload.responsibleKeyName].value =
           action.payload.value
       } else if (
@@ -1062,18 +1133,21 @@ export const editorSlice = createSlice({
         action.payload.responsibleKeyName &&
         state.meta.courseResponsible
       ) {
+        state.meta.courseResponsible[action.payload.responsibleKeyName].isValid = true
         state.meta.courseResponsible[action.payload.responsibleKeyName].value = action.payload.value
       } else if (
         action.payload.objectName === 'courseBelongs' &&
         action.payload.courseBelongsKeyName &&
         state.meta.courseBelongs
       ) {
+        state.meta.courseBelongs[action.payload.courseBelongsKeyName].isValid = true
         state.meta.courseBelongs[action.payload.courseBelongsKeyName].value = action.payload.value
       } else if (
         action.payload.objectName === 'softwareBelongs' &&
         action.payload.softwareBelongsKeyName &&
         state.meta.softwareBelongs
       ) {
+        state.meta.softwareBelongs[action.payload.softwareBelongsKeyName].isValid = true
         state.meta.softwareBelongs[action.payload.softwareBelongsKeyName].value =
           action.payload.value
       } else if (
@@ -1081,6 +1155,7 @@ export const editorSlice = createSlice({
         action.payload.subjectInvolveKey &&
         state.meta.subjectsInvolve
       ) {
+        state.meta.subjectsInvolve[action.payload.subjectInvolveKey].isValid = true
         state.meta.subjectsInvolve[action.payload.subjectInvolveKey].value.title =
           action.payload.value
       }
@@ -1090,16 +1165,19 @@ export const editorSlice = createSlice({
       action: PayloadAction<{ value: string; objectName: keyof TutorialMetaObject }>,
     ) => {
       if (action.payload.objectName === 'tutorialBelongs' && state.meta.tutorialBelongs) {
+        state.meta.tutorialBelongs.keywords.isValid = true
         state.meta.tutorialBelongs.keywords.list = [
           ...state.meta.tutorialBelongs.keywords.list,
           action.payload.value,
         ]
       } else if (action.payload.objectName === 'courseBelongs' && state.meta.courseBelongs) {
+        state.meta.courseBelongs.keywords.isValid = true
         state.meta.courseBelongs.keywords.list = [
           ...state.meta.courseBelongs.keywords.list,
           action.payload.value,
         ]
       } else if (action.payload.objectName === 'softwareBelongs' && state.meta.softwareBelongs) {
+        state.meta.softwareBelongs.keywords.isValid = true
         state.meta.softwareBelongs.keywords.list = [
           ...state.meta.softwareBelongs.keywords.list,
           action.payload.value,
@@ -1111,6 +1189,7 @@ export const editorSlice = createSlice({
       action: PayloadAction<{ value: string; objectName: keyof TutorialMetaObject }>,
     ) => {
       if (state.meta.tutorialResponsible && action.payload.objectName === 'tutorialResponsible') {
+        state.meta.tutorialResponsible.teachers.isValid = true
         state.meta.tutorialResponsible.teachers.list = [
           ...state.meta.tutorialResponsible.teachers.list,
           action.payload.value,
@@ -1119,6 +1198,7 @@ export const editorSlice = createSlice({
         state.meta.courseResponsible &&
         action.payload.objectName === 'courseResponsible'
       ) {
+        state.meta.courseResponsible.teachers.isValid = true
         state.meta.courseResponsible.teachers.list = [
           ...state.meta.courseResponsible.teachers.list,
           action.payload.value,
@@ -1269,6 +1349,40 @@ export const editorSlice = createSlice({
         state.mediaIds = removeFirstOccurrence(state.mediaIds, action.payload)
       }
     },
+    setMetafieldsValidationErrors: (state, action: PayloadAction<any>) => {
+      const errorsObject = action.payload
+      if (errorsObject) {
+        Object.keys(errorsObject).length > 0 &&
+          Object.keys(errorsObject).forEach((block) => {
+            const blockName = block as keyof typeof state.meta
+            const blockData = state.meta[blockName]
+            if (blockData) {
+              errorsObject[blockName].forEach((field: AllMetafieldsType) => {
+                const fieldName = field as keyof typeof blockData
+                const fieldData = blockData[fieldName] as { isValid: boolean } | undefined
+                if (fieldData) {
+                  fieldData.isValid = false
+                }
+              })
+            }
+          })
+      }
+    },
+    setTutorialTitleValid: (state, action: PayloadAction<boolean>) => {
+      state.tutorialTop.title.isValid = action.payload
+    },
+    setTutorialDescriptionValid: (state, action: PayloadAction<boolean>) => {
+      state.tutorialTop.description.isValid = action.payload
+    },
+    setValidatedTutorialTopElements: (
+      state,
+      action: PayloadAction<[] | TutorialTopElementsObject[]>,
+    ) => {
+      state.tutorialTop.elements = action.payload
+    },
+    setValidatedChapters: (state, action: PayloadAction<ChapterInterface[] | []>) => {
+      state.chapters = action.payload
+    },
   },
 })
 
@@ -1325,6 +1439,11 @@ export const {
   deleteMediaFromArray,
   moveElement,
   setVideoThumbnail,
+  setMetafieldsValidationErrors,
+  setTutorialTitleValid,
+  setTutorialDescriptionValid,
+  setValidatedTutorialTopElements,
+  setValidatedChapters,
 } = editorSlice.actions
 
 export default editorSlice.reducer

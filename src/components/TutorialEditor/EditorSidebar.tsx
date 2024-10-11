@@ -52,14 +52,14 @@ const EditorSidebar = (props: EditorSidebarProps) => {
                           <div className="absolute top-1/2 -translate-y-1/2 left-0">
                             <TriangleArrow />
                           </div>
-                          {chapter.title !== '' ? chapter.title : `Chapter ${index + 1}`}
+                          {chapter.title.text !== '' ? chapter.title.text : `Chapter ${index + 1}`}
                         </AccordionTrigger>
                         <AccordionContent>
                           <ul className="mt-2 flex flex-col gap-y-2 pl-8">
                             {chapter.subchapters.map((subchapter, index) => (
                               <li key={index} className="cursor-pointer hover:underline">
-                                {subchapter.title !== ''
-                                  ? subchapter.title
+                                {subchapter.title.text !== ''
+                                  ? subchapter.title.text
                                   : `Subchapter ${index + 1}`}
                               </li>
                             ))}
@@ -68,7 +68,7 @@ const EditorSidebar = (props: EditorSidebarProps) => {
                       </>
                     ) : (
                       <div className="mt-6 flex flex-1 cursor-pointer items-center justify-between pl-6 text-sm font-bold transition-all hover:underline [&[data-state=open]>svg]:rotate-180">
-                        {chapter.title !== '' ? chapter.title : `Chapter ${index + 1}`}
+                        {chapter.title.text !== '' ? chapter.title.text : `Chapter ${index + 1}`}
                       </div>
                     )}
                   </AccordionItem>

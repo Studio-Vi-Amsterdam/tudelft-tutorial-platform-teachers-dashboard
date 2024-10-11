@@ -183,8 +183,10 @@ export default function BundledEditor(props: any) {
     return null
   }
 
+  const errValidStyle = 'border border-red-500 rounded-md'
+
   return (
-    <>
+    <div className={`w-full ${props.notValid && errValidStyle}`}>
       <Editor
         init={{
           menubar: false,
@@ -228,6 +230,6 @@ export default function BundledEditor(props: any) {
         setCommandDialog={setCommandDialog}
         setCommandDialogOpened={setCommandDialogOpened}
       />
-    </>
+    </div>
   )
 }

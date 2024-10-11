@@ -18,6 +18,8 @@ import { taxonomiesAPI } from 'src/lib/api'
 import AddMediaElement from './AddMediaElement'
 
 const SoftwaresMeta = () => {
+  const errValidationStyle = 'border border-red-500 rounded-sm'
+
   const belongsFields = useAppSelector((state: RootState) => state.editor.meta.softwareBelongs)
   const [showDropdown, setShowDropdown] = useState<boolean>(true)
   const keywordsArr: string[] | [] = useAppSelector((state: RootState) =>
@@ -104,13 +106,6 @@ const SoftwaresMeta = () => {
     )
   }
 
-  const inputValue = useAppSelector(
-    (state: RootState) => state.editor.meta.softwareBelongs?.keywords.value,
-  )
-  useEffect(() => {
-    console.log('inputValue', inputValue)
-  }, [inputValue])
-
   const [isKeywordPostFetching, setIsKeywordPostFetching] = useState<boolean>(false)
 
   const handleCreateNewKeyword = async (keyword: string) => {
@@ -139,10 +134,12 @@ const SoftwaresMeta = () => {
                 <div className="min-w-[104px] max-w-[104px]">{`${belongsFields.softwareVersion.fieldTitle}${
                   belongsFields.softwareVersion.required ? '*' : ''
                 }`}</div>
-                <div className="w-9/12">
+                <div
+                  className={`w-9/12 ${!belongsFields.softwareVersion.isValid && errValidationStyle}`}
+                >
                   <select
                     value={belongsFields.softwareVersion.value.title}
-                    className="w-full p-4 rounded text-[#96969B] border text-base bg-seasalt border-dim"
+                    className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
                     onChange={(e) =>
                       handleMetaIdInputChange(e.target.value, 'softwareBelongs', 'softwareVersion')
                     }
@@ -167,7 +164,7 @@ const SoftwaresMeta = () => {
                       <input
                         type="text"
                         placeholder="search keyword"
-                        className="w-full p-4 rounded border placeholder:text-[#96969B] text-base bg-seasalt border-dim"
+                        className={`w-full p-4 placeholder:text-stone text-base [&+div]:focus:opacity-100 [&+div]:focus:visible rounded-[4px] border border-DIM bg-background-seasalt text-tertiary-grey-stone ${!belongsFields.keywords.isValid && errValidationStyle}`}
                         value={belongsFields.keywords.value}
                         onChange={(e) => handleKeywordInputChange(e.target.value)}
                         onFocus={() => setShowDropdown(true)}
@@ -224,11 +221,11 @@ const SoftwaresMeta = () => {
                   </div>
                 </div>
               )}
-              <div className="flex w-full flex-row items-start justify-between gap-2">
+              <div className="flex w-full flex-row items-center justify-between gap-2">
                 <div className="h-14 flex items-center min-w-[104px] max-w-[104px]">{`${belongsFields.image.fieldTitle}${
                   belongsFields.image.required ? '*' : ''
                 }`}</div>
-                <div className="w-9/12">
+                <div className={`w-9/12 ${!belongsFields.image.isValid && errValidationStyle}`}>
                   <AddMediaElement
                     block="softwareMeta"
                     chapterIndex={undefined}

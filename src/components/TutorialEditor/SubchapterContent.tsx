@@ -46,7 +46,7 @@ const SubchapterContent = (props: SubchapterContentProps) => {
           <TextInput
             placeholder="Subchapter title"
             headingType="h3"
-            value={subchapter.title}
+            value={subchapter.title.text}
             index={chapterIndex}
             subchapterIndex={subchapterIndex}
             handleChange={handleChangeSubchapterTitle}
@@ -64,7 +64,7 @@ const SubchapterContent = (props: SubchapterContentProps) => {
               <BundledEditor
                 handleChange={handleSubchapterTextInputChange}
                 subchapter={true}
-                value={subchapter.text}
+                value={subchapter.text.text}
                 index={chapterIndex}
                 subchapterIndex={subchapterIndex}
                 extended
