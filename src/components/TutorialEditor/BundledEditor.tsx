@@ -194,6 +194,30 @@ export default function BundledEditor(props: any) {
           plugins,
           toolbar,
           content_style: styles,
+          setup: function (editor) {
+            editor.on('NodeChange', function () {
+              const tables = editor.getBody().querySelectorAll('table')
+              tables.forEach((table) => {
+                const isWrapped = editor.dom.getParent(table, 'div')
+                if (!isWrapped) {
+                  const wrapper = editor.dom.create('div', { class: 'table ' + table.className })
+                  editor.dom.insertAfter(wrapper, table)
+                  wrapper.appendChild(table)
+                } else {
+                  isWrapped.removeAttribute('class')
+                  isWrapped.classList.add('table')
+                  if (table.className) {
+                    isWrapped.classList.add(table.className)
+                  }
+                }
+              })
+            })
+          },
+          table_class_list: [
+            { title: 'None', value: '' },
+            { title: 'Grey background on first column', value: 'table--fill-title' },
+            { title: 'Last row with border blue', value: 'table--summary' },
+          ],
           codesample_languages: [
             { text: 'HTML/XML', value: 'html' },
             { text: 'JavaScript', value: 'javascript' },
