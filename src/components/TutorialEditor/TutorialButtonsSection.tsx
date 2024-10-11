@@ -162,9 +162,9 @@ const TutorialButtonsSection = () => {
 
   const validationErrAlert = () => {
     toast({
-      title: 'Sending error!',
+      title: 'Something went wrong!',
       variant: 'destructive',
-      description: 'Check that all required fields are filled in noted by * and outlined in blue',
+      description: 'Check that all required fields are filled in noted by * and outlined in red',
     })
   }
 
