@@ -867,7 +867,6 @@ export const reducerParser = {
       }
     } else if (articleType === 'subjects') {
       const info = await getInfo(articleType)
-
       reducerObject = {
         tutorialTop: {
           title: {

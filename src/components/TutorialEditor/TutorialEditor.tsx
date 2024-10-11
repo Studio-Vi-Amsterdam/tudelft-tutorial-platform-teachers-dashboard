@@ -108,6 +108,7 @@ const BlogEditor = () => {
             }
           } else if (articleType === 'courses') {
             info = {
+              secondaryStudy: extraInfo.secondary_study.length > 0 ? extraInfo.secondary_study : [],
               primaryStudy: extraInfo.study.length > 0 ? extraInfo.study : [],
               keywords:
                 extraInfo.keywords.length > 0
@@ -130,6 +131,7 @@ const BlogEditor = () => {
           } else if (articleType === 'subjects') {
             info = {
               categories: extraInfo.categories,
+              secondaryCategories: extraInfo.secondary_categories,
             }
           }
 

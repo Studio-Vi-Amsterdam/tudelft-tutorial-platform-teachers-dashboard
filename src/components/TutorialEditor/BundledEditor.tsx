@@ -195,7 +195,7 @@ export default function BundledEditor(props: any) {
           toolbar,
           content_style: styles,
           codesample_languages: [
-            { text: 'HTML/XML', value: 'markup' },
+            { text: 'HTML/XML', value: 'html' },
             { text: 'JavaScript', value: 'javascript' },
             { text: 'CSS', value: 'css' },
             { text: 'PHP', value: 'php' },
@@ -217,7 +217,6 @@ export default function BundledEditor(props: any) {
                 props.handleChange(newValue, props?.index, props?.block)
               }
         }
-        {...props}
       />
       <TermDialog
         termDialog={termDialog}

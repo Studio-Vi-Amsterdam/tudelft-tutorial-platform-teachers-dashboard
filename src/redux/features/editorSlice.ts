@@ -256,7 +256,7 @@ export const editorSlice = createSlice({
                 },
                 secondaryStudy: {
                   fieldTitle: 'Secondary Study',
-                  list: info.primaryStudy,
+                  list: info.secondaryStudy,
                   required: false,
                   isValid: true,
                   value: {
