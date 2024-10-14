@@ -215,7 +215,7 @@ export default function BundledEditor(props: any) {
           },
           table_class_list: [
             { title: 'None', value: '' },
-            { title: 'Last row with border blue', value: 'table--fill-header' },
+            { title: 'First row with border blue', value: 'table--fill-header' },
             { title: 'Grey background on first column', value: 'table--fill-title' },
             { title: 'Last row with border blue', value: 'table--summary' },
           ],
