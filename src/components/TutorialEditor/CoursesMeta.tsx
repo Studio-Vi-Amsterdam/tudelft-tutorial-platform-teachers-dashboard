@@ -227,7 +227,9 @@ const CoursesMeta = () => {
                 <div className="min-h-14 min-w-[104px] max-w-[104px]">{`${belongsFields.courseCode.fieldTitle}${
                   belongsFields.courseCode.required ? '*' : ''
                 }`}</div>
-                <div className={`w-9/12 ${!belongsFields.course.isValid && errValidationStyle}`}>
+                <div
+                  className={`w-9/12 ${!belongsFields.courseCode.isValid && errValidationStyle}`}
+                >
                   <input
                     value={belongsFields.courseCode.value}
                     placeholder={belongsFields.courseCode.fieldTitle}
