@@ -98,9 +98,12 @@ export const FileUpload = (props: FileUploadProps) => {
               description: `${res.data.data.title} uploaded with ID: ${res.data.data.id}`,
             })
             if (index + 1 === files.length) {
-              setIsFetching(false)
-              handleDeleteFiles()
-              props.setIsOpen(false)
+              console.log('files length == index + 1 ')
+              setTimeout(() => {
+                setIsFetching(false)
+                handleDeleteFiles()
+                props.setIsOpen(false)
+              }, 1000)
             }
           } else {
             toast({
