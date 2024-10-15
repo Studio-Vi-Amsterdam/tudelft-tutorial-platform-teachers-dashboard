@@ -3,8 +3,9 @@ import { Dialog, DialogContent, DialogFooter } from '../ui/Dialog'
 import EditorLabel from '../ui/EditorLabel'
 import TextInput from '../ui/TextInput'
 import { Button } from '../ui/Button'
-import { TermDialogInterface } from 'src/types/types'
-import { taxonomiesAPI } from 'src/lib/api'
+import { ArtictesType, TermDialogInterface } from 'src/types/types'
+import { useSearchParams } from 'react-router-dom'
+import { articlesAPI } from 'src/lib/api'
 
 interface TermDialogProps {
   setTermDialog: React.Dispatch<React.SetStateAction<TermDialogInterface>>
@@ -19,42 +20,48 @@ const TermDialog = (props: TermDialogProps) => {
     term: string
     explanation: string
   }
+
   interface ResponseObject {
-    count: number
+    id: number
+    title: string
     description: string
-    filter: string
-    name: string
-    parent: number
-    slug: string
-    taxonomy: string
-    term_group: number
-    term_id: number
-    term_taxonomy_id: number
   }
+
   const [terms, setTerms] = useState<TermInterface[] | []>([])
   const [displayedTerms, setDisplayedTerms] = useState<TermInterface[] | []>([])
-
+  const [articleType, setArticleType] = useState<ArtictesType | undefined>(undefined)
   const [inputValue, setInputValue] = useState<string>('')
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
+  const [searchParams] = useSearchParams()
+
+  useEffect(() => {
+    setArticleType((searchParams.get('type') as ArtictesType) ?? 'tutorials')
+  }, [searchParams])
+
   useEffect(() => {
     const fetchData = async () => {
-      const teachers: ResponseObject[] = await taxonomiesAPI.getTeachers().then((res) => res.data)
-      const keywords: ResponseObject[] = await taxonomiesAPI.getKeywords().then((res) => res.data)
-      const concatedArr = [...keywords, ...teachers]
-      const responseArr = concatedArr.map((item) => {
-        return {
-          id: item.term_id,
-          term: item.name,
-          explanation: item.description,
-        }
-      })
-      setTerms(responseArr)
-      setDisplayedTerms(responseArr)
+      if (articleType !== undefined) {
+        const termsResponse: ResponseObject[] | [] = await articlesAPI
+          .getInfo(articleType)
+          .then((res) => res?.data?.data?.defined_terms ?? [])
+        const responseArr =
+          termsResponse.length > 0
+            ? termsResponse.map((term) => {
+                return {
+                  id: term.id,
+                  term: term.title,
+                  explanation: term.description,
+                }
+              })
+            : []
+        setTerms(responseArr)
+        setDisplayedTerms(responseArr)
+      }
     }
     fetchData()
-  }, [])
+  }, [articleType])
 
   useEffect(() => {
     if (inputRef.current) {
