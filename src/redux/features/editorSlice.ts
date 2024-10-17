@@ -974,20 +974,31 @@ export const editorSlice = createSlice({
       state,
       action: PayloadAction<{
         value: string
-        chapterIndex: number
+        chapterIndex: number | undefined
         listIndex: number
         layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText' | 'textLayout'
+        block: string
       }>,
     ) => {
       const { value, chapterIndex, listIndex, layout } = action.payload
-      const chapter = state.chapters[chapterIndex]
-      const elements = chapter?.elements
-      const element = elements ? elements[listIndex] : undefined
-      const layoutItem = element ? element[layout] : undefined
+      if (chapterIndex === undefined) {
+        const elements = state.tutorialTop.elements
+        const element = elements[listIndex]
+        const layoutItem = element[layout]
+        if (layoutItem && layoutItem.text !== undefined) {
+          layoutItem.title.text = value
+          layoutItem.title.isValid = true
+        }
+      } else {
+        const chapter = state.chapters[chapterIndex]
+        const elements = chapter?.elements
+        const element = elements ? elements[listIndex] : undefined
+        const layoutItem = element ? element[layout] : undefined
 
-      if (layoutItem && layoutItem.text !== undefined) {
-        layoutItem.title.text = value
-        layoutItem.title.isValid = value.trim().length > 0
+        if (layoutItem && layoutItem.text !== undefined) {
+          layoutItem.title.text = value
+          layoutItem.title.isValid = true
+        }
       }
     },
     addTutorialCard: (
@@ -1082,22 +1093,32 @@ export const editorSlice = createSlice({
       state,
       action: PayloadAction<{
         value: string
-        chapterIndex: number
+        chapterIndex: number | undefined
         listIndex: number
         layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText' | 'textLayout'
       }>,
     ) => {
       const { chapterIndex, listIndex, layout, value } = action.payload
-
-      if (layout !== undefined && chapterIndex !== undefined && listIndex !== undefined) {
-        const chapter = state.chapters[chapterIndex]
-        const elements = chapter?.elements
-        const element = elements ? elements[listIndex] : undefined
+      if (chapterIndex === undefined) {
+        const elements = state.tutorialTop.elements
+        const element = elements[listIndex]
         const layoutItem = element ? element[layout] : undefined
 
         if (layoutItem && layoutItem.text !== undefined) {
           layoutItem.text.text = value
-          layoutItem.text.isValid = value.trim().length > 0
+          layoutItem.text.isValid = true
+        }
+      } else {
+        if (layout !== undefined && listIndex !== undefined) {
+          const chapter = state.chapters[chapterIndex]
+          const elements = chapter?.elements
+          const element = elements ? elements[listIndex] : undefined
+          const layoutItem = element ? element[layout] : undefined
+
+          if (layoutItem && layoutItem.text !== undefined) {
+            layoutItem.text.text = value
+            layoutItem.text.isValid = true
+          }
         }
       }
     },
