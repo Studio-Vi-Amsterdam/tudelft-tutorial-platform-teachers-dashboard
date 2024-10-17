@@ -281,69 +281,69 @@ const TutorialButtonsSection = () => {
           }),
         }
       } else if (element.textLayout) {
-        const isTitleValid = element.textLayout.title.text.trim().length > 0
+        /* const isTitleValid = element.textLayout.title.text.trim().length > 0
         !isTitleValid && count++
         const isTextValid = element.textLayout.text.text.trim().length > 0
-        !isTextValid && count++
+        !isTextValid && count++ */
         return {
           textLayout: {
-            title: { ...element.textLayout.title, isValid: isTitleValid },
-            text: { ...element.textLayout.text, isValid: isTextValid },
+            title: { ...element.textLayout.title, isValid: true },
+            text: { ...element.textLayout.text, isValid: true },
           },
         }
       } else if (element.imageText) {
-        const isTitleValid = element.imageText.title.text.trim().length > 0
+        /* const isTitleValid = element.imageText.title.text.trim().length > 0
         !isTitleValid && count++
         const isTextValid = element.imageText.text.text.trim().length > 0
-        !isTextValid && count++
+        !isTextValid && count++ */
         const isImageValid = !!element.imageText.image.id
         !isImageValid && count++
         return {
           imageText: {
-            title: { ...element.imageText.title, isValid: isTitleValid },
-            text: { ...element.imageText.text, isValid: isTextValid },
+            title: { ...element.imageText.title, isValid: true },
+            text: { ...element.imageText.text, isValid: true },
             image: { ...element.imageText.image, isValid: isImageValid },
           },
         }
       } else if (element.textImage) {
-        const isTitleValid = element.textImage.title.text.trim().length > 0
+        /* const isTitleValid = element.textImage.title.text.trim().length > 0
         !isTitleValid && count++
         const isTextValid = element.textImage.text.text.trim().length > 0
-        !isTextValid && count++
+        !isTextValid && count++ */
         const isImageValid = !!element.textImage.image.id
         !isImageValid && count++
         return {
           textImage: {
-            title: { ...element.textImage.title, isValid: isTitleValid },
-            text: { ...element.textImage.text, isValid: isTextValid },
+            title: { ...element.textImage.title, isValid: true },
+            text: { ...element.textImage.text, isValid: true },
             image: { ...element.textImage.image, isValid: isImageValid },
           },
         }
       } else if (element.textVideo) {
-        const isTitleValid = element.textVideo.title.text.trim().length > 0
+        /* const isTitleValid = element.textVideo.title.text.trim().length > 0
         !isTitleValid && count++
         const isTextValid = element.textVideo.text.text.trim().length > 0
-        !isTextValid && count++
+        !isTextValid && count++ */
         const isImageValid = !!element.textVideo.video.id
         !isImageValid && count++
         return {
           textVideo: {
-            title: { ...element.textVideo.title, isValid: isTitleValid },
-            text: { ...element.textVideo.text, isValid: isTextValid },
+            title: { ...element.textVideo.title, isValid: true },
+            text: { ...element.textVideo.text, isValid: true },
             video: { ...element.textVideo.video, isValid: isImageValid },
           },
         }
       } else if (element.videoText) {
-        const isTitleValid = element.videoText.title.text.trim().length > 0
+        /* const isTitleValid = element.videoText.title.text.trim().length > 0
         !isTitleValid && count++
         const isTextValid = element.videoText.text.text.trim().length > 0
-        !isTextValid && count++
+        !isTextValid && count++ */
         const isImageValid = !!element.videoText.video.id
         !isImageValid && count++
         return {
           videoText: {
-            title: { ...element.videoText.title, isValid: isTitleValid },
-            text: { ...element.videoText.text, isValid: isTextValid },
+            title: { ...element.videoText.title, isValid: true },
+            text: { ...element.videoText.text, isValid: true },
             video: { ...element.videoText.video, isValid: isImageValid },
           },
         }

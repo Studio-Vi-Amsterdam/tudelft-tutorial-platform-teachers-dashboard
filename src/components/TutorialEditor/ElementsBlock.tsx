@@ -60,7 +60,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
     layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText' | 'textLayout',
     listIndex: number,
   ) => {
-    if (index !== undefined && listIndex !== undefined && layout !== undefined) {
+    if (listIndex !== undefined && layout !== undefined) {
       dispatch(
         changeSubchapterText({
           chapterIndex: index,
@@ -78,9 +78,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
     layout: 'textImage' | 'imageText' | 'textVideo' | 'videoText' | 'textLayout',
     chapterIndex?: number,
   ) => {
-    if (chapterIndex !== undefined) {
-      dispatch(changeSubchapterTitle({ value, chapterIndex, layout, listIndex }))
-    }
+    dispatch(changeSubchapterTitle({ value, chapterIndex, layout, listIndex, block }))
   }
 
   return (
