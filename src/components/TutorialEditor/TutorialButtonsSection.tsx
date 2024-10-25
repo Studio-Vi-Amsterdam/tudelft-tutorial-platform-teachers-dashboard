@@ -189,8 +189,6 @@ const TutorialButtonsSection = () => {
         // const isValid = element.text.text.trim().length > 0
         const isValid = true
         !isValid && count++
-        // eslint-disable-next-line no-debugger
-        debugger
         return { text: { ...element.text, isValid } }
       } else if (element.infobox) {
         const isValid = element.infobox.text.trim().length > 0
