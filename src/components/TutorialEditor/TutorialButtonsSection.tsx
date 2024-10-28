@@ -75,7 +75,8 @@ const TutorialButtonsSection = () => {
   }
 
   const checkTutorialDescriptionValidity = () => {
-    return tutorialTop.description.text.trim().length > 0
+    // return tutorialTop.description.text.trim().length > 0
+    return true
   }
 
   const checkMetafieldsValidity = (metaSection: keyof TutorialMetaObject) => {
@@ -185,7 +186,8 @@ const TutorialButtonsSection = () => {
     let count = 0
     const parsedElements = elements.map((element) => {
       if (element.text) {
-        const isValid = element.text.text.trim().length > 0
+        // const isValid = element.text.text.trim().length > 0
+        const isValid = true
         !isValid && count++
         return { text: { ...element.text, isValid } }
       } else if (element.infobox) {
@@ -363,7 +365,8 @@ const TutorialButtonsSection = () => {
     const newState = chapters.map((chapter) => {
       const isTitleValid = chapter.title.text.trim().length > 0
       !isTitleValid && count++
-      const isTextValid = chapter.text.text.trim().length > 0
+      // const isTextValid = chapter.text.text.trim().length > 0
+      const isTextValid = true
       !isTextValid && count++
       const parsedElements = validateElements(chapter.elements)
       count = count + parsedElements.count
