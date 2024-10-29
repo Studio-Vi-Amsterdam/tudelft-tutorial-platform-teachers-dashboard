@@ -19,6 +19,8 @@ import {
   TutorialMetaObject,
   TutorialTopElementsObject,
 } from 'src/types/types'
+import { EyeIcon, SmallFileIcon } from '../ui/Icons'
+import TutorialActionsButton from './TutorialActionsButton'
 
 const TutorialButtonsSection = () => {
   const tutorial = useAppSelector((state: RootState) => state.editor)
@@ -474,24 +476,34 @@ const TutorialButtonsSection = () => {
   }
 
   return (
-    <section className="flex w-full flex-row items-center justify-end gap-2 gap-y-6 lg:gap-x-6 py-10 sm:py-14 flex-wrap">
-      {articleId !== 'new' && (
-        <Button variant={'outline'} size={'lg'} onClick={handlePreviewClick}>
-          <p>Preview</p>
+    <section className="w-full flex flex-col items-end gap-y-6 [&>div]:w-full [&>div]:flex [&>div]:flex-row [&>div]:items-center [&>div]:justify-end [&>div]:gap-y-6 [&>div]:lg:gap-x-6 py-10 sm:py-14 [&>div]:flex-wrap">
+      <div>
+        <Button size={'lg'} onClick={testPublishClick}>
+          <p>Publish {status === 'published' && 'changes'}</p>
         </Button>
-      )}
-      <Button variant={'outline'} size={'lg'} onClick={handleDraftClick}>
-        {status === 'new' ? (
-          <p>Save as draft</p>
-        ) : status === 'draft' ? (
-          <p>Update draft</p>
-        ) : (
-          status === 'published' && <p>Switch to draft</p>
+      </div>
+      <div className="h-0.5 w-full bg-tertiary-grey-silver"></div>
+      <div className="flex flex-row gap-x-6">
+        {articleId !== 'new' && (
+          <Button variant={'outline'} size={'md'} onClick={handlePreviewClick}>
+            <span className="flex justify-center items-center w-6 h-6">
+              <EyeIcon />
+            </span>
+            <p>Preview</p>
+          </Button>
         )}
-      </Button>
-      <Button size={'lg'} onClick={testPublishClick}>
-        <p>Publish {status === 'published' && 'changes'}</p>
-      </Button>
+        <Button variant={'outline'} size={'md'} onClick={handleDraftClick}>
+          <SmallFileIcon />
+          {status === 'new' ? (
+            <p>Save as draft</p>
+          ) : status === 'draft' ? (
+            <p>Update draft</p>
+          ) : (
+            status === 'published' && <p>Switch to draft</p>
+          )}
+        </Button>
+        <TutorialActionsButton />
+      </div>
     </section>
   )
 }

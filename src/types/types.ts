@@ -26,6 +26,12 @@ export interface DashboardPublishedInterface {
   status: 'draft' | 'published' | 'new'
 }
 
+export interface WhoHaveAccessInterface {
+  image?: string
+  email: string
+  role: 'viewer' | 'editor'
+}
+
 export interface DashboardSectionProps {
   items: DashboardPublishedInterface[]
   heading: string
