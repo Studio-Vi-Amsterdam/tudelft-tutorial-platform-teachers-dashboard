@@ -140,6 +140,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
         video: chapter.video?.id,
         video_url: chapter.video?.url,
         thumbnail: chapter.video?.thumbnail?.id,
+        subtitles: chapter.video?.subtitles?.id,
         content: chapter.text.text,
         alt: chapter.title.text,
       },
@@ -151,6 +152,7 @@ const getFirstChapterElement = (chapter: ChapterInterface) => {
         video: chapter.video?.id,
         video_url: chapter.video?.url,
         thumbnail: chapter.video?.thumbnail?.id,
+        subtitles: chapter.video?.subtitles?.id,
         content: chapter.text.text,
         alt: chapter.title.text,
       },
@@ -282,6 +284,16 @@ export const reducerParser = {
                     publishDate: '',
                     title: '',
                   },
+                  subtitles: {
+                    id: block.block_data.subtitles,
+                    url: block.block_data.subtitles_url ?? '',
+                    description: '',
+                    format: '',
+                    type: 'image',
+                    link: block.block_data.subtitles_url ?? '',
+                    publishDate: '',
+                    title: '',
+                  },
                 },
               }
             case 'tu-delft-text-image':
@@ -365,6 +377,16 @@ export const reducerParser = {
                       publishDate: '',
                       title: '',
                     },
+                    subtitles: {
+                      id: block.block_data.subtitles,
+                      url: block.block_data.subtitles_url ?? '',
+                      description: '',
+                      format: '',
+                      type: 'image',
+                      link: block.block_data.subtitles_url ?? '',
+                      publishDate: '',
+                      title: '',
+                    },
                   },
                   title: {
                     text: block.block_data.title ? block.block_data.title : '',
@@ -425,6 +447,16 @@ export const reducerParser = {
                       format: '',
                       type: 'image',
                       link: block.block_data.thumbnail_url ?? '',
+                      publishDate: '',
+                      title: '',
+                    },
+                    subtitles: {
+                      id: block.block_data.subtitles,
+                      url: block.block_data.subtitles_url ?? '',
+                      description: '',
+                      format: '',
+                      type: 'image',
+                      link: block.block_data.subtitles_url ?? '',
                       publishDate: '',
                       title: '',
                     },
@@ -497,6 +529,7 @@ export const reducerParser = {
                   publishDate: '',
                   description: chapter.content[0].block_data.description ?? '',
                   thumbnail: chapter.content[0].block_data.thumbnail ?? undefined,
+                  subtitles: chapter.content[0].block_data.subtitles ?? undefined,
                 }
               : undefined,
           image:
@@ -1008,6 +1041,7 @@ export const reducerParser = {
                   video: item.video.id,
                   video_url: item.video.url,
                   thumbnail: item.video.thumbnail?.id ?? null,
+                  subtitles: item.video.subtitles?.id ?? null,
                 },
               }
             }
@@ -1051,6 +1085,7 @@ export const reducerParser = {
                   video: item.textVideo.video.id,
                   video_url: item.textVideo.video.url,
                   thumbnail: item.textVideo.video.thumbnail?.id,
+                  subtitles: item.textVideo.video.subtitles?.id,
                   content: item.textVideo.text.text,
                   title: item.textVideo.title.text,
                 },
@@ -1063,6 +1098,7 @@ export const reducerParser = {
                   video: item.videoText.video.id,
                   video_url: item.videoText.video.url,
                   thumbnail: item.videoText.video.thumbnail?.id,
+                  subtitles: item.videoText.video.subtitles?.id,
                   content: item.videoText.text.text,
                   title: item.videoText.title.text,
                 },

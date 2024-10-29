@@ -22,6 +22,7 @@ import {
   MoveChapterInterface,
   SubchapterImageAction,
   SubchapterTextFieldActionInterface,
+  SubtitlesActionInterface,
   ThumbnailActionInterface,
   TutorialCardInterface,
   TutorialMetaObject,
@@ -476,6 +477,30 @@ export const editorSlice = createSlice({
         const element = elements ? elements[index] : undefined
         if (element && element.video !== undefined) {
           element.video.thumbnail = thumbnail
+        }
+      }
+    },
+    setVideoSubtitles: (state, action: PayloadAction<SubtitlesActionInterface>) => {
+      const { index, layout, subtitles, chapterIndex } = action.payload
+      if (chapterIndex !== undefined) {
+        const chapter = state.chapters[chapterIndex]
+        const elements = chapter?.elements
+        const element = elements ? elements[index] : undefined
+        if (layout === 'textVideo' || layout === 'videoText') {
+          const layoutItem = element ? element[layout] : undefined
+          if (layoutItem && layoutItem.video !== undefined) {
+            layoutItem.video.subtitles = subtitles
+          }
+        } else {
+          if (element && element.video !== undefined) {
+            element.video.subtitles = subtitles
+          }
+        }
+      } else {
+        const elements = state.tutorialTop?.elements
+        const element = elements ? elements[index] : undefined
+        if (element && element.video !== undefined) {
+          element.video.subtitles = subtitles
         }
       }
     },
@@ -1465,6 +1490,7 @@ export const {
   setTutorialDescriptionValid,
   setValidatedTutorialTopElements,
   setValidatedChapters,
+  setVideoSubtitles,
 } = editorSlice.actions
 
 export default editorSlice.reducer
