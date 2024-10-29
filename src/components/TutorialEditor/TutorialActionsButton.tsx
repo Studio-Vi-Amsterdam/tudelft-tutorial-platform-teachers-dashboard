@@ -8,14 +8,57 @@ import {
 } from '../ui/Dropdown'
 import { AddFileIcon, AuthorIcon, MoreIcon, TrashCanIcon } from '../ui/Icons'
 import AddAuthorModal from './AddAuthorModal'
+import { useNavigate } from 'react-router-dom'
+import { useToast } from 'src/lib/use-toast'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '../ui/AlertDialog'
+import { articlesAPI } from 'src/lib/api'
+import { ArtictesType } from 'src/types/types'
 
-const TutorialActionsButton = () => {
+interface TutorialActionsButtonProps {
+  articleId: string | null
+  articleType: ArtictesType
+}
+
+const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
   const [isAddAuthorDialogOpen, setIsAddAuthorDialogOpen] = useState<boolean>(false)
+  const [isDeletePopupOpen, setIsDeletePopupOpen] = useState<boolean>(false)
+  const [isFetching, setIsFetching] = useState<boolean>(false)
+  const navigate = useNavigate()
+  const { toast } = useToast()
 
   const toggleAddAuthorDialogOpen = () => {
     setTimeout(() => {
       setIsAddAuthorDialogOpen(!isAddAuthorDialogOpen)
     }, 300)
+  }
+
+  const handleDeleteArticle = () => {
+    if (props.articleId && props.articleId !== 'new') {
+      setIsFetching(true)
+      articlesAPI.deleteArticle(props.articleType, parseInt(props.articleId)).finally(() => {
+        navigate('/dashboard')
+        toast({
+          title: 'Success!',
+          description: `Article with ID:${props.articleId} deleted successfully!`,
+        })
+        setIsFetching(false)
+      })
+    } else {
+      navigate('/dashboard')
+      toast({
+        title: 'Success!',
+        description: 'Article deleted successfully!',
+      })
+    }
   }
 
   return (
@@ -32,7 +75,13 @@ const TutorialActionsButton = () => {
           <DropdownMenuLabel className="font-normal text-sm text-primary-skyBlue">
             Actions
           </DropdownMenuLabel>
-          <DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() =>
+              setTimeout(() => {
+                setIsDeletePopupOpen(true)
+              }, 300)
+            }
+          >
             <span className="flex justify-center items-center w-6 h-6">
               <TrashCanIcon />
             </span>
@@ -53,6 +102,22 @@ const TutorialActionsButton = () => {
         </DropdownMenuContent>
       </DropdownMenu>
       <AddAuthorModal isOpen={isAddAuthorDialogOpen} setIsOpen={toggleAddAuthorDialogOpen} />
+      <AlertDialog open={isDeletePopupOpen} onOpenChange={setIsDeletePopupOpen}>
+        <AlertDialogContent className="bg-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete tutorial from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteArticle} disabled={isFetching}>
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   )
 }

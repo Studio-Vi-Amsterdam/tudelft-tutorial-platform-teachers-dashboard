@@ -502,7 +502,7 @@ const TutorialButtonsSection = () => {
             status === 'published' && <p>Switch to draft</p>
           )}
         </Button>
-        <TutorialActionsButton />
+        <TutorialActionsButton articleId={articleId} articleType={articleType} />
       </div>
     </section>
   )
