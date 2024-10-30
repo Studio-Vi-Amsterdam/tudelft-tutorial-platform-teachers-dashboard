@@ -4,14 +4,14 @@ import { Button } from '../ui/Button'
 import { Dialog, DialogContent, DialogFooter } from '../ui/Dialog'
 import { MediaLibrary } from '../Media/MediaLibrary'
 import { useAppDispatch } from 'src/redux/hooks'
-import { setVideoSubtitles } from 'src/redux/features/editorSlice'
+import { setChapterVideoSubtitles, setVideoSubtitles } from 'src/redux/features/editorSlice'
 import { FileIcon } from '../ui/Icons'
 
 interface ThumbProps {
   video: MediaObjectInterface
   chapterIndex: number | undefined
   subchapterIndex: number | undefined
-  listIndex: number
+  listIndex: number | undefined
   layout?: SubchapterLayout
 }
 
@@ -32,35 +32,61 @@ const SelectSubtitles = (props: ThumbProps) => {
 
   const handleSubmitMedia = () => {
     if (selectedMedia !== undefined) {
-      dispatch(
-        setVideoSubtitles({
-          index: props.listIndex,
-          subtitles: selectedMedia,
-          chapterIndex: props.chapterIndex,
-          layout: props.layout,
-        }),
-      )
+      if (props.listIndex === undefined) {
+        dispatch(
+          setChapterVideoSubtitles({
+            chapterIndex: props.chapterIndex ?? 0,
+            subtitles: selectedMedia,
+          }),
+        )
+      } else {
+        dispatch(
+          setVideoSubtitles({
+            index: props.listIndex,
+            subtitles: selectedMedia,
+            chapterIndex: props.chapterIndex,
+            layout: props.layout,
+          }),
+        )
+      }
     }
     setDialogOpened(false)
   }
 
   const handleDeleteMedia = () => {
-    dispatch(
-      setVideoSubtitles({
-        index: props.listIndex,
-        subtitles: {
-          type: 'video',
-          format: '',
-          link: '',
-          title: '',
-          publishDate: '',
-          isValid: true,
-          description: '',
-        },
-        chapterIndex: props.chapterIndex,
-        layout: props.layout,
-      }),
-    )
+    if (props.listIndex === undefined) {
+      dispatch(
+        setChapterVideoSubtitles({
+          chapterIndex: props.chapterIndex ?? 0,
+          subtitles: {
+            description: '',
+            format: '',
+            link: '',
+            isValid: true,
+            publishDate: '',
+            title: '',
+            type: 'image',
+          },
+        }),
+      )
+    } else {
+      dispatch(
+        setVideoSubtitles({
+          index: props.listIndex,
+          subtitles: {
+            type: 'video',
+            format: '',
+            link: '',
+            title: '',
+            publishDate: '',
+            isValid: true,
+            description: '',
+          },
+          chapterIndex: props.chapterIndex,
+          layout: props.layout,
+        }),
+      )
+    }
   }
 
   return (
@@ -86,7 +112,7 @@ const SelectSubtitles = (props: ThumbProps) => {
             <Button onClick={() => setDialogOpened(true)}>
               {selectedSubtitles && selectedSubtitles.url ? 'Change' : 'Set'} Subtitles
             </Button>
-            {selectedSubtitles && (
+            {selectedSubtitles?.id && (
               <Button variant={'outline'} onClick={handleDeleteMedia}>
                 Delete Subtitles
               </Button>

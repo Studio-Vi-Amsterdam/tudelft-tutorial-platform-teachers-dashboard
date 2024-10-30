@@ -4,13 +4,13 @@ import { Button } from '../ui/Button'
 import { Dialog, DialogContent, DialogFooter } from '../ui/Dialog'
 import { MediaLibrary } from '../Media/MediaLibrary'
 import { useAppDispatch } from 'src/redux/hooks'
-import { setVideoThumbnail } from 'src/redux/features/editorSlice'
+import { setChapterVideoThumbnail, setVideoThumbnail } from 'src/redux/features/editorSlice'
 
 interface ThumbProps {
   video: MediaObjectInterface
   chapterIndex: number | undefined
   subchapterIndex: number | undefined
-  listIndex: number
+  listIndex: number | undefined
   layout?: SubchapterLayout
 }
 
@@ -30,35 +30,61 @@ const SelectThumbnail = (props: ThumbProps) => {
 
   const handleSubmitMedia = () => {
     if (selectedMedia !== undefined) {
-      dispatch(
-        setVideoThumbnail({
-          index: props.listIndex,
-          thumbnail: selectedMedia,
-          chapterIndex: props.chapterIndex,
-          layout: props.layout,
-        }),
-      )
+      if (props.listIndex === undefined) {
+        dispatch(
+          setChapterVideoThumbnail({
+            chapterIndex: props.chapterIndex ?? 0,
+            thumbnail: selectedMedia,
+          }),
+        )
+      } else {
+        dispatch(
+          setVideoThumbnail({
+            index: props.listIndex,
+            thumbnail: selectedMedia,
+            chapterIndex: props.chapterIndex,
+            layout: props.layout,
+          }),
+        )
+      }
     }
     setDialogOpened(false)
   }
 
   const handleDeleteMedia = () => {
-    dispatch(
-      setVideoThumbnail({
-        index: props.listIndex,
-        thumbnail: {
-          description: '',
-          format: '',
-          link: '',
-          isValid: true,
-          publishDate: '',
-          title: '',
-          type: 'image',
-        },
-        chapterIndex: props.chapterIndex,
-        layout: props.layout,
-      }),
-    )
+    if (props.listIndex === undefined) {
+      dispatch(
+        setChapterVideoThumbnail({
+          chapterIndex: props.chapterIndex ?? 0,
+          thumbnail: {
+            description: '',
+            format: '',
+            link: '',
+            isValid: true,
+            publishDate: '',
+            title: '',
+            type: 'image',
+          },
+        }),
+      )
+    } else {
+      dispatch(
+        setVideoThumbnail({
+          index: props.listIndex,
+          thumbnail: {
+            description: '',
+            format: '',
+            link: '',
+            isValid: true,
+            publishDate: '',
+            title: '',
+            type: 'image',
+          },
+          chapterIndex: props.chapterIndex,
+          layout: props.layout,
+        }),
+      )
+    }
   }
 
   return (
@@ -77,7 +103,7 @@ const SelectThumbnail = (props: ThumbProps) => {
             <Button onClick={() => setDialogOpened(true)}>
               {selectedThumbnail && selectedThumbnail.url ? 'Change' : 'Set'} Thumbnail
             </Button>
-            {selectedThumbnail && (
+            {selectedThumbnail?.id && (
               <Button variant={'outline'} onClick={handleDeleteMedia}>
                 Delete Thumbnail
               </Button>

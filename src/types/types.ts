@@ -101,11 +101,21 @@ export interface ThumbnailActionInterface {
   layout?: SubchapterLayout
 }
 
+export interface ChapterThumbnailActionInterface {
+  thumbnail: ThumbnailInterface
+  chapterIndex: number
+}
+
 export interface SubtitlesActionInterface {
   index: number
   subtitles: MediaObjectParent
   chapterIndex?: number
   layout?: SubchapterLayout
+}
+
+export interface ChapterSubtitlesActionInterface {
+  subtitles: MediaObjectParent
+  chapterIndex?: number
 }
 
 export interface QuizAnswer {
