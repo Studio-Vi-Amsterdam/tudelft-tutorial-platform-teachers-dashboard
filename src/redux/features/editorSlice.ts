@@ -7,7 +7,9 @@ import {
   ArtictesType,
   BlankSubchapterActionInterface,
   ChapterInterface,
+  ChapterSubtitlesActionInterface,
   ChapterTextFieldActionInterface,
+  ChapterThumbnailActionInterface,
   EditorState,
   Element,
   ElementFileActionInterface,
@@ -22,6 +24,7 @@ import {
   MoveChapterInterface,
   SubchapterImageAction,
   SubchapterTextFieldActionInterface,
+  SubtitlesActionInterface,
   ThumbnailActionInterface,
   TutorialCardInterface,
   TutorialMetaObject,
@@ -476,6 +479,50 @@ export const editorSlice = createSlice({
         const element = elements ? elements[index] : undefined
         if (element && element.video !== undefined) {
           element.video.thumbnail = thumbnail
+        }
+      }
+    },
+    setChapterVideoThumbnail: (state, action: PayloadAction<ChapterThumbnailActionInterface>) => {
+      const { thumbnail, chapterIndex } = action.payload
+      if (chapterIndex !== undefined) {
+        const chapter = state.chapters[chapterIndex]
+        const chapterVideo = chapter.video
+        if (chapterVideo !== undefined) {
+          chapterVideo.thumbnail = thumbnail
+        }
+      }
+    },
+    setVideoSubtitles: (state, action: PayloadAction<SubtitlesActionInterface>) => {
+      const { index, layout, subtitles, chapterIndex } = action.payload
+      if (chapterIndex !== undefined) {
+        const chapter = state.chapters[chapterIndex]
+        const elements = chapter?.elements
+        const element = elements ? elements[index] : undefined
+        if (layout === 'textVideo' || layout === 'videoText') {
+          const layoutItem = element ? element[layout] : undefined
+          if (layoutItem && layoutItem.video !== undefined) {
+            layoutItem.video.subtitles = subtitles
+          }
+        } else {
+          if (element && element.video !== undefined) {
+            element.video.subtitles = subtitles
+          }
+        }
+      } else {
+        const elements = state.tutorialTop?.elements
+        const element = elements ? elements[index] : undefined
+        if (element && element.video !== undefined) {
+          element.video.subtitles = subtitles
+        }
+      }
+    },
+    setChapterVideoSubtitles: (state, action: PayloadAction<ChapterSubtitlesActionInterface>) => {
+      const { subtitles, chapterIndex } = action.payload
+      if (chapterIndex !== undefined) {
+        const chapter = state.chapters[chapterIndex]
+        const chapterVideo = chapter.video
+        if (chapterVideo !== undefined) {
+          chapterVideo.subtitles = subtitles
         }
       }
     },
@@ -1460,11 +1507,14 @@ export const {
   deleteMediaFromArray,
   moveElement,
   setVideoThumbnail,
+  setChapterVideoThumbnail,
+  setChapterVideoSubtitles,
   setMetafieldsValidationErrors,
   setTutorialTitleValid,
   setTutorialDescriptionValid,
   setValidatedTutorialTopElements,
   setValidatedChapters,
+  setVideoSubtitles,
 } = editorSlice.actions
 
 export default editorSlice.reducer

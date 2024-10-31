@@ -66,6 +66,7 @@ export interface MediaObjectInterface {
   publishDate: string
   description: string
   thumbnail?: ThumbnailInterface
+  subtitles?: MediaObjectParent
   isOwner?: boolean
   hasZoom?: boolean
 }
@@ -98,6 +99,23 @@ export interface ThumbnailActionInterface {
   thumbnail: ThumbnailInterface
   chapterIndex?: number
   layout?: SubchapterLayout
+}
+
+export interface ChapterThumbnailActionInterface {
+  thumbnail: ThumbnailInterface
+  chapterIndex: number
+}
+
+export interface SubtitlesActionInterface {
+  index: number
+  subtitles: MediaObjectParent
+  chapterIndex?: number
+  layout?: SubchapterLayout
+}
+
+export interface ChapterSubtitlesActionInterface {
+  subtitles: MediaObjectParent
+  chapterIndex?: number
 }
 
 export interface QuizAnswer {
