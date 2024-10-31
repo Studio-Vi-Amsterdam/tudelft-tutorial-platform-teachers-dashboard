@@ -9,27 +9,28 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '../ui/Dropdown'
-
-interface SortedObjectInterface {
-  title: string
-  name: string
-}
-
-interface FilterObjectInterface extends SortedObjectInterface {
-  checked: boolean
-}
+import { SortedObjectInterface } from 'src/types/types'
 
 interface SearchFilterBarProps {
   searchValue: string
   handleChangeSearchValue: (val: string) => Promise<void>
+  setSelectedSortKey: React.Dispatch<React.SetStateAction<SortedObjectInterface | undefined>>
+  selectedSortKey: SortedObjectInterface | undefined
+  selectedFilters: SortedObjectInterface[]
+  setSelectedFilters: React.Dispatch<React.SetStateAction<SortedObjectInterface[]>>
 }
 
 const SearchFilterBar = (props: SearchFilterBarProps) => {
-  const { searchValue, handleChangeSearchValue } = props
+  const {
+    searchValue,
+    handleChangeSearchValue,
+    selectedSortKey,
+    setSelectedSortKey,
+    selectedFilters,
+    setSelectedFilters,
+  } = props
   const [isInputOpen, setIsInputOpen] = useState<boolean>(false)
-  const [selectedSortKey, setSelectedSortKey] = useState<SortedObjectInterface | undefined>()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [sortKeys, setSortKeys] = useState<SortedObjectInterface[]>([
+  const [sortKeys] = useState<SortedObjectInterface[]>([
     {
       title: 'Newest first',
       name: 'newest-first',
@@ -47,47 +48,45 @@ const SearchFilterBar = (props: SearchFilterBarProps) => {
       name: 'level-difficult-to-easy',
     },
   ])
-  const [filters, setFilters] = useState<FilterObjectInterface[]>([
+
+  const [filters] = useState<SortedObjectInterface[]>([
     {
       title: 'My uploads',
       name: 'my-uploads',
-      checked: false,
     },
     {
       title: 'Courses',
       name: 'courses',
-      checked: false,
     },
     {
       title: 'Subjects',
       name: 'subjects',
-      checked: false,
     },
     {
       title: 'Software',
       name: 'software',
-      checked: false,
     },
     {
       title: 'Labs',
       name: 'labs',
-      checked: false,
     },
     {
       title: 'Tutorials',
       name: 'tutorials',
-      checked: false,
     },
   ])
 
   const changeFilterChecked = (filterName: string) => {
-    const newArr = filters.map((item) => {
-      if (item.name === filterName) {
-        return { ...item, checked: !item.checked }
-      }
-      return item
-    })
-    setFilters(newArr)
+    const searchableObject = selectedFilters.find((item) => item.name === filterName)
+    if (searchableObject === undefined) {
+      // Adding filter to array
+      const newFilter = filters.find((item) => item.name === filterName)
+      newFilter && setSelectedFilters((prevState) => [...prevState, newFilter])
+    } else {
+      // deleting filter from array
+      const newfiltersArray = selectedFilters.filter((item) => item.name !== filterName)
+      setSelectedFilters(newfiltersArray)
+    }
   }
 
   const changeSortKey = (keyName: string) => {
@@ -112,7 +111,7 @@ const SearchFilterBar = (props: SearchFilterBarProps) => {
       <div className="pr-6 relative flex flex-row group items-center hover:!bg-transparent">
         {searchValue !== undefined && (
           <input
-            className={`absolute ${isInputOpen ? 'bg-background-aliceBlue' : 'bg-white group-hover:bg-tertiary-skyBlue-10 placeholder:text-black'} right-full px-4 py-2 h-10 transition-all duration-300 bg-background-aliceBlue focus:outline-none top-0 ${isInputOpen ? 'w-48' : 'w-20 pr-0'}`}
+            className={`absolute ${isInputOpen ? 'bg-background-aliceBlue' : 'bg-white group-hover:bg-tertiary-skyBlue-10 placeholder:text-black'} right-full px-4 py-2 h-10 transition-all duration-300 bg-background-aliceBlue focus:outline-none outline-none top-0 ${isInputOpen ? 'w-48' : 'w-20 pr-0'}`}
             type="text"
             value={searchValue}
             onFocus={() => setIsInputOpen(true)}
@@ -166,7 +165,9 @@ const SearchFilterBar = (props: SearchFilterBarProps) => {
               <DropdownMenuCheckboxItem
                 key={item.name + index}
                 className="text-tertiary-grey-dim"
-                checked={item.checked}
+                checked={
+                  !!selectedFilters.find((selectedFilter) => selectedFilter.name === item.name)
+                }
                 onCheckedChange={() => changeFilterChecked(item.name)}
               >
                 {item.title}

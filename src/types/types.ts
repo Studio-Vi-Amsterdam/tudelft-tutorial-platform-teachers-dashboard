@@ -111,6 +111,15 @@ export interface QuizElement {
   answersCount: number
 }
 
+export interface SortedObjectInterface {
+  title: string
+  name: string
+}
+
+export interface FilterObjectInterface extends SortedObjectInterface {
+  checked: boolean
+}
+
 export interface ElementQuizActionInterface extends ElementActionBase {
   quiz: QuizElement
 }
