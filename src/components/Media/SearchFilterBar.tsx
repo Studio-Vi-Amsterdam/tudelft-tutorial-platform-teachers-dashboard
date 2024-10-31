@@ -95,25 +95,35 @@ const SearchFilterBar = (props: SearchFilterBarProps) => {
     setSelectedSortKey(keyObject)
   }
 
+  const closeInput = () => {
+    searchValue.length < 1 && setIsInputOpen(false)
+  }
+
+  const toggleInputOpen = () => {
+    if (isInputOpen) {
+      closeInput()
+    } else {
+      setIsInputOpen(true)
+    }
+  }
+
   return (
     <div className="flex flex-row items-center [&>div:hover]:bg-tertiary-skyBlue-10 transition-colors [&>div]:transition-colors [&>div]:duration-300 duration-300 justify-end [&>div:first-child]:before:!hidden [&>div>button]:flex [&>div>button]:flex-row [&>div>button]:items-center [&>div>button]:gap-x-6 [&>div]:relative [&>div]:before:absolute [&>div]:before:left-0 [&>div]:before:h-full [&>div]:before:w-[1px] [&>div]:before:bg-tertiary-skyBlue-20">
-      <div className="pr-6 relative flex flex-row items-center hover:!bg-transparent">
+      <div className="pr-6 relative flex flex-row group items-center hover:!bg-transparent">
         {searchValue !== undefined && (
           <input
-            className={`absolute right-full px-4 py-2 h-10 transition-all duration-300 bg-background-aliceBlue focus:outline-none top-0 ${isInputOpen ? 'scale-x-100 ' : 'scale-x-0 translate-x-1/2'}`}
+            className={`absolute ${isInputOpen ? 'bg-background-aliceBlue' : 'bg-white group-hover:bg-tertiary-skyBlue-10 placeholder:text-black'} right-full px-4 py-2 h-10 transition-all duration-300 bg-background-aliceBlue focus:outline-none top-0 ${isInputOpen ? 'w-48' : 'w-20 pr-0'}`}
             type="text"
             value={searchValue}
+            onFocus={() => setIsInputOpen(true)}
+            onBlur={() => closeInput()}
+            placeholder="Search"
             onChange={(e) => handleChangeSearchValue(e.target.value)}
           />
         )}
-        <span
-          className={`absolute pointer-events-none transition-all duration-300 ${isInputOpen ? 'right-[296%]' : 'right-[88px]'} ${(isInputOpen && !searchValue) || isInputOpen ? 'invisible' : 'visible'}`}
-        >
-          Search
-        </span>
         <button
-          className={`px-4 py-2 ${isInputOpen ? 'bg-background-aliceBlue' : 'hover:bg-tertiary-skyBlue-10'} transition-colors duration-300`}
-          onClick={() => setIsInputOpen((prevState) => !prevState)}
+          className={`px-4 z-10 py-2 ${isInputOpen ? 'bg-background-aliceBlue' : 'group-hover:bg-tertiary-skyBlue-10'} transition-colors duration-300`}
+          onClick={toggleInputOpen}
         >
           <SearchIcon color="#000000" />
         </button>
