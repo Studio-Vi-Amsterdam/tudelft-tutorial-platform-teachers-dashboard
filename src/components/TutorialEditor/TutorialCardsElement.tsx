@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { addTutorialCard, changeTutorialCard } from 'src/redux/features/editorSlice'
 import { useAppDispatch } from 'src/redux/hooks'
 import { TutorialCardInterface } from 'src/types/types'
@@ -50,6 +50,10 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
   ) => {
     dispatch(addTutorialCard({ block, listIndex, chapterIndex }))
   }
+
+  useEffect(() => {
+    console.log(tutorialCards)
+  }, [tutorialCards])
 
   const errValidationStyle = 'border border-red-500 rounded-sm'
 

@@ -404,7 +404,11 @@ export const reducerParser = {
                   const card: TutorialCardInterface = {
                     value: {
                       id: blockData[`content_card_row_${i}_card_link`],
-                      title: blockData[`content_card_row_${i}_card_title`],
+                      title: blockData[`content_card_row_${i}_card_is_custom_link`]
+                        ? blockData[`content_card_row_${i}_card_title`]
+                        : shortTutorials.find(
+                            (item) => item.id === blockData[`content_card_row_${i}_card_link`],
+                          ).title,
                       isValid: !!blockData[`content_card_row_${i}_card_link`],
                     },
                     proposedList: shortTutorials,
