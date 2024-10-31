@@ -1106,7 +1106,7 @@ export const editorSlice = createSlice({
           } else {
             element.tutorialCards[nestedIndex].value = element.tutorialCards[
               nestedIndex
-            ].proposedList.find((el) => el.title === value) ?? {
+            ].proposedList.find((el) => el.id === parseInt(value)) ?? {
               id: undefined,
               title: '',
               isValid: false,
@@ -1127,7 +1127,7 @@ export const editorSlice = createSlice({
           } else {
             element.tutorialCards[nestedIndex].value = element.tutorialCards[
               nestedIndex
-            ].proposedList.find((el) => el.title === value) ?? {
+            ].proposedList.find((el) => el.id === parseInt(value)) ?? {
               id: undefined,
               title: '',
               isValid: false,
