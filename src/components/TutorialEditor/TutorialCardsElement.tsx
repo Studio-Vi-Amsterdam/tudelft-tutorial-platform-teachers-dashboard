@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { addTutorialCard, changeTutorialCard } from 'src/redux/features/editorSlice'
 import { useAppDispatch } from 'src/redux/hooks'
 import { TutorialCardInterface } from 'src/types/types'
@@ -28,6 +28,7 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
     chapterIndex?: number,
     name?: string,
   ) => {
+    console.log(value)
     dispatch(
       changeTutorialCard({ value, block, listIndex, nestedIndex, isUrl, chapterIndex, name }),
     )
@@ -50,6 +51,10 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
     dispatch(addTutorialCard({ block, listIndex, chapterIndex }))
   }
 
+  useEffect(() => {
+    console.log(tutorialCards)
+  }, [tutorialCards])
+
   const errValidationStyle = 'border border-red-500 rounded-sm'
 
   return (
@@ -70,7 +75,7 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
             </label>
             {!checkedCustomTutorialCard[nestedIndex] ? (
               <select
-                value={el.value.title}
+                value={el.value.id}
                 className={`${el.value.isValid ? '' : errValidationStyle} w-full rounded-[4px] border border-DIM bg-background-seasalt p-4 text-tertiary-grey-stone`}
                 onChange={(e) =>
                   handleSelectTutorialCard(
@@ -97,7 +102,7 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
                       return 0
                     })
                     .map((listItem, idx) => (
-                      <option key={idx} value={listItem.title}>
+                      <option key={idx} value={listItem.id}>
                         {listItem.title}
                       </option>
                     ))}
