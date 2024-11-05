@@ -40,6 +40,8 @@ interface ElementActionBase {
 }
 export type MediaVariantType = 'image' | 'video'
 
+export type MediaViewType = 'block' | 'list'
+
 interface MediaObjectParent {
   id?: number
   link: string

@@ -39,40 +39,12 @@ const SearchFilterBar = (props: SearchFilterBarProps) => {
       title: 'Oldest first',
       name: 'oldest-first',
     },
-    {
-      title: 'Level easy to difficult',
-      name: 'level-easy-to-difficult',
-    },
-    {
-      title: 'Level difficult to easy',
-      name: 'level-difficult-to-easy',
-    },
   ])
 
   const [filters] = useState<SortedObjectInterface[]>([
     {
       title: 'My uploads',
       name: 'my-uploads',
-    },
-    {
-      title: 'Courses',
-      name: 'courses',
-    },
-    {
-      title: 'Subjects',
-      name: 'subjects',
-    },
-    {
-      title: 'Software',
-      name: 'software',
-    },
-    {
-      title: 'Labs',
-      name: 'labs',
-    },
-    {
-      title: 'Tutorials',
-      name: 'tutorials',
     },
   ])
 

@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { mediaAPI } from '../../lib/api'
 import { GalleryBlockViewIcon, GalleryListViewIcon } from '../ui/Icons'
-import GalleryBlockView from '../TutorialEditor/GalleryBlockView'
-import GalleryListView from '../TutorialEditor/GalleryListView'
-import PaginationBar from '../TutorialEditor/PaginationBar'
-import { MediaObjectInterface, SortedObjectInterface } from '../../types/types'
-import Preloader from '../ui/Preloader'
+import { MediaObjectInterface, MediaViewType, SortedObjectInterface } from '../../types/types'
 import { Dialog } from '../ui/Dialog'
 import FileEdit from './FileEdit'
 import SearchFilterBar from './SearchFilterBar'
 import { handleGetMedia } from 'src/lib/handleGetMedia'
+import MediaCards from './MediaCards'
 
 interface MediaLibraryProps {
   itemsPerPage?: number
@@ -30,13 +27,22 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
   const [media, setMedia] = useState<MediaObjectInterface[] | undefined>(undefined)
   const [totalMediaPages, setTotalMediaPages] = useState(0)
   const [itemsPerPage, setItemsPerPage] = useState<number>(props.itemsPerPage ?? 12)
-  const [viewType, setViewType] = useState<'block' | 'list'>('block')
+  const [viewType, setViewType] = useState<MediaViewType>('block')
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [searchValue, setSearchValue] = useState<string>('')
   const [selectedSortKey, setSelectedSortKey] = useState<SortedObjectInterface | undefined>()
   const [selectedFilters, setSelectedFilters] = useState<SortedObjectInterface[]>([])
   const [mediaEditOpen, setMediaEditOpen] = useState<boolean>(false)
   const [selectedMedia, setSelectedMedia] = useState<MediaObjectInterface | undefined>(undefined)
+
+  const sortKey = selectedSortKey ? `&sortKey=${selectedSortKey.name}` : ''
+  const query = searchValue.length > 0 ? `&query=${searchValue}` : ''
+  const filters =
+    selectedFilters.length > 0
+      ? // if filters arr not empty - add them to request separated by comma
+        `&filters=${selectedFilters.map((item) => item.name).join(',')}`
+      : // if filters arr empty - push to request nothing
+        ''
 
   const getMediaForLocalState = (params?: string) => {
     handleGetMedia({
@@ -59,16 +65,8 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
   }, [itemsPerPage])
 
   useEffect(() => {
-    const sortKey = selectedSortKey ? `&sortKey=${selectedSortKey.name}` : ''
-    const query = searchValue.length > 0 ? `&query=${searchValue}` : ''
-    const filters =
-      selectedFilters.length > 0
-        ? // if filters arr not empty - add them to request separated by comma
-          `&filters=${selectedFilters.map((item) => item.name).join(',')}`
-        : // if filters arr empty - push to request nothing
-          ''
     getMediaForLocalState(`page=${currentPage}&amount=${itemsPerPage}${filters}${sortKey}${query}`)
-  }, [currentPage, itemsPerPage, selectedFilters, selectedSortKey, searchValue])
+  }, [currentPage, itemsPerPage, selectedFilters, selectedSortKey])
 
   useEffect(() => {
     if (viewType === 'block') {
@@ -80,24 +78,12 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
 
   const handleChangeSearchValue = async (val: string) => {
     setSearchValue(val)
-    if (val === '' && val !== searchValue) {
-      getMediaForLocalState(`page=${currentPage}&amount=${itemsPerPage}`)
-    } else {
-      setIsLoading(true)
-      const foundMedia = await mediaAPI.searchMedia(val).then((res) =>
-        res.data.map((serverItem: any) => {
-          return {
-            id: serverItem.id,
-            url: serverItem.url,
-            type: serverItem.media_type.split('/')[0],
-            format: serverItem.media_type.split('/')[1],
-            title: serverItem.title,
-            publishDate: serverItem.published,
-          }
-        }),
+    if (val.trim().length > 2) {
+      getMediaForLocalState(
+        `page=${currentPage}&amount=${itemsPerPage}${filters}${sortKey}${query}`,
       )
-      setMedia(foundMedia.slice(0, itemsPerPage))
-      setIsLoading(false)
+    } else if (searchValue.length > val.length && val.trim().length === 0) {
+      getMediaForLocalState(`page=${currentPage}&amount=${itemsPerPage}${filters}${sortKey}`)
     }
   }
 
@@ -165,58 +151,26 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
         />
       </div>
       <div className="md:min-h-[620px]">
-        {media && (
-          <div className="flex flex-col gap-y-10">
-            {isLoading ? (
-              <div className={'w-full flex justify-center items-center'}>
-                <Preloader color="secondary" />
-              </div>
-            ) : (
-              <>
-                {viewType === 'block' && (
-                  <GalleryBlockView
-                    selectMode={props.selectMode}
-                    isPopup={props.isPopup}
-                    currentItems={media}
-                    mediaToDelete={props.mediaToDelete}
-                    handleMultipleSelect={props.handleMultipleSelect}
-                    // eslint-disable-next-line @typescript-eslint/no-empty-function
-                    handleSelectMedia={
-                      props.handleSelectMedia ? props.handleSelectMedia : handleOpenEditMediaPopup
-                    }
-                    selectedMedia={props.selectedMedia}
-                    hideVideo={props.hideVideo}
-                    column={props.column}
-                  />
-                )}
-                {viewType === 'list' && (
-                  <GalleryListView
-                    selectMode={props.selectMode}
-                    isPopup={props.isPopup}
-                    currentItems={media}
-                    mediaToDelete={props.mediaToDelete}
-                    handleMultipleSelect={props.handleMultipleSelect}
-                    // eslint-disable-next-line @typescript-eslint/no-empty-function
-                    handleSelectMedia={
-                      props.handleSelectMedia ? props.handleSelectMedia : handleOpenEditMediaPopup
-                    }
-                    selectedMedia={props.selectedMedia}
-                  />
-                )}
-              </>
-            )}
-            {searchValue.trim() === '' && (
-              <PaginationBar
-                selectMode={props.selectMode}
-                currentPage={currentPage}
-                handleClickPage={handleClick}
-                handleNextClick={handleNextClick}
-                handlePrevClick={handlePrevClick}
-                totalPages={totalMediaPages}
-              />
-            )}
-          </div>
-        )}
+        <MediaCards
+          column={props.column}
+          selectMode={props.selectMode}
+          currentPage={currentPage}
+          handleNextClick={handleNextClick}
+          handlePrevClick={handlePrevClick}
+          totalMediaPages={totalMediaPages}
+          isPopup={props.isPopup}
+          mediaToDelete={props.mediaToDelete}
+          handleMultipleSelect={props.handleMultipleSelect}
+          handleSelectMedia={props.handleSelectMedia}
+          handleOpenEditMediaPopup={handleOpenEditMediaPopup}
+          selectedMedia={props.selectedMedia}
+          hideVideo={props.hideVideo}
+          handleClick={handleClick}
+          isLoading={isLoading}
+          media={media}
+          searchValue={searchValue}
+          viewType={viewType}
+        />
       </div>
       <Dialog open={mediaEditOpen} onOpenChange={setMediaEditOpen}>
         {props.onFetching && (
