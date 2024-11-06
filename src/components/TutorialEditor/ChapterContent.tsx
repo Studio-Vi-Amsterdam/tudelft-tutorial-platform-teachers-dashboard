@@ -66,6 +66,7 @@ const ChapterContent = (props: ChapterContentProps) => {
                   mediaType={'video'}
                   listIndex={undefined}
                   subchapterIndex={undefined}
+                  mediaTypeFilter="only-video"
                 />
                 {chapter?.video && (
                   <>
@@ -94,6 +95,7 @@ const ChapterContent = (props: ChapterContentProps) => {
                 mediaType={'image'}
                 listIndex={undefined}
                 subchapterIndex={undefined}
+                mediaTypeFilter="only-image"
               />
             )}
           </div>

@@ -80,6 +80,7 @@ const SubchapterContent = (props: SubchapterContentProps) => {
                       mediaType={'video'}
                       listIndex={undefined}
                       subchapterIndex={subchapterIndex}
+                      mediaTypeFilter="only-video"
                     />
                   )}
                   {subchapter.layout.split(' ')[0] === 'image' && (
@@ -89,6 +90,7 @@ const SubchapterContent = (props: SubchapterContentProps) => {
                       mediaType={'image'}
                       listIndex={undefined}
                       subchapterIndex={subchapterIndex}
+                      mediaTypeFilter="only-image"
                     />
                   )}
                 </div>

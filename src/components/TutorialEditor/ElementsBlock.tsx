@@ -171,6 +171,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                     subchapterIndex={props.subchapterIndex}
                     listIndex={index}
                     layout="textImage"
+                    mediaTypeFilter="only-image"
                   />
                 </div>
               </div>
@@ -208,6 +209,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                     subchapterIndex={props.subchapterIndex}
                     listIndex={index}
                     layout="imageText"
+                    mediaTypeFilter="only-image"
                   />
                 </div>
                 <div className="sm:w-1/2">
@@ -259,6 +261,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                       subchapterIndex={props.subchapterIndex}
                       listIndex={index}
                       layout="videoText"
+                      mediaTypeFilter="only-video"
                     />
                     <SelectThumbnail
                       video={element.videoText.video}
@@ -338,6 +341,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                       subchapterIndex={props.subchapterIndex}
                       listIndex={index}
                       layout="textVideo"
+                      mediaTypeFilter="only-video"
                     />
                     <SelectThumbnail
                       video={element.textVideo.video}
@@ -419,6 +423,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                 chapterIndex={props.chapterIndex}
                 subchapterIndex={props.subchapterIndex}
                 listIndex={index}
+                mediaTypeFilter="only-image"
               />
             </DeleteElementWraper>
           )}
@@ -436,6 +441,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                   chapterIndex={props.chapterIndex}
                   subchapterIndex={props.subchapterIndex}
                   listIndex={index}
+                  mediaTypeFilter="only-video"
                 />
                 <SelectThumbnail
                   video={element.video}
