@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { mediaAPI } from '../../lib/api'
 import { GalleryBlockViewIcon, GalleryListViewIcon } from '../ui/Icons'
 import { MediaObjectInterface, MediaViewType, SortedObjectInterface } from '../../types/types'
@@ -34,6 +34,7 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
   const [selectedFilters, setSelectedFilters] = useState<SortedObjectInterface[]>([])
   const [mediaEditOpen, setMediaEditOpen] = useState<boolean>(false)
   const [selectedMedia, setSelectedMedia] = useState<MediaObjectInterface | undefined>(undefined)
+  const requestTimout = useRef<NodeJS.Timeout | null>(null)
 
   const sortKey = selectedSortKey ? `&sortKey=${selectedSortKey.name}` : ''
   const query = searchValue.length > 0 ? `&query=${searchValue}` : ''
@@ -78,13 +79,12 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
 
   const handleChangeSearchValue = async (val: string) => {
     setSearchValue(val)
-    if (val.trim().length > 2) {
+    if (requestTimout.current) clearTimeout(requestTimout.current)
+    requestTimout.current = setTimeout(() => {
       getMediaForLocalState(
-        `page=${currentPage}&amount=${itemsPerPage}${filters}${sortKey}${query}`,
+        `page=${currentPage}&amount=${itemsPerPage}${filters}${sortKey}&query=${val}`,
       )
-    } else if (searchValue.length > val.length && val.trim().length === 0) {
-      getMediaForLocalState(`page=${currentPage}&amount=${itemsPerPage}${filters}${sortKey}`)
-    }
+    }, 500)
   }
 
   const handleOpenEditMediaPopup = (media: MediaObjectInterface) => {
