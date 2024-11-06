@@ -426,6 +426,23 @@ export const reducerParser = {
               return {
                 tutorialCards,
               }
+            case 'tu-delft-video-url':
+              return {
+                externalVideo: {
+                  title: { text: block.block_data.title ?? '', isValid: !!block.block_data.title },
+                  url: { text: block.block_data.url ?? '', isValid: !!block.block_data.url },
+                  thumbnail: {
+                    id: block.block_data.thumbnail,
+                    url: block.block_data.thumbnail_url ?? '',
+                    description: '',
+                    format: '',
+                    type: 'image',
+                    link: block.block_data.thumbnail_url ?? '',
+                    publishDate: '',
+                    title: '',
+                  },
+                },
+              }
             case 'tu-delft-text-video':
               return {
                 textVideo: {
@@ -1076,6 +1093,18 @@ export const reducerParser = {
                   video_url: item.video.url,
                   thumbnail: item.video.thumbnail?.id ?? null,
                   subtitles: item.video.subtitles?.id ?? null,
+                },
+              }
+            }
+            if (item.externalVideo) {
+              return {
+                block_name: 'tu-delft-video-url',
+                block_data: {
+                  title: item.externalVideo.title.text,
+                  url: item.externalVideo.url.text,
+                  thumbnail: item.externalVideo.thumbnail
+                    ? item.externalVideo.thumbnail.id
+                    : undefined,
                 },
               }
             }
