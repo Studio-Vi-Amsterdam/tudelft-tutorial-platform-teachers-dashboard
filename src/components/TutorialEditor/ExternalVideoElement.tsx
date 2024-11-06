@@ -9,6 +9,7 @@ import {
   setExternalVideoTitle,
   setExternalVideoUrl,
 } from 'src/redux/features/editorSlice'
+import { convertToEmbedUrl } from '../../lib/regex/externalVideo'
 
 interface ExternalVideoElementProps {
   index: number
@@ -27,7 +28,13 @@ const ExternalVideoElement = (props: ExternalVideoElementProps) => {
   }
 
   const handleChangeUrl = (value: string) => {
-    dispatch(setExternalVideoUrl({ chapterIndex: props.chapterIndex, index: props.index, value }))
+    dispatch(
+      setExternalVideoUrl({
+        chapterIndex: props.chapterIndex,
+        index: props.index,
+        value: convertToEmbedUrl(value),
+      }),
+    )
   }
 
   const handleSelectThumbnail = (item: ThumbnailInterface) => {
