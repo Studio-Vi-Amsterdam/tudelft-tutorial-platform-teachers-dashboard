@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { iframePattern, urlPattern } from 'src/lib/regex/externalVideo'
+import { urlPattern } from 'src/lib/regex/externalVideo'
 import {
   AddChapterElementInterface,
   AddSubchapterElementInterface,
@@ -1487,8 +1487,7 @@ export const editorSlice = createSlice({
         if (element?.externalVideo) {
           element.externalVideo.url.text = action.payload.value
           // element.externalVideo.url.isValid = action.payload.value.trim().length > 0
-          element.externalVideo.url.isValid =
-            urlPattern.test(action.payload.value) || iframePattern.test(action.payload.value)
+          element.externalVideo.url.isValid = urlPattern.test(action.payload.value)
         }
       } else {
         const elements = state.tutorialTop.elements
@@ -1496,8 +1495,7 @@ export const editorSlice = createSlice({
         if (element?.externalVideo) {
           element.externalVideo.url.text = action.payload.value
           // element.externalVideo.url.isValid = action.payload.value.trim().length > 0
-          element.externalVideo.url.isValid =
-            urlPattern.test(action.payload.value) || iframePattern.test(action.payload.value)
+          element.externalVideo.url.isValid = urlPattern.test(action.payload.value)
         }
       }
     },
