@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { mediaAPI } from '../../lib/api'
 import { GalleryBlockViewIcon, GalleryListViewIcon } from '../ui/Icons'
 import { MediaObjectInterface, MediaViewType, SortedObjectInterface } from '../../types/types'
 import { Dialog } from '../ui/Dialog'
@@ -35,7 +34,6 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
   const [mediaEditOpen, setMediaEditOpen] = useState<boolean>(false)
   const [selectedMedia, setSelectedMedia] = useState<MediaObjectInterface | undefined>(undefined)
   const requestTimout = useRef<NodeJS.Timeout | null>(null)
-
   const sortKey = selectedSortKey ? `&sortKey=${selectedSortKey.name}` : ''
   const query = searchValue.length > 0 ? `&query=${searchValue}` : ''
   const filters =
@@ -50,23 +48,21 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
       setIsLoading,
       setMedia,
       params,
+      setTotalMediaPages,
+      itemsPerPage,
     })
   }
 
   useEffect(() => {
     if (!props.isFetching) {
-      getMediaForLocalState(`page=${currentPage}&amount=${itemsPerPage}`)
+      getMediaForLocalState(`page=${currentPage}&pageSize=${itemsPerPage}`)
     }
   }, [props.isFetching])
 
   useEffect(() => {
-    mediaAPI.getAllMediaPages().then((res) => {
-      setTotalMediaPages(Math.ceil(parseInt(res.data) / itemsPerPage))
-    })
-  }, [itemsPerPage])
-
-  useEffect(() => {
-    getMediaForLocalState(`page=${currentPage}&amount=${itemsPerPage}${filters}${sortKey}${query}`)
+    getMediaForLocalState(
+      `page=${currentPage}&pageSize=${itemsPerPage}${filters}${sortKey}${query}`,
+    )
   }, [currentPage, itemsPerPage, selectedFilters, selectedSortKey])
 
   useEffect(() => {
@@ -82,7 +78,7 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
     if (requestTimout.current) clearTimeout(requestTimout.current)
     requestTimout.current = setTimeout(() => {
       getMediaForLocalState(
-        `page=${currentPage}&amount=${itemsPerPage}${filters}${sortKey}&query=${val}`,
+        `page=${currentPage}&pageSize=${itemsPerPage}${filters}${sortKey}&query=${val}`,
       )
     }, 500)
   }

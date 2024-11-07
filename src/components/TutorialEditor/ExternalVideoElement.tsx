@@ -130,7 +130,7 @@ const ExternalVideoElement = (props: ExternalVideoElementProps) => {
           <DialogContent className=" max-w-5xl flex-col bg-white pt-20 w-[90%]">
             <MediaLibrary
               isPopup={true}
-              itemsPerPage={8}
+              itemsPerPage={9}
               selectedMedia={selectedMedia}
               handleSelectMedia={handleSelectThumbnail}
               // eslint-disable-next-line @typescript-eslint/no-empty-function

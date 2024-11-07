@@ -94,7 +94,7 @@ const PickMediaDialog = (props: PickMediaDialogProps) => {
           </div>
           <MediaLibrary
             isPopup={true}
-            itemsPerPage={8}
+            itemsPerPage={9}
             selectedMedia={selectedMedia}
             handleSelectMedia={handleSelectMedia}
             // eslint-disable-next-line @typescript-eslint/no-empty-function

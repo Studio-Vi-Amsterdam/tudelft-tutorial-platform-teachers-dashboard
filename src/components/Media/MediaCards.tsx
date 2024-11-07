@@ -32,7 +32,7 @@ const MediaCards = (props: MediaCardsInterface) => {
     isLoading,
     viewType,
     handleOpenEditMediaPopup,
-    searchValue,
+    // searchValue,
     handleClick,
     handleNextClick,
     handlePrevClick,
@@ -79,16 +79,15 @@ const MediaCards = (props: MediaCardsInterface) => {
               selectedMedia={props.selectedMedia}
             />
           )}
-          {searchValue.trim() === '' && (
-            <PaginationBar
-              selectMode={props.selectMode}
-              currentPage={currentPage}
-              handleClickPage={handleClick}
-              handleNextClick={handleNextClick}
-              handlePrevClick={handlePrevClick}
-              totalPages={totalMediaPages}
-            />
-          )}
+
+          <PaginationBar
+            selectMode={props.selectMode}
+            currentPage={currentPage}
+            handleClickPage={handleClick}
+            handleNextClick={handleNextClick}
+            handlePrevClick={handlePrevClick}
+            totalPages={totalMediaPages}
+          />
         </div>
       )
     } else {
