@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
-import { WhoHaveAccessInterface } from 'src/types/types'
+import { UsersItemInterface } from 'src/types/types'
 
 interface AutoCompleteInputProps {
-  possibleValues: WhoHaveAccessInterface[]
+  possibleValues: UsersItemInterface[]
   inputValue: string
   setInputValue: React.Dispatch<React.SetStateAction<string>>
 }
 
 const AutoCompleteInput = (props: AutoCompleteInputProps) => {
   const { possibleValues, inputValue, setInputValue } = props
-  const [suggestions, setSuggestions] = useState<WhoHaveAccessInterface[]>([])
+  const [suggestions, setSuggestions] = useState<UsersItemInterface[]>([])
 
   const handleSuggestionClick = (value: string) => {
     setInputValue(value)
@@ -20,14 +20,12 @@ const AutoCompleteInput = (props: AutoCompleteInputProps) => {
     const value = event.target.value
     setInputValue(value)
     if (value.length > 0) {
-      const filteredSuggestions = possibleValues.filter((suggestion) =>
-        suggestion.email.toLowerCase().includes(value.toLowerCase()),
+      const filteredSuggestions = possibleValues.filter(
+        (suggestion) =>
+          suggestion.email.toLowerCase().includes(value.toLowerCase()) ||
+          suggestion.first_name.toLowerCase().includes(value.toLowerCase()),
       )
-      setSuggestions(
-        filteredSuggestions.length > 0
-          ? filteredSuggestions
-          : [{ email: 'No suggestions found', role: 'viewer' }],
-      )
+      setSuggestions(filteredSuggestions.length > 0 ? filteredSuggestions : [])
     } else {
       setSuggestions([])
     }
@@ -42,7 +40,6 @@ const AutoCompleteInput = (props: AutoCompleteInputProps) => {
         onChange={handleInputChange}
         aria-autocomplete="list"
         aria-controls="autocomplete-list"
-        // Additional props
       />
       {suggestions.length > 0 && (
         <ul
@@ -53,12 +50,16 @@ const AutoCompleteInput = (props: AutoCompleteInputProps) => {
           {suggestions.map((suggestion, index) => (
             <li
               key={index}
-              onClick={() => handleSuggestionClick(suggestion.email)}
+              onClick={() =>
+                handleSuggestionClick(
+                  suggestion.email.length === 0 ? suggestion.first_name : suggestion.email,
+                )
+              }
               className="cursor-pointer text-tertiary-grey-stone hover:text-tertiary-grey-dim hover:bg-tertiary-grey-silver px-2 py-1"
               role="option"
               // Additional props
             >
-              {suggestion.email}
+              {suggestion.email.length === 0 ? suggestion.first_name : suggestion.email}
             </li>
           ))}
         </ul>

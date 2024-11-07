@@ -18,11 +18,16 @@ import {
   ChapterElementsObject,
   TutorialMetaObject,
   TutorialTopElementsObject,
+  UsersItemInterface,
 } from 'src/types/types'
 import { EyeIcon, SmallFileIcon } from '../ui/Icons'
 import TutorialActionsButton from './TutorialActionsButton'
 
-const TutorialButtonsSection = () => {
+interface TutorialButtonsProps {
+  usersList: UsersItemInterface[]
+}
+
+const TutorialButtonsSection = (props: TutorialButtonsProps) => {
   const tutorial = useAppSelector((state: RootState) => state.editor)
   const params = new URLSearchParams(useLocation().search)
   const articleType = params.get('type') as ArtictesType
@@ -502,7 +507,11 @@ const TutorialButtonsSection = () => {
             status === 'published' && <p>Switch to draft</p>
           )}
         </Button>
-        <TutorialActionsButton articleId={articleId} articleType={articleType} />
+        <TutorialActionsButton
+          articleId={articleId}
+          articleType={articleType}
+          usersList={props.usersList}
+        />
       </div>
     </section>
   )

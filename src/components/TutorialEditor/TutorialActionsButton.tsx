@@ -21,11 +21,12 @@ import {
   AlertDialogTitle,
 } from '../ui/AlertDialog'
 import { articlesAPI } from 'src/lib/api'
-import { ArtictesType } from 'src/types/types'
+import { ArtictesType, UsersItemInterface } from 'src/types/types'
 
 interface TutorialActionsButtonProps {
   articleId: string | null
   articleType: ArtictesType
+  usersList: UsersItemInterface[]
 }
 
 const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
@@ -93,7 +94,10 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
             </span>
             Migrate to
           </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => toggleAddAuthorDialogOpen()}>
+          <DropdownMenuItem
+            disabled={props.articleId === null || props.articleId === 'new'}
+            onSelect={() => toggleAddAuthorDialogOpen()}
+          >
             <span className="flex justify-center items-center w-6 h-6">
               <AuthorIcon />
             </span>
@@ -101,7 +105,12 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <AddAuthorModal isOpen={isAddAuthorDialogOpen} setIsOpen={toggleAddAuthorDialogOpen} />
+      <AddAuthorModal
+        usersList={props.usersList}
+        isOpen={isAddAuthorDialogOpen}
+        setIsOpen={toggleAddAuthorDialogOpen}
+        articleId={props.articleId}
+      />
       <AlertDialog open={isDeletePopupOpen} onOpenChange={setIsDeletePopupOpen}>
         <AlertDialogContent className="bg-white">
           <AlertDialogHeader>

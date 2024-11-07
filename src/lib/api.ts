@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ArtictesType } from 'src/types/types'
+import { ArtictesType, UserRoleType } from 'src/types/types'
 import { getAuthToken, removeAuthToken } from './cookies'
 
 const instance = axios.create({
@@ -130,5 +130,17 @@ export const mediaAPI = {
 export const userAPI = {
   getUser() {
     return instance.get('/user/')
+  },
+  getUsers() {
+    return instance.get('/users/')
+  },
+  getEditorsAndViewers(postId: string) {
+    return instance.get(`/users/post/${postId}`)
+  },
+  removeUserFromPost(postId: string, userId: number, role: UserRoleType) {
+    return instance.delete(`/users/post/${postId}`, { data: { user_id: userId, role } })
+  },
+  addUserToPost(postId: string, userId: number, role: UserRoleType) {
+    return instance.post(`/users/post/${postId}`, { user_id: userId, role })
   },
 }
