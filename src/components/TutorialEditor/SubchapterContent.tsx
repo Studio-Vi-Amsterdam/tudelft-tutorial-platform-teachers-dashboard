@@ -46,7 +46,7 @@ const SubchapterContent = (props: SubchapterContentProps) => {
           <TextInput
             placeholder="Subchapter title"
             headingType="h3"
-            value={subchapter.title}
+            value={subchapter.title.text}
             index={chapterIndex}
             subchapterIndex={subchapterIndex}
             handleChange={handleChangeSubchapterTitle}
@@ -64,7 +64,7 @@ const SubchapterContent = (props: SubchapterContentProps) => {
               <BundledEditor
                 handleChange={handleSubchapterTextInputChange}
                 subchapter={true}
-                value={subchapter.text}
+                value={subchapter.text.text}
                 index={chapterIndex}
                 subchapterIndex={subchapterIndex}
                 extended
@@ -80,6 +80,7 @@ const SubchapterContent = (props: SubchapterContentProps) => {
                       mediaType={'video'}
                       listIndex={undefined}
                       subchapterIndex={subchapterIndex}
+                      mediaTypeFilter="only-video"
                     />
                   )}
                   {subchapter.layout.split(' ')[0] === 'image' && (
@@ -89,6 +90,7 @@ const SubchapterContent = (props: SubchapterContentProps) => {
                       mediaType={'image'}
                       listIndex={undefined}
                       subchapterIndex={subchapterIndex}
+                      mediaTypeFilter="only-image"
                     />
                   )}
                 </div>

@@ -305,3 +305,168 @@ export const LogoutIcon = (props: IconsProps) => (
     </g>
   </svg>
 )
+
+export const AuthorIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M4 18C4 15.7909 5.79086 14 8 14H16C18.2091 14 20 15.7909 20 18V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V18Z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinejoin="round"
+    />
+    <circle cx="12" cy="7" r="3" stroke="currentColor" strokeWidth="1.5" />
+  </svg>
+)
+
+export const AddFileIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M7 21C5.89543 21 5 20.1046 5 19V3H14L19 8V19C19 20.1046 18.1046 21 17 21H7Z"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path d="M12 13V17" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M10 15H14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M13 3V9H19" stroke="currentColor" strokeLinejoin="round" />
+  </svg>
+)
+
+export const TrashCanIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M14 3.98763C11.78 3.76763 9.54667 3.6543 7.32 3.6543C6 3.6543 4.68 3.72096 3.36 3.8543L2 3.98763"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M5.66406 3.31203L5.81073 2.4387C5.9174 1.80536 5.9974 1.33203 7.12406 1.33203H8.87073C9.9974 1.33203 10.0841 1.83203 10.1841 2.44536L10.3307 3.31203"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M12.5708 6.09375L12.1375 12.8071C12.0642 13.8537 12.0042 14.6671 10.1442 14.6671H5.86417C4.00417 14.6671 3.94417 13.8537 3.87083 12.8071L3.4375 6.09375"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M6.88281 11H9.10281"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M6.33594 8.33203H9.66927"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+export const SmallFileIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M7 21C5.89543 21 5 20.1046 5 19V3H14L19 8V19C19 20.1046 18.1046 21 17 21H7Z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M13 3V8C13 8.55228 13.4477 9 14 9H19"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+export const EyeIcon = () => (
+  <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M8 1.5C3.91667 1.5 1 6 1 6C1 6 3.91667 10.5 8 10.5C12.0833 10.5 15 6 15 6C15 6 12.0833 1.5 8 1.5Z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinejoin="round"
+    />
+    <circle cx="8" cy="6" r="2.25" stroke="currentColor" strokeWidth="1.5" />
+  </svg>
+)
+
+export const MoreIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect
+      x="12"
+      y="11.999"
+      width="0.01"
+      height="0.01"
+      stroke="currentColor"
+      strokeWidth="3"
+      strokeLinejoin="round"
+    />
+    <rect
+      x="12"
+      y="4.99902"
+      width="0.01"
+      height="0.01"
+      stroke="currentColor"
+      strokeWidth="3"
+      strokeLinejoin="round"
+    />
+    <rect
+      x="12"
+      y="18.999"
+      width="0.01"
+      height="0.01"
+      stroke="currentColor"
+      strokeWidth="3"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+export const ArrowRight = () => (
+  <svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M0.151496 11.1534C-0.0504989 10.9581 -0.0504989 10.6415 0.151496 10.4463L4.75127 5.9998L0.151496 1.55336C-0.0504993 1.3581 -0.0504993 1.04151 0.151496 0.846251C0.353491 0.650989 0.68099 0.650989 0.882986 0.84625L5.8485 5.64625C5.9455 5.74002 6 5.8672 6 5.9998C6 6.13241 5.9455 6.25959 5.8485 6.35336L0.882986 11.1534C0.680991 11.3486 0.353492 11.3486 0.151496 11.1534Z"
+      fill="currentColor"
+    />
+  </svg>
+)
+
+export const AvatarIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M21 12C21 13.8569 20.4376 15.5825 19.4739 17.0157C17.858 19.4189 15.1136 21 12 21C8.88636 21 6.14202 19.4189 4.52609 17.0157C3.56237 15.5825 3 13.8569 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+      stroke="currentColor"
+      strokeWidth="2"
+    />
+    <path
+      d="M14 9C14 10.1046 13.1046 11 12 11C10.8954 11 10 10.1046 10 9C10 7.89543 10.8954 7 12 7C13.1046 7 14 7.89543 14 9Z"
+      stroke="currentColor"
+      strokeWidth="2"
+    />
+    <path
+      d="M14.9982 15H8.99821C7.18645 15 5.65603 16.2045 5.16406 17.8564C6.81468 19.7808 9.26406 21 11.9982 21C14.7323 21 17.1817 19.7808 18.8323 17.8564C18.3404 16.2045 16.81 15 14.9982 15Z"
+      stroke="currentColor"
+      strokeWidth="2"
+    />
+  </svg>
+)
+
+export const ArrowLeft = () => (
+  <svg width="12" height="22" viewBox="0 0 12 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M11.697 0.693284C12.101 1.08381 12.101 1.71697 11.697 2.1075L2.49746 11.0004L11.697 19.8933C12.101 20.2838 12.101 20.917 11.697 21.3075C11.293 21.698 10.638 21.698 10.234 21.3075L0.302994 11.7075C0.108991 11.52 1.43241e-06 11.2656 1.44401e-06 11.0004C1.4556e-06 10.7352 0.108991 10.4808 0.302994 10.2933L10.234 0.693284C10.638 0.302759 11.293 0.302759 11.697 0.693284Z"
+      fill="currentColor"
+    />
+  </svg>
+)

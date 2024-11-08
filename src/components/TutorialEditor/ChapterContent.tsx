@@ -5,6 +5,9 @@ import ElementsBlock from './ElementsBlock'
 import AddElementBlock from './AddElementBlock'
 import AddMediaElement from './AddMediaElement'
 import BundledEditor from './BundledEditor'
+import SelectThumbnail from './SelectThumbnail'
+import SelectSubtitles from './SelectSubtitles'
+// import SelectSubtitles from './SelectSubtitles'
 
 interface ChapterContentProps {
   chapter: ChapterInterface
@@ -24,14 +27,16 @@ const ChapterContent = (props: ChapterContentProps) => {
     handleAddElement,
     elements,
   } = props
+
   return (
     <>
       <TextInput
         placeholder="Chapter title"
         headingType="h2"
-        value={chapter.title}
+        value={chapter.title.text}
         index={chapterIndex}
         handleChange={handleChangeChapterTitle}
+        notValid={!chapter.title.isValid}
       />
       <div
         className={`${
@@ -46,20 +51,42 @@ const ChapterContent = (props: ChapterContentProps) => {
           <BundledEditor
             handleChange={handleChapterTextInputChange}
             index={chapterIndex}
-            value={chapter.text}
+            value={chapter.text.text}
             extended
+            notValid={!chapter.text.isValid}
           />
         </div>
         {chapter.layout !== '1 column' && (
           <div className="sm:w-1/2">
             {chapter.layout.split(' ')[0] === 'video' && (
-              <AddMediaElement
-                block="chapterMedia"
-                chapterIndex={chapterIndex}
-                mediaType={'video'}
-                listIndex={undefined}
-                subchapterIndex={undefined}
-              />
+              <>
+                <AddMediaElement
+                  block="chapterMedia"
+                  chapterIndex={chapterIndex}
+                  mediaType={'video'}
+                  listIndex={undefined}
+                  subchapterIndex={undefined}
+                  mediaTypeFilter="only-video"
+                />
+                {chapter?.video && (
+                  <>
+                    <SelectThumbnail
+                      video={chapter.video}
+                      chapterIndex={props.chapterIndex}
+                      layout="videoText"
+                      listIndex={undefined}
+                      subchapterIndex={undefined}
+                    />
+                    <SelectSubtitles
+                      video={chapter.video}
+                      chapterIndex={props.chapterIndex}
+                      layout="videoText"
+                      listIndex={undefined}
+                      subchapterIndex={undefined}
+                    />
+                  </>
+                )}
+              </>
             )}
             {chapter.layout.split(' ')[0] === 'image' && (
               <AddMediaElement
@@ -68,6 +95,7 @@ const ChapterContent = (props: ChapterContentProps) => {
                 mediaType={'image'}
                 listIndex={undefined}
                 subchapterIndex={undefined}
+                mediaTypeFilter="only-image"
               />
             )}
           </div>

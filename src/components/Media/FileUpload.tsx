@@ -90,7 +90,6 @@ export const FileUpload = (props: FileUploadProps) => {
           thumbnail[0] !== undefined &&
           thumbnail[0].file &&
           formData.append('thumbnail', thumbnail[0].file)
-        console.log(Array.from(new Set(formData)))
         mediaAPI.uploadFiles(formData).then((res) => {
           if (res.status === 200) {
             toast({
@@ -98,9 +97,12 @@ export const FileUpload = (props: FileUploadProps) => {
               description: `${res.data.data.title} uploaded with ID: ${res.data.data.id}`,
             })
             if (index + 1 === files.length) {
-              setIsFetching(false)
-              handleDeleteFiles()
-              props.setIsOpen(false)
+              console.log('files length == index + 1 ')
+              setTimeout(() => {
+                setIsFetching(false)
+                handleDeleteFiles()
+                props.setIsOpen(false)
+              }, 1000)
             }
           } else {
             toast({

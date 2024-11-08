@@ -11,10 +11,15 @@ import {
   setFeaturedImage,
   setSubchapterMedia,
 } from 'src/redux/features/editorSlice'
+import { FileUpload } from '../Media/FileUpload'
 
 const PickMediaDialog = (props: PickMediaDialogProps) => {
   const { dialogOpened, setDialogOpened } = props
+
   const [selectedMedia, setSelectedMedia] = useState<MediaObjectInterface | undefined>(undefined)
+  const [isOpenUpload, setIsOpenUpload] = useState<boolean>(false)
+  const [isFetching, setIsFetching] = useState<boolean>(false)
+
   const dispatch = useAppDispatch()
   const handleSubmitMedia = () => {
     if (selectedMedia) {
@@ -76,26 +81,46 @@ const PickMediaDialog = (props: PickMediaDialogProps) => {
   }
 
   return (
-    <Dialog open={dialogOpened} onOpenChange={setDialogOpened}>
-      <DialogContent className=" max-w-5xl flex-col bg-white pt-20 w-[90%]">
-        <MediaLibrary
-          isPopup={true}
-          itemsPerPage={8}
-          selectedMedia={selectedMedia}
-          handleSelectMedia={handleSelectMedia}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
-          handleMultipleSelect={() => {}}
-          mediaToDelete={undefined}
-          column="3"
-          hideVideo={true}
-        />
-        <DialogFooter>
-          <Button onClick={handleSubmitMedia} disabled={!selectedMedia}>
-            <p>Save</p>
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <>
+      <Dialog open={dialogOpened} onOpenChange={setDialogOpened}>
+        <DialogContent className="flex max-w-5xl flex-col gap-y-5 bg-white pt-10 w-[90%]">
+          <div>
+            <Button
+              onClick={() => setIsOpenUpload(true)}
+              className="px-10 whitespace-nowrap max-sm:w-full flex justify-center"
+            >
+              Upload file
+            </Button>
+          </div>
+          <MediaLibrary
+            isPopup={true}
+            itemsPerPage={9}
+            selectedMedia={selectedMedia}
+            handleSelectMedia={handleSelectMedia}
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            handleMultipleSelect={() => {}}
+            mediaToDelete={undefined}
+            column="3"
+            hideVideo={true}
+            isFetching={isFetching}
+            mediaTypeFilter={props.mediaTypeFilter}
+          />
+          <DialogFooter>
+            <Button onClick={handleSubmitMedia} disabled={!selectedMedia}>
+              <p>Save</p>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={isOpenUpload} onOpenChange={(val) => setIsOpenUpload(val)}>
+        <DialogContent className="bg-white max-w-7xl !rounded p-8 sm:p-10">
+          <FileUpload
+            onFetching={setIsFetching}
+            setIsOpen={(val: boolean) => setIsOpenUpload(val)}
+          />
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }
 
