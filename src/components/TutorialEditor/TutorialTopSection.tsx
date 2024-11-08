@@ -49,6 +49,7 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
     'download file',
     'quiz',
     'h5p element',
+    'external video',
   ]
   const handleAddTutorialElement = async (val: string): Promise<void> => {
     const payload: any = {}
@@ -150,6 +151,14 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
         description: '',
         thumbnail: undefined,
       }
+      dispatch(addTutorialElements(payload))
+    } else if (val === 'external video') {
+      payload.externalVideo = {
+        title: { text: '', isValid: true },
+        url: { text: '', isValid: true },
+        thumbnail: undefined,
+      }
+      delete payload['external video']
       dispatch(addTutorialElements(payload))
     } else {
       dispatch(addTutorialElements(payload))

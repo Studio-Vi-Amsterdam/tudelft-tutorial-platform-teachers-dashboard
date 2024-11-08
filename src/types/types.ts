@@ -23,6 +23,7 @@ export type AddElementsType =
   | 'quiz'
   | 'h5p element'
   | 'tutorial cards'
+  | 'external video'
 
 export type ArtictesType = 'softwares' | 'courses' | 'tutorials' | 'subjects'
 export interface DashboardPublishedInterface {
@@ -55,6 +56,8 @@ interface ElementActionBase {
 }
 export type MediaVariantType = 'image' | 'video'
 
+export type MediaViewType = 'block' | 'list'
+
 interface MediaObjectParent {
   id?: number
   link: string
@@ -81,6 +84,7 @@ export interface MediaObjectInterface {
   publishDate: string
   description: string
   thumbnail?: ThumbnailInterface
+  subtitles?: MediaObjectParent
   isOwner?: boolean
   hasZoom?: boolean
 }
@@ -115,6 +119,23 @@ export interface ThumbnailActionInterface {
   layout?: SubchapterLayout
 }
 
+export interface ChapterThumbnailActionInterface {
+  thumbnail: ThumbnailInterface
+  chapterIndex: number
+}
+
+export interface SubtitlesActionInterface {
+  index: number
+  subtitles: MediaObjectParent
+  chapterIndex?: number
+  layout?: SubchapterLayout
+}
+
+export interface ChapterSubtitlesActionInterface {
+  subtitles: MediaObjectParent
+  chapterIndex?: number
+}
+
 export interface QuizAnswer {
   answer: string
   isCorrect: '0' | '1'
@@ -124,6 +145,15 @@ export interface QuizElement {
   question: TextElementInterface
   answers: QuizAnswer[]
   answersCount: number
+}
+
+export interface SortedObjectInterface {
+  title: string
+  name: string
+}
+
+export interface FilterObjectInterface extends SortedObjectInterface {
+  checked: boolean
 }
 
 export interface ElementQuizActionInterface extends ElementActionBase {
@@ -194,11 +224,18 @@ interface MediaTextVideoInterface {
   video: MediaObjectInterface
 }
 
+export interface ExternalVideoInterface {
+  title: TextElementInterface
+  url: TextElementInterface
+  thumbnail: ThumbnailInterface | undefined
+}
+
 export interface TutorialTopElementsObject {
   text?: TextElementInterface
   infobox?: TextElementInterface
   image?: MediaObjectInterface
   video?: MediaObjectInterface
+  externalVideo?: ExternalVideoInterface
   file?: ElementsFileInterface
   quiz?: QuizElement
   h5pElement?: h5pElementInterface
@@ -258,6 +295,7 @@ export interface ChapterElementsObject {
   infobox?: TextElementInterface
   image?: MediaObjectInterface
   video?: MediaObjectInterface
+  externalVideo?: ExternalVideoInterface
   tutorialCard?: TutorialCardInterface
   tutorialCards?: TutorialCardInterface[]
   file?: ElementsFileInterface
@@ -463,11 +501,14 @@ export interface ElementProps {
   subchapterIndex: number | undefined
 }
 
+export type MediaTypeFilters = 'only-video' | 'only-image' | 'only-files'
+
 export interface AddMediaElementProps extends ElementProps {
   mediaType: MediaVariantType
   listIndex: number | undefined
   layout?: SubchapterLayout
   className?: string
+  mediaTypeFilter: MediaTypeFilters
 }
 
 export interface PickMediaDialogProps extends AddMediaElementProps {
@@ -475,6 +516,7 @@ export interface PickMediaDialogProps extends AddMediaElementProps {
   setDialogOpened: React.Dispatch<React.SetStateAction<boolean>>
   className?: string
   elementId?: number
+  mediaTypeFilter: MediaTypeFilters
 }
 
 export interface SubchapterImageAction {
@@ -549,6 +591,7 @@ export type ResponseBlockName =
   | 'tu-delft-text-video'
   | 'tu-delft-quiz'
   | 'tu-delft-h5p'
+  | 'tu-delft-video-url'
 export type BoolString = '0' | '1'
 
 export interface ResponseBlockData {

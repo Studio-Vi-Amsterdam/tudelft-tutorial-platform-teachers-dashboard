@@ -28,10 +28,15 @@ const GalleryBlockView = (props: GalleryViewProps) => {
                     () => {}
           }
         >
-          {!props.selectMode && !props.isPopup && item.isOwner && (
+          {!props.selectMode && (
             <div className="absolute w-full h-full bg-[rgba(0,0,0,0.3)] opacity-0 group-hover:opacity-100 transition-opacity flex justify-center items-center">
-              <div className="border-transparent bg-primary-skyBlue z-10 text-primary-white disabled:bg-tertiary-skyBlue-20 flex flex-row items-center justify-center gap-x-6 rounded-[4px] border px-6 py-3 [&>div]:text-2xl transition-colors duration-200 [&>div]:leading-6 [&>p]:text-base">
-                Edit
+              {item.isOwner && !props.isPopup && (
+                <div className="border-transparent bg-primary-skyBlue z-10 text-primary-white disabled:bg-tertiary-skyBlue-20 flex flex-row items-center justify-center gap-x-6 rounded-[4px] border px-6 py-3 [&>div]:text-2xl transition-colors duration-200 [&>div]:leading-6 [&>p]:text-base">
+                  Edit
+                </div>
+              )}
+              <div className="absolute group-hover:z-[100] px-2 top-1 left-0 w-full h-fit text-center text-white font-normal">
+                {item.title}
               </div>
             </div>
           )}

@@ -15,6 +15,8 @@ import FileElement from './FileElement'
 import TutorialCardsElement from './TutorialCardsElement'
 import BundledEditor from './BundledEditor'
 import SelectThumbnail from './SelectThumbnail'
+import SelectSubtitles from './SelectSubtitles'
+import ExternalVideoElement from './ExternalVideoElement'
 
 interface ElementsBlockProps {
   elements: Array<ChapterElementsObject>
@@ -170,6 +172,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                     subchapterIndex={props.subchapterIndex}
                     listIndex={index}
                     layout="textImage"
+                    mediaTypeFilter="only-image"
                   />
                 </div>
               </div>
@@ -207,6 +210,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                     subchapterIndex={props.subchapterIndex}
                     listIndex={index}
                     layout="imageText"
+                    mediaTypeFilter="only-image"
                   />
                 </div>
                 <div className="sm:w-1/2">
@@ -258,8 +262,16 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                       subchapterIndex={props.subchapterIndex}
                       listIndex={index}
                       layout="videoText"
+                      mediaTypeFilter="only-video"
                     />
                     <SelectThumbnail
+                      video={element.videoText.video}
+                      chapterIndex={props.chapterIndex}
+                      subchapterIndex={props.subchapterIndex}
+                      listIndex={index}
+                      layout="videoText"
+                    />
+                    <SelectSubtitles
                       video={element.videoText.video}
                       chapterIndex={props.chapterIndex}
                       subchapterIndex={props.subchapterIndex}
@@ -330,8 +342,16 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                       subchapterIndex={props.subchapterIndex}
                       listIndex={index}
                       layout="textVideo"
+                      mediaTypeFilter="only-video"
                     />
                     <SelectThumbnail
+                      video={element.textVideo.video}
+                      chapterIndex={props.chapterIndex}
+                      subchapterIndex={props.subchapterIndex}
+                      listIndex={index}
+                      layout="textVideo"
+                    />
+                    <SelectSubtitles
                       video={element.textVideo.video}
                       chapterIndex={props.chapterIndex}
                       subchapterIndex={props.subchapterIndex}
@@ -404,6 +424,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                 chapterIndex={props.chapterIndex}
                 subchapterIndex={props.subchapterIndex}
                 listIndex={index}
+                mediaTypeFilter="only-image"
               />
             </DeleteElementWraper>
           )}
@@ -421,6 +442,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                   chapterIndex={props.chapterIndex}
                   subchapterIndex={props.subchapterIndex}
                   listIndex={index}
+                  mediaTypeFilter="only-video"
                 />
                 <SelectThumbnail
                   video={element.video}
@@ -428,7 +450,28 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                   subchapterIndex={props.subchapterIndex}
                   listIndex={index}
                 />
+                <SelectSubtitles
+                  chapterIndex={props.chapterIndex}
+                  subchapterIndex={props.subchapterIndex}
+                  listIndex={index}
+                  video={element.video}
+                />
               </div>
+            </DeleteElementWraper>
+          )}
+          {element?.externalVideo !== undefined && (
+            <DeleteElementWraper
+              block={block}
+              chapterIndex={props.chapterIndex}
+              subchapterIndex={subchapterIndex}
+              elementIndex={index}
+              styles="bg-white top-3 right-1 w-6 h-6"
+            >
+              <ExternalVideoElement
+                chapterIndex={props.chapterIndex}
+                attributes={element.externalVideo}
+                index={index}
+              />
             </DeleteElementWraper>
           )}
           {element?.file !== undefined && (

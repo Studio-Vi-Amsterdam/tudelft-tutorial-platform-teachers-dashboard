@@ -4,7 +4,8 @@ import { Button } from '../ui/Button'
 import { Dialog, DialogContent, DialogFooter } from '../ui/Dialog'
 import { MediaLibrary } from '../Media/MediaLibrary'
 import { useAppDispatch } from 'src/redux/hooks'
-import { setChapterVideoThumbnail, setVideoThumbnail } from 'src/redux/features/editorSlice'
+import { setChapterVideoSubtitles, setVideoSubtitles } from 'src/redux/features/editorSlice'
+import { FileIcon } from '../ui/Icons'
 
 interface ThumbProps {
   video: MediaObjectInterface
@@ -14,9 +15,10 @@ interface ThumbProps {
   layout?: SubchapterLayout
 }
 
-const SelectThumbnail = (props: ThumbProps) => {
+const SelectSubtitles = (props: ThumbProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const dispatch = useAppDispatch()
-  const selectedThumbnail = props.video.thumbnail
+  const selectedSubtitles = props.video.subtitles
   const [selectedMedia, setSelectedMedia] = useState<ThumbnailInterface | undefined>(undefined)
   const [dialogOpened, setDialogOpened] = useState<boolean>(false)
 
@@ -32,16 +34,16 @@ const SelectThumbnail = (props: ThumbProps) => {
     if (selectedMedia !== undefined) {
       if (props.listIndex === undefined) {
         dispatch(
-          setChapterVideoThumbnail({
+          setChapterVideoSubtitles({
             chapterIndex: props.chapterIndex ?? 0,
-            thumbnail: selectedMedia,
+            subtitles: selectedMedia,
           }),
         )
       } else {
         dispatch(
-          setVideoThumbnail({
+          setVideoSubtitles({
             index: props.listIndex,
-            thumbnail: selectedMedia,
+            subtitles: selectedMedia,
             chapterIndex: props.chapterIndex,
             layout: props.layout,
           }),
@@ -54,9 +56,9 @@ const SelectThumbnail = (props: ThumbProps) => {
   const handleDeleteMedia = () => {
     if (props.listIndex === undefined) {
       dispatch(
-        setChapterVideoThumbnail({
+        setChapterVideoSubtitles({
           chapterIndex: props.chapterIndex ?? 0,
-          thumbnail: {
+          subtitles: {
             description: '',
             format: '',
             link: '',
@@ -69,16 +71,16 @@ const SelectThumbnail = (props: ThumbProps) => {
       )
     } else {
       dispatch(
-        setVideoThumbnail({
+        setVideoSubtitles({
           index: props.listIndex,
-          thumbnail: {
-            description: '',
+          subtitles: {
+            type: 'video',
             format: '',
             link: '',
-            isValid: true,
-            publishDate: '',
             title: '',
-            type: 'image',
+            publishDate: '',
+            isValid: true,
+            description: '',
           },
           chapterIndex: props.chapterIndex,
           layout: props.layout,
@@ -90,22 +92,29 @@ const SelectThumbnail = (props: ThumbProps) => {
   return (
     props.video && (
       <div className="w-full flex flex-col">
-        <p className="font-semibold">Video Thumbnail</p>
-        <div className="flex flex-row justify-between gap-x-2">
-          {selectedThumbnail && selectedThumbnail.url ? (
-            <div className="w-1/2">
-              <img src={selectedThumbnail.url} />
+        <p className="font-semibold">Video Subtitles</p>
+        <div className="flex flex-row justify-between mt-2 gap-x-2">
+          {selectedSubtitles && selectedSubtitles.url ? (
+            <div className="w-1/2 flex justify-start items-start">
+              <div className="relative flex flex-col items-start gap-3 w-full">
+                <FileIcon />
+                {selectedSubtitles.url && (
+                  <p className="text-primary-skyBlue font-medium break-all text-small">
+                    {selectedSubtitles.url.split('/').pop()}
+                  </p>
+                )}
+              </div>
             </div>
           ) : (
-            <p>No thumbnail</p>
+            <p>No subtitles</p>
           )}
           <div className="flex flex-col w-1/2 gap-y-2">
             <Button onClick={() => setDialogOpened(true)}>
-              {selectedThumbnail && selectedThumbnail.url ? 'Change' : 'Set'} Thumbnail
+              {selectedSubtitles && selectedSubtitles.url ? 'Change' : 'Set'} Subtitles
             </Button>
-            {selectedThumbnail?.id && (
+            {selectedSubtitles?.id && (
               <Button variant={'outline'} onClick={handleDeleteMedia}>
-                Delete Thumbnail
+                Delete Subtitles
               </Button>
             )}
           </div>
@@ -122,7 +131,7 @@ const SelectThumbnail = (props: ThumbProps) => {
               mediaToDelete={undefined}
               column="3"
               hideVideo={true}
-              mediaTypeFilter="only-image"
+              mediaTypeFilter="only-files"
             />
             <DialogFooter>
               <Button onClick={handleSubmitMedia} disabled={!selectedMedia}>
@@ -136,4 +145,4 @@ const SelectThumbnail = (props: ThumbProps) => {
   )
 }
 
-export default SelectThumbnail
+export default SelectSubtitles

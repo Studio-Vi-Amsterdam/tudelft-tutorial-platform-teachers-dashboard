@@ -128,6 +128,13 @@ const ChapterSection = (props: ChapterSectionProps) => {
         description: '',
         thumbnail: undefined,
       }
+    } else if (val === 'external video') {
+      payload.externalVideo = {
+        title: { text: '', isValid: true },
+        url: { text: '', isValid: true },
+        thumbnail: undefined,
+      }
+      delete payload['external video']
     }
 
     if (index !== undefined) {
@@ -144,6 +151,7 @@ const ChapterSection = (props: ChapterSectionProps) => {
     'h5p element',
     'tutorial cards',
     'quiz',
+    'external video',
   ]
 
   return (

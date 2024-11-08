@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { Button } from 'src/components/ui/Button'
 import { articlesAPI } from 'src/lib/api'
 import { reducerParser } from 'src/lib/reducerParser'
+import { urlPattern } from 'src/lib/regex/externalVideo'
 import { useToast } from 'src/lib/use-toast'
 import {
   setMetafieldsValidationErrors,
@@ -354,6 +355,18 @@ const TutorialButtonsSection = (props: TutorialButtonsProps) => {
             title: { ...element.videoText.title, isValid: true },
             text: { ...element.videoText.text, isValid: true },
             video: { ...element.videoText.video, isValid: isImageValid },
+          },
+        }
+      } else if (element.externalVideo) {
+        const isTitleValid = element.externalVideo.title.text.trim().length > 0
+        !isTitleValid && count++
+        const isUrlValid = urlPattern.test(element.externalVideo.url.text)
+        !isUrlValid && count++
+        return {
+          externalVideo: {
+            title: { ...element.externalVideo.title, isValid: isTitleValid },
+            url: { ...element.externalVideo.url, isValid: isUrlValid },
+            thumbnail: element.externalVideo.thumbnail,
           },
         }
       }
