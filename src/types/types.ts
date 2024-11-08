@@ -1,3 +1,12 @@
+export interface UsersItemInterface {
+  id: number
+  email: string
+  first_name: string
+  last_name: string
+}
+
+export type UserRoleType = 'editor' | 'viewer'
+
 export interface TutorialCard {
   type: 'course' | 'subject' | 'software' | 'tutorial'
   name: string
@@ -25,6 +34,12 @@ export interface DashboardPublishedInterface {
   type: ArtictesType
   previewLink: string | null
   status: 'draft' | 'published' | 'new'
+}
+
+export interface WhoHaveAccessInterface {
+  image?: string
+  email: string
+  role: 'viewer' | 'editor'
 }
 
 export interface DashboardSectionProps {

@@ -1,15 +1,21 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
 import { RootState } from 'src/redux/store'
 import TutorialTopSection from './TutorialTopSection'
 import TutorialButtonsSection from './TutorialButtonsSection'
 import AddChapterSection from './AddChapterSection'
-import { ArtictesType, ChapterInterface, EditorState, ResponseKeyword } from 'src/types/types'
+import {
+  ArtictesType,
+  ChapterInterface,
+  EditorState,
+  ResponseKeyword,
+  UsersItemInterface,
+} from 'src/types/types'
 import ChapterSection from './ChapterSection'
 import EditorSidebar from './EditorSidebar'
 import TutorialBottomSection from './TutorialBottomSection'
-import { articlesAPI, taxonomiesAPI } from 'src/lib/api'
+import { articlesAPI, taxonomiesAPI, userAPI } from 'src/lib/api'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getInfo, reducerParser } from 'src/lib/reducerParser'
 import {
@@ -33,9 +39,17 @@ const BlogEditor = () => {
   const articleId = params.get('id')
   const navigate = useNavigate()
   const { toast } = useToast()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [usersList, setUsersList] = useState<UsersItemInterface[]>([])
   useEffect(() => {
     const fetchData = async () => {
       dispatch(setEditorLoaded(false))
+      try {
+        const usersListRes: UsersItemInterface[] = await userAPI.getUsers().then((res) => res.data)
+        setUsersList(usersListRes)
+      } catch (error) {
+        console.error(error)
+      }
       if (articleType && articleId) {
         const keywordsResponse = await taxonomiesAPI
           .getKeywords()
@@ -163,7 +177,7 @@ const BlogEditor = () => {
         <div className="flex w-full flex-col items-start md:pl-12 lg:pl-28 bg-white">
           {isFetched ? (
             <>
-              <TutorialButtonsSection />
+              <TutorialButtonsSection usersList={usersList} />
               <TutorialTopSection tutorialTitle={tutorialTitle} />
               {chapters.length > 0 &&
                 chapters.map((chapter: ChapterInterface, index: number) => (
