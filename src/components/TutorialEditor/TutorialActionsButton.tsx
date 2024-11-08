@@ -6,7 +6,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '../ui/Dropdown'
-import { AddFileIcon, AuthorIcon, MoreIcon, TrashCanIcon } from '../ui/Icons'
+import { AuthorIcon, MoreIcon, TrashCanIcon } from '../ui/Icons'
 import AddAuthorModal from './AddAuthorModal'
 import { useNavigate } from 'react-router-dom'
 import { useToast } from 'src/lib/use-toast'
