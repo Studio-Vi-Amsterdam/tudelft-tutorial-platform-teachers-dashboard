@@ -54,16 +54,17 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
   }
 
   useEffect(() => {
-    if (!props.isFetching) {
-      getMediaForLocalState(`page=${currentPage}&pageSize=${itemsPerPage}`)
-    }
-  }, [props.isFetching])
-
-  useEffect(() => {
     getMediaForLocalState(
       `page=${currentPage}&pageSize=${itemsPerPage}${filters}${sortKey}${query}`,
     )
-  }, [currentPage, itemsPerPage, selectedFilters, selectedSortKey])
+  }, [currentPage])
+
+  useEffect(() => {
+    if (!props.isFetching) {
+      setCurrentPage(1)
+      getMediaForLocalState(`page=1&pageSize=${itemsPerPage}${filters}${sortKey}${query}`)
+    }
+  }, [itemsPerPage, selectedFilters, selectedSortKey, props.isFetching])
 
   useEffect(() => {
     if (viewType === 'block') {
@@ -77,9 +78,8 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
     setSearchValue(val)
     if (requestTimout.current) clearTimeout(requestTimout.current)
     requestTimout.current = setTimeout(() => {
-      getMediaForLocalState(
-        `page=${currentPage}&pageSize=${itemsPerPage}${filters}${sortKey}&query=${val}`,
-      )
+      setCurrentPage(1)
+      getMediaForLocalState(`page=1&pageSize=${itemsPerPage}${filters}${sortKey}&query=${val}`)
     }, 500)
   }
 

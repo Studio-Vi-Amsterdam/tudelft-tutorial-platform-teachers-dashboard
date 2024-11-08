@@ -79,15 +79,16 @@ const MediaCards = (props: MediaCardsInterface) => {
               selectedMedia={props.selectedMedia}
             />
           )}
-
-          <PaginationBar
-            selectMode={props.selectMode}
-            currentPage={currentPage}
-            handleClickPage={handleClick}
-            handleNextClick={handleNextClick}
-            handlePrevClick={handlePrevClick}
-            totalPages={totalMediaPages}
-          />
+          {totalMediaPages > 1 && (
+            <PaginationBar
+              selectMode={props.selectMode}
+              currentPage={currentPage}
+              handleClickPage={handleClick}
+              handleNextClick={handleNextClick}
+              handlePrevClick={handlePrevClick}
+              totalPages={totalMediaPages}
+            />
+          )}
         </div>
       )
     } else {
