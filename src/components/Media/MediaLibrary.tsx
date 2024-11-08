@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { GalleryBlockViewIcon, GalleryListViewIcon } from '../ui/Icons'
-import { MediaObjectInterface, MediaViewType, SortedObjectInterface } from '../../types/types'
+import {
+  MediaObjectInterface,
+  MediaTypeFilters,
+  MediaViewType,
+  SortedObjectInterface,
+} from '../../types/types'
 import { Dialog } from '../ui/Dialog'
 import FileEdit from './FileEdit'
 import SearchFilterBar from './SearchFilterBar'
@@ -19,6 +24,7 @@ interface MediaLibraryProps {
   column?: string
   hideVideo?: boolean
   onFetching?: (val: boolean) => void
+  mediaTypeFilter?: MediaTypeFilters
 }
 
 export const MediaLibrary = (props: MediaLibraryProps) => {
@@ -36,12 +42,20 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
   const requestTimout = useRef<NodeJS.Timeout | null>(null)
   const sortKey = selectedSortKey ? `&sortKey=${selectedSortKey.name}` : ''
   const query = searchValue.length > 0 ? `&query=${searchValue}` : ''
-  const filters =
-    selectedFilters.length > 0
-      ? // if filters arr not empty - add them to request separated by comma
-        `&filters=${selectedFilters.map((item) => item.name).join(',')}`
-      : // if filters arr empty - push to request nothing
-        ''
+
+  const setFiltersForRequest = (): string => {
+    if (selectedFilters.length > 0) {
+      return `&filters=${selectedFilters.map((item) => item.name).join(',')},${props.mediaTypeFilter ?? ''}`
+    } else {
+      if (props.mediaTypeFilter) {
+        return `&filters=${props.mediaTypeFilter}`
+      }
+    }
+    // if has not selected filters and filters from props
+    return ''
+  }
+
+  const filters = setFiltersForRequest()
 
   const getMediaForLocalState = (params?: string) => {
     handleGetMedia({

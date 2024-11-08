@@ -397,6 +397,7 @@ const TutorialsMeta = () => {
                     listIndex={undefined}
                     mediaType="image"
                     className="without-bg"
+                    mediaTypeFilter="only-image"
                   />
                 </div>
               </div>

@@ -122,6 +122,7 @@ const SelectThumbnail = (props: ThumbProps) => {
               mediaToDelete={undefined}
               column="3"
               hideVideo={true}
+              mediaTypeFilter="only-image"
             />
             <DialogFooter>
               <Button onClick={handleSubmitMedia} disabled={!selectedMedia}>

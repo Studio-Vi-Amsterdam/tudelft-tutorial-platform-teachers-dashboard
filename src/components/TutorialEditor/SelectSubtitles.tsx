@@ -131,6 +131,7 @@ const SelectSubtitles = (props: ThumbProps) => {
               mediaToDelete={undefined}
               column="3"
               hideVideo={true}
+              mediaTypeFilter="only-files"
             />
             <DialogFooter>
               <Button onClick={handleSubmitMedia} disabled={!selectedMedia}>

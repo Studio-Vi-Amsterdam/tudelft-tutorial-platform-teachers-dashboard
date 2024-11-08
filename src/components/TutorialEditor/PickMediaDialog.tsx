@@ -103,6 +103,7 @@ const PickMediaDialog = (props: PickMediaDialogProps) => {
             column="3"
             hideVideo={true}
             isFetching={isFetching}
+            mediaTypeFilter={props.mediaTypeFilter}
           />
           <DialogFooter>
             <Button onClick={handleSubmitMedia} disabled={!selectedMedia}>
