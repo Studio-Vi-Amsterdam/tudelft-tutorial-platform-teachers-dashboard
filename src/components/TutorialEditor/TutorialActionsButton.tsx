@@ -88,12 +88,12 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
             </span>
             Delete
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          {/* <DropdownMenuItem>
             <span className="flex justify-center items-center w-6 h-6">
               <AddFileIcon />
             </span>
             Migrate to
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuItem
             disabled={props.articleId === null || props.articleId === 'new'}
             onSelect={() => toggleAddAuthorDialogOpen()}
