@@ -486,11 +486,14 @@ export interface ElementProps {
   subchapterIndex: number | undefined
 }
 
+export type MediaTypeFilters = 'only-video' | 'only-image' | 'only-files'
+
 export interface AddMediaElementProps extends ElementProps {
   mediaType: MediaVariantType
   listIndex: number | undefined
   layout?: SubchapterLayout
   className?: string
+  mediaTypeFilter: MediaTypeFilters
 }
 
 export interface PickMediaDialogProps extends AddMediaElementProps {
@@ -498,6 +501,7 @@ export interface PickMediaDialogProps extends AddMediaElementProps {
   setDialogOpened: React.Dispatch<React.SetStateAction<boolean>>
   className?: string
   elementId?: number
+  mediaTypeFilter: MediaTypeFilters
 }
 
 export interface SubchapterImageAction {

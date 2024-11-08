@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { mediaAPI } from '../../lib/api'
 import { GalleryBlockViewIcon, GalleryListViewIcon } from '../ui/Icons'
-import { MediaObjectInterface, MediaViewType, SortedObjectInterface } from '../../types/types'
+import {
+  MediaObjectInterface,
+  MediaTypeFilters,
+  MediaViewType,
+  SortedObjectInterface,
+} from '../../types/types'
 import { Dialog } from '../ui/Dialog'
 import FileEdit from './FileEdit'
 import SearchFilterBar from './SearchFilterBar'
@@ -20,6 +24,7 @@ interface MediaLibraryProps {
   column?: string
   hideVideo?: boolean
   onFetching?: (val: boolean) => void
+  mediaTypeFilter?: MediaTypeFilters
 }
 
 export const MediaLibrary = (props: MediaLibraryProps) => {
@@ -35,39 +40,45 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
   const [mediaEditOpen, setMediaEditOpen] = useState<boolean>(false)
   const [selectedMedia, setSelectedMedia] = useState<MediaObjectInterface | undefined>(undefined)
   const requestTimout = useRef<NodeJS.Timeout | null>(null)
-
   const sortKey = selectedSortKey ? `&sortKey=${selectedSortKey.name}` : ''
   const query = searchValue.length > 0 ? `&query=${searchValue}` : ''
-  const filters =
-    selectedFilters.length > 0
-      ? // if filters arr not empty - add them to request separated by comma
-        `&filters=${selectedFilters.map((item) => item.name).join(',')}`
-      : // if filters arr empty - push to request nothing
-        ''
+
+  const setFiltersForRequest = (): string => {
+    if (selectedFilters.length > 0) {
+      return `&filters=${selectedFilters.map((item) => item.name).join(',')},${props.mediaTypeFilter ?? ''}`
+    } else {
+      if (props.mediaTypeFilter) {
+        return `&filters=${props.mediaTypeFilter}`
+      }
+    }
+    // if has not selected filters and filters from props
+    return ''
+  }
+
+  const filters = setFiltersForRequest()
 
   const getMediaForLocalState = (params?: string) => {
     handleGetMedia({
       setIsLoading,
       setMedia,
       params,
+      setTotalMediaPages,
+      itemsPerPage,
     })
   }
 
   useEffect(() => {
+    getMediaForLocalState(
+      `page=${currentPage}&pageSize=${itemsPerPage}${filters}${sortKey}${query}`,
+    )
+  }, [currentPage])
+
+  useEffect(() => {
     if (!props.isFetching) {
-      getMediaForLocalState(`page=${currentPage}&amount=${itemsPerPage}`)
+      setCurrentPage(1)
+      getMediaForLocalState(`page=1&pageSize=${itemsPerPage}${filters}${sortKey}${query}`)
     }
-  }, [props.isFetching])
-
-  useEffect(() => {
-    mediaAPI.getAllMediaPages().then((res) => {
-      setTotalMediaPages(Math.ceil(parseInt(res.data) / itemsPerPage))
-    })
-  }, [itemsPerPage])
-
-  useEffect(() => {
-    getMediaForLocalState(`page=${currentPage}&amount=${itemsPerPage}${filters}${sortKey}${query}`)
-  }, [currentPage, itemsPerPage, selectedFilters, selectedSortKey])
+  }, [itemsPerPage, selectedFilters, selectedSortKey, props.isFetching])
 
   useEffect(() => {
     if (viewType === 'block') {
@@ -81,9 +92,8 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
     setSearchValue(val)
     if (requestTimout.current) clearTimeout(requestTimout.current)
     requestTimout.current = setTimeout(() => {
-      getMediaForLocalState(
-        `page=${currentPage}&amount=${itemsPerPage}${filters}${sortKey}&query=${val}`,
-      )
+      setCurrentPage(1)
+      getMediaForLocalState(`page=1&pageSize=${itemsPerPage}${filters}${sortKey}&query=${val}`)
     }, 500)
   }
 

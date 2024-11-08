@@ -114,7 +114,7 @@ const SelectThumbnail = (props: ThumbProps) => {
           <DialogContent className=" max-w-5xl flex-col bg-white pt-20 w-[90%]">
             <MediaLibrary
               isPopup={true}
-              itemsPerPage={8}
+              itemsPerPage={9}
               selectedMedia={selectedMedia}
               handleSelectMedia={handleSelectMedia}
               // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -122,6 +122,7 @@ const SelectThumbnail = (props: ThumbProps) => {
               mediaToDelete={undefined}
               column="3"
               hideVideo={true}
+              mediaTypeFilter="only-image"
             />
             <DialogFooter>
               <Button onClick={handleSubmitMedia} disabled={!selectedMedia}>

@@ -90,7 +90,6 @@ export const FileUpload = (props: FileUploadProps) => {
           thumbnail[0] !== undefined &&
           thumbnail[0].file &&
           formData.append('thumbnail', thumbnail[0].file)
-        console.log(Array.from(new Set(formData)))
         mediaAPI.uploadFiles(formData).then((res) => {
           if (res.status === 200) {
             toast({

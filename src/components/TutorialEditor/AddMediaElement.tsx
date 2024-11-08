@@ -330,6 +330,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
       )}
       <PickMediaDialog
         block={props.block}
+        mediaTypeFilter={props.mediaTypeFilter}
         chapterIndex={props.chapterIndex}
         dialogOpened={dialogOpened}
         listIndex={props.listIndex}
