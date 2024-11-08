@@ -16,6 +16,7 @@ import TutorialCardsElement from './TutorialCardsElement'
 import BundledEditor from './BundledEditor'
 import SelectThumbnail from './SelectThumbnail'
 import SelectSubtitles from './SelectSubtitles'
+import ExternalVideoElement from './ExternalVideoElement'
 
 interface ElementsBlockProps {
   elements: Array<ChapterElementsObject>
@@ -456,6 +457,21 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                   video={element.video}
                 />
               </div>
+            </DeleteElementWraper>
+          )}
+          {element?.externalVideo !== undefined && (
+            <DeleteElementWraper
+              block={block}
+              chapterIndex={props.chapterIndex}
+              subchapterIndex={subchapterIndex}
+              elementIndex={index}
+              styles="bg-white top-3 right-1 w-6 h-6"
+            >
+              <ExternalVideoElement
+                chapterIndex={props.chapterIndex}
+                attributes={element.externalVideo}
+                index={index}
+              />
             </DeleteElementWraper>
           )}
           {element?.file !== undefined && (

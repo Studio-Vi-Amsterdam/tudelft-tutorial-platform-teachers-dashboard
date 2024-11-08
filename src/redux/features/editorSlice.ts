@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { urlPattern } from 'src/lib/regex/externalVideo'
 import {
   AddChapterElementInterface,
   AddSubchapterElementInterface,
@@ -26,6 +27,7 @@ import {
   SubchapterTextFieldActionInterface,
   SubtitlesActionInterface,
   ThumbnailActionInterface,
+  ThumbnailInterface,
   TutorialCardInterface,
   TutorialMetaObject,
   TutorialResponsibleInterface,
@@ -1451,6 +1453,76 @@ export const editorSlice = createSlice({
     setValidatedChapters: (state, action: PayloadAction<ChapterInterface[] | []>) => {
       state.chapters = action.payload
     },
+    setExternalVideoTitle: (
+      state,
+      action: PayloadAction<{ value: string; index: number; chapterIndex: number | undefined }>,
+    ) => {
+      if (action.payload.chapterIndex !== undefined) {
+        const chapterIndex = action.payload.chapterIndex
+        const chapter = state.chapters[chapterIndex]
+        const elements = chapter?.elements
+        const element = elements ? elements[action.payload.index] : undefined
+        if (element?.externalVideo) {
+          element.externalVideo.title.text = action.payload.value
+          element.externalVideo.title.isValid = action.payload.value.trim().length > 0
+        }
+      } else {
+        const elements = state.tutorialTop.elements
+        const element = elements ? elements[action.payload.index] : undefined
+        if (element?.externalVideo) {
+          element.externalVideo.title.text = action.payload.value
+          element.externalVideo.title.isValid = action.payload.value.trim().length > 0
+        }
+      }
+    },
+    setExternalVideoUrl: (
+      state,
+      action: PayloadAction<{ value: string; index: number; chapterIndex: number | undefined }>,
+    ) => {
+      if (action.payload.chapterIndex !== undefined) {
+        const chapterIndex = action.payload.chapterIndex
+        const chapter = state.chapters[chapterIndex]
+        const elements = chapter?.elements
+        const element = elements ? elements[action.payload.index] : undefined
+        if (element?.externalVideo) {
+          element.externalVideo.url.text = action.payload.value
+          // element.externalVideo.url.isValid = action.payload.value.trim().length > 0
+          element.externalVideo.url.isValid = urlPattern.test(action.payload.value)
+        }
+      } else {
+        const elements = state.tutorialTop.elements
+        const element = elements ? elements[action.payload.index] : undefined
+        if (element?.externalVideo) {
+          element.externalVideo.url.text = action.payload.value
+          // element.externalVideo.url.isValid = action.payload.value.trim().length > 0
+          element.externalVideo.url.isValid = urlPattern.test(action.payload.value)
+        }
+      }
+    },
+    setExternalVideoThumbnail: (
+      state,
+      action: PayloadAction<{
+        thumbnail: ThumbnailInterface
+        index: number
+        chapterIndex: number | undefined
+      }>,
+    ) => {
+      const { chapterIndex } = action.payload
+      if (chapterIndex !== undefined) {
+        const chapter = state.chapters[chapterIndex]
+        const elements = chapter?.elements
+        const element = elements ? elements[action.payload.index] : undefined
+        if (element?.externalVideo) {
+          element.externalVideo.thumbnail = action.payload.thumbnail
+        }
+      } else {
+        const elements = state.tutorialTop?.elements
+        const element = elements ? elements[action.payload.index] : undefined
+        if (element?.externalVideo) {
+          element.externalVideo.thumbnail = action.payload.thumbnail
+        }
+      }
+    },
   },
 })
 
@@ -1515,6 +1587,9 @@ export const {
   setValidatedTutorialTopElements,
   setValidatedChapters,
   setVideoSubtitles,
+  setExternalVideoTitle,
+  setExternalVideoUrl,
+  setExternalVideoThumbnail,
 } = editorSlice.actions
 
 export default editorSlice.reducer

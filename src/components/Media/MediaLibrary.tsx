@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { mediaAPI } from '../../lib/api'
+import React, { useEffect, useRef, useState } from 'react'
 import { GalleryBlockViewIcon, GalleryListViewIcon } from '../ui/Icons'
 import {
   MediaObjectInterface,
@@ -40,7 +39,7 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
   const [selectedFilters, setSelectedFilters] = useState<SortedObjectInterface[]>([])
   const [mediaEditOpen, setMediaEditOpen] = useState<boolean>(false)
   const [selectedMedia, setSelectedMedia] = useState<MediaObjectInterface | undefined>(undefined)
-
+  const requestTimout = useRef<NodeJS.Timeout | null>(null)
   const sortKey = selectedSortKey ? `&sortKey=${selectedSortKey.name}` : ''
   const query = searchValue.length > 0 ? `&query=${searchValue}` : ''
 
@@ -63,26 +62,23 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
       setIsLoading,
       setMedia,
       params,
+      setTotalMediaPages,
+      itemsPerPage,
     })
   }
 
   useEffect(() => {
+    getMediaForLocalState(
+      `page=${currentPage}&pageSize=${itemsPerPage}${filters}${sortKey}${query}`,
+    )
+  }, [currentPage])
+
+  useEffect(() => {
     if (!props.isFetching) {
-      getMediaForLocalState(
-        `page=${currentPage}&amount=${itemsPerPage}${filters}${sortKey}${query}`,
-      )
+      setCurrentPage(1)
+      getMediaForLocalState(`page=1&pageSize=${itemsPerPage}${filters}${sortKey}${query}`)
     }
-  }, [props.isFetching])
-
-  useEffect(() => {
-    mediaAPI.getAllMediaPages().then((res) => {
-      setTotalMediaPages(Math.ceil(parseInt(res.data) / itemsPerPage))
-    })
-  }, [itemsPerPage])
-
-  useEffect(() => {
-    getMediaForLocalState(`page=${currentPage}&amount=${itemsPerPage}${filters}${sortKey}${query}`)
-  }, [currentPage, itemsPerPage, selectedFilters, selectedSortKey])
+  }, [itemsPerPage, selectedFilters, selectedSortKey, props.isFetching])
 
   useEffect(() => {
     if (viewType === 'block') {
@@ -94,13 +90,11 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
 
   const handleChangeSearchValue = async (val: string) => {
     setSearchValue(val)
-    if (val.trim().length > 2) {
-      getMediaForLocalState(
-        `page=${currentPage}&amount=${itemsPerPage}${filters}${sortKey}${query}`,
-      )
-    } else if (searchValue.length > val.length && val.trim().length === 0) {
-      getMediaForLocalState(`page=${currentPage}&amount=${itemsPerPage}${filters}${sortKey}`)
-    }
+    if (requestTimout.current) clearTimeout(requestTimout.current)
+    requestTimout.current = setTimeout(() => {
+      setCurrentPage(1)
+      getMediaForLocalState(`page=1&pageSize=${itemsPerPage}${filters}${sortKey}&query=${val}`)
+    }, 500)
   }
 
   const handleOpenEditMediaPopup = (media: MediaObjectInterface) => {

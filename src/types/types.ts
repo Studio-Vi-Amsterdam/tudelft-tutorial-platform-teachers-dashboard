@@ -14,6 +14,7 @@ export type AddElementsType =
   | 'quiz'
   | 'h5p element'
   | 'tutorial cards'
+  | 'external video'
 
 export type ArtictesType = 'softwares' | 'courses' | 'tutorials' | 'subjects'
 export interface DashboardPublishedInterface {
@@ -208,11 +209,18 @@ interface MediaTextVideoInterface {
   video: MediaObjectInterface
 }
 
+export interface ExternalVideoInterface {
+  title: TextElementInterface
+  url: TextElementInterface
+  thumbnail: ThumbnailInterface | undefined
+}
+
 export interface TutorialTopElementsObject {
   text?: TextElementInterface
   infobox?: TextElementInterface
   image?: MediaObjectInterface
   video?: MediaObjectInterface
+  externalVideo?: ExternalVideoInterface
   file?: ElementsFileInterface
   quiz?: QuizElement
   h5pElement?: h5pElementInterface
@@ -272,6 +280,7 @@ export interface ChapterElementsObject {
   infobox?: TextElementInterface
   image?: MediaObjectInterface
   video?: MediaObjectInterface
+  externalVideo?: ExternalVideoInterface
   tutorialCard?: TutorialCardInterface
   tutorialCards?: TutorialCardInterface[]
   file?: ElementsFileInterface
@@ -567,6 +576,7 @@ export type ResponseBlockName =
   | 'tu-delft-text-video'
   | 'tu-delft-quiz'
   | 'tu-delft-h5p'
+  | 'tu-delft-video-url'
 export type BoolString = '0' | '1'
 
 export interface ResponseBlockData {
