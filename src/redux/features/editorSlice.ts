@@ -1499,30 +1499,6 @@ export const editorSlice = createSlice({
         }
       }
     },
-    setExternalVideoThumbnail: (
-      state,
-      action: PayloadAction<{
-        thumbnail: ThumbnailInterface
-        index: number
-        chapterIndex: number | undefined
-      }>,
-    ) => {
-      const { chapterIndex } = action.payload
-      if (chapterIndex !== undefined) {
-        const chapter = state.chapters[chapterIndex]
-        const elements = chapter?.elements
-        const element = elements ? elements[action.payload.index] : undefined
-        if (element?.externalVideo) {
-          element.externalVideo.thumbnail = action.payload.thumbnail
-        }
-      } else {
-        const elements = state.tutorialTop?.elements
-        const element = elements ? elements[action.payload.index] : undefined
-        if (element?.externalVideo) {
-          element.externalVideo.thumbnail = action.payload.thumbnail
-        }
-      }
-    },
   },
 })
 
@@ -1589,7 +1565,6 @@ export const {
   setVideoSubtitles,
   setExternalVideoTitle,
   setExternalVideoUrl,
-  setExternalVideoThumbnail,
 } = editorSlice.actions
 
 export default editorSlice.reducer
