@@ -27,7 +27,6 @@ import {
   SubchapterTextFieldActionInterface,
   SubtitlesActionInterface,
   ThumbnailActionInterface,
-  ThumbnailInterface,
   TutorialCardInterface,
   TutorialMetaObject,
   TutorialResponsibleInterface,
