@@ -359,7 +359,7 @@ export const editorSlice = createSlice({
       state.tutorialTop.title.text = action.payload
     },
     setTutorialDescription: (state, action: PayloadAction<string>) => {
-      state.tutorialTop.description.isValid = action.payload.trim().length > 0
+      state.tutorialTop.description.isValid = true
       state.tutorialTop.description.text = action.payload
     },
     setPageType: (state, action: PayloadAction<string | undefined>) => {
