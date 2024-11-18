@@ -45,7 +45,7 @@ const Header = () => {
                       : 'text-primary before:bg-black'
                   } max-sm:!text-2xl`}
                 >
-                  My Tutorials
+                  My Pages
                 </button>
               </li>
               <li>
