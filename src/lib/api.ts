@@ -66,6 +66,17 @@ export const articlesAPI = {
   getInfo(type: ArtictesType) {
     return instance.get(`/${type}/create/info`)
   },
+  migrateArticle(sourceId: number, targetId: number): Promise<any> {
+    // return setTimeout(() => console.log('target ' + targetId, 'source ' + sourceId), 300)
+    return new Promise((resolve, reject) => {
+      if (sourceId === targetId) {
+        // eslint-disable-next-line prefer-promise-reject-errors
+        reject({ status: 400 })
+      } else {
+        resolve({ status: 200 })
+      }
+    })
+  },
 }
 
 export const chaptersAPI = {

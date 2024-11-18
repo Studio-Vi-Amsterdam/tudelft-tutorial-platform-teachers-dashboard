@@ -137,7 +137,7 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
     const fetchData = async () => {
       try {
         const response: ArticlePreviewInterface[] = await articlesAPI
-          .getAllArticles(props.articleType)
+          .getArticles(props.articleType)
           .then((res) =>
             res.data
               ? res.data.map(({ id, title }: { id: number; title: string }) => ({ id, title }))

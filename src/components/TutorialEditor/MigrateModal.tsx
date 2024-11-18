@@ -8,6 +8,9 @@ import { useAppSelector } from 'src/redux/hooks'
 import { RootState } from 'src/redux/store'
 import clsx from 'clsx'
 import { useLocation } from 'react-router-dom'
+import { articlesAPI } from 'src/lib/api'
+import { useToast } from 'src/lib/use-toast'
+import { getStringArticleType } from 'src/lib/getStringArticleType'
 
 interface MigrateModalProps {
   articleType: ArtictesType
@@ -22,12 +25,46 @@ const MigrateModal = (props: MigrateModalProps) => {
   const articleStatus = params.get('status')
   const articleTitle = useAppSelector((state: RootState) => state.editor.tutorialTop.title)
   const articleTitleText = articleTitle.text.length > 0 ? articleTitle.text : 'Untitled article'
+  const stringArticleType = getStringArticleType(props.articleType)
 
   const [inputValue, setInputValue] = useState<string>('')
   const [targetArticle, setTargetArticle] = useState<TitleIdentifierInterface>()
 
   const [isSelectValueValid, setIsSelectValueValid] = useState<boolean>(false)
   const [isSecondStep, setIsSecondStep] = useState<boolean>(false)
+
+  const { toast } = useToast()
+
+  const handleSuccess = () => {
+    props.setIsOpen(false)
+    setInputValue('')
+    toast({
+      title: 'Success!',
+      description: `This ${stringArticleType} is now migrated to ${targetArticle?.title ?? 'selected ' + stringArticleType}.`,
+    })
+    setTargetArticle(undefined)
+    setIsSecondStep(false)
+    setIsSelectValueValid(false)
+    // navigate to new ID
+  }
+
+  const handleSubmit = async () => {
+    const intCurrentArticleId = parseInt(props.articleId as string)
+    // Right-side condition should never reached
+    const intTargetArticleId = targetArticle?.id ?? 0
+    const succeed = await articlesAPI
+      .migrateArticle(intCurrentArticleId, intTargetArticleId)
+      .then((res) => res.status === 200)
+    if (succeed) {
+      handleSuccess()
+    } else {
+      toast({
+        title: 'Failed!',
+        description: 'Something went wrong!',
+        variant: 'destructive',
+      })
+    }
+  }
 
   useEffect(() => {
     const findedObject = props.articlesList.find((item) => item.title === inputValue)
@@ -47,7 +84,7 @@ const MigrateModal = (props: MigrateModalProps) => {
           <DialogTitle className="text-black font-normal font-sans text-h3 pr-8 text-left -tracking-1">
             {isSecondStep
               ? 'Are you sure you want to migrate?'
-              : 'Migrate the following tutorial to'}
+              : `Migrate the following ${stringArticleType} to`}
           </DialogTitle>
         </DialogHeader>
         {isSecondStep ? (
@@ -55,7 +92,7 @@ const MigrateModal = (props: MigrateModalProps) => {
             <div className="px-4 py-6 bg-tertiary-skyBlue-10 rounded-sm flex flex-col items-start gap-y-4 [&>div]:flex [&>div]:flex-col [&>div]:items-start [&>div]:gap-y-2">
               <div>
                 <p className="text-dim text-lg font-inter font-normal">
-                  You’re about to migrate this tutorial:
+                  You’re about to migrate this {stringArticleType}:
                 </p>
                 <div className="flex flex-row items-center gap-x-2 text-black">
                   <div className="w-6 h-6 flex justify-center items-center">
@@ -76,8 +113,8 @@ const MigrateModal = (props: MigrateModalProps) => {
               </div>
             </div>
             <p className="text-primary-skyBlue text-lg font-normal font-inter">
-              <strong>Please note:</strong> The current draft tutorial will be published, and the
-              previously published tutorial <br />
+              <strong>Please note:</strong> The current draft {stringArticleType} will be published,
+              and the previously published tutorial <br />
               will be moved to the archive.
             </p>
           </>
@@ -85,7 +122,7 @@ const MigrateModal = (props: MigrateModalProps) => {
           <>
             <div className="flex flex-col items-start gap-y-2">
               <p className="text-dim text-xl leading-[1.5] font-inter font-normal">
-                Name of tutorial
+                Name of {stringArticleType}
               </p>
               <div className="flex flex-row items-center gap-x-2 text-black">
                 <div className="w-6 h-6 flex justify-center items-center">
@@ -124,7 +161,7 @@ const MigrateModal = (props: MigrateModalProps) => {
           )}
           {isSecondStep && (
             <>
-              <Button>Migrate</Button>
+              <Button onClick={handleSubmit}>Migrate</Button>
               <Button variant="outline" className="!m-0" onClick={() => setIsSecondStep(false)}>
                 Cancel
               </Button>
