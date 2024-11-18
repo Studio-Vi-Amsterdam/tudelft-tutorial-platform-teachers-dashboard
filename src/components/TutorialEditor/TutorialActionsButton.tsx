@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,7 +6,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '../ui/Dropdown'
-import { AuthorIcon, MoreIcon, TrashCanIcon } from '../ui/Icons'
+import { AddFileIcon, AuthorIcon, MoreIcon, TrashCanIcon } from '../ui/Icons'
 import AddAuthorModal from './AddAuthorModal'
 import { useNavigate } from 'react-router-dom'
 import { useToast } from 'src/lib/use-toast'
@@ -21,18 +21,39 @@ import {
   AlertDialogTitle,
 } from '../ui/AlertDialog'
 import { articlesAPI } from 'src/lib/api'
-import { ArtictesType, UsersItemInterface } from 'src/types/types'
+import { ArtictesType, EditorState, UsersItemInterface } from 'src/types/types'
+import MigrateModal from './MigrateModal'
+import { validateArticle } from 'src/lib/validation'
+import { reducerParser } from 'src/lib/reducerParser'
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
+import { RootState } from 'src/redux/store'
+import { sendArticle } from 'src/lib/sendArticle'
 
 interface TutorialActionsButtonProps {
+  editor: EditorState
   articleId: string | null
   articleType: ArtictesType
   usersList: UsersItemInterface[]
 }
 
+interface ArticlePreviewInterface {
+  id: number
+  title: string
+}
+
 const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
+  // Flags
   const [isAddAuthorDialogOpen, setIsAddAuthorDialogOpen] = useState<boolean>(false)
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState<boolean>(false)
+  const [isMigratePopupOpen, setIsMigratePopupOpen] = useState<boolean>(false)
   const [isFetching, setIsFetching] = useState<boolean>(false)
+  // Data
+  const [articlesList, setArticlesList] = useState<ArticlePreviewInterface[]>([])
+
+  // Store
+  const dispatch = useAppDispatch()
+  const tutorial = useAppSelector((state: RootState) => state.editor)
+
   const navigate = useNavigate()
   const { toast } = useToast()
 
@@ -62,6 +83,75 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
     }
   }
 
+  const validationErrToast = () => {
+    toast({
+      title: 'Something went wrong!',
+      variant: 'destructive',
+      description: 'Check that all required fields are filled in noted by * and outlined in red',
+    })
+  }
+
+  const postDraftErrorToast = (error: string) => {
+    toast({
+      title: 'Something went wrong!',
+      variant: 'destructive',
+      description: error,
+    })
+  }
+
+  const openMigrateWindow = async () => {
+    const validationSucceed = validateArticle(
+      props.editor,
+      props.articleType,
+      dispatch,
+      validationErrToast,
+    )
+    if (validationSucceed) {
+      const parsedObject = await reducerParser.parseFromReducer(
+        tutorial,
+        'publish',
+        props.articleId !== 'new' ? props.articleId ?? undefined : undefined,
+        props.articleType,
+      )
+      sendArticle(
+        props.articleType,
+        props.articleId,
+        parsedObject,
+        navigate,
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        () => {},
+        postDraftErrorToast,
+        true,
+      ).finally(() => setIsMigratePopupOpen(true))
+    } else {
+      toast({
+        title: 'Failed!',
+        description:
+          'Before migration please make sure all the fields in the current tutorial are valid',
+        variant: 'destructive',
+      })
+    }
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response: ArticlePreviewInterface[] = await articlesAPI
+          .getAllArticles(props.articleType)
+          .then((res) =>
+            res.data
+              ? res.data.map(({ id, title }: { id: number; title: string }) => ({ id, title }))
+              : [],
+          )
+        setArticlesList(response)
+      } catch (error) {
+        console.error(error)
+        setArticlesList([])
+      }
+    }
+    fetchData()
+  }, [])
+
   return (
     <>
       <DropdownMenu>
@@ -79,21 +169,15 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
           <DropdownMenuItem
             onClick={() =>
               setTimeout(() => {
-                setIsDeletePopupOpen(true)
+                openMigrateWindow()
               }, 300)
             }
           >
             <span className="flex justify-center items-center w-6 h-6">
-              <TrashCanIcon />
-            </span>
-            Delete
-          </DropdownMenuItem>
-          {/* <DropdownMenuItem>
-            <span className="flex justify-center items-center w-6 h-6">
               <AddFileIcon />
             </span>
             Migrate to
-          </DropdownMenuItem> */}
+          </DropdownMenuItem>
           <DropdownMenuItem
             disabled={props.articleId === null || props.articleId === 'new'}
             onSelect={() => toggleAddAuthorDialogOpen()}
@@ -103,6 +187,18 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
             </span>
             Add editor
           </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() =>
+              setTimeout(() => {
+                setIsDeletePopupOpen(true)
+              }, 300)
+            }
+          >
+            <span className="flex justify-center items-center w-6 h-6">
+              <TrashCanIcon />
+            </span>
+            Delete
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <AddAuthorModal
@@ -110,6 +206,13 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
         isOpen={isAddAuthorDialogOpen}
         setIsOpen={toggleAddAuthorDialogOpen}
         articleId={props.articleId}
+      />
+      <MigrateModal
+        isOpen={isMigratePopupOpen}
+        setIsOpen={setIsMigratePopupOpen}
+        articleId={props.articleId}
+        articleType={props.articleType}
+        articlesList={articlesList}
       />
       <AlertDialog open={isDeletePopupOpen} onOpenChange={setIsDeletePopupOpen}>
         <AlertDialogContent className="bg-white">
