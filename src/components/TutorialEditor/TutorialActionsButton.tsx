@@ -166,13 +166,7 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
           <DropdownMenuLabel className="font-normal text-sm text-primary-skyBlue">
             Actions
           </DropdownMenuLabel>
-          <DropdownMenuItem
-            onClick={() =>
-              setTimeout(() => {
-                openMigrateWindow()
-              }, 300)
-            }
-          >
+          <DropdownMenuItem onClick={openMigrateWindow}>
             <span className="flex justify-center items-center w-6 h-6">
               <AddFileIcon />
             </span>

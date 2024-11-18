@@ -114,8 +114,7 @@ const MigrateModal = (props: MigrateModalProps) => {
             </div>
             <p className="text-primary-skyBlue text-lg font-normal font-inter">
               <strong>Please note:</strong> The current draft {stringArticleType} will be published,
-              and the previously published tutorial <br />
-              will be moved to the archive.
+              and the previously published tutorial will be moved to the archive.
             </p>
           </>
         ) : (
