@@ -45,7 +45,7 @@ const Header = () => {
                       : 'text-primary before:bg-black'
                   } max-sm:!text-2xl`}
                 >
-                  My Pages
+                  My pages
                 </button>
               </li>
               <li>

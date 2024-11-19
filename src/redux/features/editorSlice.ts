@@ -133,14 +133,14 @@ export const editorSlice = createSlice({
                   value: { id: undefined, title: '', version: [] },
                 },
                 version: {
-                  fieldTitle: 'Software Version',
+                  fieldTitle: 'Software version',
                   isValid: true,
                   list: [],
                   value: { id: undefined, title: '' },
                   required: false,
                 },
                 primarySubject: {
-                  fieldTitle: 'Primary Subject',
+                  fieldTitle: 'Primary subject',
                   list: info.subjects,
                   isValid: true,
                   required: true,
@@ -150,7 +150,7 @@ export const editorSlice = createSlice({
                   },
                 },
                 secondarySubject: {
-                  fieldTitle: 'Secondary Subject',
+                  fieldTitle: 'Secondary subject',
                   list: info.secondarySubjects,
                   isValid: true,
                   required: false,
@@ -168,7 +168,7 @@ export const editorSlice = createSlice({
                   fieldTitle: 'Keywords',
                 },
                 image: {
-                  fieldTitle: 'Featured Image',
+                  fieldTitle: 'Featured image',
                   required: false,
                   isValid: true,
                   value: {
@@ -219,7 +219,7 @@ export const editorSlice = createSlice({
                   value: '',
                 },
                 courseCode: {
-                  fieldTitle: 'Course Code',
+                  fieldTitle: 'Course code',
                   required: true,
                   isValid: true,
                   value: '',
@@ -249,7 +249,7 @@ export const editorSlice = createSlice({
                   value: '',
                 },
                 primaryStudy: {
-                  fieldTitle: 'Primary Study',
+                  fieldTitle: 'Primary study',
                   list: info.primaryStudy,
                   required: true,
                   isValid: true,
@@ -259,7 +259,7 @@ export const editorSlice = createSlice({
                   },
                 },
                 secondaryStudy: {
-                  fieldTitle: 'Secondary Study',
+                  fieldTitle: 'Secondary study',
                   list: info.secondaryStudy,
                   required: false,
                   isValid: true,

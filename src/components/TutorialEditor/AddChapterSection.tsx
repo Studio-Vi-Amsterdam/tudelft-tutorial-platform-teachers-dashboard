@@ -52,9 +52,7 @@ const AddChapterSection = (props: AddChapterSectionProps) => {
           : 'py-14 sm:py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver'
       } relative flex w-full flex-col gap-y-6 `}
     >
-      {!props.isSubchapter && (
-        <EditorLabel>This section is a chapter of your tutorial.</EditorLabel>
-      )}
+      {!props.isSubchapter && <EditorLabel>This section is a chapter of your page.</EditorLabel>}
       {isChapterCreating && (
         <div className="flex bg-seasalt flex-col gap-y-4 rounded-[8px] border-[2px] border-dashed border-tertiary-grey-dim py-6">
           <h4 className="text-center">Choose layout</h4>

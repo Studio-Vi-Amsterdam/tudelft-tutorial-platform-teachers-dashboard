@@ -106,13 +106,13 @@ const TermDialog = (props: TermDialogProps) => {
             className={`${selectOpened ? 'pb-4' : 'pb-2'} px-2 pt-2 text-left`}
             onClick={() => (selectOpened ? setSelectOpened(false) : setSelectOpened(true))}
           >
-            {inputValue.trim() === '' ? 'search term' : inputValue}
+            {inputValue.trim() === '' ? 'Search term' : inputValue}
           </button>
           {selectOpened && (
             <div className="mx-auto flex w-[96%] flex-col gap-y-4 border-t border-tertiary-grey-dim pt-4">
               <input
                 type="text"
-                placeholder="search term"
+                placeholder="Search term"
                 className="p-1"
                 value={inputValue}
                 onChange={(e) => handleTermInputChange(e.target.value)}
