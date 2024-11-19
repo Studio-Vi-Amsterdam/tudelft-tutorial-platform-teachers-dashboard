@@ -27,7 +27,6 @@ import {
   SubchapterTextFieldActionInterface,
   SubtitlesActionInterface,
   ThumbnailActionInterface,
-  ThumbnailInterface,
   TutorialCardInterface,
   TutorialMetaObject,
   TutorialResponsibleInterface,
@@ -359,7 +358,7 @@ export const editorSlice = createSlice({
       state.tutorialTop.title.text = action.payload
     },
     setTutorialDescription: (state, action: PayloadAction<string>) => {
-      state.tutorialTop.description.isValid = action.payload.trim().length > 0
+      state.tutorialTop.description.isValid = true
       state.tutorialTop.description.text = action.payload
     },
     setPageType: (state, action: PayloadAction<string | undefined>) => {
@@ -1499,30 +1498,6 @@ export const editorSlice = createSlice({
         }
       }
     },
-    setExternalVideoThumbnail: (
-      state,
-      action: PayloadAction<{
-        thumbnail: ThumbnailInterface
-        index: number
-        chapterIndex: number | undefined
-      }>,
-    ) => {
-      const { chapterIndex } = action.payload
-      if (chapterIndex !== undefined) {
-        const chapter = state.chapters[chapterIndex]
-        const elements = chapter?.elements
-        const element = elements ? elements[action.payload.index] : undefined
-        if (element?.externalVideo) {
-          element.externalVideo.thumbnail = action.payload.thumbnail
-        }
-      } else {
-        const elements = state.tutorialTop?.elements
-        const element = elements ? elements[action.payload.index] : undefined
-        if (element?.externalVideo) {
-          element.externalVideo.thumbnail = action.payload.thumbnail
-        }
-      }
-    },
   },
 })
 
@@ -1589,7 +1564,6 @@ export const {
   setVideoSubtitles,
   setExternalVideoTitle,
   setExternalVideoUrl,
-  setExternalVideoThumbnail,
 } = editorSlice.actions
 
 export default editorSlice.reducer
