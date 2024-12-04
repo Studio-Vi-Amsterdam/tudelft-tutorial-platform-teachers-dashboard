@@ -13,7 +13,7 @@ import {
 const AddNewTutorialButton = () => {
   const [activeButton, setActiveButton] = useState<string | undefined>(undefined)
   const navigate = useNavigate()
-  const buttons: Array<string> = ['Course Page', 'Subject Page', 'Software Page', 'Tutorial Page']
+  const buttons: Array<string> = ['Course page', 'Subject page', 'Software page', 'Tutorial page']
   const handleChangeButton = (item: string) => {
     if (activeButton === item) {
       setActiveButton(undefined)

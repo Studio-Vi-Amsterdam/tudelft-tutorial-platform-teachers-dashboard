@@ -168,12 +168,12 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
   return (
     <section className="relative flex w-full flex-col gap-y-6 py-16 sm:py-20">
       <EditorLabel>
-        This section is mandatory for all tutorials and appears on top of the tutorial page.
+        This section is mandatory for all tutorials and appears on top of the page.
       </EditorLabel>
       <TextInput
         handleChange={handleTutorialTitleInputChange}
         value={tutorialTitle.text}
-        placeholder="Tutorial title"
+        placeholder="Page title"
         headingType="h1"
         notValid={!tutorialTitle.isValid}
       />

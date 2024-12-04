@@ -22,7 +22,7 @@ const SubjectsMeta = () => {
       <section className="relative flex w-full flex-col gap-y-6 py-14 sm:py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver">
         <EditorLabel>
           Filling in the subject mandatory to ensure the right navigation. If this tutorial also
-          belongs to a course ans software, please also fill that in. This information won’t be
+          belongs to a course and software, please also fill that in. This information won’t be
           displayed, but used to place the tutorial in the right place in the sitemap.
         </EditorLabel>
         <h3 className="font-bold">What subject does this involve?</h3>
