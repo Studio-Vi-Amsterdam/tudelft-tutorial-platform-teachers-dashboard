@@ -91,13 +91,16 @@ const TutorialButtonsSection = (props: TutorialButtonsProps) => {
   }
 
   const handleDraftClick = async () => {
-    const parsedObject = await reducerParser.parseFromReducer(
-      tutorial,
-      'draft',
-      articleId !== 'new' ? articleId ?? undefined : undefined,
-      articleType,
-    )
-    sendRequest(parsedObject, true)
+    const validationSucceed = validateArticle(tutorial, articleType, dispatch, validationErrAlert)
+    if (validationSucceed) {
+      const parsedObject = await reducerParser.parseFromReducer(
+        tutorial,
+        'draft',
+        articleId !== 'new' ? articleId ?? undefined : undefined,
+        articleType,
+      )
+      sendRequest(parsedObject, true)
+    }
   }
 
   const handlePreviewClick = async () => {
