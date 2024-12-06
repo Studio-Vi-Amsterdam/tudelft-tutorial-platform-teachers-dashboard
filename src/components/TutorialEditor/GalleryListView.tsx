@@ -48,7 +48,7 @@ const GalleryListView = (props: GalleryViewProps) => {
                 <div className="lg:w-[calc(100%-400px)] md:w-[calc(100%-276px)] break-all text-left">
                   {item.title}
                 </div>
-                <div className="lg:w-44 md:w-24 grid text-left max-md:grid-cols-2 gap-2">
+                <div className="lg:w-44 md:w-24 grid text-left break-all max-md:grid-cols-2 gap-2">
                   <span className="text-xs text-subtext md:hidden">File Name</span>
                   {fileName && <span className="max-md:text-xs">{fileName}</span>}
                 </div>
