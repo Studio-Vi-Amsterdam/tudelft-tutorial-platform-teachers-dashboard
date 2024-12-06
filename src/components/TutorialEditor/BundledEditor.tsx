@@ -160,18 +160,7 @@ export default function BundledEditor(props: any) {
   })
 
   const plugins = props.extended
-    ? [
-        'table',
-        'lists',
-        'link',
-        'codesample',
-        'autoresize',
-        'command',
-        'term',
-        'codesample',
-        'mark',
-        'eqneditor',
-      ]
+    ? ['table', 'lists', 'link', 'autoresize', 'command', 'term', 'codesample', 'mark', 'eqneditor']
     : ['table', 'lists', 'link', 'autoresize', 'command']
 
   const reducedToolbar = 'bullist numlist link bold italic underline mark table'
