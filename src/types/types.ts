@@ -48,9 +48,12 @@ export interface DashboardSectionProps {
   fetched: boolean
 }
 
+export type SubchapterLayout = 'textImage' | 'imageText' | 'textVideo' | 'videoText'
+
 interface ElementActionBase {
   block: string
   index: number | undefined
+  layout?: SubchapterLayout
   nestedIndex?: number
   subchapterIndex?: number
 }
@@ -110,13 +113,12 @@ export interface ElementVideoActionInterface extends ElementActionBase {
   video: MediaObjectInterface
 }
 
-export type SubchapterLayout = 'textImage' | 'imageText' | 'textVideo' | 'videoText'
-
 export interface ThumbnailActionInterface {
   index: number
   thumbnail: ThumbnailInterface
   chapterIndex?: number
   layout?: SubchapterLayout
+  block: string
 }
 
 export interface ChapterThumbnailActionInterface {
@@ -129,6 +131,7 @@ export interface SubtitlesActionInterface {
   subtitles: MediaObjectParent
   chapterIndex?: number
   layout?: SubchapterLayout
+  block: string
 }
 
 export interface ChapterSubtitlesActionInterface {
@@ -246,6 +249,7 @@ export interface TutorialTopElementsObject {
   imageText?: MediaTextImageInterface
   textVideo?: MediaTextVideoInterface
   videoText?: MediaTextVideoInterface
+  defaultVal?: boolean
 }
 export interface AddChapterElementInterface {
   val: TutorialTopElementsObject
@@ -307,6 +311,7 @@ export interface ChapterElementsObject {
   textVideo?: MediaTextVideoInterface
   videoText?: MediaTextVideoInterface
   column?: string
+  defaultVal?: boolean
 }
 
 export interface TransformedDataTutorialCards {
@@ -473,6 +478,7 @@ export interface EditorState {
   isEditorLoaded: boolean
   pageType: PageTypeType
   tutorialTop: TutorialTopInterface
+  tutorialBottomContent: [] | TutorialTopElementsObject[]
   chapters: ChapterInterface[] | []
   tutorialBottom: TutorialBottomInterface
   meta: TutorialMetaObject

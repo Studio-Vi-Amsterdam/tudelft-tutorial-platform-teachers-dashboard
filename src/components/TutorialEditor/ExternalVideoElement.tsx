@@ -8,13 +8,21 @@ interface ExternalVideoElementProps {
   index: number
   chapterIndex: number | undefined
   attributes: ExternalVideoInterface
+  block: string
 }
 
 const ExternalVideoElement = (props: ExternalVideoElementProps) => {
   const dispatch = useAppDispatch()
 
   const handleChangeTitle = (value: string) => {
-    dispatch(setExternalVideoTitle({ chapterIndex: props.chapterIndex, index: props.index, value }))
+    dispatch(
+      setExternalVideoTitle({
+        chapterIndex: props.chapterIndex,
+        index: props.index,
+        value,
+        block: props.block,
+      }),
+    )
   }
 
   const handleChangeUrl = (value: string) => {
@@ -23,6 +31,7 @@ const ExternalVideoElement = (props: ExternalVideoElementProps) => {
         chapterIndex: props.chapterIndex,
         index: props.index,
         value: convertToEmbedUrl(value),
+        block: props.block,
       }),
     )
   }

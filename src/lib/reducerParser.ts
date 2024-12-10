@@ -1178,7 +1178,7 @@ export const reducerParser = {
                 },
               }
             }
-            return null
+            return {}
           })
           .filter(Boolean),
       )

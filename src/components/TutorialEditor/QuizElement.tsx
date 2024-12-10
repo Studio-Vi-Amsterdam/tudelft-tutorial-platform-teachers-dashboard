@@ -8,17 +8,19 @@ const QuizElement = (props: QuizElementProps) => {
   const quiz = useAppSelector((state: RootState) =>
     props.block === 'tutorialElements' && props.listIndex !== undefined
       ? state.editor.tutorialTop.elements[props.listIndex].quiz
-      : props.block === 'chapterElements' &&
-          props.chapterIndex !== undefined &&
-          props.listIndex !== undefined
-        ? state.editor.chapters[props.chapterIndex].elements[props.listIndex].quiz
-        : props.block === 'subchapterElements' &&
-          props.chapterIndex !== undefined &&
-          props.subchapterIndex !== undefined &&
-          props.listIndex !== undefined &&
-          state.editor.chapters[props.chapterIndex].subchapters[props.subchapterIndex].elements[
-            props.listIndex
-          ].quiz,
+      : props.block === 'tutorialBottomElements' && props.listIndex !== undefined
+        ? state.editor.tutorialBottomContent[props.listIndex].quiz
+        : props.block === 'chapterElements' &&
+            props.chapterIndex !== undefined &&
+            props.listIndex !== undefined
+          ? state.editor.chapters[props.chapterIndex].elements[props.listIndex].quiz
+          : props.block === 'subchapterElements' &&
+            props.chapterIndex !== undefined &&
+            props.subchapterIndex !== undefined &&
+            props.listIndex !== undefined &&
+            state.editor.chapters[props.chapterIndex].subchapters[props.subchapterIndex].elements[
+              props.listIndex
+            ].quiz,
   )
 
   const dispatch = useAppDispatch()
@@ -35,10 +37,6 @@ const QuizElement = (props: QuizElementProps) => {
       setLocalAnswers(quiz ? quiz.answers : [{ answer: '', isCorrect: '1', isValid: true }])
       setLocalQuestion(quiz ? quiz.question : { text: '', isValid: true })
     }
-  }, [quiz])
-
-  useEffect(() => {
-    quiz && console.log('quiz answers', quiz.answers)
   }, [quiz])
 
   const handleChangeLocalAnswer = (index: number, newValue: string) => {
