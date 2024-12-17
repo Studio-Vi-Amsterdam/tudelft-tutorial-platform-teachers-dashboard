@@ -12,7 +12,6 @@ import TutorialActionsButton from './TutorialActionsButton'
 import { validateArticle } from 'src/lib/validation'
 import { sendArticle } from 'src/lib/sendArticle'
 
-
 interface TutorialButtonsProps {
   usersList: UsersItemInterface[]
 }
@@ -93,7 +92,6 @@ const TutorialButtonsSection = (props: TutorialButtonsProps) => {
       description: error,
     })
   }
-
 
   const testPublishClick = async () => {
     const validationSucceed = validateArticle(tutorial, articleType, dispatch, validationErrAlert)

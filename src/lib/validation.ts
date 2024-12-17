@@ -31,7 +31,6 @@ const checkTutorialTitleValidity = (title: string) => {
   return title.trim().length > 0
 }
 
-
 const checkTutorialDescriptionValidity = (description: string) => {
   return description.trim().length > 0
 }
