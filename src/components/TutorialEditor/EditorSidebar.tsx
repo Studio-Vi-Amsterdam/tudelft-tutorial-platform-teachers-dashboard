@@ -40,7 +40,7 @@ const EditorSidebar = (props: EditorSidebarProps) => {
             <>
               <h2 className="text-xl leading-8">
                 {props.tutorialTitle.replaceAll('\\s+', '') === ''
-                  ? 'Tutorial Title'
+                  ? 'Page title'
                   : props.tutorialTitle}
               </h2>
               <Accordion type="single" collapsible>

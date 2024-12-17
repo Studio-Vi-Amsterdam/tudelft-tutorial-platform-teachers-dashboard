@@ -19,13 +19,13 @@ const Dashboard = () => {
       {
         name: 'Onboarding Video',
         text: 'This video will show you how to create a tutorial.',
-        link: '',
+        link: 'https://digipedia.tudelft.nl/app/uploads/2024/11/Digipedia_FullLength_OnboardingVideo.mp4',
         imgSrc: '/img/dashboard/onboarding-video.svg',
       },
       {
-        name: 'Guidelines',
-        text: 'Read this guidelines to create a tutorial according to the teaching objectives.',
-        link: '',
+        name: 'Onboarding Manual',
+        text: 'A PDF guide to show you how to upload a tutorial.',
+        link: 'https://digipedia.tudelft.nl/app/uploads/2024/11/24_1118_DigiPedia_Manual_teacher_dashboard_upload.pdf',
         imgSrc: '/img/dashboard/onboarding-guidelines.svg',
       },
     ],
@@ -147,9 +147,9 @@ const Dashboard = () => {
                       <h4 className="font-RobotoSlab text-2xl font-medium">{item.name}</h4>
                       <p className="text-[#666666]">{item.text}</p>
                     </div>
-                    <button className="sm:mt-14 mt-6 ">
+                    <a href={item.link} className="sm:mt-14 mt-6 " target="_blank" rel="noreferrer">
                       <img src="/img/arrow-right.svg" alt={`Navigate to ${item.name}`} />
-                    </button>
+                    </a>
                   </div>
                   <div className="flex items-center sm:justify-center sm:mb-0 mb-6 max-sm:w-[160px]">
                     <img src={item.imgSrc} className="object-contain w-full" alt={item.name} />

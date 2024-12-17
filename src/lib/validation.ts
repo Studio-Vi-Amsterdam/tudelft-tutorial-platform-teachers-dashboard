@@ -31,9 +31,9 @@ const checkTutorialTitleValidity = (title: string) => {
   return title.trim().length > 0
 }
 
-const checkTutorialDescriptionValidity = (/* description: string */) => {
-  // return description.text.trim().length > 0
-  return true
+
+const checkTutorialDescriptionValidity = (description: string) => {
+  return description.trim().length > 0
 }
 
 const checkMetafieldsValidity = (
@@ -211,9 +211,9 @@ const validateElements = (
       }
     } else if (element.textLayout) {
       /* const isTitleValid = element.textLayout.title.text.trim().length > 0
-        !isTitleValid && count++
-        const isTextValid = element.textLayout.text.text.trim().length > 0
-        !isTextValid && count++ */
+          !isTitleValid && count++
+          const isTextValid = element.textLayout.text.text.trim().length > 0
+          !isTextValid && count++ */
       return {
         textLayout: {
           title: { ...element.textLayout.title, isValid: true },
@@ -222,9 +222,9 @@ const validateElements = (
       }
     } else if (element.imageText) {
       /* const isTitleValid = element.imageText.title.text.trim().length > 0
-        !isTitleValid && count++
-        const isTextValid = element.imageText.text.text.trim().length > 0
-        !isTextValid && count++ */
+          !isTitleValid && count++
+          const isTextValid = element.imageText.text.text.trim().length > 0
+          !isTextValid && count++ */
       const isImageValid = !!element.imageText.image.id
       !isImageValid && count++
       return {
@@ -236,9 +236,9 @@ const validateElements = (
       }
     } else if (element.textImage) {
       /* const isTitleValid = element.textImage.title.text.trim().length > 0
-        !isTitleValid && count++
-        const isTextValid = element.textImage.text.text.trim().length > 0
-        !isTextValid && count++ */
+          !isTitleValid && count++
+          const isTextValid = element.textImage.text.text.trim().length > 0
+          !isTextValid && count++ */
       const isImageValid = !!element.textImage.image.id
       !isImageValid && count++
       return {
@@ -250,9 +250,9 @@ const validateElements = (
       }
     } else if (element.textVideo) {
       /* const isTitleValid = element.textVideo.title.text.trim().length > 0
-        !isTitleValid && count++
-        const isTextValid = element.textVideo.text.text.trim().length > 0
-        !isTextValid && count++ */
+          !isTitleValid && count++
+          const isTextValid = element.textVideo.text.text.trim().length > 0
+          !isTextValid && count++ */
       const isImageValid = !!element.textVideo.video.id
       !isImageValid && count++
       return {
@@ -264,9 +264,9 @@ const validateElements = (
       }
     } else if (element.videoText) {
       /* const isTitleValid = element.videoText.title.text.trim().length > 0
-        !isTitleValid && count++
-        const isTextValid = element.videoText.text.text.trim().length > 0
-        !isTextValid && count++ */
+          !isTitleValid && count++
+          const isTextValid = element.videoText.text.text.trim().length > 0
+          !isTextValid && count++ */
       const isImageValid = !!element.videoText.video.id
       !isImageValid && count++
       return {
@@ -359,7 +359,9 @@ export const validateArticle = (
 
   const metafieldsValidationResult = checkTutorialsMetafields(meta, articleType)
   const tutorialTitleValidationResult = checkTutorialTitleValidity(tutorialTop.title.text)
-  const tutorialDescriptionValidationResult = checkTutorialDescriptionValidity()
+  const tutorialDescriptionValidationResult = checkTutorialDescriptionValidity(
+    tutorialTop.description.text,
+  )
   const tutTopElValidationResult = validateTutorialTopElements(tutorialTopElements, dispatch)
   const chaptersValidationResult = validateChapters(chapters, dispatch)
   if (!tutorialTitleValidationResult) {

@@ -668,7 +668,7 @@ export const reducerParser = {
               isValid: true,
             },
             primarySubject: {
-              fieldTitle: 'Primary Subject',
+              fieldTitle: 'Primary subject',
               list:
                 info.data.subjects !== undefined
                   ? Object.keys(info.data.subjects).map((key) => ({
@@ -1178,7 +1178,7 @@ export const reducerParser = {
                 },
               }
             }
-            return null
+            return {}
           })
           .filter(Boolean),
       )

@@ -12,6 +12,7 @@ import TutorialActionsButton from './TutorialActionsButton'
 import { validateArticle } from 'src/lib/validation'
 import { sendArticle } from 'src/lib/sendArticle'
 
+
 interface TutorialButtonsProps {
   usersList: UsersItemInterface[]
 }
@@ -24,8 +25,51 @@ const TutorialButtonsSection = (props: TutorialButtonsProps) => {
   const status = params.get('status')
 
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
   const { toast } = useToast()
+
+  const dispatch = useAppDispatch()
+
+  const sendRequest = async (parsedObject: any, draft?: boolean) => {
+    if (articleType && articleId) {
+      try {
+        if (articleId === 'new') {
+          const res = draft
+            ? await articlesAPI.postDraftArticle(articleType, parsedObject)
+            : await articlesAPI.postArticle(articleType, parsedObject)
+
+          if (res.data.id || res.data.data.id) {
+            const newId = res.data.id || res.data.data.id
+            navigate(
+              `/dashboard/my-tutorials?type=${articleType}&id=${newId}&status=${draft ? 'draft' : 'published'}`,
+            )
+            toast({
+              title: `Article created in "${articleType}"${draft ? ' as draft' : ''}`,
+              description: 'Successfully!',
+            })
+          }
+        } else {
+          const res = await articlesAPI.updateArticle(articleType, parsedObject)
+
+          if (res.data) {
+            navigate(
+              `/dashboard/my-tutorials?type=${articleType}&id=${articleId}&status=${draft ? 'draft' : 'published'}`,
+            )
+            toast({
+              title: `Article updated in "${articleType}"${draft ? ' as draft' : ''}`,
+              description: 'Successfully!',
+            })
+          }
+        }
+      } catch (error: any) {
+        console.error(error)
+        toast({
+          title: 'Something went wrong!',
+          variant: 'destructive',
+          description: error.message as string,
+        })
+      }
+    }
+  }
 
   const validationErrAlert = () => {
     toast({
@@ -50,6 +94,7 @@ const TutorialButtonsSection = (props: TutorialButtonsProps) => {
     })
   }
 
+
   const testPublishClick = async () => {
     const validationSucceed = validateArticle(tutorial, articleType, dispatch, validationErrAlert)
     if (validationSucceed) {
@@ -71,22 +116,16 @@ const TutorialButtonsSection = (props: TutorialButtonsProps) => {
   }
 
   const handleDraftClick = async () => {
-    const parsedObject = await reducerParser.parseFromReducer(
-      tutorial,
-      'draft',
-      articleId !== 'new' ? articleId ?? undefined : undefined,
-      articleType,
-    )
-    // sendRequest(parsedObject, true)
-    sendArticle(
-      articleType,
-      articleId,
-      parsedObject,
-      navigate,
-      sendArticleSuccessToast,
-      sendArticleErrorToast,
-      true,
-    )
+    const validationSucceed = validateArticle(tutorial, articleType, dispatch, validationErrAlert)
+    if (validationSucceed) {
+      const parsedObject = await reducerParser.parseFromReducer(
+        tutorial,
+        'draft',
+        articleId !== 'new' ? articleId ?? undefined : undefined,
+        articleType,
+      )
+      sendRequest(parsedObject, true)
+    }
   }
 
   const handlePreviewClick = async () => {

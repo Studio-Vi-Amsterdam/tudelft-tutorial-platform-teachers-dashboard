@@ -178,14 +178,19 @@ const BlogEditor = () => {
           {isFetched ? (
             <>
               <TutorialButtonsSection usersList={usersList} />
-              <TutorialTopSection tutorialTitle={tutorialTitle} />
+              <TutorialTopSection tutorialTitle={tutorialTitle} articleType={articleType} />
               {chapters.length > 0 &&
                 chapters.map((chapter: ChapterInterface, index: number) => (
-                  <ChapterSection key={index} chapter={chapter} index={index} />
+                  <ChapterSection
+                    articleType={articleType}
+                    key={index}
+                    chapter={chapter}
+                    index={index}
+                  />
                 ))}
 
-              <AddChapterSection />
-              <TutorialBottomSection />
+              <AddChapterSection articleType={articleType} />
+              <TutorialBottomSection articleType={articleType} />
               {articleType === 'tutorials' && <TutorialsMeta />}
               {articleType === 'courses' && <CoursesMeta />}
               {articleType === 'softwares' && <SoftwaresMeta />}

@@ -12,6 +12,7 @@ interface ThumbProps {
   subchapterIndex: number | undefined
   listIndex: number | undefined
   layout?: SubchapterLayout
+  block?: string
 }
 
 const SelectThumbnail = (props: ThumbProps) => {
@@ -41,6 +42,7 @@ const SelectThumbnail = (props: ThumbProps) => {
         dispatch(
           setVideoThumbnail({
             index: props.listIndex,
+            block: props.block ?? '',
             thumbnail: selectedMedia,
             chapterIndex: props.chapterIndex,
             layout: props.layout,
@@ -82,6 +84,7 @@ const SelectThumbnail = (props: ThumbProps) => {
           },
           chapterIndex: props.chapterIndex,
           layout: props.layout,
+          block: props.block ?? '',
         }),
       )
     }

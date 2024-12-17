@@ -608,5 +608,18 @@ div.code-toolbar>.toolbar>.toolbar-item>span:hover {
 }
 
 div[data-mce-bogus="all"] {
-    opacity: 0;
+    opacity: 1;
+}
+
+.mce-content-body .mce-offscreen-selection{
+    left: -2000000px;
+    max-width: 1000000px;
+    position: absolute;
+}
+.mce-content-body .mce-visual-caret {
+    background-color: #000;
+    position: absolute
+}
+.mce-content-body .mce-visual-caret-hidden {
+    display: none
 }

@@ -59,6 +59,8 @@ export default function BundledEditor(props: any) {
     explanation: '',
   })
   const [styles, setStyles] = useState('')
+  const [isFocused, setIsFocused] = useState(false)
+  const [hasContent, setHasContent] = useState(!!props.value)
 
   const getFiles = async () => {
     const res = await axios.get('/editor-styles.css')
@@ -160,18 +162,7 @@ export default function BundledEditor(props: any) {
   })
 
   const plugins = props.extended
-    ? [
-        'table',
-        'lists',
-        'link',
-        'codesample',
-        'autoresize',
-        'command',
-        'term',
-        'codesample',
-        'mark',
-        'eqneditor',
-      ]
+    ? ['table', 'lists', 'link', 'autoresize', 'command', 'term', 'codesample', 'mark', 'eqneditor']
     : ['table', 'lists', 'link', 'autoresize', 'command']
 
   const reducedToolbar = 'bullist numlist link bold italic underline mark table'
@@ -186,7 +177,15 @@ export default function BundledEditor(props: any) {
   const errValidStyle = 'border border-red-500 rounded-md'
 
   return (
-    <div className={`w-full ${props.notValid && errValidStyle}`}>
+    <div className={`w-full relative ${props.notValid && errValidStyle}`}>
+      {!isFocused && !hasContent && (
+        <div
+          className="absolute inset-0 top-[47px] mce-placeholder pointer-events-none text-stone p-3"
+          style={{ zIndex: 1 }}
+        >
+          {props.placeholder}
+        </div>
+      )}
       <Editor
         init={{
           menubar: false,
@@ -234,6 +233,12 @@ export default function BundledEditor(props: any) {
         }}
         licenseKey="gpl"
         value={props.value}
+        onFocus={() => setIsFocused(true)}
+        onBlur={(e) => {
+          setIsFocused(false)
+          const content = e.target.getContent({ format: 'text' }).trim()
+          setHasContent(!!content)
+        }}
         onEditorChange={
           props?.subchapter && props.subchapter === true
             ? (newValue) =>

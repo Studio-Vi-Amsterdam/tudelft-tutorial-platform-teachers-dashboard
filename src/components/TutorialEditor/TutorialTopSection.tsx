@@ -9,14 +9,16 @@ import {
   setTutorialTitle,
 } from 'src/redux/features/editorSlice'
 import { RootState } from 'src/redux/store'
-import AddElementBlock from './AddElementBlock'
 import ElementsBlock from './ElementsBlock'
 import BundledEditor from './BundledEditor'
-import { AddElementsType, TextElementInterface } from 'src/types/types'
+import { TextElementInterface } from 'src/types/types'
 import { articlesAPI } from 'src/lib/api'
+import { Capitalize, RemoveLastSymbol } from '../../lib/capitalize'
+import AddSectionBlock from './AddSectionBlock'
 
 interface TutorialTopSectionProps {
   tutorialTitle: TextElementInterface
+  articleType: string | null
 }
 
 const TutorialTopSection = (props: TutorialTopSectionProps) => {
@@ -40,20 +42,8 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
     dispatch(setTutorialDescription(value))
   }
 
-  const tutorialElements: AddElementsType[] = [
-    'text block',
-    'infobox block',
-    'image',
-    'video',
-    'tutorial cards',
-    'download file',
-    'quiz',
-    'h5p element',
-    'external video',
-  ]
   const handleAddTutorialElement = async (val: string): Promise<void> => {
     const payload: any = {}
-
     payload[val] = ''
     if (val === 'text block') {
       payload.text = {
@@ -160,6 +150,88 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       }
       delete payload['external video']
       dispatch(addTutorialElements(payload))
+    } else if (val === 'image left') {
+      payload.imageText = {
+        image: {
+          isValid: true,
+          format: '',
+          link: '',
+          publishDate: '',
+          title: '',
+          type: 'image',
+          description: '',
+        },
+        text: { text: '', isValid: true },
+        title: { text: '', isValid: true },
+      }
+      dispatch(addTutorialElements(payload))
+    } else if (val === 'image right') {
+      payload.textImage = {
+        image: {
+          isValid: true,
+          format: '',
+          link: '',
+          publishDate: '',
+          title: '',
+          type: 'image',
+          description: '',
+        },
+        text: { text: '', isValid: true },
+        title: { text: '', isValid: true },
+      }
+      dispatch(addTutorialElements(payload))
+    } else if (val === 'video left') {
+      payload.videoText = {
+        video: {
+          format: '',
+          link: '',
+          publishDate: '',
+          title: '',
+          isValid: true,
+          type: 'video',
+          description: '',
+          thumbnail: {
+            description: '',
+            format: '',
+            type: 'image',
+            link: '',
+            isValid: true,
+            publishDate: '',
+            title: '',
+          },
+        },
+        text: { text: '', isValid: true },
+        title: { text: '', isValid: true },
+      }
+      dispatch(addTutorialElements(payload))
+    } else if (val === 'video right') {
+      payload.textVideo = {
+        video: {
+          format: '',
+          link: '',
+          publishDate: '',
+          title: '',
+          isValid: true,
+          type: 'video',
+          description: '',
+          thumbnail: {
+            description: '',
+            format: '',
+            type: 'image',
+            link: '',
+            isValid: true,
+            publishDate: '',
+            title: '',
+          },
+        },
+        text: { text: '', isValid: true },
+        title: { text: '', isValid: true },
+      }
+      dispatch(addTutorialElements(payload))
+    } else if (val === '1 column') {
+      payload.defaultVal = true
+      delete payload['1 column']
+      dispatch(addTutorialElements(payload))
     } else {
       dispatch(addTutorialElements(payload))
     }
@@ -168,16 +240,18 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
   return (
     <section className="relative flex w-full flex-col gap-y-6 py-16 sm:py-20">
       <EditorLabel>
-        This section is mandatory for all tutorials and appears on top of the tutorial page.
+        This intro chapter is mandatory for all {props.articleType} and appears on top of a{' '}
+        {RemoveLastSymbol(props.articleType ?? '')} page.
       </EditorLabel>
       <TextInput
         handleChange={handleTutorialTitleInputChange}
         value={tutorialTitle.text}
-        placeholder="Tutorial title"
+        placeholder={Capitalize(RemoveLastSymbol(props.articleType ?? '')) + ' title'}
         headingType="h1"
         notValid={!tutorialTitle.isValid}
       />
       <BundledEditor
+        placeholder={`Write a short description for the ${RemoveLastSymbol(props.articleType ?? '')} here.`}
         value={tutorialDescription.text}
         handleChange={handleTutorialDescriptionInputChange}
         extended
@@ -193,8 +267,16 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
           <li>What new knowledge will they have obtained?</li>
         </ul>
       </Tip>
-      <ElementsBlock block="tutorialElements" elements={tutorialStateElements} />
-      <AddElementBlock elements={tutorialElements} handleAddElement={handleAddTutorialElement} />
+      <ElementsBlock
+        block="tutorialElements"
+        handleAddElement={handleAddTutorialElement}
+        elements={tutorialStateElements}
+      />
+      {!tutorialStateElements.find((el) => el.defaultVal) && (
+        <AddSectionBlock variant="outline" handleAddElement={handleAddTutorialElement} />
+      )}
+
+      <AddSectionBlock variant="dashed" handleAddElement={handleAddTutorialElement} />
     </section>
   )
 }
