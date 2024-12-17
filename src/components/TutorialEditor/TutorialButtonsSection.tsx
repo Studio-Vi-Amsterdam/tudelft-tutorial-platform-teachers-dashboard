@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Button } from 'src/components/ui/Button'
 import { articlesAPI } from 'src/lib/api'
@@ -7,17 +7,20 @@ import { useToast } from 'src/lib/use-toast'
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
 import { RootState } from 'src/redux/store'
 import { ArtictesType, UsersItemInterface } from 'src/types/types'
-import { EyeIcon, SmallFileIcon } from '../ui/Icons'
+import { AuthorIcon, EyeIcon, LocationIcon, SmallFileIcon } from '../ui/Icons'
 import TutorialActionsButton from './TutorialActionsButton'
 import { validateArticle } from 'src/lib/validation'
 import { sendArticle } from 'src/lib/sendArticle'
+import AddAuthorModal from './AddAuthorModal'
 
 interface TutorialButtonsProps {
   usersList: UsersItemInterface[]
+  articleType: string | null
 }
 
 const TutorialButtonsSection = (props: TutorialButtonsProps) => {
   const tutorial = useAppSelector((state: RootState) => state.editor)
+  const [isAddAuthorDialogOpen, setIsAddAuthorDialogOpen] = useState<boolean>(false)
   const params = new URLSearchParams(useLocation().search)
   const articleType = params.get('type') as ArtictesType
   const articleId = params.get('id')
@@ -144,12 +147,44 @@ const TutorialButtonsSection = (props: TutorialButtonsProps) => {
     }
   }
 
+  const toggleAddAuthorDialogOpen = () => {
+    setTimeout(() => {
+      setIsAddAuthorDialogOpen(!isAddAuthorDialogOpen)
+    }, 300)
+  }
+
   return (
-    <section className="w-full flex flex-col items-end gap-y-6 [&>div]:w-full [&>div]:flex [&>div]:flex-row [&>div]:items-center [&>div]:justify-end [&>div]:gap-y-6 [&>div]:lg:gap-x-6 py-10 sm:py-14 [&>div]:flex-wrap">
+    <section className="w-full flex flex-col items-end gap-y-6 [&>div]:w-full [&>div]:flex [&>div]:flex-row [&>div]:items-center [&>div]:justify-end [&>div]:gap-y-6 [&>div]:gap-x-6 py-10 sm:py-14 [&>div]:flex-wrap">
       <div>
-        <Button size={'lg'} onClick={testPublishClick}>
-          <p>Publish {status === 'published' && 'changes'}</p>
+        <Button
+          variant={'outline'}
+          size={'lg'}
+          className="max-w-[170px] gap-2 px-4"
+          onClick={handleDraftClick}
+        >
+          <SmallFileIcon />
+          {status === 'new' ? (
+            <p>Save as draft</p>
+          ) : status === 'draft' ? (
+            <p>Update draft</p>
+          ) : (
+            status === 'published' && <p>Switch to draft</p>
+          )}
         </Button>
+        <div className="flex">
+          <Button size={'lg'} className="px-4 gap-2 rounded-r-none" onClick={testPublishClick}>
+            <span className="flex justify-center items-center w-6 h-6">
+              <LocationIcon />
+            </span>
+            <p>Publish {status === 'published' && 'changes'}</p>
+          </Button>
+          <TutorialActionsButton
+            editor={tutorial}
+            articleId={articleId}
+            articleType={articleType}
+            usersList={props.usersList}
+          />
+        </div>
       </div>
       <div className="h-0.5 w-full bg-tertiary-grey-silver"></div>
       <div className="flex flex-row gap-x-6">
@@ -161,23 +196,28 @@ const TutorialButtonsSection = (props: TutorialButtonsProps) => {
             <p>Preview</p>
           </Button>
         )}
-        <Button variant={'outline'} size={'md'} onClick={handleDraftClick}>
-          <SmallFileIcon />
-          {status === 'new' ? (
-            <p>Save as draft</p>
-          ) : status === 'draft' ? (
-            <p>Update draft</p>
-          ) : (
-            status === 'published' && <p>Switch to draft</p>
-          )}
+
+        <Button
+          variant={'outline'}
+          size={'md'}
+          className="px-4"
+          disabled={articleId === null || articleId === 'new'}
+          onClick={toggleAddAuthorDialogOpen}
+        >
+          <span className="flex justify-center items-center w-6 h-6">
+            <AuthorIcon />
+          </span>
+          <p>Manage editors</p>
         </Button>
-        <TutorialActionsButton
-          editor={tutorial}
-          articleId={articleId}
-          articleType={articleType}
-          usersList={props.usersList}
-        />
       </div>
+
+      <AddAuthorModal
+        usersList={props.usersList}
+        articleType={props.articleType}
+        isOpen={isAddAuthorDialogOpen}
+        setIsOpen={toggleAddAuthorDialogOpen}
+        articleId={articleId}
+      />
     </section>
   )
 }

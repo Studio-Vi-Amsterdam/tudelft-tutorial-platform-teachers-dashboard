@@ -4,6 +4,7 @@ import { UsersItemInterface } from 'src/types/types'
 interface AutoCompleteInputProps {
   possibleValues: UsersItemInterface[]
   inputValue: string
+  placeholder?: string
   setInputValue: React.Dispatch<React.SetStateAction<string>>
 }
 
@@ -35,6 +36,7 @@ const AutoCompleteInput = (props: AutoCompleteInputProps) => {
     <div className="relative w-full">
       <input
         type="text"
+        placeholder={props.placeholder}
         className={`w-full text-base rounded-[4px] border focus:outline-none border-DIM bg-background-seasalt p-4 text-tertiary-grey-stone ${suggestions.length > 0 ? 'border-b-transparent rounded-b-none !p-2 !pb-4' : ''}`}
         value={inputValue}
         onChange={handleInputChange}

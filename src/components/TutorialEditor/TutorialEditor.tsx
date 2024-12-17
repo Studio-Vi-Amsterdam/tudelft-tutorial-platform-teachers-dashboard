@@ -177,7 +177,7 @@ const BlogEditor = () => {
         <div className="flex w-full flex-col items-start md:pl-12 lg:pl-28 bg-white">
           {isFetched ? (
             <>
-              <TutorialButtonsSection usersList={usersList} />
+              <TutorialButtonsSection usersList={usersList} articleType={articleType} />
               <TutorialTopSection tutorialTitle={tutorialTitle} articleType={articleType} />
               {chapters.length > 0 &&
                 chapters.map((chapter: ChapterInterface, index: number) => (

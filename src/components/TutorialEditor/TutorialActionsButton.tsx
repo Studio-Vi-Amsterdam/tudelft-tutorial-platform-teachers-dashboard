@@ -6,8 +6,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '../ui/Dropdown'
-import { AddFileIcon, AuthorIcon, MoreIcon, TrashCanIcon } from '../ui/Icons'
-import AddAuthorModal from './AddAuthorModal'
+import { AddFileIcon, ArrowRight, TrashCanIcon } from '../ui/Icons'
 import { useNavigate } from 'react-router-dom'
 import { useToast } from 'src/lib/use-toast'
 import {
@@ -42,8 +41,6 @@ interface ArticlePreviewInterface {
 }
 
 const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
-  // Flags
-  const [isAddAuthorDialogOpen, setIsAddAuthorDialogOpen] = useState<boolean>(false)
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState<boolean>(false)
   const [isMigratePopupOpen, setIsMigratePopupOpen] = useState<boolean>(false)
   const [isFetching, setIsFetching] = useState<boolean>(false)
@@ -56,12 +53,6 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
 
   const navigate = useNavigate()
   const { toast } = useToast()
-
-  const toggleAddAuthorDialogOpen = () => {
-    setTimeout(() => {
-      setIsAddAuthorDialogOpen(!isAddAuthorDialogOpen)
-    }, 300)
-  }
 
   const handleDeleteArticle = () => {
     if (props.articleId && props.articleId !== 'new') {
@@ -155,9 +146,10 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger className="data-[state='open']:bg-tertiary-skyBlue-20 border-primary-skyBlue rounded flex py-2 px-4 border  flex-row gap-x-2 text-primary-skyBlue">
-          Actions
-          <MoreIcon />
+        <DropdownMenuTrigger className="[&>span]:data-[state='open']:rotate-[-90deg] flex items-center rounded-l-none bg-primary-skyBlue rounded py-4 px-3 border-l-[1px] border-white text-white">
+          <span className="rotate-90 transition-all">
+            <ArrowRight className="w-[18px] h-[18px]" />
+          </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
@@ -166,20 +158,12 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
           <DropdownMenuLabel className="font-normal text-sm text-primary-skyBlue">
             Actions
           </DropdownMenuLabel>
+
           <DropdownMenuItem onClick={openMigrateWindow}>
             <span className="flex justify-center items-center w-6 h-6">
               <AddFileIcon />
             </span>
-            Migrate to
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            disabled={props.articleId === null || props.articleId === 'new'}
-            onSelect={() => toggleAddAuthorDialogOpen()}
-          >
-            <span className="flex justify-center items-center w-6 h-6">
-              <AuthorIcon />
-            </span>
-            Add editor
+            Overwrite to
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() =>
@@ -189,18 +173,13 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
             }
           >
             <span className="flex justify-center items-center w-6 h-6">
-              <TrashCanIcon />
+              <TrashCanIcon className="w-[20px] h-[20px]" />
             </span>
             Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <AddAuthorModal
-        usersList={props.usersList}
-        isOpen={isAddAuthorDialogOpen}
-        setIsOpen={toggleAddAuthorDialogOpen}
-        articleId={props.articleId}
-      />
+
       <MigrateModal
         isOpen={isMigratePopupOpen}
         setIsOpen={setIsMigratePopupOpen}
@@ -208,6 +187,7 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
         articleType={props.articleType}
         articlesList={articlesList}
       />
+
       <AlertDialog open={isDeletePopupOpen} onOpenChange={setIsDeletePopupOpen}>
         <AlertDialogContent className="bg-white">
           <AlertDialogHeader>
