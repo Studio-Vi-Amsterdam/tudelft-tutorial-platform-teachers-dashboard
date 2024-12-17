@@ -1,29 +1,33 @@
 import React, { useState } from 'react'
-import EditorLabel from '../ui/EditorLabel'
 import { LayoutChapterType } from 'src/types/types'
 import { Button } from '../ui/Button'
-import { useAppDispatch } from 'src/redux/hooks'
-import { addBlankChapter, addBlankSubchapter } from 'src/redux/features/editorSlice'
-import { RemoveLastSymbol } from '../../lib/capitalize'
 
-interface AddChapterSectionProps {
-  chapterIndex?: number
-  isSubchapter?: boolean
+interface AddSectionBlockProps {
   articleType?: string | null
+  variant:
+    | 'link'
+    | 'default'
+    | 'destructive'
+    | 'outline'
+    | 'secondary'
+    | 'ghost'
+    | 'dashed'
+    | 'elements'
+    | null
+    | undefined
+  handleAddElement: (value: string, index?: number, subchapterIndex?: number) => void
+  chapterIndex?: number
+  subchapterIndex?: number
 }
 
-const AddChapterSection = (props: AddChapterSectionProps) => {
-  const [isChapterCreating, setIsChapterCreating] = useState<boolean>(false)
-  const [isAddChapterButtonShow, setIsAddChapterButtonShow] = useState<boolean>(true)
-
-  const dispatch = useAppDispatch()
+const AddSectionBlock = (props: AddSectionBlockProps) => {
+  const [isSectionCreating, setIsSectionCreating] = useState<boolean>(false)
 
   const showChooseLayoutBlock = () => {
-    setIsAddChapterButtonShow(false)
-    setIsChapterCreating(true)
+    setIsSectionCreating(true)
   }
 
-  const chapterLayout: LayoutChapterType[] = [
+  const sectionLayout: LayoutChapterType[] = [
     '1 column',
     'image left',
     'image right',
@@ -31,42 +35,21 @@ const AddChapterSection = (props: AddChapterSectionProps) => {
     'video right',
   ]
 
-  const createChapter = (layoutType: LayoutChapterType) => {
-    setIsChapterCreating(false)
-    setIsAddChapterButtonShow(true)
-    if (props.isSubchapter && props.chapterIndex !== undefined) {
-      dispatch(
-        addBlankSubchapter({
-          chapterIndex: props.chapterIndex,
-          chapterType: layoutType,
-        }),
-      )
-    } else {
-      dispatch(addBlankChapter(layoutType))
-    }
+  const createSection = (layoutType: LayoutChapterType) => {
+    setIsSectionCreating(false)
+    props.handleAddElement(layoutType, props.chapterIndex, props.subchapterIndex)
   }
 
   return (
-    <section
-      className={`${
-        props.isSubchapter
-          ? ''
-          : 'py-14 sm:py-20 before:absolute before:left-0 before:top-0 before:h-[2px] before:w-full before:bg-tertiary-grey-silver'
-      } relative flex w-full flex-col gap-y-6 `}
-    >
-      {!props.isSubchapter && (
-        <EditorLabel>
-          This is a chapter of your {RemoveLastSymbol(props.articleType ?? '')}.
-        </EditorLabel>
-      )}
-      {isChapterCreating && (
+    <section className={'pt-8 relative flex w-full flex-col gap-y-6 '}>
+      {isSectionCreating && (
         <div className="flex bg-seasalt flex-col gap-y-4 rounded-[8px] border-[2px] border-dashed border-tertiary-grey-dim py-6">
-          <h4 className="text-center">Choose layout</h4>
+          <h4 className="text-center">Choose layout for the section</h4>
           <div className="flex flex-col max-sm:items-center sm:flex-row flex-wrap justify-center gap-10 gap-x-10 sm:gap-y-4">
-            {chapterLayout.map((layoutType: LayoutChapterType, index: number) => (
+            {sectionLayout.map((layoutType: LayoutChapterType, index: number) => (
               <button
                 key={index}
-                onClick={() => createChapter(layoutType)}
+                onClick={() => createSection(layoutType)}
                 className="flex w-[184px] sm:w-1/4 flex-col items-start gap-y-1"
               >
                 <div
@@ -106,14 +89,17 @@ const AddChapterSection = (props: AddChapterSectionProps) => {
           </div>
         </div>
       )}
-      {isAddChapterButtonShow && (
-        <Button variant={'dashed'} onClick={showChooseLayoutBlock}>
-          <div>+</div>
-          <p>Add {props.isSubchapter ? 'subchapter' : 'chapter'}</p>
-        </Button>
-      )}
+
+      <Button
+        variant={props.variant}
+        className={props.variant === 'outline' ? 'max-w-[190px]' : ''}
+        onClick={showChooseLayoutBlock}
+      >
+        <div>+</div>
+        {props.variant === 'dashed' ? <p>Add subchapter</p> : <p>Add section</p>}
+      </Button>
     </section>
   )
 }
 
-export default AddChapterSection
+export default AddSectionBlock

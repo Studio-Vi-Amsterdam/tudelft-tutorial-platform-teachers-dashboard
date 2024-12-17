@@ -10,8 +10,7 @@ interface ChangeVideoThumbnailProps {
 
 const ChangeVideoThumbnail = (props: ChangeVideoThumbnailProps) => {
   const { selectedMedia, setFile } = props
-  const [path, setPath] = useState<string | null>(null)
-  console.log(path)
+  const [, setPath] = useState<string | null>(null)
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     accept: {

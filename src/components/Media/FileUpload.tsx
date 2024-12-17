@@ -97,7 +97,6 @@ export const FileUpload = (props: FileUploadProps) => {
               description: `${res.data.data.title} uploaded with ID: ${res.data.data.id}`,
             })
             if (index + 1 === files.length) {
-              console.log('files length == index + 1 ')
               setTimeout(() => {
                 setIsFetching(false)
                 handleDeleteFiles()

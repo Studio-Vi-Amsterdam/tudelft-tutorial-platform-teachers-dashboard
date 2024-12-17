@@ -47,6 +47,10 @@ const AddMediaElement = (props: AddMediaElementProps) => {
         return state.editor.tutorialTop.elements[listIndex][mediaType]
       }
 
+      if (block === 'tutorialBottomElements' && listIndex !== undefined) {
+        return state.editor.tutorialBottomContent[listIndex][mediaType]
+      }
+
       if (block === 'chapterElements' && chapterIndex !== undefined && listIndex !== undefined) {
         return state.editor.chapters[chapterIndex].elements[listIndex][mediaType]
       }
@@ -70,6 +74,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
         ]
       }
     } else {
+      // Chapter elements
       if (
         chapterIndex !== undefined &&
         listIndex !== undefined &&
@@ -82,6 +87,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
 
         return layoutItem ? layoutItem.image : undefined
       }
+
       if (
         chapterIndex !== undefined &&
         listIndex !== undefined &&
@@ -92,6 +98,75 @@ const AddMediaElement = (props: AddMediaElementProps) => {
         const element = elements ? elements[listIndex] : undefined
         const layoutItem = element ? element[layout] : undefined
 
+        return layoutItem ? layoutItem.video : undefined
+      }
+
+      // Chapter object
+      if (
+        chapterIndex !== undefined &&
+        listIndex === undefined &&
+        (layout === 'imageText' || layout === 'textImage')
+      ) {
+        const chapter = state.editor.chapters[chapterIndex]
+        return chapter ? chapter.image : undefined
+      }
+
+      if (
+        chapterIndex !== undefined &&
+        listIndex === undefined &&
+        (layout === 'videoText' || layout === 'textVideo')
+      ) {
+        const chapter = state.editor.chapters[chapterIndex]
+        return chapter ? chapter.video : undefined
+      }
+
+      // Tutorial top
+      if (
+        !chapterIndex &&
+        block === 'tutorialElements' &&
+        listIndex !== undefined &&
+        (layout === 'imageText' || layout === 'textImage')
+      ) {
+        const elements = state.editor.tutorialTop.elements
+        const element = elements ? elements[listIndex] : undefined
+        const layoutItem = element ? element[layout] : undefined
+        return layoutItem ? layoutItem.image : undefined
+      }
+
+      if (
+        !chapterIndex &&
+        block === 'tutorialElements' &&
+        listIndex !== undefined &&
+        (layout === 'videoText' || layout === 'textVideo')
+      ) {
+        const elements = state.editor.tutorialTop.elements
+        const element = elements ? elements[listIndex] : undefined
+        const layoutItem = element ? element[layout] : undefined
+        return layoutItem ? layoutItem.video : undefined
+      }
+
+      // Tutorial bottom
+      if (
+        !chapterIndex &&
+        block === 'tutorialBottomElements' &&
+        listIndex !== undefined &&
+        (layout === 'imageText' || layout === 'textImage')
+      ) {
+        const elements = state.editor.tutorialBottomContent
+        const element = elements ? elements[listIndex] : undefined
+        const layoutItem = element ? element[layout] : undefined
+        return layoutItem ? layoutItem.image : undefined
+      }
+
+      if (
+        !chapterIndex &&
+        block === 'tutorialBottomElements' &&
+        listIndex !== undefined &&
+        (layout === 'videoText' || layout === 'textVideo')
+      ) {
+        const elements = state.editor.tutorialBottomContent
+        const element = elements ? elements[listIndex] : undefined
+        const layoutItem = element ? element[layout] : undefined
         return layoutItem ? layoutItem.video : undefined
       }
     }
@@ -246,6 +321,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
         dispatch(
           setElementImage({
             block: props.block,
+            layout: props.layout,
             nestedIndex: props.chapterIndex,
             image: {
               id: mediaDataState.id ?? undefined,

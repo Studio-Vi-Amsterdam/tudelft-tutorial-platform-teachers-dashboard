@@ -51,17 +51,19 @@ const FileElement = (props: QuizElementProps) => {
   const fileState = useAppSelector((state: RootState) =>
     props.block === 'tutorialElements' && props.listIndex !== undefined
       ? state.editor.tutorialTop.elements[props.listIndex].file
-      : props.block === 'chapterElements' &&
-          props.chapterIndex !== undefined &&
-          props.listIndex !== undefined
-        ? state.editor.chapters[props.chapterIndex].elements[props.listIndex].file
-        : props.block === 'subchapterElements' &&
-          props.chapterIndex !== undefined &&
-          props.subchapterIndex !== undefined &&
-          props.listIndex !== undefined &&
-          state.editor.chapters[props.chapterIndex].subchapters[props.subchapterIndex].elements[
-            props.listIndex
-          ].file,
+      : props.block === 'tutorialBottomElements' && props.listIndex !== undefined
+        ? state.editor.tutorialBottomContent[props.listIndex].file
+        : props.block === 'chapterElements' &&
+            props.chapterIndex !== undefined &&
+            props.listIndex !== undefined
+          ? state.editor.chapters[props.chapterIndex].elements[props.listIndex].file
+          : props.block === 'subchapterElements' &&
+            props.chapterIndex !== undefined &&
+            props.subchapterIndex !== undefined &&
+            props.listIndex !== undefined &&
+            state.editor.chapters[props.chapterIndex].subchapters[props.subchapterIndex].elements[
+              props.listIndex
+            ].file,
   )
 
   useEffect(() => {

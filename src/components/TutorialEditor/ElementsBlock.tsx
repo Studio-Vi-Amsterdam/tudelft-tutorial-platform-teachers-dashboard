@@ -6,7 +6,7 @@ import {
   setElementInfobox,
   setElementText,
 } from 'src/redux/features/editorSlice'
-import { ChapterElementsObject } from 'src/types/types'
+import { AddElementsType, ChapterElementsObject } from 'src/types/types'
 import AddMediaElement from './AddMediaElement'
 import DeleteElementWraper from './DeleteElementWraper'
 import QuizElement from './QuizElement'
@@ -17,12 +17,14 @@ import BundledEditor from './BundledEditor'
 import SelectThumbnail from './SelectThumbnail'
 import SelectSubtitles from './SelectSubtitles'
 import ExternalVideoElement from './ExternalVideoElement'
+import AddElementBlock from './AddElementBlock'
 
 interface ElementsBlockProps {
   elements: Array<ChapterElementsObject>
   block: string
   chapterIndex?: number
   subchapterIndex?: number
+  handleAddElement: (value: string, index?: number, subchapterIndex?: number) => void
 }
 
 const ElementsBlock = (props: ElementsBlockProps) => {
@@ -69,6 +71,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
           layout,
           listIndex,
           value: val,
+          block,
         }),
       )
     }
@@ -82,6 +85,18 @@ const ElementsBlock = (props: ElementsBlockProps) => {
   ) => {
     dispatch(changeSubchapterTitle({ value, chapterIndex, layout, listIndex, block }))
   }
+
+  const tutorialElements: AddElementsType[] = [
+    'text block',
+    'infobox block',
+    'image',
+    'video',
+    'tutorial cards',
+    'download file',
+    'quiz',
+    'h5p element',
+    'external video',
+  ]
 
   return (
     <div className="flex w-full flex-col gap-y-6">
@@ -270,8 +285,10 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                       subchapterIndex={props.subchapterIndex}
                       listIndex={index}
                       layout="videoText"
+                      block={block}
                     />
                     <SelectSubtitles
+                      block={block}
                       video={element.videoText.video}
                       chapterIndex={props.chapterIndex}
                       subchapterIndex={props.subchapterIndex}
@@ -349,9 +366,11 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                       chapterIndex={props.chapterIndex}
                       subchapterIndex={props.subchapterIndex}
                       listIndex={index}
+                      block={block}
                       layout="textVideo"
                     />
                     <SelectSubtitles
+                      block={block}
                       video={element.textVideo.video}
                       chapterIndex={props.chapterIndex}
                       subchapterIndex={props.subchapterIndex}
@@ -449,11 +468,13 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                   chapterIndex={props.chapterIndex}
                   subchapterIndex={props.subchapterIndex}
                   listIndex={index}
+                  block={block}
                 />
                 <SelectSubtitles
                   chapterIndex={props.chapterIndex}
                   subchapterIndex={props.subchapterIndex}
                   listIndex={index}
+                  block={block}
                   video={element.video}
                 />
               </div>
@@ -468,6 +489,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               styles="bg-white top-3 right-1 w-6 h-6"
             >
               <ExternalVideoElement
+                block={block}
                 chapterIndex={props.chapterIndex}
                 attributes={element.externalVideo}
                 index={index}
@@ -520,6 +542,17 @@ const ElementsBlock = (props: ElementsBlockProps) => {
                 listIndex={index}
               />
             </DeleteElementWraper>
+          )}
+          {element?.defaultVal !== undefined && (
+            <>
+              <p className="mb-6 text-dim">Choose content element for one column layout</p>
+              <AddElementBlock
+                elements={tutorialElements}
+                index={props.chapterIndex}
+                subchapterIndex={subchapterIndex}
+                handleAddElement={props.handleAddElement}
+              />
+            </>
           )}
         </div>
       ))}
