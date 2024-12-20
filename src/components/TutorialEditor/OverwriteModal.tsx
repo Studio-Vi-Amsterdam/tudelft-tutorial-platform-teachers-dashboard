@@ -12,7 +12,7 @@ import { articlesAPI } from 'src/lib/api'
 import { useToast } from 'src/lib/use-toast'
 import { getStringArticleType } from 'src/lib/getStringArticleType'
 
-interface MigrateModalProps {
+interface RewriteModalProps {
   articleType: ArtictesType
   articleId: string | null
   isOpen: boolean
@@ -20,7 +20,7 @@ interface MigrateModalProps {
   articlesList: TitleIdentifierInterface[]
 }
 
-const MigrateModal = (props: MigrateModalProps) => {
+const RewriteModal = (props: RewriteModalProps) => {
   const params = new URLSearchParams(useLocation().search)
   const articleStatus = params.get('status')
   const articleTitle = useAppSelector((state: RootState) => state.editor.tutorialTop.title)
@@ -172,4 +172,4 @@ const MigrateModal = (props: MigrateModalProps) => {
   )
 }
 
-export default MigrateModal
+export default RewriteModal
