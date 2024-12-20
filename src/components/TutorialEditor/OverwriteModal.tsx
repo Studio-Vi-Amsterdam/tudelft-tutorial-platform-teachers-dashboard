@@ -11,6 +11,7 @@ import { useLocation } from 'react-router-dom'
 import { articlesAPI } from 'src/lib/api'
 import { useToast } from 'src/lib/use-toast'
 import { getStringArticleType } from 'src/lib/getStringArticleType'
+import { Capitalize } from '../../lib/capitalize'
 
 interface RewriteModalProps {
   articleType: ArtictesType
@@ -20,7 +21,7 @@ interface RewriteModalProps {
   articlesList: TitleIdentifierInterface[]
 }
 
-const RewriteModal = (props: RewriteModalProps) => {
+const OverwriteModal = (props: RewriteModalProps) => {
   const params = new URLSearchParams(useLocation().search)
   const articleStatus = params.get('status')
   const articleTitle = useAppSelector((state: RootState) => state.editor.tutorialTop.title)
@@ -52,18 +53,27 @@ const RewriteModal = (props: RewriteModalProps) => {
     const intCurrentArticleId = parseInt(props.articleId as string)
     // Right-side condition should never reached
     const intTargetArticleId = targetArticle?.id ?? 0
-    const succeed = await articlesAPI
-      .migrateArticle(intCurrentArticleId, intTargetArticleId)
-      .then((res) => res.status === 200)
-    if (succeed) {
-      handleSuccess()
-    } else {
-      toast({
-        title: 'Failed!',
-        description: 'Something went wrong!',
-        variant: 'destructive',
-      })
-    }
+    // const archivedArticle = await articlesAPI
+    //   .archivedArticle(props.articleType, intTargetArticleId)
+    //   .then((res) => {
+    //     console.log('ArchivedArticle')
+    //     console.log(res)
+    //   })
+    // const newVersionArticle = await articlesAPI
+    //   .newVersionArticle(props.articleType, intCurrentArticleId, articleTitleText)
+    //   .then((res) => {
+    //     console.log('NewVersionArticle')
+    //     console.log(res)
+    //   })
+    // if (succeed) {
+    //   handleSuccess()
+    // } else {
+    //   toast({
+    //     title: 'Failed!',
+    //     description: 'Something went wrong!',
+    //     variant: 'destructive',
+    //   })
+    // }
   }
 
   useEffect(() => {
@@ -83,8 +93,8 @@ const RewriteModal = (props: RewriteModalProps) => {
         <DialogHeader>
           <DialogTitle className="text-black font-normal font-sans text-h3 pr-8 text-left -tracking-1">
             {isSecondStep
-              ? 'Are you sure you want to migrate?'
-              : `Migrate the following ${stringArticleType} to`}
+              ? 'Are you sure you want to overwrite?'
+              : `Overwrite ${stringArticleType} to`}
           </DialogTitle>
         </DialogHeader>
         {isSecondStep ? (
@@ -99,7 +109,8 @@ const RewriteModal = (props: RewriteModalProps) => {
                     <SmallFileIcon />
                   </div>
                   <p className="font-normal font-inter text-xl leading-[1.875rem] ">
-                    <span className="capitalize">{articleStatus}</span> • {articleTitleText}
+                    <span className="capitalize">{articleStatus}</span> •{' '}
+                    {Capitalize(stringArticleType)} - {articleTitleText}
                   </p>
                 </div>
               </div>
@@ -114,7 +125,7 @@ const RewriteModal = (props: RewriteModalProps) => {
             </div>
             <p className="text-primary-skyBlue text-lg font-normal font-inter">
               <strong>Please note:</strong> The current draft {stringArticleType} will be published,
-              and the previously published tutorial will be moved to the archive.
+              and the previously published {stringArticleType} will be moved to the archive.
             </p>
           </>
         ) : (
@@ -128,7 +139,7 @@ const RewriteModal = (props: RewriteModalProps) => {
                   <SmallFileIcon />
                 </div>
                 <p className="font-normal font-inter text-xl leading-[1.875rem] ">
-                  {articleTitleText}
+                  {Capitalize(stringArticleType)} - {articleTitleText}
                 </p>
               </div>
             </div>
@@ -137,7 +148,7 @@ const RewriteModal = (props: RewriteModalProps) => {
                 possibleValues={props.articlesList}
                 inputValue={inputValue}
                 setInputValue={setInputValue}
-                inputPlaceholder="Search selected Tutorial"
+                inputPlaceholder={`Search selected ${Capitalize(stringArticleType)}`}
                 buttonPlaceholder="Select Tutorial"
                 getSuggestionId={(item) => item.id}
                 getSuggestionText={(item) => item.title}
@@ -172,4 +183,4 @@ const RewriteModal = (props: RewriteModalProps) => {
   )
 }
 
-export default RewriteModal
+export default OverwriteModal

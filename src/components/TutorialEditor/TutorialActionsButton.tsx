@@ -21,7 +21,7 @@ import {
 } from '../ui/AlertDialog'
 import { articlesAPI } from 'src/lib/api'
 import { ArtictesType, EditorState, UsersItemInterface } from 'src/types/types'
-import MigrateModal from './MigrateModal'
+import OverwriteModal from './OverwriteModal'
 import { validateArticle } from 'src/lib/validation'
 import { reducerParser } from 'src/lib/reducerParser'
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
@@ -42,7 +42,7 @@ interface ArticlePreviewInterface {
 
 const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState<boolean>(false)
-  const [isMigratePopupOpen, setIsMigratePopupOpen] = useState<boolean>(false)
+  const [isOverwritePopupOpen, setIsOverwritePopupOpen] = useState<boolean>(false)
   const [isFetching, setIsFetching] = useState<boolean>(false)
   // Data
   const [articlesList, setArticlesList] = useState<ArticlePreviewInterface[]>([])
@@ -90,7 +90,7 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
     })
   }
 
-  const openMigrateWindow = async () => {
+  const openOverwriteModal = async () => {
     const validationSucceed = validateArticle(
       props.editor,
       props.articleType,
@@ -113,7 +113,7 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
         () => {},
         postDraftErrorToast,
         true,
-      ).finally(() => setIsMigratePopupOpen(true))
+      ).finally(() => setIsOverwritePopupOpen(true))
     } else {
       toast({
         title: 'Failed!',
@@ -159,7 +159,7 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
             Actions
           </DropdownMenuLabel>
 
-          <DropdownMenuItem onClick={openMigrateWindow}>
+          <DropdownMenuItem onClick={openOverwriteModal}>
             <span className="flex justify-center items-center w-6 h-6">
               <AddFileIcon />
             </span>
@@ -180,9 +180,9 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <MigrateModal
-        isOpen={isMigratePopupOpen}
-        setIsOpen={setIsMigratePopupOpen}
+      <OverwriteModal
+        isOpen={isOverwritePopupOpen}
+        setIsOpen={setIsOverwritePopupOpen}
         articleId={props.articleId}
         articleType={props.articleType}
         articlesList={articlesList}

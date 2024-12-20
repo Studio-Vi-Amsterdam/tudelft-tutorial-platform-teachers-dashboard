@@ -48,6 +48,7 @@ export interface WhoHaveAccessInterface {
 export interface DashboardSectionProps {
   items: DashboardPublishedInterface[]
   heading: string
+  type: string
   fetched: boolean
 }
 
@@ -547,8 +548,10 @@ export interface DashboardDraftsInterface {
 export interface DashboardInterface {
   isDraftsLoaded: boolean
   isPublishedLoaded: boolean
+  isArchivedLoaded: boolean
   username: string
   drafts: DashboardPublishedInterface[] | []
+  archived: DashboardPublishedInterface[] | []
   published: DashboardPublishedInterface[] | []
 }
 

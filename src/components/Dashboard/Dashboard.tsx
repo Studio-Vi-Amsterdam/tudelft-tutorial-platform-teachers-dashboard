@@ -8,7 +8,7 @@ import {
 import { useEffect } from 'react'
 import { articlesAPI } from 'src/lib/api'
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
-import { setDashboardFetched, setDrafts, setPublished } from 'src/redux/features/dashboardSlice'
+import { setDashboardFetched, setDrafts, setPublished, setArchived } from 'src/redux/features/dashboardSlice'
 import { RootState } from 'src/redux/store'
 import { useAuth } from 'src/lib/AuthContext'
 
@@ -34,8 +34,10 @@ const Dashboard = () => {
   const dispatch = useAppDispatch()
   const published = useAppSelector((state: RootState) => state.dashboard.published)
   const drafts = useAppSelector((state: RootState) => state.dashboard.drafts)
+  const archived = useAppSelector((state: RootState) => state.dashboard.archived)
   const isDraftsFetched = useAppSelector((state: RootState) => state.dashboard.isDraftsLoaded)
   const isPublishedFetched = useAppSelector((state: RootState) => state.dashboard.isPublishedLoaded)
+  const isArchivedFetched = useAppSelector((state: RootState) => state.dashboard.isArchivedLoaded)
   const { isAuthenticated, username } = useAuth()
 
   useEffect(() => {
@@ -92,14 +94,32 @@ const Dashboard = () => {
         }
       }
 
+      const fetchArchivedArticles = async (
+        type: ArtictesType,
+      ): Promise<DashboardPublishedInterface[]> => {
+        try {
+          const response = await articlesAPI.getArchivedArticles(type)
+          return response.data.map((item: any) => ({
+            ...item,
+            type,
+            status: 'draft',
+          }))
+        } catch (error) {
+          console.error(error)
+          return []
+        }
+      }
+
       const articleTypes: ArtictesType[] = ['tutorials', 'courses', 'softwares', 'subjects']
 
       dispatch(setDashboardFetched({ row: 'published', value: false }))
       dispatch(setDashboardFetched({ row: 'drafts', value: false }))
+      dispatch(setDashboardFetched({ row: 'archived', value: false }))
 
-      const [publishedArticles, draftArticles] = await Promise.all([
+      const [publishedArticles, draftArticles, archivedArticles] = await Promise.all([
         Promise.all(articleTypes.map(fetchArticles)).then((results) => results.flat()),
         Promise.all(articleTypes.map(fetchDraftArticles)).then((results) => results.flat()),
+        Promise.all(articleTypes.map(fetchArchivedArticles)).then((results) => results.flat()),
       ])
 
       const sortByDate = (a: DashboardPublishedInterface, b: DashboardPublishedInterface) =>
@@ -107,14 +127,20 @@ const Dashboard = () => {
 
       let sortedPublishedArticles = publishedArticles.sort(sortByDate)
       let sortedDraftArticles = draftArticles.sort(sortByDate)
+      let sortedArchivedArticles = archivedArticles.sort(sortByDate)
 
       sortedPublishedArticles = await addPreviewLinks(sortedPublishedArticles)
       sortedDraftArticles = await addPreviewLinks(sortedDraftArticles)
+      sortedArchivedArticles = await addPreviewLinks(sortedArchivedArticles)
 
       dispatch(setPublished(sortedPublishedArticles))
       dispatch(setDashboardFetched({ row: 'published', value: true }))
+
       dispatch(setDrafts(sortedDraftArticles))
       dispatch(setDashboardFetched({ row: 'drafts', value: true }))
+
+      dispatch(setArchived(sortedArchivedArticles))
+      dispatch(setDashboardFetched({ row: 'archived', value: true }))
     }
 
     if (isAuthenticated) {
@@ -163,12 +189,27 @@ const Dashboard = () => {
           <DashboardTutorialSection
             heading="My published tutorials"
             items={published}
+            type="published"
             fetched={isPublishedFetched}
           />
         )}
 
         {drafts && (
-          <DashboardTutorialSection heading="My drafts" items={drafts} fetched={isDraftsFetched} />
+          <DashboardTutorialSection
+            heading="My drafts"
+            type="drafts"
+            items={drafts}
+            fetched={isDraftsFetched}
+          />
+        )}
+
+        {archived && (
+          <DashboardTutorialSection
+            heading="Archived"
+            type="archived"
+            items={archived}
+            fetched={isArchivedFetched}
+          />
         )}
       </main>
     )

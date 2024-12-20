@@ -46,7 +46,7 @@ const AutoCompleteInput = (props: AutoCompleteInputProps) => {
       {suggestions.length > 0 && (
         <ul
           id="autocomplete-list"
-          className="custom-vertical-scrollbar absolute top-full left-0 right-0 border pt-4 p-2 list-none rounded-b border-t-0 bg-background-seasalt max-h-40 overflow-y-auto before:absolute before:left-[4%] before:w-[92%] before:h-[1px] before:bg-tertiary-grey-dim before:bg-black before:top-0 flex flex-col gap-y-4"
+          className="custom-vertical-scrollbar absolute top-full left-0 right-0 border pt-4 p-2 list-none rounded-b border-t-0 bg-background-seasalt max-h-40 overflow-y-auto before:absolute before:left-[0] before:w-[100%] before:h-[1px] before:bg-tertiary-grey-dim before:bg-black before:top-0 flex flex-col gap-y-4"
           role="listbox"
         >
           {suggestions.map((suggestion, index) => (

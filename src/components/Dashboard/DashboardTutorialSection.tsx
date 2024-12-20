@@ -10,11 +10,9 @@ const DashboardTutorialSection = (props: DashboardSectionProps) => {
       {fetched ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {items.length !== 0 ? (
-            items.map((item, index) => (
-              <DashboardCard item={item} key={index} draft={heading === 'My drafts'} />
-            ))
+            items.map((item, index) => <DashboardCard item={item} key={index} type={props.type} />)
           ) : (
-            <>No published articles</>
+            <>No {props.type} articles</>
           )}
         </div>
       ) : (
