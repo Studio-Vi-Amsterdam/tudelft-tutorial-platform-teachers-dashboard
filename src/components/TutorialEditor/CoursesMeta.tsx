@@ -320,14 +320,14 @@ const CoursesMeta = () => {
                       <input
                         type="text"
                         placeholder="Search keyword"
+                        className={`w-full p-4 rounded placeholder:text-[#96969B] border text-base bg-seasalt border-dim ${!belongsFields.keywords.isValid && errValidationStyle}`}
                         value={belongsFields.keywords.value}
                         onChange={(e) => handleKeywordInputChange(e.target.value)}
-                        className={`w-full p-4 rounded border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible ${!belongsFields.keywords.isValid && errValidationStyle}`}
                         onFocus={() => setShowDropdown(true)}
                         onBlur={() =>
                           setTimeout(() => {
                             setShowDropdown(false)
-                          }, 100)
+                          }, 1000)
                         }
                       />
                       {showDropdown &&
@@ -335,22 +335,23 @@ const CoursesMeta = () => {
                         belongsFields.keywords.value.length > 0 && (
                           <div
                             className={
-                              ' absolute top-full w-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
+                              ' absolute top-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
                             }
                           >
-                            {displayedKeywords.map((item, index) => (
-                              <button
-                                className="w-full text-left hover:bg-tertiary-grey-silver px-4"
-                                key={index}
-                                onClick={() => handleKeywordSelect(item)}
-                              >
-                                {item}
-                              </button>
-                            ))}
+                            {displayedKeywords &&
+                              displayedKeywords.map((item, index) => (
+                                <button
+                                  className="w-full text-left hover:bg-tertiary-grey-silver px-4"
+                                  key={index}
+                                  onClick={() => handleKeywordSelect(item)}
+                                >
+                                  {item}
+                                </button>
+                              ))}
                           </div>
                         )}
                     </div>
-                    <div className=" h-[58px]">
+                    <div className="h-[58px]">
                       <Button
                         className="h-full flex items-center"
                         variant={'default'}
@@ -364,7 +365,7 @@ const CoursesMeta = () => {
               </div>
               {belongsFields.keywords.list.length > 0 && (
                 <div className="flex w-full flex-row justify-end">
-                  <div className="flex w-[calc(100%-112px)] sm:w-9/12 sm:flex-row flex-col max-sm:items-start flex-wrap gap-x-2 gap-y-2">
+                  <div className="flex sm:w-9/12 w-[calc(100%-112px)] sm:flex-row flex-col max-sm:items-start flex-wrap gap-x-2 gap-y-2">
                     {belongsFields.keywords.list.map((keyword, index) => (
                       <button
                         key={index}
@@ -462,18 +463,18 @@ const CoursesMeta = () => {
                 <div className="w-9/12">
                   <>
                     <div className="w-full">
-                      <div className="relative mx-auto flex w-full flex-col gap-y-4 z-10">
+                      <div className="relative mx-auto flex w-full flex-col gap-y-4 pt-4 z-10">
                         <input
                           type="text"
                           placeholder="search teacher"
-                          className={`w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone ${!responsibleFields.teachers.isValid && errValidationStyle}`}
+                          className={`w-full p-4 rounded border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible ${!responsibleFields.teachers.isValid && errValidationStyle}`}
                           value={responsibleFields.teachers.value}
                           onChange={(e) => handleTeacherInputChange(e.target.value)}
                           onFocus={() => setShowDropdownTeacher(true)}
                           onBlur={() =>
                             setTimeout(() => {
                               setShowDropdownTeacher(false)
-                            }, 100)
+                            }, 1000)
                           }
                         />
                         {showDropdownTeacher &&
@@ -481,7 +482,7 @@ const CoursesMeta = () => {
                           responsibleFields.teachers.value.length > 0 && (
                             <div
                               className={
-                                'absolute top-full w-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
+                                'absolute top-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
                               }
                             >
                               {displayedTeachers &&
@@ -502,7 +503,7 @@ const CoursesMeta = () => {
                 </div>
               </div>
               <div className="flex w-full flex-row justify-end">
-                <div className="flex sm:w-9/12 w-[calc(100%-112px)] flex-row flex-wrap gap-x-2 gap-y-2">
+                <div className="flex sm:w-9/12 w-[calc(100%-112px)] flex-row flex-wrap gap-x-2 gap-y-2 ">
                   {responsibleFields.teachers.list &&
                     responsibleFields.teachers.list.map((keyword, index) => (
                       <button

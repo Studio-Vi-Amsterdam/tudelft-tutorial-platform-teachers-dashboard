@@ -332,8 +332,15 @@ export const AddFileIcon = () => (
   </svg>
 )
 
-export const TrashCanIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const TrashCanIcon = (props: any) => (
+  <svg
+    className={props?.className}
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path
       d="M14 3.98763C11.78 3.76763 9.54667 3.6543 7.32 3.6543C6 3.6543 4.68 3.72096 3.36 3.8543L2 3.98763"
       stroke="currentColor"
@@ -396,6 +403,17 @@ export const EyeIcon = () => (
     <circle cx="8" cy="6" r="2.25" stroke="currentColor" strokeWidth="1.5" />
   </svg>
 )
+export const LocationIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M5.25201 9.97523L16.9111 4.42326C18.6115 3.61355 20.3864 5.38846 19.5767 7.08885L14.0248 18.748C13.2661 20.3413 10.966 20.2427 10.3464 18.5904L9.3192 15.8512C9.11639 15.3104 8.68964 14.8836 8.14879 14.6808L5.40963 13.6536C3.75729 13.034 3.65873 10.7339 5.25201 9.97523Z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
 
 export const MoreIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -429,8 +447,15 @@ export const MoreIcon = () => (
   </svg>
 )
 
-export const ArrowRight = () => (
-  <svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const ArrowRight = (props: any) => (
+  <svg
+    className={props?.className}
+    width="6"
+    height="12"
+    viewBox="0 0 6 12"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -466,6 +491,17 @@ export const ArrowLeft = () => (
       fillRule="evenodd"
       clipRule="evenodd"
       d="M11.697 0.693284C12.101 1.08381 12.101 1.71697 11.697 2.1075L2.49746 11.0004L11.697 19.8933C12.101 20.2838 12.101 20.917 11.697 21.3075C11.293 21.698 10.638 21.698 10.234 21.3075L0.302994 11.7075C0.108991 11.52 1.43241e-06 11.2656 1.44401e-06 11.0004C1.4556e-06 10.7352 0.108991 10.4808 0.302994 10.2933L10.234 0.693284C10.638 0.302759 11.293 0.302759 11.697 0.693284Z"
+      fill="currentColor"
+    />
+  </svg>
+)
+
+export const ChevronDown = () => (
+  <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M0.845665 0.151496C1.04093 -0.0504988 1.35751 -0.0504988 1.55277 0.151496L5.99922 4.75127L10.4457 0.151496C10.6409 -0.0504988 10.9575 -0.0504988 11.1528 0.151496C11.348 0.353492 11.348 0.680991 11.1528 0.882986L6.35277 5.8485C6.259 5.9455 6.13183 6 5.99922 6C5.86661 6 5.73943 5.9455 5.64567 5.8485L0.845665 0.882986C0.650403 0.680991 0.650403 0.353492 0.845665 0.151496Z"
       fill="currentColor"
     />
   </svg>

@@ -45,6 +45,9 @@ export const articlesAPI = {
   getDraftArticles(type: ArtictesType) {
     return instance.get(`/${type}?status=draft`)
   },
+  getArchivedArticles(type: ArtictesType) {
+    return instance.get(`/${type}?status=archived`)
+  },
   getSingleArticle(type: ArtictesType, id: number) {
     return instance.get(`/${type}/single/?id=${id}`)
   },
@@ -65,6 +68,17 @@ export const articlesAPI = {
   },
   getInfo(type: ArtictesType) {
     return instance.get(`/${type}/create/info`)
+  },
+  // migrateArticle(type: ArtictesType, title: string, sourceId: number, targetId: number) {
+  //   this.archivedArticle(type, targetId).then((res) => {
+  //     return this.newVersionArticle(type, sourceId, title)
+  //   })
+  // },
+  archivedArticle(type: ArtictesType, targetId: number): Promise<any> {
+    return instance.post(`/${type}/single/publish-new-version`, { id: targetId })
+  },
+  newVersionArticle(type: ArtictesType, sourceId: number, title: string): Promise<any> {
+    return instance.post(`/${type}/single/new-version`, { id: sourceId, title })
   },
 }
 

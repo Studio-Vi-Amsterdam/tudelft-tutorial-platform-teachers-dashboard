@@ -514,95 +514,103 @@ export const reducerParser = {
 
     const parseChapters = async (responseChapters: ResponseArticleChapterInterface[]) => {
       const extendedChapters = await getExtendedChapters(responseChapters)
-
       const newChapters = extendedChapters.map((chapter: ResponseChapterInterface) => {
-        const chapterLayout = (): LayoutChapterType => {
-          switch (chapter.content[0].block_name) {
-            case 'tu-delft-image-text':
-              return 'image left'
-            case 'tu-delft-text-image':
-              return 'image right'
-            case 'tu-delft-video-text':
-              return 'video left'
-            case 'tu-delft-text-video':
-              return 'video right'
-            default:
-              return '1 column'
+        if (chapter?.content !== null) {
+          const chapterLayout = (): LayoutChapterType => {
+            switch (chapter.content[0].block_name) {
+              case 'tu-delft-image-text':
+                return 'image left'
+              case 'tu-delft-text-image':
+                return 'image right'
+              case 'tu-delft-video-text':
+                return 'video left'
+              case 'tu-delft-text-video':
+                return 'video right'
+              default:
+                return '1 column'
+            }
           }
+          const newChapter: ChapterInterface = {
+            id: chapter.id,
+            layout: chapterLayout(),
+            title: { text: chapter.title, isValid: true },
+            text: { text: chapter.content[0].block_data.content || '', isValid: true },
+            elements: chapter.content.length > 0 ? parsedElements(chapter.content.slice(1)) : [],
+            subchapters: [],
+            video:
+              chapterLayout() === 'video left' || chapterLayout() === 'video right'
+                ? {
+                    id: chapter.content[0].block_data.video,
+                    link: chapter.content[0].block_data.video_url || '',
+                    url: chapter.content[0].block_data.video_url || '',
+                    type: 'video',
+                    format: 'test',
+                    isValid: !!chapter.content[0].block_data.video,
+                    title: '',
+                    publishDate: '',
+                    description: chapter.content[0].block_data.description ?? '',
+                    thumbnail: {
+                      id: chapter.content[0].block_data.thumbnail ?? undefined,
+                      url: chapter.content[0].block_data.thumbnail_url,
+                      description: '',
+                      format: '',
+                      type: 'image',
+                      link: chapter.content[0].block_data.thumbnail_url ?? '',
+                      publishDate: '',
+                      title: '',
+                      isValid: true,
+                    },
+                    subtitles: {
+                      id: chapter.content[0].block_data.subtitles ?? undefined,
+                      url: chapter.content[0].block_data.subtitles_url,
+                      description: '',
+                      format: '',
+                      type: 'image',
+                      link: chapter.content[0].block_data.subtitles_url ?? '',
+                      publishDate: '',
+                      title: '',
+                      isValid: true,
+                    },
+                  }
+                : undefined,
+            image:
+              chapterLayout() === 'image left' || chapterLayout() === 'image right'
+                ? {
+                    id: chapter.content[0].block_data.image,
+                    url: chapter.content[0].block_data.image_url || '',
+                    link: chapter.content[0].block_data.image_url || '',
+                    type: 'image',
+                    format: 'test',
+                    isValid: !!chapter.content[0].block_data.image,
+                    title: '',
+                    publishDate: '',
+                    description: chapter.content[0].block_data.description ?? '',
+                    thumbnail: {
+                      id: chapter.content[0].block_data.thumbnail ?? undefined,
+                      url: chapter.content[0].block_data.thumbnail_url,
+                      description: '',
+                      format: '',
+                      type: 'image',
+                      link: chapter.content[0].block_data.thumbnail_url ?? '',
+                      publishDate: '',
+                      title: '',
+                      isValid: true,
+                    },
+                    hasZoom: chapter.content[0].block_data.hasZoom ?? false,
+                  }
+                : undefined,
+          }
+          return newChapter
         }
-        const newChapter: ChapterInterface = {
+        return {
           id: chapter.id,
-          layout: chapterLayout(),
+          layout: '1 column',
           title: { text: chapter.title, isValid: true },
-          text: { text: chapter.content[0].block_data.content || '', isValid: true },
-          elements: chapter.content.length > 0 ? parsedElements(chapter.content.slice(1)) : [],
+          text: { text: '', isValid: false },
+          elements: [],
           subchapters: [],
-          video:
-            chapterLayout() === 'video left' || chapterLayout() === 'video right'
-              ? {
-                  id: chapter.content[0].block_data.video,
-                  link: chapter.content[0].block_data.video_url || '',
-                  url: chapter.content[0].block_data.video_url || '',
-                  type: 'video',
-                  format: 'test',
-                  isValid: !!chapter.content[0].block_data.video,
-                  title: '',
-                  publishDate: '',
-                  description: chapter.content[0].block_data.description ?? '',
-                  thumbnail: {
-                    id: chapter.content[0].block_data.thumbnail ?? undefined,
-                    url: chapter.content[0].block_data.thumbnail_url,
-                    description: '',
-                    format: '',
-                    type: 'image',
-                    link: chapter.content[0].block_data.thumbnail_url ?? '',
-                    publishDate: '',
-                    title: '',
-                    isValid: true,
-                  },
-                  subtitles: {
-                    id: chapter.content[0].block_data.subtitles ?? undefined,
-                    url: chapter.content[0].block_data.subtitles_url,
-                    description: '',
-                    format: '',
-                    type: 'image',
-                    link: chapter.content[0].block_data.subtitles_url ?? '',
-                    publishDate: '',
-                    title: '',
-                    isValid: true,
-                  },
-                }
-              : undefined,
-          image:
-            chapterLayout() === 'image left' || chapterLayout() === 'image right'
-              ? {
-                  id: chapter.content[0].block_data.image,
-                  url: chapter.content[0].block_data.image_url || '',
-                  link: chapter.content[0].block_data.image_url || '',
-                  type: 'image',
-                  format: 'test',
-                  isValid: !!chapter.content[0].block_data.image,
-                  title: '',
-                  publishDate: '',
-                  description: chapter.content[0].block_data.description ?? '',
-                  thumbnail: {
-                    id: chapter.content[0].block_data.thumbnail ?? undefined,
-                    url: chapter.content[0].block_data.thumbnail_url,
-                    description: '',
-                    format: '',
-                    type: 'image',
-                    link: chapter.content[0].block_data.thumbnail_url ?? '',
-                    publishDate: '',
-                    title: '',
-                    isValid: true,
-                  },
-                  hasZoom: chapter.content[0].block_data.hasZoom ?? false,
-                }
-              : undefined,
         }
-        return newChapter
       })
-
       return newChapters
     }
     let reducerObject: EditorState | object = {}

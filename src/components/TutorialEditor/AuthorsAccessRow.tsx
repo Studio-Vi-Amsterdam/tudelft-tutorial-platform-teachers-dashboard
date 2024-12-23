@@ -5,7 +5,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '../ui/Dropdown'
 
@@ -16,9 +15,8 @@ interface AuthorsAccessRowProps {
   removeEditor: (id: number) => Promise<boolean>
 }
 
-const AuthorsAccesRow = (props: AuthorsAccessRowProps) => {
-  const { item, role, removeEditor, toggleRole } = props
-  const oppositeRole = role === 'editor' ? 'viewer' : role
+const AuthorsAccessRow = (props: AuthorsAccessRowProps) => {
+  const { item, role, removeEditor } = props
 
   return (
     <div className="flex flex-row max-sm:flex-col max-sm:items-start items-center justify-between">
@@ -39,14 +37,8 @@ const AuthorsAccesRow = (props: AuthorsAccessRowProps) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
-          className="p-4 mt-2 pt-2 flex flex-col gap-y-4 bg-background-aliceBlue rounded border-none"
+          className="p-4 mt-2 flex flex-col gap-y-4 bg-background-aliceBlue rounded border-none"
         >
-          <DropdownMenuLabel className="font-normal text-sm text-primary-skyBlue">
-            Change to
-          </DropdownMenuLabel>
-          <DropdownMenuItem className="capitalize" onClick={() => toggleRole(item.id)}>
-            {oppositeRole}
-          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => removeEditor(item.id)}>Remove</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -54,4 +46,4 @@ const AuthorsAccesRow = (props: AuthorsAccessRowProps) => {
   )
 }
 
-export default AuthorsAccesRow
+export default AuthorsAccessRow

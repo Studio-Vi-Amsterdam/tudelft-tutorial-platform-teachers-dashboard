@@ -1,3 +1,8 @@
+export interface TitleIdentifierInterface {
+  id: number
+  title: string
+}
+
 export interface UsersItemInterface {
   id: number
   email: string
@@ -26,11 +31,9 @@ export type AddElementsType =
   | 'external video'
 
 export type ArtictesType = 'softwares' | 'courses' | 'tutorials' | 'subjects'
-export interface DashboardPublishedInterface {
-  id: number
+export interface DashboardPublishedInterface extends TitleIdentifierInterface {
   featured_image: null | boolean | string
   publish_date: string
-  title: string
   type: ArtictesType
   previewLink: string | null
   status: 'draft' | 'published' | 'new'
@@ -45,6 +48,7 @@ export interface WhoHaveAccessInterface {
 export interface DashboardSectionProps {
   items: DashboardPublishedInterface[]
   heading: string
+  type: string
   fetched: boolean
 }
 
@@ -199,9 +203,7 @@ export interface MoveChapterInterface {
   parentIndex?: number
 }
 
-export interface ProposedList {
-  id: number
-  title: string
+export interface ProposedList extends TitleIdentifierInterface {
   isValid: boolean
 }
 
@@ -546,15 +548,16 @@ export interface DashboardDraftsInterface {
 export interface DashboardInterface {
   isDraftsLoaded: boolean
   isPublishedLoaded: boolean
+  isArchivedLoaded: boolean
   username: string
   drafts: DashboardPublishedInterface[] | []
+  archived: DashboardPublishedInterface[] | []
   published: DashboardPublishedInterface[] | []
 }
 
-export interface ResponseArticleChapterInterface {
-  id: number
-  title: string
+export interface ResponseArticleChapterInterface extends TitleIdentifierInterface {
   permalink: string
+  content: null | string
 }
 
 export interface ResponseArticleInterface {
@@ -629,9 +632,7 @@ export interface ResponseContentBlock {
   block_name: ResponseBlockName
   block_data: ResponseBlockData
 }
-export interface ResponseChapterInterface {
-  id: number
-  title: string
+export interface ResponseChapterInterface extends TitleIdentifierInterface {
   content: ResponseContentBlock[]
   belongs_to: boolean | number
 }
