@@ -84,8 +84,8 @@ const FileElement = (props: QuizElementProps) => {
           subchapterIndex: props.subchapterIndex,
           file: {
             file: fileData,
-            description: { text: fileDescription, isValid: fileDescription.trim().length > 0 },
-            title: { text: fileTitle, isValid: fileTitle.trim().length > 0 },
+            description: { text: fileDescription, isValid: fileDescription?.trim()?.length > 0 },
+            title: { text: fileTitle, isValid: fileTitle?.trim()?.length > 0 },
           },
         }),
       )
