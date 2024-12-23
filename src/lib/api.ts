@@ -75,7 +75,7 @@ export const articlesAPI = {
   //   })
   // },
   archivedArticle(type: ArtictesType, targetId: number): Promise<any> {
-    return instance.put(`/${type}/single/publish-new-version`, { id: targetId })
+    return instance.post(`/${type}/single/publish-new-version`, { id: targetId })
   },
   newVersionArticle(type: ArtictesType, sourceId: number, title: string): Promise<any> {
     return instance.post(`/${type}/single/new-version`, { id: sourceId, title })

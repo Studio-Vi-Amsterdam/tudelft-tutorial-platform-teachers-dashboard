@@ -14,7 +14,6 @@ import {
 } from 'src/types/types'
 import ChapterSection from './ChapterSection'
 import EditorSidebar from './EditorSidebar'
-import TutorialBottomSection from './TutorialBottomSection'
 import { articlesAPI, taxonomiesAPI, userAPI } from 'src/lib/api'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getInfo, reducerParser } from 'src/lib/reducerParser'
@@ -190,7 +189,7 @@ const BlogEditor = () => {
                 ))}
 
               <AddChapterSection articleType={articleType} />
-              <TutorialBottomSection articleType={articleType} />
+              {/* <TutorialBottomSection articleType={articleType} /> */}
               {articleType === 'tutorials' && <TutorialsMeta />}
               {articleType === 'courses' && <CoursesMeta />}
               {articleType === 'softwares' && <SoftwaresMeta />}

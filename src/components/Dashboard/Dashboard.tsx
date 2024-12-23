@@ -8,7 +8,12 @@ import {
 import { useEffect } from 'react'
 import { articlesAPI } from 'src/lib/api'
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
-import { setDashboardFetched, setDrafts, setPublished, setArchived } from 'src/redux/features/dashboardSlice'
+import {
+  setDashboardFetched,
+  setDrafts,
+  setPublished,
+  setArchived,
+} from 'src/redux/features/dashboardSlice'
 import { RootState } from 'src/redux/store'
 import { useAuth } from 'src/lib/AuthContext'
 
@@ -41,28 +46,6 @@ const Dashboard = () => {
   const { isAuthenticated, username } = useAuth()
 
   useEffect(() => {
-    const fetchPreviewLink = async (type: ArtictesType, id: number): Promise<string | null> => {
-      try {
-        const response = await articlesAPI.getPreviewLink(type, id)
-        return response.data.preview_link || null
-      } catch (error) {
-        console.error(`Error fetching preview link for ${type} with id ${id}:`, error)
-        return null
-      }
-    }
-
-    const addPreviewLinks = async (
-      articles: DashboardPublishedInterface[],
-    ): Promise<DashboardPublishedInterface[]> => {
-      const articlesWithPreviewLinks = await Promise.all(
-        articles.map(async (article) => {
-          const previewLink = await fetchPreviewLink(article.type, article.id)
-          return { ...article, previewLink }
-        }),
-      )
-      return articlesWithPreviewLinks
-    }
-
     const fetchData = async () => {
       const fetchArticles = async (type: ArtictesType): Promise<DashboardPublishedInterface[]> => {
         try {
@@ -125,13 +108,9 @@ const Dashboard = () => {
       const sortByDate = (a: DashboardPublishedInterface, b: DashboardPublishedInterface) =>
         new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime()
 
-      let sortedPublishedArticles = publishedArticles.sort(sortByDate)
-      let sortedDraftArticles = draftArticles.sort(sortByDate)
-      let sortedArchivedArticles = archivedArticles.sort(sortByDate)
-
-      sortedPublishedArticles = await addPreviewLinks(sortedPublishedArticles)
-      sortedDraftArticles = await addPreviewLinks(sortedDraftArticles)
-      sortedArchivedArticles = await addPreviewLinks(sortedArchivedArticles)
+      const sortedPublishedArticles = publishedArticles.sort(sortByDate)
+      const sortedDraftArticles = draftArticles.sort(sortByDate)
+      const sortedArchivedArticles = archivedArticles.sort(sortByDate)
 
       dispatch(setPublished(sortedPublishedArticles))
       dispatch(setDashboardFetched({ row: 'published', value: true }))

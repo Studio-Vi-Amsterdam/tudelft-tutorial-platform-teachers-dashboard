@@ -62,8 +62,16 @@ const DashboardCard = (props: DashboardCardProps) => {
       .deleteArticle(item.type, item.id)
       .then((res) => res.status === 200 && afterDeleteAction())
   }
-  const openPreviewTab = () => {
-    item.previewLink && window.open(item.previewLink, '_blank', 'noopener,noreferrer')
+  const openPreviewTab = async () => {
+    try {
+      const response = await articlesAPI.getPreviewLink(item.type, item.id)
+      response.data &&
+        response.data.preview_link &&
+        window.open(response.data.preview_link, '_blank', 'noopener,noreferrer')
+    } catch (error) {
+      console.error(`Error fetching preview link for ${type} with id ${item.id}:`, error)
+      return null
+    }
   }
 
   const users = [

@@ -20,7 +20,12 @@ import {
   AlertDialogTitle,
 } from '../ui/AlertDialog'
 import { articlesAPI } from 'src/lib/api'
-import { ArtictesType, EditorState, UsersItemInterface } from 'src/types/types'
+import {
+  ArtictesType,
+  DashboardPublishedInterface,
+  EditorState,
+  UsersItemInterface,
+} from 'src/types/types'
 import OverwriteModal from './OverwriteModal'
 import { validateArticle } from 'src/lib/validation'
 import { reducerParser } from 'src/lib/reducerParser'
@@ -127,14 +132,44 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response: ArticlePreviewInterface[] = await articlesAPI
-          .getArticles(props.articleType)
-          .then((res) =>
-            res.data
-              ? res.data.map(({ id, title }: { id: number; title: string }) => ({ id, title }))
-              : [],
-          )
-        setArticlesList(response)
+        const articleTypes = [props.articleType]
+        const fetchArticles = async (
+          type: ArtictesType,
+        ): Promise<DashboardPublishedInterface[]> => {
+          try {
+            const response = await articlesAPI.getArticles(type)
+            return response.data.map((item: any) => ({
+              ...item,
+              type,
+              status: 'published',
+            }))
+          } catch (error: any) {
+            console.error(error)
+            return []
+          }
+        }
+        const fetchDraftArticles = async (
+          type: ArtictesType,
+        ): Promise<DashboardPublishedInterface[]> => {
+          try {
+            const response = await articlesAPI.getDraftArticles(type)
+            return response.data.map((item: any) => ({
+              ...item,
+              type,
+              status: 'draft',
+            }))
+          } catch (error) {
+            console.error(error)
+            return []
+          }
+        }
+
+        const [publishedArticles, draftArticles] = await Promise.all([
+          Promise.all(articleTypes.map(fetchArticles)).then((results) => results.flat()),
+          Promise.all(articleTypes.map(fetchDraftArticles)).then((results) => results.flat()),
+        ])
+
+        setArticlesList([...draftArticles, ...publishedArticles])
       } catch (error) {
         console.error(error)
         setArticlesList([])

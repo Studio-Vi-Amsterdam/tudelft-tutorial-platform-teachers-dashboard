@@ -8,7 +8,6 @@ import { useAppSelector } from 'src/redux/hooks'
 import { RootState } from 'src/redux/store'
 import clsx from 'clsx'
 import { useLocation } from 'react-router-dom'
-import { articlesAPI } from 'src/lib/api'
 import { useToast } from 'src/lib/use-toast'
 import { getStringArticleType } from 'src/lib/getStringArticleType'
 import { Capitalize } from '../../lib/capitalize'
@@ -41,7 +40,7 @@ const OverwriteModal = (props: RewriteModalProps) => {
     setInputValue('')
     toast({
       title: 'Success!',
-      description: `This ${stringArticleType} is now migrated to ${targetArticle?.title ?? 'selected ' + stringArticleType}.`,
+      description: `This ${stringArticleType} is now overwrite with ${targetArticle?.title ?? 'selected ' + stringArticleType}.`,
     })
     setTargetArticle(undefined)
     setIsSecondStep(false)
@@ -50,30 +49,33 @@ const OverwriteModal = (props: RewriteModalProps) => {
   }
 
   const handleSubmit = async () => {
-    const intCurrentArticleId = parseInt(props.articleId as string)
-    // Right-side condition should never reached
-    const intTargetArticleId = targetArticle?.id ?? 0
-    // const archivedArticle = await articlesAPI
-    //   .archivedArticle(props.articleType, intTargetArticleId)
-    //   .then((res) => {
-    //     console.log('ArchivedArticle')
-    //     console.log(res)
-    //   })
+    // const intCurrentArticleId = parseInt(props.articleId as string)
+    // const intTargetArticleId = targetArticle?.id ?? 0
+
     // const newVersionArticle = await articlesAPI
     //   .newVersionArticle(props.articleType, intCurrentArticleId, articleTitleText)
-    //   .then((res) => {
-    //     console.log('NewVersionArticle')
-    //     console.log(res)
+    //   .then((res) => res.data)
+    //   .catch((error) => {
+    //     toast({
+    //       title: 'Failed!',
+    //       description: error.response.data.data,
+    //       variant: 'destructive',
+    //     })
     //   })
-    // if (succeed) {
+    // const archivedArticle = await articlesAPI
+    //   .archivedArticle(props.articleType, intTargetArticleId)
+    //   .then((res) => res.data)
+    //   .catch((error) => {
+    //     toast({
+    //       title: 'Failed!',
+    //       description: error.response.data.data,
+    //       variant: 'destructive',
+    //     })
+    //   })
+    // if (archivedArticle?.data === true && newVersionArticle?.data === true) {
     //   handleSuccess()
-    // } else {
-    //   toast({
-    //     title: 'Failed!',
-    //     description: 'Something went wrong!',
-    //     variant: 'destructive',
-    //   })
     // }
+    handleSuccess()
   }
 
   useEffect(() => {

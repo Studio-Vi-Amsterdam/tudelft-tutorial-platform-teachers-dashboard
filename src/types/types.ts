@@ -557,6 +557,7 @@ export interface DashboardInterface {
 
 export interface ResponseArticleChapterInterface extends TitleIdentifierInterface {
   permalink: string
+  content: null | string
 }
 
 export interface ResponseArticleInterface {
