@@ -34,6 +34,8 @@ export type ArtictesType = 'softwares' | 'courses' | 'tutorials' | 'subjects'
 export interface DashboardPublishedInterface extends TitleIdentifierInterface {
   featured_image: null | boolean | string
   publish_date: string
+  editors: UsersItemInterface[]
+  last_modified_data: string
   type: ArtictesType
   previewLink: string | null
   status: 'draft' | 'published' | 'new'
