@@ -74,19 +74,6 @@ const DashboardCard = (props: DashboardCardProps) => {
     }
   }
 
-  const users = [
-    {
-      first_name: 'Oleksandr',
-      last_name: 'Moroziuk',
-      email: 'omarmaduk@gmail.com',
-    },
-    {
-      first_name: 'Taras',
-      last_name: 'Chornata',
-      email: 'omarmaduk@gmail.com',
-    },
-  ]
-
   return (
     <div className="flex  flex-col gap-y-4 rounded-[4px] bg-background-aliceBlue p-4">
       <div className="flex flex-row items-center justify-between">
@@ -134,42 +121,47 @@ const DashboardCard = (props: DashboardCardProps) => {
           </div>
           <div className="text-sm">
             <p className="text-[#666666] w-20 text-left text-sm">Last Edit</p>
-            {'no data'}
+            {localFormatDate(item.last_modified_data)}
           </div>
-          <div className="text-sm items-center flex">
-            <p className="text-[#666666] w-20 text-left text-sm">Editor(s):</p>
-            <TooltipProvider delayDuration={0}>
-              {users.map((el, i) => (
-                <Tooltip key={i + el.first_name}>
-                  <TooltipTrigger className={cn({ 'ml-[-8px]': i > 0 }, `z-[${100 - i}]`)}>
-                    <div className="w-8 h-8 flex text-[11px] items-center justify-center border text-white rounded-full bg-[#0C2340] border-[#EFF1F3]">
-                      {el.first_name.substring(0, 1)}
-                      {el.last_name.substring(0, 1)}
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent align="center" side="bottom" className="avatar-tooltip">
-                    <div className="bg-[#525252] relative p-[6px] rounded-[4px]">
-                      {el.first_name} {el.last_name}
-                      <span className="arrow absolute left-[50%]">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="11"
-                          height="7"
-                          viewBox="0 0 11 7"
-                          fill="none"
-                        >
-                          <path
-                            d="M-9.53674e-07 7L11 7L7.14808 1.39721C6.35339 0.24129 4.64661 0.24129 3.85192 1.39721L-9.53674e-07 7Z"
-                            fill="#525252"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              ))}
-            </TooltipProvider>
-          </div>
+          {item.editors.length > 0 && (
+            <div className="text-sm items-center flex">
+              <p className="text-[#666666] w-20 text-left text-sm">Editor(s):</p>
+              <TooltipProvider delayDuration={0}>
+                {item.editors.map((el, i) => (
+                  <Tooltip key={i + el.email + el.first_name}>
+                    <TooltipTrigger className={cn({ 'ml-[-8px]': i > 0 }, `z-[${100 - i}]`)}>
+                      <div className="w-8 h-8 flex text-[11px] items-center justify-center border text-white rounded-full bg-[#0C2340] border-[#EFF1F3]">
+                        {el.first_name || el.last_name
+                          ? el.first_name.substring(0, 1) + el.last_name.substring(0, 1)
+                          : el.email.substring(0, 1)}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent align="center" side="bottom" className="avatar-tooltip">
+                      <div className="bg-[#525252] relative p-[6px] rounded-[4px]">
+                        {el.first_name || el.last_name
+                          ? el.first_name + ' ' + el.last_name
+                          : el.email}
+                        <span className="arrow absolute left-[50%]">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="11"
+                            height="7"
+                            viewBox="0 0 11 7"
+                            fill="none"
+                          >
+                            <path
+                              d="M-9.53674e-07 7L11 7L7.14808 1.39721C6.35339 0.24129 4.64661 0.24129 3.85192 1.39721L-9.53674e-07 7Z"
+                              fill="#525252"
+                            />
+                          </svg>
+                        </span>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                ))}
+              </TooltipProvider>
+            </div>
+          )}
         </div>
       </div>
     </div>
