@@ -11,6 +11,7 @@ import { useLocation } from 'react-router-dom'
 import { useToast } from 'src/lib/use-toast'
 import { getStringArticleType } from 'src/lib/getStringArticleType'
 import { Capitalize } from '../../lib/capitalize'
+import { articlesAPI } from '../../lib/api'
 
 interface RewriteModalProps {
   articleType: ArtictesType
@@ -45,37 +46,21 @@ const OverwriteModal = (props: RewriteModalProps) => {
     setTargetArticle(undefined)
     setIsSecondStep(false)
     setIsSelectValueValid(false)
-    // navigate to new ID
   }
 
   const handleSubmit = async () => {
-    // const intCurrentArticleId = parseInt(props.articleId as string)
-    // const intTargetArticleId = targetArticle?.id ?? 0
+    const intCurrentArticleId = parseInt(props.articleId as string)
+    const intTargetArticleId = targetArticle?.id ?? 0
 
-    // const newVersionArticle = await articlesAPI
-    //   .newVersionArticle(props.articleType, intCurrentArticleId, articleTitleText)
-    //   .then((res) => res.data)
-    //   .catch((error) => {
-    //     toast({
-    //       title: 'Failed!',
-    //       description: error.response.data.data,
-    //       variant: 'destructive',
-    //     })
-    //   })
-    // const archivedArticle = await articlesAPI
-    //   .archivedArticle(props.articleType, intTargetArticleId)
-    //   .then((res) => res.data)
-    //   .catch((error) => {
-    //     toast({
-    //       title: 'Failed!',
-    //       description: error.response.data.data,
-    //       variant: 'destructive',
-    //     })
-    //   })
-    // if (archivedArticle?.data === true && newVersionArticle?.data === true) {
-    //   handleSuccess()
-    // }
-    handleSuccess()
+    const migrateArticle = await articlesAPI.overwriteArticle(
+      props.articleType,
+      intCurrentArticleId,
+      intTargetArticleId,
+    )
+
+    if (migrateArticle?.data === true) {
+      handleSuccess()
+    }
   }
 
   useEffect(() => {
