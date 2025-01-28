@@ -6,11 +6,12 @@ export interface TitleIdentifierInterface {
 export interface UsersItemInterface {
   id: number
   email: string
+  icon?: string
   first_name: string
   last_name: string
 }
 
-export type UserRoleType = 'editor' | 'viewer'
+export type UserRoleType = 'editor' | 'viewer' | 'owner'
 
 export interface TutorialCard {
   type: 'course' | 'subject' | 'software' | 'tutorial'
