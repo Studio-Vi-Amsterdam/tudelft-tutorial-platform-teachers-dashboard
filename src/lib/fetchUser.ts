@@ -1,12 +1,10 @@
 import { userAPI } from './api'
 
-export const fetchUsername = async (setUsername: (value: React.SetStateAction<string>) => void) => {
+export const fetchUsername = async () => {
   try {
-    const response = await userAPI
-      .getUser()
-      .then((res) => (res.data.first_name ? res.data.first_name : 'there'))
-    setUsername(response)
+    const response = await userAPI.getUser()
+    return response
   } catch (error) {
-    return 'there'
+    console.error(error)
   }
 }

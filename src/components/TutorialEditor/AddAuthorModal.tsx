@@ -30,6 +30,7 @@ const AddAuthorModal = (props: AddAuthorModalProps) => {
   const [emails, setEmails] = useState<UsersItemInterface[]>(props.usersList)
   const [listOfEditors, setListOfEditors] = useState<UsersItemInterface[]>([])
   const [listOfViewers, setListOfViewers] = useState<UsersItemInterface[]>([])
+  const [articleOwner, setArticleOwner] = useState<UsersItemInterface>()
 
   const removeEditor = async (id: number): Promise<boolean> => {
     if (hasArticleId) {
@@ -121,8 +122,19 @@ const AddAuthorModal = (props: AddAuthorModalProps) => {
           const response = await userAPI
             .getEditorsAndViewers(props.articleId as string)
             .then((res) => res.data)
-          response.editors ? setListOfEditors(response.editors) : setListOfEditors([])
+          response.owner ? setArticleOwner(response.owner) : setArticleOwner(undefined)
+          response.editors
+            ? setListOfEditors(
+                articleOwner
+                  ? response.editors.filter(
+                      (el: UsersItemInterface) =>
+                        el.id !== parseInt(articleOwner.id as unknown as string),
+                    )
+                  : response.editors,
+              )
+            : setListOfEditors([])
           response.viewers ? setListOfViewers(response.viewers) : setListOfViewers([])
+
           // deleting user that related to article from proposed list
           const idsToRemove = new Set([
             ...response.editors.map((item: UsersItemInterface) => item?.id),
@@ -195,7 +207,7 @@ const AddAuthorModal = (props: AddAuthorModalProps) => {
                   className="flex flex-row items-center gap-x-2 text-tertiary-grey-dim"
                 >
                   <p className="font-inter font-normal text-xl leading-[1.875rem] text-tertiary-grey-dim">
-                    {listOfEditors.length + listOfViewers.length} person{' '}
+                    {listOfEditors.length + listOfViewers.length + (articleOwner ? 1 : 0)} person{' '}
                   </p>
                   <span className="w-3 h-3 flex justify-center items-center">
                     <ArrowRight />
@@ -211,6 +223,8 @@ const AddAuthorModal = (props: AddAuthorModalProps) => {
               <p className="font-inter font-normal text-xl leading-[1.875rem] text-tertiary-grey-dim">
                 Who has access
               </p>
+              {articleOwner && <AuthorsAccessRow item={articleOwner} role="owner" />}
+
               {listOfEditors.map((item, index) => (
                 <AuthorsAccessRow
                   key={index}
