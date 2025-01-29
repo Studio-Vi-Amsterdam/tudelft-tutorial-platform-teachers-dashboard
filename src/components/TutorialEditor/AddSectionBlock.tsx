@@ -15,16 +15,21 @@ interface AddSectionBlockProps {
     | 'elements'
     | null
     | undefined
-  handleAddElement: (value: string, index?: number, subchapterIndex?: number) => void
+  handleAddElement: (
+    value: string,
+    index?: number,
+    subchapterIndex?: number,
+    showTitle?: boolean,
+  ) => void
   chapterIndex?: number
   subchapterIndex?: number
 }
 
 const AddSectionBlock = (props: AddSectionBlockProps) => {
   const [isSectionCreating, setIsSectionCreating] = useState<boolean>(false)
-
+  const isSubchapter = props.variant === 'dashed'
   const showChooseLayoutBlock = () => {
-    setIsSectionCreating(true)
+    setIsSectionCreating((prev) => !prev)
   }
 
   const sectionLayout: LayoutChapterType[] = [
@@ -37,14 +42,21 @@ const AddSectionBlock = (props: AddSectionBlockProps) => {
 
   const createSection = (layoutType: LayoutChapterType) => {
     setIsSectionCreating(false)
-    props.handleAddElement(layoutType, props.chapterIndex, props.subchapterIndex)
+    props.handleAddElement(
+      layoutType,
+      props.chapterIndex,
+      props.subchapterIndex,
+      layoutType === '1 column' || isSubchapter,
+    )
   }
 
   return (
     <section className={'pt-8 relative flex w-full flex-col gap-y-6 '}>
       {isSectionCreating && (
         <div className="flex bg-seasalt flex-col gap-y-4 rounded-[8px] border-[2px] border-dashed border-tertiary-grey-dim py-6">
-          <h4 className="text-center">Choose layout for the section</h4>
+          <h4 className="text-center">
+            Choose layout for the {isSubchapter ? 'subchapter' : 'section'}
+          </h4>
           <div className="flex flex-col max-sm:items-center sm:flex-row flex-wrap justify-center gap-10 gap-x-10 sm:gap-y-4">
             {sectionLayout.map((layoutType: LayoutChapterType, index: number) => (
               <button
@@ -96,7 +108,7 @@ const AddSectionBlock = (props: AddSectionBlockProps) => {
         onClick={showChooseLayoutBlock}
       >
         <div>+</div>
-        {props.variant === 'dashed' ? <p>Add subchapter</p> : <p>Add section</p>}
+        {isSubchapter ? <p>Add subchapter</p> : <p>Add section</p>}
       </Button>
     </section>
   )

@@ -3,7 +3,11 @@ import EditorLabel from '../ui/EditorLabel'
 import { LayoutChapterType } from 'src/types/types'
 import { Button } from '../ui/Button'
 import { useAppDispatch } from 'src/redux/hooks'
-import { addBlankChapter, addBlankSubchapter } from 'src/redux/features/editorSlice'
+import {
+  addBlankChapter,
+  addBlankSubchapter,
+  addChapterElement,
+} from 'src/redux/features/editorSlice'
 import { RemoveLastSymbol } from '../../lib/capitalize'
 
 interface AddChapterSectionProps {
@@ -43,6 +47,14 @@ const AddChapterSection = (props: AddChapterSectionProps) => {
       )
     } else {
       dispatch(addBlankChapter(layoutType))
+      if (layoutType === '1 column') {
+        dispatch(
+          addChapterElement({
+            val: { defaultVal: true },
+            chapterIndex: props.chapterIndex ?? 0,
+          }),
+        )
+      }
     }
   }
 

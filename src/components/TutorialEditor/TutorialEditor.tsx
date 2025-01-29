@@ -188,7 +188,7 @@ const BlogEditor = () => {
                   />
                 ))}
 
-              <AddChapterSection articleType={articleType} />
+              <AddChapterSection articleType={articleType} chapterIndex={chapters.length} />
               {/* <TutorialBottomSection articleType={articleType} /> */}
               {articleType === 'tutorials' && <TutorialsMeta />}
               {articleType === 'courses' && <CoursesMeta />}

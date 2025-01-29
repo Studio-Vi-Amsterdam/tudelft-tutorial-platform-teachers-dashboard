@@ -9,7 +9,7 @@ interface AddElementBlockProps {
 }
 
 const AddElementBlock = (props: AddElementBlockProps) => {
-  const [addElementsActive, setAddElementsActive] = useState<boolean>(false)
+  const [addElementsActive, setAddElementsActive] = useState<boolean>(true)
   const { elements, subchapterIndex, index } = props
 
   const handleAddTutorialElementClick = (): void => {

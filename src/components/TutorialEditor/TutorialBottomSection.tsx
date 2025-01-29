@@ -33,7 +33,12 @@ const TutorialBottomSection = (props: TutorialBottomSectionProps) => {
   const tutorialBottomStateElements = useAppSelector(
     (state: RootState) => state.editor.tutorialBottomContent,
   )
-  const handleAddTutorialBottomElement = async (val: string): Promise<void> => {
+  const handleAddTutorialBottomElement = async (
+    val: string,
+    chapterIndex?: number,
+    subchapterIndex?: number,
+    showTitle?: boolean,
+  ): Promise<void> => {
     const payload: any = {}
     payload[val] = ''
     if (val === 'text block') {
@@ -153,7 +158,7 @@ const TutorialBottomSection = (props: TutorialBottomSectionProps) => {
           description: '',
         },
         text: { text: '', isValid: true },
-        title: { text: '', isValid: true },
+        title: { text: '', isValid: true, hidden: !showTitle },
       }
       dispatch(addTutorialBottomElements(payload))
     } else if (val === 'image right') {
@@ -168,7 +173,7 @@ const TutorialBottomSection = (props: TutorialBottomSectionProps) => {
           description: '',
         },
         text: { text: '', isValid: true },
-        title: { text: '', isValid: true },
+        title: { text: '', isValid: true, hidden: !showTitle },
       }
       dispatch(addTutorialBottomElements(payload))
     } else if (val === 'video left') {
@@ -192,7 +197,7 @@ const TutorialBottomSection = (props: TutorialBottomSectionProps) => {
           },
         },
         text: { text: '', isValid: true },
-        title: { text: '', isValid: true },
+        title: { text: '', isValid: true, hidden: !showTitle },
       }
       dispatch(addTutorialBottomElements(payload))
     } else if (val === 'video right') {
@@ -216,7 +221,7 @@ const TutorialBottomSection = (props: TutorialBottomSectionProps) => {
           },
         },
         text: { text: '', isValid: true },
-        title: { text: '', isValid: true },
+        title: { text: '', isValid: true, hidden: !showTitle },
       }
       dispatch(addTutorialBottomElements(payload))
     } else if (val === '1 column') {

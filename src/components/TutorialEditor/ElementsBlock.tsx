@@ -24,7 +24,7 @@ interface ElementsBlockProps {
   block: string
   chapterIndex?: number
   subchapterIndex?: number
-  handleAddElement: (value: string, index?: number, subchapterIndex?: number) => void
+  handleAddElement: (value: string, index?: number) => void
 }
 
 const ElementsBlock = (props: ElementsBlockProps) => {
@@ -150,20 +150,22 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               elementIndex={index}
             >
               <div className="relative w-full mt-4 mb-5 ">
-                <input
-                  type="text"
-                  className={`${element.textImage.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
-                  value={element.textImage.title.text}
-                  placeholder={'Subchapter Title'}
-                  onChange={(e) =>
-                    handleSubchapterTitleChange(
-                      e.target.value,
-                      index,
-                      'textImage',
-                      props.chapterIndex,
-                    )
-                  }
-                />
+                {!element.textImage.title.hidden && (
+                  <input
+                    type="text"
+                    className={`${element.textImage.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                    value={element.textImage.title.text}
+                    placeholder={'Subchapter Title'}
+                    onChange={(e) =>
+                      handleSubchapterTitleChange(
+                        e.target.value,
+                        index,
+                        'textImage',
+                        props.chapterIndex,
+                      )
+                    }
+                  />
+                )}
               </div>
               <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
                 <div className="sm:w-1/2">
@@ -201,20 +203,22 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               elementIndex={index}
             >
               <div className="relative w-full mt-4 mb-5 ">
-                <input
-                  type="text"
-                  className={`${element.imageText.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
-                  value={element.imageText.title.text}
-                  placeholder={'Subchapter Title'}
-                  onChange={(e) =>
-                    handleSubchapterTitleChange(
-                      e.target.value,
-                      index,
-                      'imageText',
-                      props.chapterIndex,
-                    )
-                  }
-                />
+                {!element.imageText.title.hidden && (
+                  <input
+                    type="text"
+                    className={`${element.imageText.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                    value={element.imageText.title.text}
+                    placeholder={'Subchapter Title'}
+                    onChange={(e) =>
+                      handleSubchapterTitleChange(
+                        e.target.value,
+                        index,
+                        'imageText',
+                        props.chapterIndex,
+                      )
+                    }
+                  />
+                )}
               </div>
               <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
                 <div className="sm:w-1/2">
@@ -252,20 +256,22 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               elementIndex={index}
             >
               <div className="relative w-full mt-4 mb-5 ">
-                <input
-                  type="text"
-                  className={`${element.videoText.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
-                  value={element.videoText.title.text}
-                  placeholder={'Subchapter Title'}
-                  onChange={(e) =>
-                    handleSubchapterTitleChange(
-                      e.target.value,
-                      index,
-                      'videoText',
-                      props.chapterIndex,
-                    )
-                  }
-                />
+                {!element.videoText.title.hidden && (
+                  <input
+                    type="text"
+                    className={`${element.videoText.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                    value={element.videoText.title.text}
+                    placeholder={'Subchapter Title'}
+                    onChange={(e) =>
+                      handleSubchapterTitleChange(
+                        e.target.value,
+                        index,
+                        'videoText',
+                        props.chapterIndex,
+                      )
+                    }
+                  />
+                )}
               </div>
               <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
                 <div className="sm:w-1/2">
@@ -321,20 +327,22 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               elementIndex={index}
             >
               <div className="relative w-full mt-4 mb-5 ">
-                <input
-                  type="text"
-                  className={`${element.textVideo.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
-                  value={element.textVideo.title.text}
-                  placeholder={'Subchapter Title'}
-                  onChange={(e) =>
-                    handleSubchapterTitleChange(
-                      e.target.value,
-                      index,
-                      'textVideo',
-                      props.chapterIndex,
-                    )
-                  }
-                />
+                {!element.textVideo.title.hidden && (
+                  <input
+                    type="text"
+                    className={`${element.textVideo.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                    value={element.textVideo.title.text}
+                    placeholder={'Subchapter Title'}
+                    onChange={(e) =>
+                      handleSubchapterTitleChange(
+                        e.target.value,
+                        index,
+                        'textVideo',
+                        props.chapterIndex,
+                      )
+                    }
+                  />
+                )}
               </div>
               <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
                 <div className="sm:w-1/2">

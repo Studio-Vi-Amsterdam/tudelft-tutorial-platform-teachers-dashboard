@@ -53,6 +53,7 @@ const ChapterContent = (props: ChapterContentProps) => {
         handleChange={handleChangeChapterTitle}
         notValid={!chapter.title.isValid}
       />
+
       {chapter.layout !== '1 column' && (
         <>
           <div

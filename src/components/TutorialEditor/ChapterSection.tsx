@@ -34,7 +34,12 @@ const ChapterSection = (props: ChapterSectionProps) => {
     index !== undefined && dispatch(setChapterTitle({ chapterIndex: index, text: val }))
   }
 
-  const handleAddElement = async (val: string, index?: number) => {
+  const handleAddElement = async (
+    val: string,
+    index?: number,
+    subchapterIndex?: number,
+    showTitle?: boolean,
+  ) => {
     const payload: any = {}
     payload[val] = ''
 
@@ -147,7 +152,7 @@ const ChapterSection = (props: ChapterSectionProps) => {
           description: '',
         },
         text: { text: '', isValid: true },
-        title: { text: '', isValid: true },
+        title: { text: '', isValid: true, hidden: !showTitle },
       }
       delete payload['image left']
     } else if (val === 'image right') {
@@ -162,7 +167,7 @@ const ChapterSection = (props: ChapterSectionProps) => {
           description: '',
         },
         text: { text: '', isValid: true },
-        title: { text: '', isValid: true },
+        title: { text: '', isValid: true, hidden: !showTitle },
       }
       delete payload['image right']
     } else if (val === 'video left') {
@@ -186,7 +191,7 @@ const ChapterSection = (props: ChapterSectionProps) => {
           },
         },
         text: { text: '', isValid: true },
-        title: { text: '', isValid: true },
+        title: { text: '', isValid: true, hidden: !showTitle },
       }
       delete payload['video left']
     } else if (val === 'video right') {
@@ -210,7 +215,7 @@ const ChapterSection = (props: ChapterSectionProps) => {
           },
         },
         text: { text: '', isValid: true },
-        title: { text: '', isValid: true },
+        title: { text: '', isValid: true, hidden: !showTitle },
       }
       delete payload['video right']
     } else if (val === '1 column') {
