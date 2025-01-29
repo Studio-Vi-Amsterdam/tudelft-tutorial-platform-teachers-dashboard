@@ -45,7 +45,12 @@ const TermDialog = (props: TermDialogProps) => {
       if (articleType !== undefined) {
         const termsResponse: ResponseObject[] | [] = await articlesAPI
           .getInfo(articleType)
-          .then((res) => res?.data?.data?.defined_terms ?? [])
+          .then((res) => {
+            if (articleType === 'tutorials') {
+              return res?.data?.data?.defined_terms ?? []
+            }
+            return res?.data?.defined_terms ?? []
+          })
         const responseArr =
           termsResponse.length > 0
             ? termsResponse.map((term) => {
@@ -72,7 +77,9 @@ const TermDialog = (props: TermDialogProps) => {
   const handleTermInputChange = (val: string) => {
     setInputValue(val)
     const newDisplayedValues = terms
-      .filter((item) => item.term.startsWith(val))
+      .filter((item) =>
+        item.term.toLowerCase().replace(/\s/g, '').includes(val.toLowerCase().replace(/\s/g, '')),
+      )
       .sort((a, b) => a.term.localeCompare(b.term))
     setDisplayedTerms(newDisplayedValues)
   }
@@ -106,14 +113,14 @@ const TermDialog = (props: TermDialogProps) => {
             className={`${selectOpened ? 'pb-4' : 'pb-2'} px-2 pt-2 text-left`}
             onClick={() => (selectOpened ? setSelectOpened(false) : setSelectOpened(true))}
           >
-            {inputValue.trim() === '' ? 'Search term' : inputValue}
+            Search term
           </button>
           {selectOpened && (
             <div className="mx-auto flex w-[96%] flex-col gap-y-4 border-t border-tertiary-grey-dim pt-4">
               <input
                 type="text"
                 placeholder="Search term"
-                className="p-1"
+                className="p-1 border border-[#999999]"
                 value={inputValue}
                 onChange={(e) => handleTermInputChange(e.target.value)}
               />
@@ -133,7 +140,7 @@ const TermDialog = (props: TermDialogProps) => {
         </div>
         <EditorLabel>Type the explanation of the term here</EditorLabel>
         <TextInput
-          placeholder="explanation"
+          placeholder="Explanation"
           value={termDialog.explanation}
           handleChange={(val: string) =>
             setTermDialog({
