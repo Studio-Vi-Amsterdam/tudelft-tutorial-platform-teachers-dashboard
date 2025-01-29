@@ -319,6 +319,7 @@ export const reducerParser = {
                   title: {
                     text: block.block_data.title ? block.block_data.title : '',
                     isValid: true,
+                    hidden: block.block_data.hide_title ?? false,
                   },
                   // block.block_data.title ? block.block_data.title : '',
                 },
@@ -346,6 +347,7 @@ export const reducerParser = {
                   title: {
                     text: block.block_data.title ? block.block_data.title : '',
                     isValid: true,
+                    hidden: block.block_data.hide_title ?? false,
                   },
                 },
               }
@@ -391,6 +393,7 @@ export const reducerParser = {
                   title: {
                     text: block.block_data.title ? block.block_data.title : '',
                     isValid: true,
+                    hidden: block.block_data.hide_title ?? false,
                   },
                 },
               }
@@ -485,6 +488,7 @@ export const reducerParser = {
                   title: {
                     text: block.block_data.title ? block.block_data.title : '',
                     isValid: true,
+                    hidden: block.block_data.hide_title ?? false,
                   },
                 },
               }
@@ -533,7 +537,7 @@ export const reducerParser = {
           const newChapter: ChapterInterface = {
             id: chapter.id,
             layout: chapterLayout(),
-            title: { text: chapter.title, isValid: true },
+            title: { text: chapter.title, isValid: true, hidden: chapter?.hide_title ?? false },
             text: { text: chapter.content[0].block_data.content || '', isValid: true },
             elements: chapter.content.length > 0 ? parsedElements(chapter.content.slice(1)) : [],
             subchapters: [],
@@ -1134,6 +1138,7 @@ export const reducerParser = {
                   has_image_zoom: item.imageText.image.hasZoom ?? false,
                   content: item.imageText.text.text,
                   title: item.imageText.title.text,
+                  hide_title: item.imageText.title.hidden,
                 },
               }
             }
@@ -1146,6 +1151,7 @@ export const reducerParser = {
                   has_image_zoom: item.textImage.image.hasZoom ?? false,
                   content: item.textImage.text.text,
                   title: item.textImage.title.text,
+                  hide_title: item.textImage.title.hidden,
                 },
               }
             }
@@ -1159,6 +1165,7 @@ export const reducerParser = {
                   subtitles: item.textVideo.video.subtitles?.id,
                   content: item.textVideo.text.text,
                   title: item.textVideo.title.text,
+                  hide_title: item.textVideo.title.hidden,
                 },
               }
             }
@@ -1172,6 +1179,7 @@ export const reducerParser = {
                   subtitles: item.videoText.video.subtitles?.id,
                   content: item.videoText.text.text,
                   title: item.videoText.title.text,
+                  hide_title: item.videoText.title.hidden,
                 },
               }
             }

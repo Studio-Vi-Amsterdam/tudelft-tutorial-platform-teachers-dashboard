@@ -42,7 +42,12 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
     dispatch(setTutorialDescription(value))
   }
 
-  const handleAddTutorialElement = async (val: string): Promise<void> => {
+  const handleAddTutorialElement = async (
+    val: string,
+    chapterIndex?: number,
+    subchapterIndex?: number,
+    showTitle?: boolean,
+  ): Promise<void> => {
     const payload: any = {}
     payload[val] = ''
     if (val === 'text block') {
@@ -162,7 +167,7 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
           description: '',
         },
         text: { text: '', isValid: true },
-        title: { text: '', isValid: true },
+        title: { text: '', isValid: true, hidden: !showTitle },
       }
       dispatch(addTutorialElements(payload))
     } else if (val === 'image right') {
@@ -177,7 +182,7 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
           description: '',
         },
         text: { text: '', isValid: true },
-        title: { text: '', isValid: true },
+        title: { text: '', isValid: true, hidden: !showTitle },
       }
       dispatch(addTutorialElements(payload))
     } else if (val === 'video left') {
@@ -201,7 +206,7 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
           },
         },
         text: { text: '', isValid: true },
-        title: { text: '', isValid: true },
+        title: { text: '', isValid: true, hidden: !showTitle },
       }
       dispatch(addTutorialElements(payload))
     } else if (val === 'video right') {
@@ -225,7 +230,7 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
           },
         },
         text: { text: '', isValid: true },
-        title: { text: '', isValid: true },
+        title: { text: '', isValid: true, hidden: !showTitle },
       }
       dispatch(addTutorialElements(payload))
     } else if (val === '1 column') {
@@ -267,11 +272,13 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
           <li>What new knowledge will they have obtained?</li>
         </ul>
       </Tip>
+
       <ElementsBlock
         block="tutorialElements"
         handleAddElement={handleAddTutorialElement}
         elements={tutorialStateElements}
       />
+
       {!tutorialStateElements.find((el) => el.defaultVal) && (
         <AddSectionBlock variant="outline" handleAddElement={handleAddTutorialElement} />
       )}

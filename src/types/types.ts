@@ -102,6 +102,7 @@ export interface MediaObjectInterface {
 export interface TextElementInterface {
   text: string
   isValid: boolean
+  hidden?: boolean
 }
 
 export interface ElementTextActionInterface extends ElementActionBase {
@@ -638,6 +639,7 @@ export interface ResponseContentBlock {
 export interface ResponseChapterInterface extends TitleIdentifierInterface {
   content: ResponseContentBlock[]
   belongs_to: boolean | number
+  hide_title?: boolean
 }
 
 export interface FileThumbnailInterface {
