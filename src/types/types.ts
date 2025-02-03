@@ -11,6 +11,13 @@ export interface UsersItemInterface {
   last_name: string
 }
 
+export interface OwnerItemInterface {
+  id: number
+  email: string
+  first_name: string
+  last_name: string
+}
+
 export type UserRoleType = 'editor' | 'viewer' | 'owner'
 
 export interface TutorialCard {
@@ -36,6 +43,7 @@ export interface DashboardPublishedInterface extends TitleIdentifierInterface {
   featured_image: null | boolean | string
   publish_date: string
   editors: UsersItemInterface[]
+  owner: OwnerItemInterface
   last_modified_data: string
   type: ArtictesType
   previewLink: string | null
