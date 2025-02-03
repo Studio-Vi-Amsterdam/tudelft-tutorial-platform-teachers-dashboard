@@ -41,7 +41,7 @@ const OverwriteModal = (props: RewriteModalProps) => {
     setInputValue('')
     toast({
       title: 'Success!',
-      description: `This ${stringArticleType} is now overwrite with ${targetArticle?.title ?? 'selected ' + stringArticleType}.`,
+      description: `This ${stringArticleType} is now overwritten by ${targetArticle?.title ?? 'selected ' + stringArticleType}.`,
     })
     setTargetArticle(undefined)
     setIsSecondStep(false)
