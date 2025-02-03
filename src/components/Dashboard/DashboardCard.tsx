@@ -162,6 +162,44 @@ const DashboardCard = (props: DashboardCardProps) => {
               </TooltipProvider>
             </div>
           )}
+          {item.owner && (
+            <div className="text-sm items-center flex">
+              <p className="text-[#666666] w-20 text-left text-sm">Owner:</p>
+              <TooltipProvider delayDuration={0}>
+                <Tooltip key={item.owner.email + item.owner.first_name}>
+                  <TooltipTrigger>
+                    <div className="w-8 h-8 flex text-[11px] items-center justify-center border text-white rounded-full bg-[#0C2340] border-[#EFF1F3]">
+                      {item.owner.first_name || item.owner.last_name
+                        ? item.owner.first_name.substring(0, 1) +
+                          item.owner.last_name.substring(0, 1)
+                        : item.owner.email.substring(0, 1)}
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent align="center" side="bottom" className="avatar-tooltip">
+                    <div className="bg-[#525252] relative p-[6px] rounded-[4px]">
+                      {item.owner.first_name || item.owner.last_name
+                        ? item.owner.first_name + ' ' + item.owner.last_name
+                        : item.owner.email}
+                      <span className="arrow absolute left-[50%]">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="11"
+                          height="7"
+                          viewBox="0 0 11 7"
+                          fill="none"
+                        >
+                          <path
+                            d="M-9.53674e-07 7L11 7L7.14808 1.39721C6.35339 0.24129 4.64661 0.24129 3.85192 1.39721L-9.53674e-07 7Z"
+                            fill="#525252"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          )}
         </div>
       </div>
     </div>
