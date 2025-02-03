@@ -51,9 +51,15 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
     const payload: any = {}
     payload[val] = ''
     if (val === 'text block') {
-      payload.text = {
-        text: '',
-        isValid: true,
+      payload.textLayout = {
+        title: {
+          text: '',
+          isValid: true,
+        },
+        text: {
+          text: '',
+          isValid: true,
+        },
       }
       delete payload['text block']
       dispatch(addTutorialElements(payload))

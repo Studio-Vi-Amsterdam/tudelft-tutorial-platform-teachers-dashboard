@@ -209,14 +209,14 @@ const validateElements = (
         }),
       }
     } else if (element.textLayout) {
-      /* const isTitleValid = element.textLayout.title.text.trim().length > 0
-          !isTitleValid && count++
-          const isTextValid = element.textLayout.text.text.trim().length > 0
-          !isTextValid && count++ */
+      const isTitleValid = element.textLayout.title.text.trim().length > 0
+      !isTitleValid && count++
+      const isTextValid = element.textLayout.text.text.trim().length > 0
+      !isTextValid && count++
       return {
         textLayout: {
-          title: { ...element.textLayout.title, isValid: true },
-          text: { ...element.textLayout.text, isValid: true },
+          title: { ...element.textLayout.title, isValid: isTitleValid },
+          text: { ...element.textLayout.text, isValid: isTextValid },
         },
       }
     } else if (element.imageText) {
