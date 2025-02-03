@@ -114,7 +114,7 @@ const DashboardCard = (props: DashboardCardProps) => {
       </div>
       <div className="flex flex-col gap-y-6">
         <h4 className="text-xl leading-8">{item.title}</h4>
-        <div className="flex flex-col gap-y-2 pb-16 [&>div]:flex [&>div]:flex-row">
+        <div className="flex flex-col gap-y-2 pb-8 [&>div]:flex [&>div]:flex-row">
           <div className="text-sm">
             <p className="text-[#666666] w-20 text-left text-sm">Published</p>
             {localFormatDate(item.publish_date)}
