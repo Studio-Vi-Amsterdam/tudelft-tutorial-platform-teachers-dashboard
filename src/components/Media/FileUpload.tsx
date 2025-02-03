@@ -138,6 +138,7 @@ export const FileUpload = (props: FileUploadProps) => {
         '.xlsx',
       ],
       'text/txt': ['.txt', '.csv'],
+      'text/vtt': ['.vtt'],
       'archive/zip': ['.zip', '.gz', '.rar'],
       'apple/doc': ['.keynote', '.numbers', '.pages'],
     },
