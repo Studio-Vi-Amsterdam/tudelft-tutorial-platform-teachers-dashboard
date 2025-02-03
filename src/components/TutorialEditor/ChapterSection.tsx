@@ -44,10 +44,17 @@ const ChapterSection = (props: ChapterSectionProps) => {
     payload[val] = ''
 
     if (val === 'text block') {
-      payload.text = {
-        text: '',
-        isValid: true,
+      payload.textLayout = {
+        title: {
+          text: '',
+          isValid: true,
+        },
+        text: {
+          text: '',
+          isValid: true,
+        },
       }
+
       delete payload['text block']
     }
     if (val === 'infobox block') {
