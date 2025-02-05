@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { ArtictesType, UserRoleType } from 'src/types/types'
 import { getAuthToken, removeAuthToken } from './cookies'
+import { FeedbackStatus } from '../components/TutorialEditor/Feedback'
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_BACKEND_URL,
@@ -73,6 +74,104 @@ export const articlesAPI = {
     return instance.post(`/${type}/single/overwrite`, {
       old_id: targetId,
       new_id: sourceId,
+    })
+  },
+  setCommentStatus(id: number, articleID: string, status: FeedbackStatus) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        return resolve({
+          success: true,
+        })
+      }, 1000)
+    })
+  },
+  getSuggestion(type: ArtictesType, articleID: string, status: FeedbackStatus, page?: number) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (status === 'new') {
+          return resolve({
+            items: [
+              {
+                firstName: 'Oleksandr',
+                lastName: 'Moroziuk NEW',
+                articleId: 4470,
+                id: 1,
+                articleType: 'tutorials',
+                date: '2025-02-04 13:47:59',
+              },
+              {
+                firstName: 'Oleksandr',
+                lastName: 'Moroziuk NEW',
+                articleId: 4470,
+                id: 1,
+                articleType: 'tutorials',
+                date: '2025-01-04 13:47:59',
+              },
+            ],
+            totalPage: 1,
+          })
+        } else if (status === 'completed') {
+          return resolve({
+            items: [
+              {
+                firstName: 'Oleksandr',
+                lastName: 'Moroziuk COMPLETED',
+                articleId: 4470,
+                id: 1,
+                articleType: 'tutorials',
+                date: '2025-01-04 13:47:59',
+              },
+              {
+                firstName: 'Oleksandr',
+                lastName: 'Moroziuk COMPLETED',
+                articleId: 4470,
+                id: 1,
+                articleType: 'tutorials',
+                date: '2025-01-04 13:47:59',
+              },
+            ],
+            totalPage: 2,
+          })
+        } else {
+          return resolve({
+            items: [
+              {
+                firstName: 'Oleksandr',
+                lastName: 'Moroziuk IGNORED',
+                articleId: 4470,
+                id: 1,
+                articleType: 'tutorials',
+                date: '2025-01-04 13:47:59',
+              },
+              {
+                firstName: 'Oleksandr',
+                lastName: 'Moroziuk IGNORED',
+                articleId: 4470,
+                id: 1,
+                articleType: 'tutorials',
+                date: '2025-01-04 13:47:59',
+              },
+              {
+                firstName: 'Oleksandr',
+                lastName: 'Moroziuk IGNORED',
+                articleId: 4470,
+                id: 1,
+                articleType: 'tutorials',
+                date: '2025-01-04 13:47:59',
+              },
+              {
+                firstName: 'Oleksandr',
+                lastName: 'Moroziuk IGNORED',
+                articleId: 4470,
+                id: 1,
+                articleType: 'tutorials',
+                date: '2025-01-04 13:47:59',
+              },
+            ],
+            totalPage: 9,
+          })
+        }
+      }, 1000)
     })
   },
 }
@@ -151,5 +250,48 @@ export const userAPI = {
   },
   addUserToPost(postId: string, userId: number, role: UserRoleType) {
     return instance.post(`/users/post/${postId}`, { user_id: userId, role })
+  },
+  getSuggestion(userId: number) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        return resolve({
+          items: [
+            {
+              firstName: 'Oleksandr',
+              lastName: 'Moroziuk IGNORED',
+              articleId: 4470,
+              id: 1,
+              articleType: 'tutorials',
+              date: '2025-01-04 13:47:59',
+            },
+            {
+              firstName: 'Oleksandr',
+              lastName: 'Moroziuk IGNORED',
+              articleId: 4470,
+              id: 1,
+              articleType: 'tutorials',
+              date: '2025-01-04 13:47:59',
+            },
+            {
+              firstName: 'Oleksandr',
+              lastName: 'Moroziuk IGNORED',
+              articleId: 4470,
+              id: 1,
+              articleType: 'tutorials',
+              date: '2025-01-04 13:47:59',
+            },
+            {
+              firstName: 'Oleksandr',
+              lastName: 'Moroziuk IGNORED',
+              articleId: 4470,
+              id: 1,
+              articleType: 'tutorials',
+              date: '2025-01-04 13:47:59',
+            },
+          ],
+          totalPage: 9,
+        })
+      }, 1000)
+    })
   },
 }
