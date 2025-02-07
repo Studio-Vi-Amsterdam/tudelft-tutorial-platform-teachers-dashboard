@@ -76,104 +76,6 @@ export const articlesAPI = {
       new_id: sourceId,
     })
   },
-  setCommentStatus(id: number, articleID: string, status: FeedbackStatus) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        return resolve({
-          success: true,
-        })
-      }, 1000)
-    })
-  },
-  getSuggestion(type: ArtictesType, articleID: string, status: FeedbackStatus, page?: number) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        if (status === 'new') {
-          return resolve({
-            items: [
-              {
-                firstName: 'Oleksandr',
-                lastName: 'Moroziuk NEW',
-                articleId: 4470,
-                id: 1,
-                articleType: 'tutorials',
-                date: '2025-02-04 13:47:59',
-              },
-              {
-                firstName: 'Oleksandr',
-                lastName: 'Moroziuk NEW',
-                articleId: 4470,
-                id: 1,
-                articleType: 'tutorials',
-                date: '2025-01-04 13:47:59',
-              },
-            ],
-            totalPage: 1,
-          })
-        } else if (status === 'completed') {
-          return resolve({
-            items: [
-              {
-                firstName: 'Oleksandr',
-                lastName: 'Moroziuk COMPLETED',
-                articleId: 4470,
-                id: 1,
-                articleType: 'tutorials',
-                date: '2025-01-04 13:47:59',
-              },
-              {
-                firstName: 'Oleksandr',
-                lastName: 'Moroziuk COMPLETED',
-                articleId: 4470,
-                id: 1,
-                articleType: 'tutorials',
-                date: '2025-01-04 13:47:59',
-              },
-            ],
-            totalPage: 2,
-          })
-        } else {
-          return resolve({
-            items: [
-              {
-                firstName: 'Oleksandr',
-                lastName: 'Moroziuk IGNORED',
-                articleId: 4470,
-                id: 1,
-                articleType: 'tutorials',
-                date: '2025-01-04 13:47:59',
-              },
-              {
-                firstName: 'Oleksandr',
-                lastName: 'Moroziuk IGNORED',
-                articleId: 4470,
-                id: 1,
-                articleType: 'tutorials',
-                date: '2025-01-04 13:47:59',
-              },
-              {
-                firstName: 'Oleksandr',
-                lastName: 'Moroziuk IGNORED',
-                articleId: 4470,
-                id: 1,
-                articleType: 'tutorials',
-                date: '2025-01-04 13:47:59',
-              },
-              {
-                firstName: 'Oleksandr',
-                lastName: 'Moroziuk IGNORED',
-                articleId: 4470,
-                id: 1,
-                articleType: 'tutorials',
-                date: '2025-01-04 13:47:59',
-              },
-            ],
-            totalPage: 9,
-          })
-        }
-      }, 1000)
-    })
-  },
 }
 
 export const chaptersAPI = {
@@ -251,47 +153,20 @@ export const userAPI = {
   addUserToPost(postId: string, userId: number, role: UserRoleType) {
     return instance.post(`/users/post/${postId}`, { user_id: userId, role })
   },
-  getSuggestion(userId: number) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        return resolve({
-          items: [
-            {
-              firstName: 'Oleksandr',
-              lastName: 'Moroziuk IGNORED',
-              articleId: 4470,
-              id: 1,
-              articleType: 'tutorials',
-              date: '2025-01-04 13:47:59',
-            },
-            {
-              firstName: 'Oleksandr',
-              lastName: 'Moroziuk IGNORED',
-              articleId: 4470,
-              id: 1,
-              articleType: 'tutorials',
-              date: '2025-01-04 13:47:59',
-            },
-            {
-              firstName: 'Oleksandr',
-              lastName: 'Moroziuk IGNORED',
-              articleId: 4470,
-              id: 1,
-              articleType: 'tutorials',
-              date: '2025-01-04 13:47:59',
-            },
-            {
-              firstName: 'Oleksandr',
-              lastName: 'Moroziuk IGNORED',
-              articleId: 4470,
-              id: 1,
-              articleType: 'tutorials',
-              date: '2025-01-04 13:47:59',
-            },
-          ],
-          totalPage: 9,
-        })
-      }, 1000)
-    })
+}
+
+export const communityApi = {
+  getUserSuggestion(userId: number) {
+    return instance.get(
+      `/community/user/${userId}/all-posts/comments?status=pending&pageSize=10&page=1`,
+    )
+  },
+  updateSuggestionStatus(commentId: number, status: FeedbackStatus) {
+    return instance.put(`/community/comment/${commentId}/status`, { status })
+  },
+  getPostSuggestion(postID: string, status: string, currentPage: number) {
+    return instance.get(
+      `/community/post/${postID}/comments?status=${status}&page=${currentPage}&pageSize=6`,
+    )
   },
 }

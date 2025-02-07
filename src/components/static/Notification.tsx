@@ -1,28 +1,27 @@
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/Popover'
 import React, { useCallback, useEffect, useState } from 'react'
-import { getUserSymbols } from '../../lib/getUserSymbols'
 import { cn } from '../../lib/utils'
-import { userAPI } from '../../lib/api'
+import { communityApi } from '../../lib/api'
 import { FeedbackSuggestion } from '../TutorialEditor/Feedback'
 import { formatRelativeTime } from '../../lib/timeFormat'
 import { useAuth } from '../../lib/AuthContext'
+import { getUserSymbols } from '../../lib/getUserSymbols'
 
 export const Notification = () => {
   const [suggestion, setSuggestion] = useState<FeedbackSuggestion[]>([])
   const { userId } = useAuth()
-  console.log(userId)
-  const getSuggestion = useCallback(async () => {
+  const getSuggestion = useCallback(async (userId: string) => {
     try {
-      const res: any = await userAPI.getSuggestion(11)
-      setSuggestion(res.items)
+      const res: any = await communityApi.getUserSuggestion(parseInt(userId))
+      setSuggestion(res.data.comments)
     } catch (e) {
       console.error('Error getting suggestion by userID: ', e)
     }
   }, [])
 
   useEffect(() => {
-    getSuggestion()
-  }, [])
+    getSuggestion(userId)
+  }, [userId])
 
   return (
     <>
@@ -72,22 +71,25 @@ export const Notification = () => {
           {suggestion.map((el, i) => {
             return (
               <div
-                key={i + el.articleId}
+                key={i + el.comment_id}
                 className={cn(
                   { 'border-b border-tertiary-grey-stone': i !== suggestion.length - 1 },
                   'flex pb-2 items-start gap-2 justify-between',
                 )}
               >
                 <div className="min-w-[24px] w-6 h-6 flex text-[12px] items-center justify-center bg-secondary-navy text-white rounded-full">
-                  {getUserSymbols(el.firstName, el.lastName)}
+                  {getUserSymbols(el.user, '')}
                 </div>
                 <div className="text-sm">
                   <p className="text-tertiary-grey-dim">
-                    {el.firstName} {el.lastName} made an suggestion on <b>{el.chapterTitle}</b>
+                    {el.user} made an suggestion on
+                    {/* <b>{el.chapterTitle}</b> */}
                   </p>
-                  <p className="text-tertiary-grey-stone mt-1">{formatRelativeTime(el.date)}</p>
+                  <p className="text-tertiary-grey-stone mt-1">
+                    {formatRelativeTime(el.created_at)}
+                  </p>
                   <a
-                    href={`/dashboard/my-tutorials?type=${el.articleType}&id=${el.articleId}&status=published`}
+                    href={`/dashboard/my-tutorials?type=tutorials&id=${el.post_id}&status=published`}
                     className="text-primary-skyBlue mt-3 block"
                   >
                     <b>Review</b>

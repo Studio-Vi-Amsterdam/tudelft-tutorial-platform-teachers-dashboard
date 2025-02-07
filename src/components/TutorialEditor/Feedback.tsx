@@ -5,25 +5,26 @@ import { Button } from '../ui/Button'
 import { cn } from '../../lib/utils'
 import { getUserSymbols } from '../../lib/getUserSymbols'
 import PaginationBar from './PaginationBar'
-import { articlesAPI } from '../../lib/api'
+import { communityApi } from '../../lib/api'
 import { ArtictesType } from '../../types/types'
 import Preloader from '../ui/Preloader'
 import { formatRelativeTime } from '../../lib/timeFormat'
 
 export interface FeedbackSuggestion {
-  firstName: string
-  lastName: string
-  chapterTitle: string
-  articleId: number
-  id: number
+  comment: string
+  post_id: number
+  comment_id: number
   articleType: string
-  date: string
+  created_at: string
+  user: string
+  user_id: string
+  status: string
 }
 
-export type FeedbackStatus = 'new' | 'completed' | 'ignored'
+export type FeedbackStatus = 'pending' | 'completed' | 'ignored'
 
 interface Suggestion {
-  new: FeedbackSuggestion[]
+  pending: FeedbackSuggestion[]
   completed: FeedbackSuggestion[]
   ignored: FeedbackSuggestion[]
 }
@@ -35,45 +36,47 @@ interface FeedbackProps {
 
 export const Feedback = (props: FeedbackProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [activeStatus, setActiveStatus] = useState<FeedbackStatus>('new')
-  const [suggestion, setSuggestion] = useState<Suggestion>({ new: [], completed: [], ignored: [] })
+  const [activeStatus, setActiveStatus] = useState<FeedbackStatus>('pending')
+  const [suggestion, setSuggestion] = useState<Suggestion>({
+    pending: [],
+    completed: [],
+    ignored: [],
+  })
   const [isLoading, setIsLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(0)
 
-  const getSuggestion = useCallback(async () => {
-    setIsLoading(true)
-    try {
-      const res: any = await articlesAPI.getSuggestion(
-        props.articleType,
-        props.articleId,
-        activeStatus,
-        currentPage,
-      )
-      setSuggestion((prev) => ({
-        ...prev,
-        [activeStatus]: res.items as FeedbackSuggestion[],
-      }))
-      setTotalPages(res.totalPage)
-      console.log(res)
-    } catch (err) {
-      console.error('Error fetching suggestions:', err)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [props.articleType, props.articleId, activeStatus, currentPage])
+  const getSuggestion = useCallback(
+    async (articleID: string) => {
+      setIsLoading(true)
+      try {
+        const res: any = await communityApi.getPostSuggestion(articleID, activeStatus, currentPage)
+        setSuggestion((prev) => ({
+          ...prev,
+          [activeStatus]: res.data.comments as FeedbackSuggestion[],
+        }))
+        console.log(res.total_rows)
+        setTotalPages(1)
+      } catch (err) {
+        console.error('Error fetching suggestions:', err)
+      } finally {
+        setIsLoading(false)
+      }
+    },
+    [props.articleType, props.articleId, activeStatus, currentPage],
+  )
 
   useEffect(() => {
-    getSuggestion()
+    getSuggestion(props.articleId)
   }, [getSuggestion])
 
   const setCommentStatus = useCallback(
     async (status: FeedbackStatus, id: number) => {
       try {
         setIsLoading(true)
-        const res = await articlesAPI.setCommentStatus(id, props.articleId, status)
-        getSuggestion()
+        const res = await communityApi.updateSuggestionStatus(id, status)
         console.log('Updated comment:', res)
+        getSuggestion(props.articleId)
       } catch (err) {
         console.error('Error updating comment status:', err)
       }
@@ -105,9 +108,9 @@ export const Feedback = (props: FeedbackProps) => {
           >
             <div className="text-tertiary-grey-dim">
               Tutorial Feedback from Students
-              {!isOpen && suggestion.new.length > 0 && (
+              {!isOpen && suggestion.pending.length > 0 && (
                 <span className="px-2.5 font-normal rounded-[18px] text-white text-[12px] ml-2 py-1.5 bg-[#00A6D6]">
-                  {suggestion.new.length} New
+                  {suggestion.pending.length} New
                 </span>
               )}
             </div>
@@ -127,9 +130,9 @@ export const Feedback = (props: FeedbackProps) => {
             <div className="mt-6 flex items-center gap-1.5">
               <p className="text-tertiary-grey-dim font-bold">Comments</p>
               <Button
-                onClick={() => handleChangeStatus('new')}
+                onClick={() => handleChangeStatus('pending')}
                 className={cn(
-                  { 'bg-primary-skyBlue text-white': activeStatus === 'new' },
+                  { 'bg-primary-skyBlue text-white': activeStatus === 'pending' },
                   'px-2.5 rounded-[18px] py-1',
                 )}
                 variant="outline"
@@ -162,33 +165,30 @@ export const Feedback = (props: FeedbackProps) => {
               {suggestion[activeStatus]?.map((el, i) => {
                 return (
                   <div
-                    key={i + el.articleId}
+                    key={i + el.comment_id}
                     className="flex pb-6 items-start gap-2 justify-between"
                   >
                     <div className="min-w-[24px] max-w-[24px] w-6 h-6 flex text-[12px] items-center justify-center bg-secondary-navy text-white rounded-full">
-                      {getUserSymbols(el.firstName, el.lastName)}
+                      {getUserSymbols(el.user, '')}
                     </div>
                     <div className="text-sm w-full">
-                      <p className="text-tertiary-grey-dim">
-                        {el.firstName} {el.lastName}
-                      </p>
+                      <p className="text-tertiary-grey-dim">{el.user}</p>
                       <p className="text-tertiary-grey-stone mt-1 text-[12px]">
-                        {formatRelativeTime(el.date)}
-                        {activeStatus === 'new' && (
-                          <span className="px-2 py-1 bg-primary-skyBlue text-white text[10px] rounded-[60px] ml-2">New</span>
+                        {formatRelativeTime(el.created_at)}
+                        {activeStatus === 'pending' && (
+                          <span className="px-2 py-1 bg-primary-skyBlue text-white text[10px] rounded-[60px] ml-2">
+                            New
+                          </span>
                         )}
                       </p>
 
-                      <p className="text-tertiary-grey-stone mt-2">
-                        This tutorial was helpful, but I think a visual example or diagram would
-                        make it even better.
-                      </p>
+                      <p className="text-tertiary-grey-stone mt-2">{el.comment}</p>
 
-                      {activeStatus === 'new' && (
+                      {activeStatus === 'pending' && (
                         <div className="flex mt-3 gap-4">
                           <Button
                             onClick={() => {
-                              setCommentStatus('completed', el.id)
+                              setCommentStatus('completed', el.comment_id)
                             }}
                             className="border-0 gap-1 hover:underline p-0 text-primary-skyBlue bg-transparent"
                           >
@@ -198,7 +198,7 @@ export const Feedback = (props: FeedbackProps) => {
 
                           <Button
                             onClick={() => {
-                              setCommentStatus('ignored', el.id)
+                              setCommentStatus('ignored', el.comment_id)
                             }}
                             className="border-0 gap-1 hover:underline p-0 text-tertiary-grey-dim bg-transparent"
                           >
