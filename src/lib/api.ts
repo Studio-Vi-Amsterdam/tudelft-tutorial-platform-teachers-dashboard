@@ -158,7 +158,7 @@ export const userAPI = {
 export const communityApi = {
   getUserSuggestion(userId: number) {
     return instance.get(
-      `/community/user/${userId}/all-posts/comments?status=pending&pageSize=10&page=1`,
+      `/community/user/${userId}/all-posts/comments?status=pending&page_size=10&page=1`,
     )
   },
   updateSuggestionStatus(commentId: number, status: FeedbackStatus) {
@@ -166,7 +166,7 @@ export const communityApi = {
   },
   getPostSuggestion(postID: string, status: string, currentPage: number) {
     return instance.get(
-      `/community/post/${postID}/comments?status=${status}&page=${currentPage}&pageSize=6`,
+      `/community/post/${postID}/comments?status=${status}&page=${currentPage}&page_size=6`,
     )
   },
 }

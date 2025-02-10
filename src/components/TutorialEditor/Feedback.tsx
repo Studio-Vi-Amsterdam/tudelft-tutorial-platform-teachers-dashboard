@@ -43,7 +43,7 @@ export const Feedback = (props: FeedbackProps) => {
     ignored: [],
   })
   const [isLoading, setIsLoading] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
 
   const getSuggestion = useCallback(
