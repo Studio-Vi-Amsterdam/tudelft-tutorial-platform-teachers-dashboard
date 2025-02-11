@@ -24,9 +24,9 @@ export interface FeedbackSuggestion {
 export type FeedbackStatus = 'pending' | 'completed' | 'ignored'
 
 interface Suggestion {
-  pending: FeedbackSuggestion[]
-  completed: FeedbackSuggestion[]
-  ignored: FeedbackSuggestion[]
+  pending: { items: FeedbackSuggestion[]; total: number }
+  completed: { items: FeedbackSuggestion[]; total: number }
+  ignored: { items: FeedbackSuggestion[]; total: number }
 }
 
 interface FeedbackProps {
@@ -36,27 +36,35 @@ interface FeedbackProps {
 
 export const Feedback = (props: FeedbackProps) => {
   const [isOpen, setIsOpen] = useState(false)
+  const postsPerPage = 6
   const [activeStatus, setActiveStatus] = useState<FeedbackStatus>('pending')
   const [suggestion, setSuggestion] = useState<Suggestion>({
-    pending: [],
-    completed: [],
-    ignored: [],
+    pending: { items: [], total: 0 },
+    completed: { items: [], total: 0 },
+    ignored: { items: [], total: 0 },
   })
   const [isLoading, setIsLoading] = useState(false)
-  const [currentPage, setCurrentPage] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(0)
 
   const getSuggestion = useCallback(
     async (articleID: string) => {
       setIsLoading(true)
       try {
-        const res: any = await communityApi.getPostSuggestion(articleID, activeStatus, currentPage)
+        const res: any = await communityApi.getPostSuggestion(
+          articleID,
+          activeStatus,
+          currentPage,
+          postsPerPage,
+        )
         setSuggestion((prev) => ({
           ...prev,
-          [activeStatus]: res.data.comments as FeedbackSuggestion[],
+          [activeStatus]: {
+            items: res.data.comments as FeedbackSuggestion[],
+            total: res.data.total_rows,
+          },
         }))
-        console.log(res.total_rows)
-        setTotalPages(1)
+        setTotalPages(Math.ceil(res.data.total_rows / postsPerPage))
       } catch (err) {
         console.error('Error fetching suggestions:', err)
       } finally {
@@ -92,7 +100,7 @@ export const Feedback = (props: FeedbackProps) => {
     setCurrentPage(pageNumber)
   }
   const handlePrevClick = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1)
+    if (currentPage > 0) setCurrentPage(currentPage - 1)
   }
   const handleNextClick = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1)
@@ -108,9 +116,9 @@ export const Feedback = (props: FeedbackProps) => {
           >
             <div className="text-tertiary-grey-dim">
               Tutorial Feedback from Students
-              {!isOpen && suggestion.pending.length > 0 && (
+              {!isOpen && suggestion.pending.total > 0 && (
                 <span className="px-2.5 font-normal rounded-[18px] text-white text-[12px] ml-2 py-1.5 bg-[#00A6D6]">
-                  {suggestion.pending.length} New
+                  {suggestion.pending.total} New
                 </span>
               )}
             </div>
@@ -162,7 +170,7 @@ export const Feedback = (props: FeedbackProps) => {
             </div>
 
             <div className="mt-6 relative min-h-[50px]">
-              {suggestion[activeStatus]?.map((el, i) => {
+              {suggestion[activeStatus]?.items?.map((el, i) => {
                 return (
                   <div
                     key={i + el.comment_id}
@@ -212,7 +220,7 @@ export const Feedback = (props: FeedbackProps) => {
                 )
               })}
 
-              {!suggestion[activeStatus].length && (
+              {!suggestion[activeStatus]?.items?.length && (
                 <p className="text-[#B3B3B5]">Currently their are no {activeStatus} comments</p>
               )}
 

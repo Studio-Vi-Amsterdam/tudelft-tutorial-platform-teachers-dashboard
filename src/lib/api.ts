@@ -158,15 +158,15 @@ export const userAPI = {
 export const communityApi = {
   getUserSuggestion(userId: number) {
     return instance.get(
-      `/community/user/${userId}/all-posts/comments?status=pending&page_size=10&page=1`,
+      `/community/user/${userId}/all-posts/comments?status=pending&page_size=10&page=0`,
     )
   },
   updateSuggestionStatus(commentId: number, status: FeedbackStatus) {
     return instance.put(`/community/comment/${commentId}/status`, { status })
   },
-  getPostSuggestion(postID: string, status: string, currentPage: number) {
+  getPostSuggestion(postID: string, status: string, currentPage: number, pageSize: number) {
     return instance.get(
-      `/community/post/${postID}/comments?status=${status}&page=${currentPage}&page_size=6`,
+      `/community/post/${postID}/comments?status=${status}&page=${currentPage}&page_size=${pageSize}`,
     )
   },
 }
