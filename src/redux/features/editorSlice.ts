@@ -1080,7 +1080,7 @@ export const editorSlice = createSlice({
         }
         const element = elements[listIndex]
         const layoutItem = element[layout]
-        if (layoutItem && layoutItem.text !== undefined) {
+        if (layoutItem && layoutItem.text !== undefined && layoutItem.title !== undefined) {
           layoutItem.title.text = value
           layoutItem.title.isValid = true
         }
@@ -1090,7 +1090,7 @@ export const editorSlice = createSlice({
         const element = elements ? elements[listIndex] : undefined
         const layoutItem = element ? element[layout] : undefined
 
-        if (layoutItem && layoutItem.text !== undefined) {
+        if (layoutItem && layoutItem.text !== undefined && layoutItem.title !== undefined) {
           layoutItem.title.text = value
           layoutItem.title.isValid = true
         }

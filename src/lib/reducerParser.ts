@@ -1125,7 +1125,7 @@ export const reducerParser = {
                 block_name: 'tu-delft-text',
                 block_data: {
                   content: item.textLayout.text.text,
-                  title: item.textLayout.title.text ?? undefined,
+                  title: item.textLayout?.title?.text ?? undefined,
                 },
               }
             }

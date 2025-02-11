@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import EditorLabel from '../ui/EditorLabel'
 import { AddElementsType, ChapterInterface } from 'src/types/types'
 import { useAppDispatch } from 'src/redux/hooks'
@@ -23,6 +23,7 @@ interface ChapterSectionProps {
 
 const ChapterSection = (props: ChapterSectionProps) => {
   const { chapter, index } = props
+  const [isSubchapterCreating, setIsSubchapterCreating] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()
 
@@ -45,10 +46,12 @@ const ChapterSection = (props: ChapterSectionProps) => {
 
     if (val === 'text block') {
       payload.textLayout = {
-        title: {
-          text: '',
-          isValid: true,
-        },
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         text: {
           text: '',
           isValid: true,
@@ -261,9 +264,16 @@ const ChapterSection = (props: ChapterSectionProps) => {
         handleAddElement={handleAddElement}
         handleChangeChapterTitle={handleChangeChapterTitle}
         handleChapterTextInputChange={handleChapterTextInputChange}
+        setIsSubchapterCreating={setIsSubchapterCreating}
         chapterIndex={index}
       />
-      <AddSectionBlock variant="dashed" chapterIndex={index} handleAddElement={handleAddElement} />
+      <AddSectionBlock
+        variant="dashed"
+        chapterIndex={index}
+        handleAddElement={handleAddElement}
+        setIsSubchapterCreating={setIsSubchapterCreating}
+        isSubchapter={true}
+      />
     </section>
   )
 }

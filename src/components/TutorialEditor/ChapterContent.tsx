@@ -16,6 +16,7 @@ interface ChapterContentProps {
   handleChapterTextInputChange: (val: string, index: number) => void
   handleAddElement: (val: string, index?: number) => void
   elements: AddElementsType[]
+  setIsSubchapterCreating: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const ChapterContent = (props: ChapterContentProps) => {
@@ -132,6 +133,7 @@ const ChapterContent = (props: ChapterContentProps) => {
         variant="outline"
         chapterIndex={chapterIndex}
         handleAddElement={handleAddElement}
+        setIsSubchapterCreating={props.setIsSubchapterCreating}
       />
     </>
   )

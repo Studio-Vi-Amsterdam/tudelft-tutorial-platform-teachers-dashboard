@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import EditorLabel from 'src/components/ui/EditorLabel'
 import TextInput from 'src/components/ui/TextInput'
 import Tip from 'src/components/ui/Tip'
@@ -24,6 +24,8 @@ interface TutorialTopSectionProps {
 const TutorialTopSection = (props: TutorialTopSectionProps) => {
   const { tutorialTitle } = props
 
+  const [isSubchapterCreating, setIsSubchapterCreating] = useState<boolean>(false)
+
   const tutorialDescription = useAppSelector(
     (state: RootState) => state.editor.tutorialTop.description,
   )
@@ -48,14 +50,17 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
     subchapterIndex?: number,
     showTitle?: boolean,
   ): Promise<void> => {
+    console.log(`value: ${val} | isSubchapter: ${isSubchapterCreating}`)
     const payload: any = {}
     payload[val] = ''
     if (val === 'text block') {
       payload.textLayout = {
-        title: {
-          text: '',
-          isValid: true,
-        },
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         text: {
           text: '',
           isValid: true,
@@ -286,10 +291,19 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       />
 
       {!tutorialStateElements.find((el) => el.defaultVal) && (
-        <AddSectionBlock variant="outline" handleAddElement={handleAddTutorialElement} />
+        <AddSectionBlock
+          variant="outline"
+          handleAddElement={handleAddTutorialElement}
+          setIsSubchapterCreating={setIsSubchapterCreating}
+        />
       )}
 
-      <AddSectionBlock variant="dashed" handleAddElement={handleAddTutorialElement} />
+      <AddSectionBlock
+        variant="dashed"
+        handleAddElement={handleAddTutorialElement}
+        setIsSubchapterCreating={setIsSubchapterCreating}
+        isSubchapter={true}
+      />
     </section>
   )
 }

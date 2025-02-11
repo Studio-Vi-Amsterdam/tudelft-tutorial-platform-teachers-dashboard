@@ -226,7 +226,7 @@ export interface TutorialCardInterface {
 
 interface TextLayoutInterface {
   text: TextElementInterface
-  title: TextElementInterface
+  title?: TextElementInterface
 }
 
 interface MediaTextImageInterface {

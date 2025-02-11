@@ -20,9 +20,12 @@ interface AddSectionBlockProps {
     index?: number,
     subchapterIndex?: number,
     showTitle?: boolean,
+    isSubchapter?: boolean,
   ) => void
   chapterIndex?: number
   subchapterIndex?: number
+  isSubchapter?: boolean
+  setIsSubchapterCreating: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const AddSectionBlock = (props: AddSectionBlockProps) => {
@@ -42,11 +45,19 @@ const AddSectionBlock = (props: AddSectionBlockProps) => {
 
   const createSection = (layoutType: LayoutChapterType) => {
     setIsSectionCreating(false)
+
+    if (props.isSubchapter) {
+      props.setIsSubchapterCreating(true)
+    } else {
+      props.setIsSubchapterCreating(false)
+    }
+
     props.handleAddElement(
       layoutType,
       props.chapterIndex,
       props.subchapterIndex,
       layoutType === '1 column' || isSubchapter,
+      props.isSubchapter,
     )
   }
 

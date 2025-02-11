@@ -209,13 +209,18 @@ const validateElements = (
         }),
       }
     } else if (element.textLayout) {
-      const isTitleValid = element.textLayout.title.text.trim().length > 0
+      const isTitleValid = element.textLayout?.title
+        ? element.textLayout.title.text.trim().length > 0
+        : true
       !isTitleValid && count++
       const isTextValid = element.textLayout.text.text.trim().length > 0
       !isTextValid && count++
+
       return {
         textLayout: {
-          title: { ...element.textLayout.title, isValid: isTitleValid },
+          title: element.textLayout?.title
+            ? { ...element.textLayout.title, isValid: isTitleValid }
+            : undefined,
           text: { ...element.textLayout.text, isValid: isTextValid },
         },
       }
