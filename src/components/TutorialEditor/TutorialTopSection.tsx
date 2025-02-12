@@ -81,6 +81,12 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       dispatch(addTutorialElements(payload))
     } else if (val === 'quiz') {
       payload[val] = {
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         question: { text: '', isValid: true },
         answers: [
           { answer: '', isCorrect: '1', isValid: true },

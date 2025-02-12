@@ -167,6 +167,7 @@ export interface QuizAnswer {
   isValid: boolean
 }
 export interface QuizElement {
+  title?: TextElementInterface
   question: TextElementInterface
   answers: QuizAnswer[]
   answersCount: number

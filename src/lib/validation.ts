@@ -212,11 +212,14 @@ const validateElements = (
         },
       }
     } else if (element.quiz) {
+      const isTitleValid = element.quiz?.title ? element.quiz.title.text.trim().length > 0 : true
+      !isTitleValid && count++
       const isQuestionValid = element.quiz.question.text.trim().length > 0
       !isQuestionValid && count++
       return {
         quiz: {
           ...element.quiz,
+          title: element.quiz?.title ? { ...element.quiz.title, isValid: isTitleValid } : undefined,
           question: { ...element.quiz.question, isValid: isQuestionValid },
           answers: element.quiz.answers.map((answer) => {
             const isValidAnswer = answer.answer.trim().length > 0

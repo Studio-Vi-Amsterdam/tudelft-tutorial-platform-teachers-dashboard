@@ -215,6 +215,10 @@ export const reducerParser = {
             case 'tu-delft-quiz':
               return {
                 quiz: {
+                  title:
+                    block.block_data.title !== undefined
+                      ? { text: block.block_data.title, isValid: true }
+                      : undefined,
                   question: { text: block.block_data.question, isValid: true },
                   answers: [
                     {
@@ -1074,6 +1078,7 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-quiz',
                 block_data: {
+                  title: item.quiz.title !== undefined ? item.quiz.title.text : undefined,
                   question: item.quiz.question.text,
                   answers_0_answer: item.quiz.answers[0].answer,
                   answers_0_is_correct: item.quiz.answers[0].isCorrect,
