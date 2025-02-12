@@ -512,6 +512,10 @@ export const reducerParser = {
             case 'tu-delft-download':
               return {
                 file: {
+                  subchapterTitle:
+                    block.block_data.subchapter_title !== undefined
+                      ? { text: block.block_data.subchapter_title, isValid: true }
+                      : undefined,
                   title: block.block_data.title ? block.block_data.title : '',
                   file: {
                     id: block.block_data.file,
@@ -1219,6 +1223,10 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-download',
                 block_data: {
+                  subchapter_title:
+                    item.file.subchapterTitle !== undefined
+                      ? item.file.subchapterTitle.text
+                      : undefined,
                   file: item.file.file?.id,
                   file_url: item.file.file?.url,
                   title: item.file.title,

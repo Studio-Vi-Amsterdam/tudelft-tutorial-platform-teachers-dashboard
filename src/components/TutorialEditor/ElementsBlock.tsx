@@ -4,6 +4,7 @@ import {
   changeSubchapterText,
   changeSubchapterTitle,
   setElementText,
+  setFileSubchapterTitle,
   setImageTitle,
   setInfoboxText,
   setInfoboxTitle,
@@ -113,6 +114,20 @@ const ElementsBlock = (props: ElementsBlockProps) => {
     if (block !== undefined && index !== undefined) {
       dispatch(
         setTutorialCardsTitle({
+          block,
+          index,
+          value,
+          nestedIndex: chapterIndex,
+          subchapterIndex,
+        }),
+      )
+    }
+  }
+
+  const handleFileElementTitleChange = (value: string, index?: number, block?: string): void => {
+    if (block !== undefined && index !== undefined) {
+      dispatch(
+        setFileSubchapterTitle({
           block,
           index,
           value,
@@ -626,6 +641,17 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               styles="bg-white top-3 right-1 w-6 h-6"
               file={element.file.file?.id}
             >
+              {element.file?.subchapterTitle !== undefined && (
+                <div className="relative w-full mt-4 mb-5 ">
+                  <input
+                    type="text"
+                    className={`${element.file?.subchapterTitle.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                    value={element.file?.subchapterTitle.text}
+                    placeholder={'Subchapter Title'}
+                    onChange={(e) => handleFileElementTitleChange(e.target.value, index, block)}
+                  />
+                </div>
+              )}
               <FileElement
                 block={props.block}
                 chapterIndex={props.chapterIndex}

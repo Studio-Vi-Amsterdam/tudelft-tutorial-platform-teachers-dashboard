@@ -198,6 +198,7 @@ export interface CustomFileInterface {
   isValid: boolean
 }
 interface ElementsFileInterface {
+  subchapterTitle?: TextElementInterface
   file: CustomFileInterface
   title: TextElementInterface
   description: TextElementInterface

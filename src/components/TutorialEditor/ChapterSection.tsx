@@ -134,6 +134,12 @@ const ChapterSection = (props: ChapterSectionProps) => {
       }
     } else if (val === 'download file') {
       payload.file = {
+        subchapterTitle: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         file: { id: undefined, url: '', isValid: true },
         title: { text: '', isValid: true },
         description: { text: '', isValid: true },

@@ -179,9 +179,17 @@ const validateElements = (
       !isTitleValid && count++
       const isDescriptionValid = element.file.description.text.trim().length > 0
       !isDescriptionValid && count++
+      const isSubchapterTitleValid = element.file?.subchapterTitle
+        ? element.file.subchapterTitle.text.trim().length > 0
+        : true
+      !isSubchapterTitleValid && count++
+
       return {
         file: {
           ...element.file,
+          subchapterTitle: element.file?.subchapterTitle
+            ? { ...element.file.subchapterTitle, isValid: isSubchapterTitleValid }
+            : undefined,
           file: {
             ...element.file.file,
             isValid: isFileValid,

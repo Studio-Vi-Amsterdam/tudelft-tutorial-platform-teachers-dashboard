@@ -599,6 +599,33 @@ export const editorSlice = createSlice({
         }
       }
     },
+    setFileSubchapterTitle: (state, action: PayloadAction<ElementInfoboxTitleActionInterface>) => {
+      const payload = action.payload
+      if (payload.index !== undefined) {
+        if (payload.block === 'tutorialElements') {
+          if (
+            state.tutorialTop.elements[payload.index].file &&
+            state.tutorialTop.elements[payload.index].file!.subchapterTitle !== undefined
+          ) {
+            state.tutorialTop.elements[payload.index].file!.subchapterTitle = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+        if (payload.block === 'chapterElements' && payload.nestedIndex !== undefined) {
+          if (
+            state.chapters[payload.nestedIndex].elements[payload.index].file!.subchapterTitle !==
+            undefined
+          ) {
+            state.chapters[payload.nestedIndex].elements[payload.index].file!.subchapterTitle = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+      }
+    },
     setElementImage: (state, action: PayloadAction<ElementImageActionInterface>) => {
       setElementProperty(
         state,
@@ -1806,6 +1833,7 @@ export const {
   setImageTitle,
   setVideoTitle,
   setTutorialCardsTitle,
+  setFileSubchapterTitle,
 } = editorSlice.actions
 
 export default editorSlice.reducer
