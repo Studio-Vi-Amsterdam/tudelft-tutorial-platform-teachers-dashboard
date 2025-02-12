@@ -19,6 +19,17 @@ export const Notification = () => {
     }
   }, [])
 
+  const getCorrectStatus = (status: string) => {
+    if (status === 'publish') {
+      return 'published'
+    }
+
+    if (status === 'draft') {
+      return 'drafts'
+    }
+    return status
+  }
+
   useEffect(() => {
     getSuggestion(userId)
   }, [userId])
@@ -82,14 +93,13 @@ export const Notification = () => {
                 </div>
                 <div className="text-sm">
                   <p className="text-tertiary-grey-dim">
-                    {el.user} made an suggestion on
-                    {/* <b>{el.chapterTitle}</b> */}
+                    {el.user} made an suggestion on <b>{el.post_title}</b>
                   </p>
                   <p className="text-tertiary-grey-stone mt-1">
                     {formatRelativeTime(el.created_at)}
                   </p>
                   <a
-                    href={`/dashboard/my-tutorials?type=tutorials&id=${el.post_id}&status=published`}
+                    href={`/dashboard/my-tutorials?type=${el.type}s&id=${el.post_id}&status=${getCorrectStatus(el.post_status)}`}
                     className="text-primary-skyBlue mt-3 block"
                   >
                     <b>Review</b>

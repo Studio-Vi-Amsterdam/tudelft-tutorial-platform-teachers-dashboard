@@ -13,6 +13,9 @@ import { formatRelativeTime } from '../../lib/timeFormat'
 export interface FeedbackSuggestion {
   comment: string
   post_id: number
+  post_status: string
+  type: string
+  post_title: string
   comment_id: number
   articleType: string
   created_at: string
