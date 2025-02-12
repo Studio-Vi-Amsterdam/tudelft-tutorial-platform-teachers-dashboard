@@ -191,6 +191,12 @@ const ChapterSection = (props: ChapterSectionProps) => {
       }
     } else if (val === 'external video') {
       payload.externalVideo = {
+        subchapterTitle: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         title: { text: '', isValid: true },
         url: { text: '', isValid: true },
         thumbnail: undefined,

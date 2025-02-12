@@ -453,6 +453,10 @@ export const reducerParser = {
             case 'tu-delft-video-url':
               return {
                 externalVideo: {
+                  subchapter_title:
+                    block.block_data.subchapter_title !== undefined
+                      ? { text: block.block_data.subchapter_title, isValid: true }
+                      : undefined,
                   title: { text: block.block_data.title ?? '', isValid: !!block.block_data.title },
                   url: { text: block.block_data.url ?? '', isValid: !!block.block_data.url },
                   thumbnail: {
@@ -1154,6 +1158,10 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-video-url',
                 block_data: {
+                  subchapter_title:
+                    item.externalVideo.subchapterTitle !== undefined
+                      ? item.externalVideo.subchapterTitle.text
+                      : undefined,
                   title: item.externalVideo.title.text,
                   url: item.externalVideo.url.text,
                   thumbnail: item.externalVideo.thumbnail

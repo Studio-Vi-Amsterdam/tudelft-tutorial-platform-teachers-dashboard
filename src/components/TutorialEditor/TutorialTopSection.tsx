@@ -204,6 +204,12 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       dispatch(addTutorialElements(payload))
     } else if (val === 'external video') {
       payload.externalVideo = {
+        subchapterTitle: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         title: { text: '', isValid: true },
         url: { text: '', isValid: true },
         thumbnail: undefined,

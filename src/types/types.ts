@@ -250,6 +250,7 @@ interface MediaTextVideoInterface {
 }
 
 export interface ExternalVideoInterface {
+  subchapterTitle?: TextElementInterface
   title: TextElementInterface
   url: TextElementInterface
   thumbnail: ThumbnailInterface | undefined

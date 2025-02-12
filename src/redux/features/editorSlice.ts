@@ -653,6 +653,38 @@ export const editorSlice = createSlice({
         }
       }
     },
+    setExternalVideoElementTitle: (
+      state,
+      action: PayloadAction<ElementInfoboxTitleActionInterface>,
+    ) => {
+      const payload = action.payload
+      if (payload.index !== undefined) {
+        if (payload.block === 'tutorialElements') {
+          if (
+            state.tutorialTop.elements[payload.index].externalVideo &&
+            state.tutorialTop.elements[payload.index].externalVideo!.subchapterTitle !== undefined
+          ) {
+            state.tutorialTop.elements[payload.index].externalVideo!.subchapterTitle = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+        if (payload.block === 'chapterElements' && payload.nestedIndex !== undefined) {
+          if (
+            state.chapters[payload.nestedIndex].elements[payload.index].externalVideo!
+              .subchapterTitle !== undefined
+          ) {
+            state.chapters[payload.nestedIndex].elements[
+              payload.index
+            ].externalVideo!.subchapterTitle = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+      }
+    },
     setElementImage: (state, action: PayloadAction<ElementImageActionInterface>) => {
       setElementProperty(
         state,
@@ -1862,6 +1894,7 @@ export const {
   setTutorialCardsTitle,
   setFileSubchapterTitle,
   setH5PElementTitle,
+  setExternalVideoElementTitle,
 } = editorSlice.actions
 
 export default editorSlice.reducer

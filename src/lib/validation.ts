@@ -333,12 +333,20 @@ const validateElements = (
         },
       }
     } else if (element.externalVideo) {
+      const isSubchapterTitleValid =
+        element.externalVideo.subchapterTitle !== undefined
+          ? element.externalVideo.subchapterTitle.text.trim().length > 0
+          : true
+      !isSubchapterTitleValid && count++
       const isTitleValid = element.externalVideo.title.text.trim().length > 0
       !isTitleValid && count++
       const isUrlValid = urlPattern.test(element.externalVideo.url.text)
       !isUrlValid && count++
       return {
         externalVideo: {
+          subchapterTitle: element.externalVideo?.subchapterTitle
+            ? { ...element.externalVideo.subchapterTitle, isValid: isTitleValid }
+            : undefined,
           title: { ...element.externalVideo.title, isValid: isTitleValid },
           url: { ...element.externalVideo.url, isValid: isUrlValid },
           thumbnail: element.externalVideo.thumbnail,
