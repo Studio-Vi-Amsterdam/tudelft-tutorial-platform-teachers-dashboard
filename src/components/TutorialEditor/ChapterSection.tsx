@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import EditorLabel from '../ui/EditorLabel'
 import { AddElementsType, ChapterInterface } from 'src/types/types'
 import { useAppDispatch } from 'src/redux/hooks'
@@ -23,6 +23,7 @@ interface ChapterSectionProps {
 
 const ChapterSection = (props: ChapterSectionProps) => {
   const { chapter, index } = props
+  const [isSubchapterCreating, setIsSubchapterCreating] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()
 
@@ -45,10 +46,12 @@ const ChapterSection = (props: ChapterSectionProps) => {
 
     if (val === 'text block') {
       payload.textLayout = {
-        title: {
-          text: '',
-          isValid: true,
-        },
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         text: {
           text: '',
           isValid: true,
@@ -59,13 +62,24 @@ const ChapterSection = (props: ChapterSectionProps) => {
     }
     if (val === 'infobox block') {
       payload.infobox = {
-        text: '',
-        isValid: true,
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
+        text: { text: '', isValid: true },
       }
       delete payload['infobox block']
     }
     if (val === 'quiz') {
       payload[val] = {
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         question: { text: '', isValid: true },
         answers: [
           { answer: '', isCorrect: '1', isValid: true },
@@ -77,8 +91,15 @@ const ChapterSection = (props: ChapterSectionProps) => {
       }
     } else if (val === 'h5p element') {
       payload.h5pElement = {
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         text: '',
         error: '',
+        isValid: true,
       }
       delete payload['h5p element']
     } else if (val === 'tutorial cards') {
@@ -89,27 +110,49 @@ const ChapterSection = (props: ChapterSectionProps) => {
           title: item.title,
           isValid: true,
         }))
-        payload.tutorialCards = [
-          {
-            value: { id: undefined, title: '', isValid: true },
-            proposedList: tutorials,
-          },
-        ]
+        payload.tutorialCards = {
+          title: isSubchapterCreating
+            ? {
+                text: '',
+                isValid: true,
+              }
+            : undefined,
+          items: [
+            {
+              value: { id: undefined, title: '', isValid: true },
+              proposedList: tutorials,
+            },
+          ],
+        }
         delete payload['tutorial cards']
       } catch (error: any) {
         if (error.response && error.response.status === 404) {
-          payload.tutorialCards = [
-            {
-              value: { id: undefined, title: '', isValid: true },
-              proposedList: [],
-            },
-          ]
+          payload.tutorialCards = {
+            title: isSubchapterCreating
+              ? {
+                  text: '',
+                  isValid: true,
+                }
+              : undefined,
+            items: [
+              {
+                value: { id: undefined, title: '', isValid: true },
+                proposedList: [],
+              },
+            ],
+          }
         } else {
           console.error(error)
         }
       }
     } else if (val === 'download file') {
       payload.file = {
+        subchapterTitle: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         file: { id: undefined, url: '', isValid: true },
         title: { text: '', isValid: true },
         description: { text: '', isValid: true },
@@ -117,6 +160,12 @@ const ChapterSection = (props: ChapterSectionProps) => {
       delete payload['download file']
     } else if (val === 'image') {
       payload.image = {
+        subchapterTitle: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         format: '',
         link: '',
         url: '',
@@ -130,6 +179,12 @@ const ChapterSection = (props: ChapterSectionProps) => {
       }
     } else if (val === 'video') {
       payload.video = {
+        subchapterTitle: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         format: '',
         link: '',
         url: '',
@@ -142,6 +197,12 @@ const ChapterSection = (props: ChapterSectionProps) => {
       }
     } else if (val === 'external video') {
       payload.externalVideo = {
+        subchapterTitle: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         title: { text: '', isValid: true },
         url: { text: '', isValid: true },
         thumbnail: undefined,
@@ -261,9 +322,16 @@ const ChapterSection = (props: ChapterSectionProps) => {
         handleAddElement={handleAddElement}
         handleChangeChapterTitle={handleChangeChapterTitle}
         handleChapterTextInputChange={handleChapterTextInputChange}
+        setIsSubchapterCreating={setIsSubchapterCreating}
         chapterIndex={index}
       />
-      <AddSectionBlock variant="dashed" chapterIndex={index} handleAddElement={handleAddElement} />
+      <AddSectionBlock
+        variant="dashed"
+        chapterIndex={index}
+        handleAddElement={handleAddElement}
+        setIsSubchapterCreating={setIsSubchapterCreating}
+        isSubchapter={true}
+      />
     </section>
   )
 }

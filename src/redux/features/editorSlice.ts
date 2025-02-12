@@ -16,7 +16,7 @@ import {
   ElementFileActionInterface,
   ElementH5PActionInterface,
   ElementImageActionInterface,
-  ElementInfoboxActionInterface,
+  ElementInfoboxTitleActionInterface,
   ElementQuizActionInterface,
   ElementTextActionInterface,
   ElementVideoActionInterface,
@@ -72,33 +72,54 @@ const setElementProperty = (state: any, action: PayloadAction<any>, property: ke
 
   if (block === 'tutorialElements' && index !== undefined) {
     if (layout) {
-      state.tutorialTop.elements[index][layout][property] = value
+      state.tutorialTop.elements[index][layout][property] = {
+        ...state.tutorialTop.elements[index][layout][property],
+        ...value,
+      }
     } else {
-      state.tutorialTop.elements[index][property] = value
+      state.tutorialTop.elements[index][property] = {
+        ...state.tutorialTop.elements[index][property],
+        ...value,
+      }
     }
   } else if (block === 'tutorialBottomElements' && index !== undefined) {
     if (layout) {
-      state.tutorialBottomContent[index][layout][property] = value
+      state.tutorialBottomContent[index][layout][property] = {
+        ...state.tutorialBottomContent[index][layout][property],
+        ...value,
+      }
     } else {
-      state.tutorialBottomContent[index][property] = value
+      state.tutorialBottomContent[index][property] = {
+        ...state.tutorialBottomContent[index][property],
+        ...value,
+      }
     }
   } else if (block === 'chapterElements' && index !== undefined && nestedIndex !== undefined) {
-    state.chapters[nestedIndex].elements[index][property] = value
+    state.chapters[nestedIndex].elements[index][property] = {
+      ...state.chapters[nestedIndex].elements[index][property],
+      ...value,
+    }
   } else if (
     block === 'subchapterElements' &&
     index !== undefined &&
     nestedIndex !== undefined &&
     subchapterIndex !== undefined
   ) {
-    state.chapters[nestedIndex].subchapters[subchapterIndex].elements[index][property] = value
+    state.chapters[nestedIndex].subchapters[subchapterIndex].elements[index][property] = {
+      ...state.chapters[nestedIndex].subchapters[subchapterIndex].elements[index][property],
+      ...value,
+    }
   } else if (block === 'chapterMedia' && nestedIndex !== undefined) {
-    state.chapters[nestedIndex][property] = value
+    state.chapters[nestedIndex][property] = { ...state.chapters[nestedIndex][property], ...value }
   } else if (
     block === 'subchapterMedia' &&
     nestedIndex !== undefined &&
     subchapterIndex !== undefined
   ) {
-    state.chapters[nestedIndex].subchapters[subchapterIndex][property] = value
+    state.chapters[nestedIndex].subchapters[subchapterIndex][property] = {
+      ...state.chapters[nestedIndex].subchapters[subchapterIndex][property],
+      ...value,
+    }
   }
 }
 
@@ -450,18 +471,245 @@ export const editorSlice = createSlice({
         'text',
       )
     },
-    setElementInfobox: (state, action: PayloadAction<ElementInfoboxActionInterface>) => {
-      setElementProperty(
-        state,
-        {
-          ...action,
-          payload: {
-            ...action.payload,
-            value: action.payload.infobox,
-          },
-        },
-        'infobox',
-      )
+    setInfoboxTitle: (state, action: PayloadAction<ElementInfoboxTitleActionInterface>) => {
+      const payload = action.payload
+      if (payload.index !== undefined) {
+        if (payload.block === 'tutorialElements') {
+          if (
+            state.tutorialTop.elements[payload.index].infobox &&
+            state.tutorialTop.elements[payload.index].infobox!.title !== undefined
+          ) {
+            state.tutorialTop.elements[payload.index].infobox!.title = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+        if (payload.block === 'chapterElements' && payload.nestedIndex !== undefined) {
+          if (
+            state.chapters[payload.nestedIndex].elements[payload.index].infobox!.title !== undefined
+          ) {
+            state.chapters[payload.nestedIndex].elements[payload.index].infobox!.title = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+      }
+    },
+    setInfoboxText: (state, action: PayloadAction<ElementInfoboxTitleActionInterface>) => {
+      const payload = action.payload
+      if (payload.index !== undefined) {
+        if (payload.block === 'tutorialElements') {
+          if (state.tutorialTop.elements[payload.index].infobox !== undefined) {
+            state.tutorialTop.elements[payload.index].infobox!.text = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+        if (payload.block === 'chapterElements' && payload.nestedIndex !== undefined) {
+          if (state.chapters[payload.nestedIndex].elements[payload.index].infobox !== undefined) {
+            state.chapters[payload.nestedIndex].elements[payload.index].infobox!.text = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+      }
+    },
+    setImageTitle: (state, action: PayloadAction<ElementInfoboxTitleActionInterface>) => {
+      const payload = action.payload
+      if (payload.index !== undefined) {
+        if (payload.block === 'tutorialElements') {
+          if (
+            state.tutorialTop.elements[payload.index].image &&
+            state.tutorialTop.elements[payload.index].image!.subchapterTitle !== undefined
+          ) {
+            state.tutorialTop.elements[payload.index].image!.subchapterTitle = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+        if (payload.block === 'chapterElements' && payload.nestedIndex !== undefined) {
+          if (
+            state.chapters[payload.nestedIndex].elements[payload.index].image!.subchapterTitle !==
+            undefined
+          ) {
+            state.chapters[payload.nestedIndex].elements[payload.index].image!.subchapterTitle = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+      }
+    },
+    setVideoTitle: (state, action: PayloadAction<ElementInfoboxTitleActionInterface>) => {
+      const payload = action.payload
+      if (payload.index !== undefined) {
+        if (payload.block === 'tutorialElements') {
+          if (
+            state.tutorialTop.elements[payload.index].video &&
+            state.tutorialTop.elements[payload.index].video!.subchapterTitle !== undefined
+          ) {
+            state.tutorialTop.elements[payload.index].video!.subchapterTitle = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+        if (payload.block === 'chapterElements' && payload.nestedIndex !== undefined) {
+          if (
+            state.chapters[payload.nestedIndex].elements[payload.index].video!.subchapterTitle !==
+            undefined
+          ) {
+            state.chapters[payload.nestedIndex].elements[payload.index].video!.subchapterTitle = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+      }
+    },
+    setTutorialCardsTitle: (state, action: PayloadAction<ElementInfoboxTitleActionInterface>) => {
+      const payload = action.payload
+      if (payload.index !== undefined) {
+        if (payload.block === 'tutorialElements') {
+          if (
+            state.tutorialTop.elements[payload.index].tutorialCards &&
+            state.tutorialTop.elements[payload.index].tutorialCards!.title !== undefined
+          ) {
+            state.tutorialTop.elements[payload.index].tutorialCards!.title = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+        if (payload.block === 'chapterElements' && payload.nestedIndex !== undefined) {
+          if (
+            state.chapters[payload.nestedIndex].elements[payload.index].tutorialCards!.title !==
+            undefined
+          ) {
+            state.chapters[payload.nestedIndex].elements[payload.index].tutorialCards!.title = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+      }
+    },
+    setFileSubchapterTitle: (state, action: PayloadAction<ElementInfoboxTitleActionInterface>) => {
+      const payload = action.payload
+      if (payload.index !== undefined) {
+        if (payload.block === 'tutorialElements') {
+          if (
+            state.tutorialTop.elements[payload.index].file &&
+            state.tutorialTop.elements[payload.index].file!.subchapterTitle !== undefined
+          ) {
+            state.tutorialTop.elements[payload.index].file!.subchapterTitle = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+        if (payload.block === 'chapterElements' && payload.nestedIndex !== undefined) {
+          if (
+            state.chapters[payload.nestedIndex].elements[payload.index].file!.subchapterTitle !==
+            undefined
+          ) {
+            state.chapters[payload.nestedIndex].elements[payload.index].file!.subchapterTitle = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+      }
+    },
+    setH5PElementTitle: (state, action: PayloadAction<ElementInfoboxTitleActionInterface>) => {
+      const payload = action.payload
+      if (payload.index !== undefined) {
+        if (payload.block === 'tutorialElements') {
+          if (
+            state.tutorialTop.elements[payload.index].h5pElement &&
+            state.tutorialTop.elements[payload.index].h5pElement!.title !== undefined
+          ) {
+            state.tutorialTop.elements[payload.index].h5pElement!.title = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+        if (payload.block === 'chapterElements' && payload.nestedIndex !== undefined) {
+          if (
+            state.chapters[payload.nestedIndex].elements[payload.index].h5pElement!.title !==
+            undefined
+          ) {
+            state.chapters[payload.nestedIndex].elements[payload.index].h5pElement!.title = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+      }
+    },
+    setExternalVideoElementTitle: (
+      state,
+      action: PayloadAction<ElementInfoboxTitleActionInterface>,
+    ) => {
+      const payload = action.payload
+      if (payload.index !== undefined) {
+        if (payload.block === 'tutorialElements') {
+          if (
+            state.tutorialTop.elements[payload.index].externalVideo &&
+            state.tutorialTop.elements[payload.index].externalVideo!.subchapterTitle !== undefined
+          ) {
+            state.tutorialTop.elements[payload.index].externalVideo!.subchapterTitle = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+        if (payload.block === 'chapterElements' && payload.nestedIndex !== undefined) {
+          if (
+            state.chapters[payload.nestedIndex].elements[payload.index].externalVideo!
+              .subchapterTitle !== undefined
+          ) {
+            state.chapters[payload.nestedIndex].elements[
+              payload.index
+            ].externalVideo!.subchapterTitle = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+      }
+    },
+    setQuizElementTitle: (state, action: PayloadAction<ElementInfoboxTitleActionInterface>) => {
+      const payload = action.payload
+      if (payload.index !== undefined) {
+        if (payload.block === 'tutorialElements') {
+          if (
+            state.tutorialTop.elements[payload.index].quiz &&
+            state.tutorialTop.elements[payload.index].quiz!.title !== undefined
+          ) {
+            state.tutorialTop.elements[payload.index].quiz!.title = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+        if (payload.block === 'chapterElements' && payload.nestedIndex !== undefined) {
+          if (
+            state.chapters[payload.nestedIndex].elements[payload.index].quiz!.title !== undefined
+          ) {
+            state.chapters[payload.nestedIndex].elements[payload.index].quiz!.title = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+      }
     },
     setElementImage: (state, action: PayloadAction<ElementImageActionInterface>) => {
       setElementProperty(
@@ -1080,7 +1328,7 @@ export const editorSlice = createSlice({
         }
         const element = elements[listIndex]
         const layoutItem = element[layout]
-        if (layoutItem && layoutItem.text !== undefined) {
+        if (layoutItem && layoutItem.text !== undefined && layoutItem.title !== undefined) {
           layoutItem.title.text = value
           layoutItem.title.isValid = true
         }
@@ -1090,7 +1338,7 @@ export const editorSlice = createSlice({
         const element = elements ? elements[listIndex] : undefined
         const layoutItem = element ? element[layout] : undefined
 
-        if (layoutItem && layoutItem.text !== undefined) {
+        if (layoutItem && layoutItem.text !== undefined && layoutItem.title !== undefined) {
           layoutItem.title.text = value
           layoutItem.title.isValid = true
         }
@@ -1108,32 +1356,32 @@ export const editorSlice = createSlice({
       if (block === 'tutorialElements') {
         const elements = state.tutorialTop.elements
         const element = elements && elements[listIndex]
-        if (element.tutorialCards !== undefined) {
+        if (element.tutorialCards !== undefined && element.tutorialCards.items !== undefined) {
           const newObject: TutorialCardInterface = {
             value: { id: undefined, title: '', isValid: true },
-            proposedList: element.tutorialCards[0].proposedList,
+            proposedList: element.tutorialCards.items[0].proposedList,
           }
-          element.tutorialCards = [...element.tutorialCards, newObject]
+          element.tutorialCards.items = [...element.tutorialCards.items, newObject]
         }
       } else if (block === 'tutorialBottomElements') {
         const elements = state.tutorialBottomContent
         const element = elements && elements[listIndex]
-        if (element.tutorialCards !== undefined) {
+        if (element.tutorialCards !== undefined && element.tutorialCards.items !== undefined) {
           const newObject: TutorialCardInterface = {
             value: { id: undefined, title: '', isValid: true },
-            proposedList: element.tutorialCards[0].proposedList,
+            proposedList: element.tutorialCards.items[0].proposedList,
           }
-          element.tutorialCards = [...element.tutorialCards, newObject]
+          element.tutorialCards.items = [...element.tutorialCards.items, newObject]
         }
       } else if (block === 'chapterElements' && chapterIndex !== undefined) {
         const elements = state.chapters[chapterIndex].elements
         const element = elements && elements[listIndex]
-        if (element.tutorialCards !== undefined) {
+        if (element.tutorialCards !== undefined && element.tutorialCards.items !== undefined) {
           const newObject: TutorialCardInterface = {
             value: { id: undefined, title: '', isValid: true },
-            proposedList: element.tutorialCards[0].proposedList,
+            proposedList: element.tutorialCards.items[0].proposedList,
           }
-          element.tutorialCards = [...element.tutorialCards, newObject]
+          element.tutorialCards.items = [...element.tutorialCards.items, newObject]
         }
       }
     },
@@ -1155,14 +1403,15 @@ export const editorSlice = createSlice({
         const element = elements && elements[listIndex]
         if (
           element.tutorialCards !== undefined &&
-          element.tutorialCards[nestedIndex].value !== undefined
+          element.tutorialCards.items !== undefined &&
+          element.tutorialCards.items[nestedIndex].value !== undefined
         ) {
           if (isUrl) {
-            element.tutorialCards[nestedIndex].value.id = undefined
-            element.tutorialCards[nestedIndex].value[`${name as 'title' | 'url'}`] = value
-            element.tutorialCards[nestedIndex].value.isValid = value.trim().length > 0
+            element.tutorialCards.items[nestedIndex].value.id = undefined
+            element.tutorialCards.items[nestedIndex].value[`${name as 'title' | 'url'}`] = value
+            element.tutorialCards.items[nestedIndex].value.isValid = value.trim().length > 0
           } else {
-            element.tutorialCards[nestedIndex].value = element.tutorialCards[
+            element.tutorialCards.items[nestedIndex].value = element.tutorialCards.items[
               nestedIndex
             ].proposedList.find((el) => el.id === parseInt(value)) ?? {
               id: undefined,
@@ -1176,14 +1425,15 @@ export const editorSlice = createSlice({
         const element = elements && elements[listIndex]
         if (
           element.tutorialCards !== undefined &&
-          element.tutorialCards[nestedIndex].value !== undefined
+          element.tutorialCards.items !== undefined &&
+          element.tutorialCards.items[nestedIndex].value !== undefined
         ) {
           if (isUrl) {
-            element.tutorialCards[nestedIndex].value.id = undefined
-            element.tutorialCards[nestedIndex].value[`${name as 'title' | 'url'}`] = value
-            element.tutorialCards[nestedIndex].value.isValid = value.trim().length > 0
+            element.tutorialCards.items[nestedIndex].value.id = undefined
+            element.tutorialCards.items[nestedIndex].value[`${name as 'title' | 'url'}`] = value
+            element.tutorialCards.items[nestedIndex].value.isValid = value.trim().length > 0
           } else {
-            element.tutorialCards[nestedIndex].value = element.tutorialCards[
+            element.tutorialCards.items[nestedIndex].value = element.tutorialCards.items[
               nestedIndex
             ].proposedList.find((el) => el.id === parseInt(value)) ?? {
               id: undefined,
@@ -1199,12 +1449,13 @@ export const editorSlice = createSlice({
 
         if (
           element.tutorialCards !== undefined &&
-          element.tutorialCards[nestedIndex].value !== undefined
+          element.tutorialCards.items !== undefined &&
+          element.tutorialCards.items[nestedIndex].value !== undefined
         ) {
           if (isUrl) {
-            element.tutorialCards[nestedIndex].value[`${name as 'title' | 'url'}`] = value
+            element.tutorialCards.items[nestedIndex].value[`${name as 'title' | 'url'}`] = value
           } else {
-            element.tutorialCards[nestedIndex].value = element.tutorialCards[
+            element.tutorialCards.items[nestedIndex].value = element.tutorialCards.items[
               nestedIndex
             ].proposedList.find((el) => el.id === parseInt(value)) ?? {
               id: undefined,
@@ -1606,7 +1857,6 @@ export const {
   setPageType,
   addTutorialElements,
   setElementText,
-  setElementInfobox,
   addBlankChapter,
   setChapterText,
   setChapterTitle,
@@ -1663,6 +1913,15 @@ export const {
   setExternalVideoTitle,
   setExternalVideoUrl,
   addTutorialBottomElements,
+  setInfoboxTitle,
+  setInfoboxText,
+  setImageTitle,
+  setVideoTitle,
+  setTutorialCardsTitle,
+  setFileSubchapterTitle,
+  setH5PElementTitle,
+  setExternalVideoElementTitle,
+  setQuizElementTitle,
 } = editorSlice.actions
 
 export default editorSlice.reducer

@@ -205,13 +205,20 @@ export const reducerParser = {
             case 'tu-delft-info-box':
               return {
                 infobox: {
-                  text: block.block_data.content,
-                  isValid: true,
+                  title:
+                    block.block_data.title !== undefined
+                      ? { text: block.block_data.title, isValid: true }
+                      : undefined,
+                  text: { text: block.block_data.content, isValid: true },
                 },
               }
             case 'tu-delft-quiz':
               return {
                 quiz: {
+                  title:
+                    block.block_data.title !== undefined
+                      ? { text: block.block_data.title, isValid: true }
+                      : undefined,
                   question: { text: block.block_data.question, isValid: true },
                   answers: [
                     {
@@ -241,6 +248,10 @@ export const reducerParser = {
             case 'tu-delft-h5p':
               return {
                 h5pElement: {
+                  title:
+                    block.block_data.title !== undefined
+                      ? { text: block.block_data.title, isValid: true }
+                      : undefined,
                   text: block.block_data.source,
                   isValid: true,
                 },
@@ -257,6 +268,10 @@ export const reducerParser = {
                       ]
                     : 'unknown',
                   title: block.block_data.content ? block.block_data.content : '',
+                  subchapterTitle:
+                    block.block_data.title !== undefined
+                      ? { text: block.block_data.title, isValid: true }
+                      : undefined,
                   publishDate: 'hardcode',
                   hasZoom: block.block_data.has_image_zoom ?? false,
                 },
@@ -273,6 +288,10 @@ export const reducerParser = {
                       ]
                     : 'unknown',
                   title: block.block_data.content ? block.block_data.content : '',
+                  subchapterTitle:
+                    block.block_data.title !== undefined
+                      ? { text: block.block_data.title, isValid: true }
+                      : undefined,
                   publishDate: 'hardcode',
                   thumbnail: {
                     id: block.block_data.thumbnail,
@@ -427,11 +446,21 @@ export const reducerParser = {
               }
 
               return {
-                tutorialCards,
+                tutorialCards: {
+                  title:
+                    block.block_data.title !== undefined
+                      ? { text: block.block_data.title, isValid: true }
+                      : undefined,
+                  items: tutorialCards,
+                },
               }
             case 'tu-delft-video-url':
               return {
                 externalVideo: {
+                  subchapter_title:
+                    block.block_data.subchapter_title !== undefined
+                      ? { text: block.block_data.subchapter_title, isValid: true }
+                      : undefined,
                   title: { text: block.block_data.title ?? '', isValid: !!block.block_data.title },
                   url: { text: block.block_data.url ?? '', isValid: !!block.block_data.url },
                   thumbnail: {
@@ -495,6 +524,10 @@ export const reducerParser = {
             case 'tu-delft-download':
               return {
                 file: {
+                  subchapterTitle:
+                    block.block_data.subchapter_title !== undefined
+                      ? { text: block.block_data.subchapter_title, isValid: true }
+                      : undefined,
                   title: block.block_data.title ? block.block_data.title : '',
                   file: {
                     id: block.block_data.file,
@@ -1036,7 +1069,8 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-info-box',
                 block_data: {
-                  content: item.infobox.text,
+                  title: item.infobox.title !== undefined ? item.infobox.title.text : undefined,
+                  content: item.infobox.text.text,
                 },
               }
             }
@@ -1044,6 +1078,7 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-quiz',
                 block_data: {
+                  title: item.quiz.title !== undefined ? item.quiz.title.text : undefined,
                   question: item.quiz.question.text,
                   answers_0_answer: item.quiz.answers[0].answer,
                   answers_0_is_correct: item.quiz.answers[0].isCorrect,
@@ -1058,7 +1093,7 @@ export const reducerParser = {
               }
             }
             if (item.tutorialCards) {
-              const transformedData: TransformedDataTutorialCards = item.tutorialCards.reduce(
+              const transformedData: TransformedDataTutorialCards = item.tutorialCards.items.reduce(
                 (acc: TransformedDataTutorialCards, card, index) => {
                   const isCustomLink = card.value.url !== undefined ? '_custom' : ''
                   acc[`content_card_row_${index}_card_title`] = card.value.title
@@ -1072,17 +1107,25 @@ export const reducerParser = {
                     card.value.url !== undefined
                   return acc
                 },
-                { content_card_row: item.tutorialCards.length },
+                { content_card_row: item.tutorialCards.items.length },
               )
               return {
                 block_name: 'tu-delft-content-card',
-                block_data: transformedData,
+                block_data: {
+                  title:
+                    item.tutorialCards.title !== undefined
+                      ? item.tutorialCards.title.text
+                      : undefined,
+                  ...transformedData,
+                },
               }
             }
             if (item.h5pElement) {
               return {
                 block_name: 'tu-delft-h5p',
                 block_data: {
+                  title:
+                    item.h5pElement.title !== undefined ? item.h5pElement.title.text : undefined,
                   source: item.h5pElement.text,
                 },
               }
@@ -1091,6 +1134,10 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-image',
                 block_data: {
+                  title:
+                    item.image.subchapterTitle !== undefined
+                      ? item.image.subchapterTitle.text
+                      : undefined,
                   image: item.image.id,
                   image_url: item.image.url,
                   has_image_zoom: item.image.hasZoom ?? false,
@@ -1101,6 +1148,10 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-video',
                 block_data: {
+                  title:
+                    item.video.subchapterTitle !== undefined
+                      ? item.video.subchapterTitle.text
+                      : undefined,
                   video: item.video.id,
                   video_url: item.video.url,
                   thumbnail: item.video.thumbnail?.id ?? null,
@@ -1112,6 +1163,10 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-video-url',
                 block_data: {
+                  subchapter_title:
+                    item.externalVideo.subchapterTitle !== undefined
+                      ? item.externalVideo.subchapterTitle.text
+                      : undefined,
                   title: item.externalVideo.title.text,
                   url: item.externalVideo.url.text,
                   thumbnail: item.externalVideo.thumbnail
@@ -1125,7 +1180,7 @@ export const reducerParser = {
                 block_name: 'tu-delft-text',
                 block_data: {
                   content: item.textLayout.text.text,
-                  title: item.textLayout.title.text ?? undefined,
+                  title: item.textLayout?.title?.text ?? undefined,
                 },
               }
             }
@@ -1187,6 +1242,10 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-download',
                 block_data: {
+                  subchapter_title:
+                    item.file.subchapterTitle !== undefined
+                      ? item.file.subchapterTitle.text
+                      : undefined,
                   file: item.file.file?.id,
                   file_url: item.file.file?.url,
                   title: item.file.title,

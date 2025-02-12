@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import EditorLabel from 'src/components/ui/EditorLabel'
 import TextInput from 'src/components/ui/TextInput'
 import Tip from 'src/components/ui/Tip'
@@ -23,6 +23,8 @@ interface TutorialTopSectionProps {
 
 const TutorialTopSection = (props: TutorialTopSectionProps) => {
   const { tutorialTitle } = props
+
+  const [isSubchapterCreating, setIsSubchapterCreating] = useState<boolean>(false)
 
   const tutorialDescription = useAppSelector(
     (state: RootState) => state.editor.tutorialTop.description,
@@ -52,10 +54,12 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
     payload[val] = ''
     if (val === 'text block') {
       payload.textLayout = {
-        title: {
-          text: '',
-          isValid: true,
-        },
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         text: {
           text: '',
           isValid: true,
@@ -65,13 +69,24 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       dispatch(addTutorialElements(payload))
     } else if (val === 'infobox block') {
       payload.infobox = {
-        text: '',
-        isValid: true,
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
+        text: { text: '', isValid: true },
       }
       delete payload['infobox block']
       dispatch(addTutorialElements(payload))
     } else if (val === 'quiz') {
       payload[val] = {
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         question: { text: '', isValid: true },
         answers: [
           { answer: '', isCorrect: '1', isValid: true },
@@ -84,6 +99,12 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       dispatch(addTutorialElements(payload))
     } else if (val === 'h5p element') {
       payload.h5pElement = {
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         text: '',
         error: '',
         isValid: true,
@@ -98,20 +119,36 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
           title: item.title,
           isValid: true,
         }))
-        payload.tutorialCards = [
-          {
-            value: { id: undefined, title: '', isValid: true },
-            proposedList: tutorials,
-          },
-        ]
-      } catch (error: any) {
-        if (error.response && error.response.status === 404) {
-          payload.tutorialCards = [
+        payload.tutorialCards = {
+          title: isSubchapterCreating
+            ? {
+                text: '',
+                isValid: true,
+              }
+            : undefined,
+          items: [
             {
               value: { id: undefined, title: '', isValid: true },
-              proposedList: [],
+              proposedList: tutorials,
             },
-          ]
+          ],
+        }
+      } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+          payload.tutorialCards = {
+            title: isSubchapterCreating
+              ? {
+                  text: '',
+                  isValid: true,
+                }
+              : undefined,
+            items: [
+              {
+                value: { id: undefined, title: '', isValid: true },
+                proposedList: [],
+              },
+            ],
+          }
         } else {
           console.error(error)
         }
@@ -120,6 +157,12 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       dispatch(addTutorialElements(payload))
     } else if (val === 'download file') {
       payload.file = {
+        subchapterTitle: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         file: { id: undefined, url: '', isValid: true },
         title: { text: '', isValid: true },
         description: { text: '', isValid: true },
@@ -128,6 +171,12 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       dispatch(addTutorialElements(payload))
     } else if (val === 'image') {
       payload.image = {
+        subchapterTitle: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         format: '',
         link: '',
         url: '',
@@ -142,6 +191,12 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       dispatch(addTutorialElements(payload))
     } else if (val === 'video') {
       payload.video = {
+        subchapterTitle: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         format: '',
         link: '',
         url: '',
@@ -155,6 +210,12 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       dispatch(addTutorialElements(payload))
     } else if (val === 'external video') {
       payload.externalVideo = {
+        subchapterTitle: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         title: { text: '', isValid: true },
         url: { text: '', isValid: true },
         thumbnail: undefined,
@@ -286,10 +347,19 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       />
 
       {!tutorialStateElements.find((el) => el.defaultVal) && (
-        <AddSectionBlock variant="outline" handleAddElement={handleAddTutorialElement} />
+        <AddSectionBlock
+          variant="outline"
+          handleAddElement={handleAddTutorialElement}
+          setIsSubchapterCreating={setIsSubchapterCreating}
+        />
       )}
 
-      <AddSectionBlock variant="dashed" handleAddElement={handleAddTutorialElement} />
+      <AddSectionBlock
+        variant="dashed"
+        handleAddElement={handleAddTutorialElement}
+        setIsSubchapterCreating={setIsSubchapterCreating}
+        isSubchapter={true}
+      />
     </section>
   )
 }

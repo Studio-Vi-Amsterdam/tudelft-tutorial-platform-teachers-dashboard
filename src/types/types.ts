@@ -91,7 +91,14 @@ interface MediaObjectParent {
 
 export interface ThumbnailInterface extends MediaObjectParent {}
 
+export interface TextElementInterface {
+  text: string
+  isValid: boolean
+  hidden?: boolean
+}
+
 export interface MediaObjectInterface {
+  subchapterTitle?: TextElementInterface
   id?: number
   link: string
   url?: string
@@ -107,18 +114,17 @@ export interface MediaObjectInterface {
   hasZoom?: boolean
 }
 
-export interface TextElementInterface {
-  text: string
-  isValid: boolean
-  hidden?: boolean
+interface TextLayoutInterface {
+  text: TextElementInterface
+  title?: TextElementInterface
 }
 
 export interface ElementTextActionInterface extends ElementActionBase {
   text: TextElementInterface
 }
 
-export interface ElementInfoboxActionInterface extends ElementActionBase {
-  infobox: TextElementInterface
+export interface ElementInfoboxTitleActionInterface extends ElementActionBase {
+  value: string
 }
 
 export interface ElementImageActionInterface extends ElementActionBase {
@@ -161,6 +167,7 @@ export interface QuizAnswer {
   isValid: boolean
 }
 export interface QuizElement {
+  title?: TextElementInterface
   question: TextElementInterface
   answers: QuizAnswer[]
   answersCount: number
@@ -182,6 +189,7 @@ export interface h5pElementInterface {
   text: string
   error: string
   isValid: boolean
+  title?: TextElementInterface
 }
 export interface ElementH5PActionInterface extends ElementActionBase {
   h5pElement: h5pElementInterface
@@ -192,6 +200,7 @@ export interface CustomFileInterface {
   isValid: boolean
 }
 interface ElementsFileInterface {
+  subchapterTitle?: TextElementInterface
   file: CustomFileInterface
   title: TextElementInterface
   description: TextElementInterface
@@ -224,9 +233,9 @@ export interface TutorialCardInterface {
   proposedList: ProposedList[] | []
 }
 
-interface TextLayoutInterface {
-  text: TextElementInterface
-  title: TextElementInterface
+export interface TutorialCardsBlockInterface {
+  title?: TextElementInterface
+  items: TutorialCardInterface[]
 }
 
 interface MediaTextImageInterface {
@@ -242,6 +251,7 @@ interface MediaTextVideoInterface {
 }
 
 export interface ExternalVideoInterface {
+  subchapterTitle?: TextElementInterface
   title: TextElementInterface
   url: TextElementInterface
   thumbnail: ThumbnailInterface | undefined
@@ -249,7 +259,7 @@ export interface ExternalVideoInterface {
 
 export interface TutorialTopElementsObject {
   text?: TextElementInterface
-  infobox?: TextElementInterface
+  infobox?: TextLayoutInterface
   image?: MediaObjectInterface
   video?: MediaObjectInterface
   externalVideo?: ExternalVideoInterface
@@ -257,7 +267,7 @@ export interface TutorialTopElementsObject {
   quiz?: QuizElement
   h5pElement?: h5pElementInterface
   tutorialCard?: TutorialCardInterface
-  tutorialCards?: TutorialCardInterface[]
+  tutorialCards?: TutorialCardsBlockInterface
   textLayout?: TextLayoutInterface
   textImage?: MediaTextImageInterface
   imageText?: MediaTextImageInterface
@@ -310,12 +320,12 @@ export interface TermDialogInterface {
 
 export interface ChapterElementsObject {
   text?: TextElementInterface
-  infobox?: TextElementInterface
+  infobox?: TextLayoutInterface
   image?: MediaObjectInterface
   video?: MediaObjectInterface
   externalVideo?: ExternalVideoInterface
   tutorialCard?: TutorialCardInterface
-  tutorialCards?: TutorialCardInterface[]
+  tutorialCards?: TutorialCardsBlockInterface
   file?: ElementsFileInterface
   quiz?: QuizElement
   h5pElement?: h5pElementInterface

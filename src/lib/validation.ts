@@ -117,35 +117,65 @@ const validateElements = (
       !isValid && count++
       return { text: { ...element.text, isValid } }
     } else if (element.infobox) {
-      const isValid = element.infobox.text.trim().length > 0
+      const isTitleValid = element.infobox?.title
+        ? element.infobox.title.text.trim().length > 0
+        : true
+      !isTitleValid && count++
+      const isValid = element.infobox.text.text.trim().length > 0
       !isValid && count++
       return {
-        infobox: { ...element.infobox, isValid },
+        infobox: {
+          title: element.infobox?.title
+            ? { ...element.infobox.title, isValid: isTitleValid }
+            : undefined,
+          text: { ...element.infobox.text, isValid },
+        },
       }
     } else if (element.h5pElement) {
+      const isTitleValid = element.h5pElement?.title
+        ? element.h5pElement.title.text.trim().length > 0
+        : true
+      !isTitleValid && count++
       const isValid = element.h5pElement.text.trim().length > 0
       !isValid && count++
       return {
         h5pElement: {
           ...element.h5pElement,
+          title: element.h5pElement?.title
+            ? { ...element.h5pElement.title, isValid: isTitleValid }
+            : undefined,
           isValid,
         },
       }
     } else if (element.image) {
+      const isTitleValid = element.image?.subchapterTitle
+        ? element.image.subchapterTitle.text.trim().length > 0
+        : true
+      !isTitleValid && count++
       const isValid = !!element.image.id
       !isValid && count++
       return {
         image: {
           ...element.image,
+          subchapterTitle: element.image?.subchapterTitle
+            ? { ...element.image.subchapterTitle, isValid: isTitleValid }
+            : undefined,
           isValid,
         },
       }
     } else if (element.video) {
+      const isTitleValid = element.video?.subchapterTitle
+        ? element.video.subchapterTitle.text.trim().length > 0
+        : true
+      !isTitleValid && count++
       const isValid = !!element.video.id
       !isValid && count++
       return {
         video: {
           ...element.video,
+          subchapterTitle: element.video?.subchapterTitle
+            ? { ...element.video.subchapterTitle, isValid: isTitleValid }
+            : undefined,
           isValid,
         },
       }
@@ -156,9 +186,17 @@ const validateElements = (
       !isTitleValid && count++
       const isDescriptionValid = element.file.description.text.trim().length > 0
       !isDescriptionValid && count++
+      const isSubchapterTitleValid = element.file?.subchapterTitle
+        ? element.file.subchapterTitle.text.trim().length > 0
+        : true
+      !isSubchapterTitleValid && count++
+
       return {
         file: {
           ...element.file,
+          subchapterTitle: element.file?.subchapterTitle
+            ? { ...element.file.subchapterTitle, isValid: isSubchapterTitleValid }
+            : undefined,
           file: {
             ...element.file.file,
             isValid: isFileValid,
@@ -174,11 +212,14 @@ const validateElements = (
         },
       }
     } else if (element.quiz) {
+      const isTitleValid = element.quiz?.title ? element.quiz.title.text.trim().length > 0 : true
+      !isTitleValid && count++
       const isQuestionValid = element.quiz.question.text.trim().length > 0
       !isQuestionValid && count++
       return {
         quiz: {
           ...element.quiz,
+          title: element.quiz?.title ? { ...element.quiz.title, isValid: isTitleValid } : undefined,
           question: { ...element.quiz.question, isValid: isQuestionValid },
           answers: element.quiz.answers.map((answer) => {
             const isValidAnswer = answer.answer.trim().length > 0
@@ -191,31 +232,50 @@ const validateElements = (
         },
       }
     } else if (element.tutorialCards) {
+      const isTitleValid =
+        element.tutorialCards.title !== undefined
+          ? element.tutorialCards.title.text.trim().length > 0
+          : true
+      !isTitleValid && count++
       return {
-        tutorialCards: element.tutorialCards.map((card) => {
-          const isCardValid =
-            card.value.id !== undefined ||
-            (card.value.url !== undefined &&
-              card.value.url.trim().length > 0 &&
-              card.value.title.trim().length > 0)
-          !isCardValid && count++
-          return {
-            ...card,
-            value: {
-              ...card.value,
-              isValid: isCardValid,
-            },
-          }
-        }),
+        tutorialCards: {
+          title:
+            element.tutorialCards.title !== undefined
+              ? {
+                  ...element.tutorialCards.title,
+                  isValid: isTitleValid,
+                }
+              : undefined,
+          items: element.tutorialCards.items.map((card) => {
+            const isCardValid =
+              card.value.id !== undefined ||
+              (card.value.url !== undefined &&
+                card.value.url.trim().length > 0 &&
+                card.value.title.trim().length > 0)
+            !isCardValid && count++
+            return {
+              ...card,
+              value: {
+                ...card.value,
+                isValid: isCardValid,
+              },
+            }
+          }),
+        },
       }
     } else if (element.textLayout) {
-      const isTitleValid = element.textLayout.title.text.trim().length > 0
+      const isTitleValid = element.textLayout?.title
+        ? element.textLayout.title.text.trim().length > 0
+        : true
       !isTitleValid && count++
       const isTextValid = element.textLayout.text.text.trim().length > 0
       !isTextValid && count++
+
       return {
         textLayout: {
-          title: { ...element.textLayout.title, isValid: isTitleValid },
+          title: element.textLayout?.title
+            ? { ...element.textLayout.title, isValid: isTitleValid }
+            : undefined,
           text: { ...element.textLayout.text, isValid: isTextValid },
         },
       }
@@ -276,12 +336,20 @@ const validateElements = (
         },
       }
     } else if (element.externalVideo) {
+      const isSubchapterTitleValid =
+        element.externalVideo.subchapterTitle !== undefined
+          ? element.externalVideo.subchapterTitle.text.trim().length > 0
+          : true
+      !isSubchapterTitleValid && count++
       const isTitleValid = element.externalVideo.title.text.trim().length > 0
       !isTitleValid && count++
       const isUrlValid = urlPattern.test(element.externalVideo.url.text)
       !isUrlValid && count++
       return {
         externalVideo: {
+          subchapterTitle: element.externalVideo?.subchapterTitle
+            ? { ...element.externalVideo.subchapterTitle, isValid: isTitleValid }
+            : undefined,
           title: { ...element.externalVideo.title, isValid: isTitleValid },
           url: { ...element.externalVideo.url, isValid: isUrlValid },
           thumbnail: element.externalVideo.thumbnail,

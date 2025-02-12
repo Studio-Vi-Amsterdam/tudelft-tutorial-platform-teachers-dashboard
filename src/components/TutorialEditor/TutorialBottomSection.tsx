@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import EditorLabel from '../ui/EditorLabel'
 import BundledEditor from './BundledEditor'
 import Tip from '../ui/Tip'
@@ -22,6 +22,8 @@ interface TutorialBottomSectionProps {
 const TutorialBottomSection = (props: TutorialBottomSectionProps) => {
   const dispatch = useAppDispatch()
 
+  const [isSubchapterCreating, setIsSubchapterCreating] = useState<boolean>(false)
+
   const tutorialBottom = useAppSelector((state: RootState) => state.editor.tutorialBottom)
   const handleTutorialBottomTextChange = (val: string) => {
     dispatch(setTutorialBottomText(val))
@@ -42,9 +44,17 @@ const TutorialBottomSection = (props: TutorialBottomSectionProps) => {
     const payload: any = {}
     payload[val] = ''
     if (val === 'text block') {
-      payload.text = {
-        text: '',
-        isValid: true,
+      payload.textLayout = {
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
+        text: {
+          text: '',
+          isValid: true,
+        },
       }
       delete payload['text block']
       dispatch(addTutorialBottomElements(payload))
@@ -262,10 +272,19 @@ const TutorialBottomSection = (props: TutorialBottomSectionProps) => {
       />
 
       {!tutorialBottomStateElements.find((el) => el.defaultVal) && (
-        <AddSectionBlock variant="outline" handleAddElement={handleAddTutorialBottomElement} />
+        <AddSectionBlock
+          variant="outline"
+          handleAddElement={handleAddTutorialBottomElement}
+          setIsSubchapterCreating={setIsSubchapterCreating}
+        />
       )}
 
-      <AddSectionBlock variant="dashed" handleAddElement={handleAddTutorialBottomElement} />
+      <AddSectionBlock
+        variant="dashed"
+        handleAddElement={handleAddTutorialBottomElement}
+        setIsSubchapterCreating={setIsSubchapterCreating}
+        isSubchapter
+      />
     </section>
   )
 }

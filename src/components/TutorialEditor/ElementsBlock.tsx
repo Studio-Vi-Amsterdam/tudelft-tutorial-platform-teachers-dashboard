@@ -3,8 +3,16 @@ import { useAppDispatch } from 'src/redux/hooks'
 import {
   changeSubchapterText,
   changeSubchapterTitle,
-  setElementInfobox,
   setElementText,
+  setExternalVideoElementTitle,
+  setFileSubchapterTitle,
+  setH5PElementTitle,
+  setImageTitle,
+  setInfoboxText,
+  setInfoboxTitle,
+  setQuizElementTitle,
+  setTutorialCardsTitle,
+  setVideoTitle,
 } from 'src/redux/features/editorSlice'
 import { AddElementsType, ChapterElementsObject } from 'src/types/types'
 import AddMediaElement from './AddMediaElement'
@@ -30,6 +38,7 @@ interface ElementsBlockProps {
 const ElementsBlock = (props: ElementsBlockProps) => {
   const { elements, block, chapterIndex, subchapterIndex } = props
   const dispatch = useAppDispatch()
+
   const handleTextElementChange = (value: string, index?: number, block?: string): void => {
     if (block !== undefined && index !== undefined) {
       dispatch(
@@ -44,13 +53,133 @@ const ElementsBlock = (props: ElementsBlockProps) => {
     }
   }
 
-  const handleInfoboxElementChange = (value: string, index?: number, block?: string): void => {
+  const handleInfoboxElementTitleChange = (value: string, index?: number, block?: string): void => {
     if (block !== undefined && index !== undefined) {
       dispatch(
-        setElementInfobox({
+        setInfoboxTitle({
           block,
           index,
-          infobox: { text: value, isValid: true },
+          value,
+          nestedIndex: chapterIndex,
+          subchapterIndex,
+        }),
+      )
+    }
+  }
+
+  const handleInfoboxElementTextChange = (value: string, index?: number, block?: string): void => {
+    if (block !== undefined && index !== undefined) {
+      dispatch(
+        setInfoboxText({
+          block,
+          index,
+          value,
+          nestedIndex: chapterIndex,
+          subchapterIndex,
+        }),
+      )
+    }
+  }
+
+  const handleImageElementTitleChange = (value: string, index?: number, block?: string): void => {
+    if (block !== undefined && index !== undefined) {
+      dispatch(
+        setImageTitle({
+          block,
+          index,
+          value,
+          nestedIndex: chapterIndex,
+          subchapterIndex,
+        }),
+      )
+    }
+  }
+
+  const handleVideoElementTitleChange = (value: string, index?: number, block?: string): void => {
+    if (block !== undefined && index !== undefined) {
+      dispatch(
+        setVideoTitle({
+          block,
+          index,
+          value,
+          nestedIndex: chapterIndex,
+          subchapterIndex,
+        }),
+      )
+    }
+  }
+
+  const handleTutorialCardsElementTitleChange = (
+    value: string,
+    index?: number,
+    block?: string,
+  ): void => {
+    if (block !== undefined && index !== undefined) {
+      dispatch(
+        setTutorialCardsTitle({
+          block,
+          index,
+          value,
+          nestedIndex: chapterIndex,
+          subchapterIndex,
+        }),
+      )
+    }
+  }
+
+  const handleFileElementTitleChange = (value: string, index?: number, block?: string): void => {
+    if (block !== undefined && index !== undefined) {
+      dispatch(
+        setFileSubchapterTitle({
+          block,
+          index,
+          value,
+          nestedIndex: chapterIndex,
+          subchapterIndex,
+        }),
+      )
+    }
+  }
+
+  const handleH5PElementTitleChange = (value: string, index?: number, block?: string): void => {
+    if (block !== undefined && index !== undefined) {
+      dispatch(
+        setH5PElementTitle({
+          block,
+          index,
+          value,
+          nestedIndex: chapterIndex,
+          subchapterIndex,
+        }),
+      )
+    }
+  }
+
+  const handleExternalVideoElementTitleChange = (
+    value: string,
+    index?: number,
+    block?: string,
+  ): void => {
+    if (block !== undefined && index !== undefined) {
+      dispatch(
+        setExternalVideoElementTitle({
+          block,
+          index,
+          value,
+          nestedIndex: chapterIndex,
+          subchapterIndex,
+        }),
+      )
+    }
+  }
+
+  const handleQuizElementTitleChange = (value: string, index?: number, block?: string): void => {
+    if (block !== undefined && index !== undefined) {
+      dispatch(
+        setQuizElementTitle({
+          block,
+          index,
+          value,
           nestedIndex: chapterIndex,
           subchapterIndex,
         }),
@@ -109,22 +238,24 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
-              <div className="relative w-full mt-4 mb-5 ">
-                <input
-                  type="text"
-                  className={`${element.textLayout.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
-                  value={element.textLayout.title.text}
-                  placeholder={'Subchapter Title'}
-                  onChange={(e) =>
-                    handleSubchapterTitleChange(
-                      e.target.value,
-                      index,
-                      'textLayout',
-                      props.chapterIndex,
-                    )
-                  }
-                />
-              </div>
+              {element.textLayout?.title && (
+                <div className="relative w-full mt-4 mb-5 ">
+                  <input
+                    type="text"
+                    className={`${element.textLayout.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                    value={element.textLayout.title.text}
+                    placeholder={'Subchapter Title'}
+                    onChange={(e) =>
+                      handleSubchapterTitleChange(
+                        e.target.value,
+                        index,
+                        'textLayout',
+                        props.chapterIndex,
+                      )
+                    }
+                  />
+                </div>
+              )}
               <div className="w-full flex flex-col sm:flex-row justify-between gap-6">
                 <div className="w-full">
                   <BundledEditor
@@ -414,12 +545,23 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
+              {element.infobox?.title !== undefined && (
+                <div className="relative w-full mt-4 mb-5 ">
+                  <input
+                    type="text"
+                    className={`${element.infobox.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                    value={element.infobox.title.text}
+                    placeholder={'Subchapter Title'}
+                    onChange={(e) => handleInfoboxElementTitleChange(e.target.value, index, block)}
+                  />
+                </div>
+              )}
               <BundledEditor
-                value={element.infobox.text}
+                value={element.infobox.text.text}
                 block={block}
                 index={index}
-                handleChange={handleInfoboxElementChange}
-                notValid={!element.infobox.isValid}
+                handleChange={handleInfoboxElementTextChange}
+                notValid={!element.infobox.text.isValid}
               />
             </DeleteElementWraper>
           )}
@@ -430,11 +572,24 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
+              {element.tutorialCards?.title !== undefined && (
+                <div className="relative w-full mt-4 mb-5 ">
+                  <input
+                    type="text"
+                    className={`${element.tutorialCards.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                    value={element.tutorialCards.title.text}
+                    placeholder={'Subchapter Title'}
+                    onChange={(e) =>
+                      handleTutorialCardsElementTitleChange(e.target.value, index, block)
+                    }
+                  />
+                </div>
+              )}
               <TutorialCardsElement
                 block={block}
                 chapterIndex={chapterIndex}
                 index={index}
-                tutorialCards={element.tutorialCards}
+                tutorialCards={element.tutorialCards.items}
               />
             </DeleteElementWraper>
           )}
@@ -445,6 +600,17 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
+              {element.image?.subchapterTitle !== undefined && (
+                <div className="relative w-full mt-4 mb-5 ">
+                  <input
+                    type="text"
+                    className={`${element.image?.subchapterTitle.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                    value={element.image?.subchapterTitle.text}
+                    placeholder={'Subchapter Title'}
+                    onChange={(e) => handleImageElementTitleChange(e.target.value, index, block)}
+                  />
+                </div>
+              )}
               <AddMediaElement
                 mediaType="image"
                 block={props.block}
@@ -462,6 +628,17 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
+              {element.video?.subchapterTitle !== undefined && (
+                <div className="relative w-full mt-4 mb-5 ">
+                  <input
+                    type="text"
+                    className={`${element.video?.subchapterTitle.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                    value={element.video?.subchapterTitle.text}
+                    placeholder={'Subchapter Title'}
+                    onChange={(e) => handleVideoElementTitleChange(e.target.value, index, block)}
+                  />
+                </div>
+              )}
               <div className="w-full flex flex-col gap-y-4">
                 <AddMediaElement
                   mediaType="video"
@@ -496,6 +673,19 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               elementIndex={index}
               styles="bg-white top-3 right-1 w-6 h-6"
             >
+              {element.externalVideo?.subchapterTitle !== undefined && (
+                <div className="relative w-full mt-4 mb-5 ">
+                  <input
+                    type="text"
+                    className={`${element.externalVideo?.subchapterTitle.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                    value={element.externalVideo?.subchapterTitle.text}
+                    placeholder={'Subchapter Title'}
+                    onChange={(e) =>
+                      handleExternalVideoElementTitleChange(e.target.value, index, block)
+                    }
+                  />
+                </div>
+              )}
               <ExternalVideoElement
                 block={block}
                 chapterIndex={props.chapterIndex}
@@ -513,6 +703,17 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               styles="bg-white top-3 right-1 w-6 h-6"
               file={element.file.file?.id}
             >
+              {element.file?.subchapterTitle !== undefined && (
+                <div className="relative w-full mt-4 mb-5 ">
+                  <input
+                    type="text"
+                    className={`${element.file?.subchapterTitle.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                    value={element.file?.subchapterTitle.text}
+                    placeholder={'Subchapter Title'}
+                    onChange={(e) => handleFileElementTitleChange(e.target.value, index, block)}
+                  />
+                </div>
+              )}
               <FileElement
                 block={props.block}
                 chapterIndex={props.chapterIndex}
@@ -528,6 +729,17 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
+              {element.quiz?.title !== undefined && (
+                <div className="relative w-full mt-4 mb-5 ">
+                  <input
+                    type="text"
+                    className={`${element.quiz.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                    value={element.quiz.title.text}
+                    placeholder={'Subchapter Title'}
+                    onChange={(e) => handleQuizElementTitleChange(e.target.value, index, block)}
+                  />
+                </div>
+              )}
               <QuizElement
                 block={props.block}
                 chapterIndex={props.chapterIndex}
@@ -543,6 +755,17 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
+              {element.h5pElement?.title !== undefined && (
+                <div className="relative w-full mt-4 mb-5 ">
+                  <input
+                    type="text"
+                    className={`${element.h5pElement.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                    value={element.h5pElement.title.text}
+                    placeholder={'Subchapter Title'}
+                    onChange={(e) => handleH5PElementTitleChange(e.target.value, index, block)}
+                  />
+                </div>
+              )}
               <H5pElement
                 block={props.block}
                 chapterIndex={props.chapterIndex}
