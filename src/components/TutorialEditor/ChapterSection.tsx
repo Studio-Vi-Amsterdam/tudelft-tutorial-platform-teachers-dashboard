@@ -62,8 +62,13 @@ const ChapterSection = (props: ChapterSectionProps) => {
     }
     if (val === 'infobox block') {
       payload.infobox = {
-        text: '',
-        isValid: true,
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
+        text: { text: '', isValid: true },
       }
       delete payload['infobox block']
     }

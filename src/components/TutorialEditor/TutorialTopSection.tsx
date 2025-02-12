@@ -50,7 +50,6 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
     subchapterIndex?: number,
     showTitle?: boolean,
   ): Promise<void> => {
-    console.log(`value: ${val} | isSubchapter: ${isSubchapterCreating}`)
     const payload: any = {}
     payload[val] = ''
     if (val === 'text block') {
@@ -70,8 +69,13 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       dispatch(addTutorialElements(payload))
     } else if (val === 'infobox block') {
       payload.infobox = {
-        text: '',
-        isValid: true,
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
+        text: { text: '', isValid: true },
       }
       delete payload['infobox block']
       dispatch(addTutorialElements(payload))

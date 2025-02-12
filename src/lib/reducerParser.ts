@@ -205,8 +205,11 @@ export const reducerParser = {
             case 'tu-delft-info-box':
               return {
                 infobox: {
-                  text: block.block_data.content,
-                  isValid: true,
+                  title:
+                    block.block_data.title !== undefined
+                      ? { text: block.block_data.title, isValid: true }
+                      : undefined,
+                  text: { text: block.block_data.content, isValid: true },
                 },
               }
             case 'tu-delft-quiz':
@@ -1036,7 +1039,8 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-info-box',
                 block_data: {
-                  content: item.infobox.text,
+                  title: item.infobox.title !== undefined ? item.infobox.title.text : undefined,
+                  content: item.infobox.text.text,
                 },
               }
             }

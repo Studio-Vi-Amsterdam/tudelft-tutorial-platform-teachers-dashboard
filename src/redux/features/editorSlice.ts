@@ -16,7 +16,7 @@ import {
   ElementFileActionInterface,
   ElementH5PActionInterface,
   ElementImageActionInterface,
-  ElementInfoboxActionInterface,
+  ElementInfoboxTitleActionInterface,
   ElementQuizActionInterface,
   ElementTextActionInterface,
   ElementVideoActionInterface,
@@ -450,18 +450,53 @@ export const editorSlice = createSlice({
         'text',
       )
     },
-    setElementInfobox: (state, action: PayloadAction<ElementInfoboxActionInterface>) => {
-      setElementProperty(
-        state,
-        {
-          ...action,
-          payload: {
-            ...action.payload,
-            value: action.payload.infobox,
-          },
-        },
-        'infobox',
-      )
+    setInfoboxTitle: (state, action: PayloadAction<ElementInfoboxTitleActionInterface>) => {
+      const payload = action.payload
+      if (payload.index !== undefined) {
+        if (payload.block === 'tutorialElements') {
+          if (
+            state.tutorialTop.elements[payload.index].infobox &&
+            state.tutorialTop.elements[payload.index].infobox!.title !== undefined
+          ) {
+            state.tutorialTop.elements[payload.index].infobox!.title = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+        if (payload.block === 'chapterElements' && payload.nestedIndex !== undefined) {
+          if (
+            state.chapters[payload.nestedIndex].elements[payload.index].infobox!.title !== undefined
+          ) {
+            state.chapters[payload.nestedIndex].elements[payload.index].infobox!.title = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+      }
+    },
+
+    setInfoboxText: (state, action: PayloadAction<ElementInfoboxTitleActionInterface>) => {
+      const payload = action.payload
+      if (payload.index !== undefined) {
+        if (payload.block === 'tutorialElements') {
+          if (state.tutorialTop.elements[payload.index].infobox !== undefined) {
+            state.tutorialTop.elements[payload.index].infobox!.text = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+        if (payload.block === 'chapterElements' && payload.nestedIndex !== undefined) {
+          if (state.chapters[payload.nestedIndex].elements[payload.index].infobox !== undefined) {
+            state.chapters[payload.nestedIndex].elements[payload.index].infobox!.text = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+      }
     },
     setElementImage: (state, action: PayloadAction<ElementImageActionInterface>) => {
       setElementProperty(
@@ -1606,7 +1641,6 @@ export const {
   setPageType,
   addTutorialElements,
   setElementText,
-  setElementInfobox,
   addBlankChapter,
   setChapterText,
   setChapterTitle,
@@ -1663,6 +1697,8 @@ export const {
   setExternalVideoTitle,
   setExternalVideoUrl,
   addTutorialBottomElements,
+  setInfoboxTitle,
+  setInfoboxText,
 } = editorSlice.actions
 
 export default editorSlice.reducer

@@ -113,12 +113,17 @@ export interface TextElementInterface {
   hidden?: boolean
 }
 
+interface TextLayoutInterface {
+  text: TextElementInterface
+  title?: TextElementInterface
+}
+
 export interface ElementTextActionInterface extends ElementActionBase {
   text: TextElementInterface
 }
 
-export interface ElementInfoboxActionInterface extends ElementActionBase {
-  infobox: TextElementInterface
+export interface ElementInfoboxTitleActionInterface extends ElementActionBase {
+  value: string
 }
 
 export interface ElementImageActionInterface extends ElementActionBase {
@@ -224,11 +229,6 @@ export interface TutorialCardInterface {
   proposedList: ProposedList[] | []
 }
 
-interface TextLayoutInterface {
-  text: TextElementInterface
-  title?: TextElementInterface
-}
-
 interface MediaTextImageInterface {
   text: TextElementInterface
   image: MediaObjectInterface
@@ -249,7 +249,7 @@ export interface ExternalVideoInterface {
 
 export interface TutorialTopElementsObject {
   text?: TextElementInterface
-  infobox?: TextElementInterface
+  infobox?: TextLayoutInterface
   image?: MediaObjectInterface
   video?: MediaObjectInterface
   externalVideo?: ExternalVideoInterface
@@ -310,7 +310,7 @@ export interface TermDialogInterface {
 
 export interface ChapterElementsObject {
   text?: TextElementInterface
-  infobox?: TextElementInterface
+  infobox?: TextLayoutInterface
   image?: MediaObjectInterface
   video?: MediaObjectInterface
   externalVideo?: ExternalVideoInterface

@@ -3,8 +3,9 @@ import { useAppDispatch } from 'src/redux/hooks'
 import {
   changeSubchapterText,
   changeSubchapterTitle,
-  setElementInfobox,
   setElementText,
+  setInfoboxText,
+  setInfoboxTitle,
 } from 'src/redux/features/editorSlice'
 import { AddElementsType, ChapterElementsObject } from 'src/types/types'
 import AddMediaElement from './AddMediaElement'
@@ -30,6 +31,7 @@ interface ElementsBlockProps {
 const ElementsBlock = (props: ElementsBlockProps) => {
   const { elements, block, chapterIndex, subchapterIndex } = props
   const dispatch = useAppDispatch()
+
   const handleTextElementChange = (value: string, index?: number, block?: string): void => {
     if (block !== undefined && index !== undefined) {
       dispatch(
@@ -44,13 +46,27 @@ const ElementsBlock = (props: ElementsBlockProps) => {
     }
   }
 
-  const handleInfoboxElementChange = (value: string, index?: number, block?: string): void => {
+  const handleInfoboxElementTitleChange = (value: string, index?: number, block?: string): void => {
     if (block !== undefined && index !== undefined) {
       dispatch(
-        setElementInfobox({
+        setInfoboxTitle({
           block,
           index,
-          infobox: { text: value, isValid: true },
+          value,
+          nestedIndex: chapterIndex,
+          subchapterIndex,
+        }),
+      )
+    }
+  }
+
+  const handleInfoboxElementTextChange = (value: string, index?: number, block?: string): void => {
+    if (block !== undefined && index !== undefined) {
+      dispatch(
+        setInfoboxText({
+          block,
+          index,
+          value,
           nestedIndex: chapterIndex,
           subchapterIndex,
         }),
@@ -416,12 +432,23 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
+              {element.infobox?.title !== undefined && (
+                <div className="relative w-full mt-4 mb-5 ">
+                  <input
+                    type="text"
+                    className={`${element.infobox.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                    value={element.infobox.title.text}
+                    placeholder={'Subchapter Title'}
+                    onChange={(e) => handleInfoboxElementTitleChange(e.target.value, index, block)}
+                  />
+                </div>
+              )}
               <BundledEditor
-                value={element.infobox.text}
+                value={element.infobox.text.text}
                 block={block}
                 index={index}
-                handleChange={handleInfoboxElementChange}
-                notValid={!element.infobox.isValid}
+                handleChange={handleInfoboxElementTextChange}
+                notValid={!element.infobox.text.isValid}
               />
             </DeleteElementWraper>
           )}

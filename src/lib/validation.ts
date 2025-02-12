@@ -117,10 +117,19 @@ const validateElements = (
       !isValid && count++
       return { text: { ...element.text, isValid } }
     } else if (element.infobox) {
-      const isValid = element.infobox.text.trim().length > 0
+      const isTitleValid = element.infobox?.title
+        ? element.infobox.title.text.trim().length > 0
+        : true
+      !isTitleValid && count++
+      const isValid = element.infobox.text.text.trim().length > 0
       !isValid && count++
       return {
-        infobox: { ...element.infobox, isValid },
+        infobox: {
+          title: element.infobox?.title
+            ? { ...element.infobox.title, isValid: isTitleValid }
+            : undefined,
+          text: { ...element.infobox.text, isValid },
+        },
       }
     } else if (element.h5pElement) {
       const isValid = element.h5pElement.text.trim().length > 0
