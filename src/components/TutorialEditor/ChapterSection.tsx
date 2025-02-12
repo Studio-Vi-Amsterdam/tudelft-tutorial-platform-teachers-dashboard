@@ -97,21 +97,37 @@ const ChapterSection = (props: ChapterSectionProps) => {
           title: item.title,
           isValid: true,
         }))
-        payload.tutorialCards = [
-          {
-            value: { id: undefined, title: '', isValid: true },
-            proposedList: tutorials,
-          },
-        ]
+        payload.tutorialCards = {
+          title: isSubchapterCreating
+            ? {
+                text: '',
+                isValid: true,
+              }
+            : undefined,
+          items: [
+            {
+              value: { id: undefined, title: '', isValid: true },
+              proposedList: tutorials,
+            },
+          ],
+        }
         delete payload['tutorial cards']
       } catch (error: any) {
         if (error.response && error.response.status === 404) {
-          payload.tutorialCards = [
-            {
-              value: { id: undefined, title: '', isValid: true },
-              proposedList: [],
-            },
-          ]
+          payload.tutorialCards = {
+            title: isSubchapterCreating
+              ? {
+                  text: '',
+                  isValid: true,
+                }
+              : undefined,
+            items: [
+              {
+                value: { id: undefined, title: '', isValid: true },
+                proposedList: [],
+              },
+            ],
+          }
         } else {
           console.error(error)
         }

@@ -230,6 +230,11 @@ export interface TutorialCardInterface {
   proposedList: ProposedList[] | []
 }
 
+export interface TutorialCardsBlockInterface {
+  title?: TextElementInterface
+  items: TutorialCardInterface[]
+}
+
 interface MediaTextImageInterface {
   text: TextElementInterface
   image: MediaObjectInterface
@@ -258,7 +263,7 @@ export interface TutorialTopElementsObject {
   quiz?: QuizElement
   h5pElement?: h5pElementInterface
   tutorialCard?: TutorialCardInterface
-  tutorialCards?: TutorialCardInterface[]
+  tutorialCards?: TutorialCardsBlockInterface
   textLayout?: TextLayoutInterface
   textImage?: MediaTextImageInterface
   imageText?: MediaTextImageInterface
@@ -316,7 +321,7 @@ export interface ChapterElementsObject {
   video?: MediaObjectInterface
   externalVideo?: ExternalVideoInterface
   tutorialCard?: TutorialCardInterface
-  tutorialCards?: TutorialCardInterface[]
+  tutorialCards?: TutorialCardsBlockInterface
   file?: ElementsFileInterface
   quiz?: QuizElement
   h5pElement?: h5pElementInterface

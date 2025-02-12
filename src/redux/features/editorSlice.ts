@@ -572,6 +572,33 @@ export const editorSlice = createSlice({
         }
       }
     },
+    setTutorialCardsTitle: (state, action: PayloadAction<ElementInfoboxTitleActionInterface>) => {
+      const payload = action.payload
+      if (payload.index !== undefined) {
+        if (payload.block === 'tutorialElements') {
+          if (
+            state.tutorialTop.elements[payload.index].tutorialCards &&
+            state.tutorialTop.elements[payload.index].tutorialCards!.title !== undefined
+          ) {
+            state.tutorialTop.elements[payload.index].tutorialCards!.title = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+        if (payload.block === 'chapterElements' && payload.nestedIndex !== undefined) {
+          if (
+            state.chapters[payload.nestedIndex].elements[payload.index].tutorialCards!.title !==
+            undefined
+          ) {
+            state.chapters[payload.nestedIndex].elements[payload.index].tutorialCards!.title = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+      }
+    },
     setElementImage: (state, action: PayloadAction<ElementImageActionInterface>) => {
       setElementProperty(
         state,
@@ -1217,32 +1244,32 @@ export const editorSlice = createSlice({
       if (block === 'tutorialElements') {
         const elements = state.tutorialTop.elements
         const element = elements && elements[listIndex]
-        if (element.tutorialCards !== undefined) {
+        if (element.tutorialCards !== undefined && element.tutorialCards.items !== undefined) {
           const newObject: TutorialCardInterface = {
             value: { id: undefined, title: '', isValid: true },
-            proposedList: element.tutorialCards[0].proposedList,
+            proposedList: element.tutorialCards.items[0].proposedList,
           }
-          element.tutorialCards = [...element.tutorialCards, newObject]
+          element.tutorialCards.items = [...element.tutorialCards.items, newObject]
         }
       } else if (block === 'tutorialBottomElements') {
         const elements = state.tutorialBottomContent
         const element = elements && elements[listIndex]
-        if (element.tutorialCards !== undefined) {
+        if (element.tutorialCards !== undefined && element.tutorialCards.items !== undefined) {
           const newObject: TutorialCardInterface = {
             value: { id: undefined, title: '', isValid: true },
-            proposedList: element.tutorialCards[0].proposedList,
+            proposedList: element.tutorialCards.items[0].proposedList,
           }
-          element.tutorialCards = [...element.tutorialCards, newObject]
+          element.tutorialCards.items = [...element.tutorialCards.items, newObject]
         }
       } else if (block === 'chapterElements' && chapterIndex !== undefined) {
         const elements = state.chapters[chapterIndex].elements
         const element = elements && elements[listIndex]
-        if (element.tutorialCards !== undefined) {
+        if (element.tutorialCards !== undefined && element.tutorialCards.items !== undefined) {
           const newObject: TutorialCardInterface = {
             value: { id: undefined, title: '', isValid: true },
-            proposedList: element.tutorialCards[0].proposedList,
+            proposedList: element.tutorialCards.items[0].proposedList,
           }
-          element.tutorialCards = [...element.tutorialCards, newObject]
+          element.tutorialCards.items = [...element.tutorialCards.items, newObject]
         }
       }
     },
@@ -1264,14 +1291,15 @@ export const editorSlice = createSlice({
         const element = elements && elements[listIndex]
         if (
           element.tutorialCards !== undefined &&
-          element.tutorialCards[nestedIndex].value !== undefined
+          element.tutorialCards.items !== undefined &&
+          element.tutorialCards.items[nestedIndex].value !== undefined
         ) {
           if (isUrl) {
-            element.tutorialCards[nestedIndex].value.id = undefined
-            element.tutorialCards[nestedIndex].value[`${name as 'title' | 'url'}`] = value
-            element.tutorialCards[nestedIndex].value.isValid = value.trim().length > 0
+            element.tutorialCards.items[nestedIndex].value.id = undefined
+            element.tutorialCards.items[nestedIndex].value[`${name as 'title' | 'url'}`] = value
+            element.tutorialCards.items[nestedIndex].value.isValid = value.trim().length > 0
           } else {
-            element.tutorialCards[nestedIndex].value = element.tutorialCards[
+            element.tutorialCards.items[nestedIndex].value = element.tutorialCards.items[
               nestedIndex
             ].proposedList.find((el) => el.id === parseInt(value)) ?? {
               id: undefined,
@@ -1285,14 +1313,15 @@ export const editorSlice = createSlice({
         const element = elements && elements[listIndex]
         if (
           element.tutorialCards !== undefined &&
-          element.tutorialCards[nestedIndex].value !== undefined
+          element.tutorialCards.items !== undefined &&
+          element.tutorialCards.items[nestedIndex].value !== undefined
         ) {
           if (isUrl) {
-            element.tutorialCards[nestedIndex].value.id = undefined
-            element.tutorialCards[nestedIndex].value[`${name as 'title' | 'url'}`] = value
-            element.tutorialCards[nestedIndex].value.isValid = value.trim().length > 0
+            element.tutorialCards.items[nestedIndex].value.id = undefined
+            element.tutorialCards.items[nestedIndex].value[`${name as 'title' | 'url'}`] = value
+            element.tutorialCards.items[nestedIndex].value.isValid = value.trim().length > 0
           } else {
-            element.tutorialCards[nestedIndex].value = element.tutorialCards[
+            element.tutorialCards.items[nestedIndex].value = element.tutorialCards.items[
               nestedIndex
             ].proposedList.find((el) => el.id === parseInt(value)) ?? {
               id: undefined,
@@ -1308,12 +1337,13 @@ export const editorSlice = createSlice({
 
         if (
           element.tutorialCards !== undefined &&
-          element.tutorialCards[nestedIndex].value !== undefined
+          element.tutorialCards.items !== undefined &&
+          element.tutorialCards.items[nestedIndex].value !== undefined
         ) {
           if (isUrl) {
-            element.tutorialCards[nestedIndex].value[`${name as 'title' | 'url'}`] = value
+            element.tutorialCards.items[nestedIndex].value[`${name as 'title' | 'url'}`] = value
           } else {
-            element.tutorialCards[nestedIndex].value = element.tutorialCards[
+            element.tutorialCards.items[nestedIndex].value = element.tutorialCards.items[
               nestedIndex
             ].proposedList.find((el) => el.id === parseInt(value)) ?? {
               id: undefined,
@@ -1775,6 +1805,7 @@ export const {
   setInfoboxText,
   setImageTitle,
   setVideoTitle,
+  setTutorialCardsTitle,
 } = editorSlice.actions
 
 export default editorSlice.reducer

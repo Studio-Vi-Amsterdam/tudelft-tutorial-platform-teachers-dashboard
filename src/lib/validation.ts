@@ -214,22 +214,36 @@ const validateElements = (
         },
       }
     } else if (element.tutorialCards) {
+      const isTitleValid =
+        element.tutorialCards.title !== undefined
+          ? element.tutorialCards.title.text.trim().length > 0
+          : true
+      !isTitleValid && count++
       return {
-        tutorialCards: element.tutorialCards.map((card) => {
-          const isCardValid =
-            card.value.id !== undefined ||
-            (card.value.url !== undefined &&
-              card.value.url.trim().length > 0 &&
-              card.value.title.trim().length > 0)
-          !isCardValid && count++
-          return {
-            ...card,
-            value: {
-              ...card.value,
-              isValid: isCardValid,
-            },
-          }
-        }),
+        tutorialCards: {
+          title:
+            element.tutorialCards.title !== undefined
+              ? {
+                  ...element.tutorialCards.title,
+                  isValid: isTitleValid,
+                }
+              : undefined,
+          items: element.tutorialCards.items.map((card) => {
+            const isCardValid =
+              card.value.id !== undefined ||
+              (card.value.url !== undefined &&
+                card.value.url.trim().length > 0 &&
+                card.value.title.trim().length > 0)
+            !isCardValid && count++
+            return {
+              ...card,
+              value: {
+                ...card.value,
+                isValid: isCardValid,
+              },
+            }
+          }),
+        },
       }
     } else if (element.textLayout) {
       const isTitleValid = element.textLayout?.title

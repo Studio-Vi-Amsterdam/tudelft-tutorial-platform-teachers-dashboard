@@ -107,20 +107,36 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
           title: item.title,
           isValid: true,
         }))
-        payload.tutorialCards = [
-          {
-            value: { id: undefined, title: '', isValid: true },
-            proposedList: tutorials,
-          },
-        ]
-      } catch (error: any) {
-        if (error.response && error.response.status === 404) {
-          payload.tutorialCards = [
+        payload.tutorialCards = {
+          title: isSubchapterCreating
+            ? {
+                text: '',
+                isValid: true,
+              }
+            : undefined,
+          items: [
             {
               value: { id: undefined, title: '', isValid: true },
-              proposedList: [],
+              proposedList: tutorials,
             },
-          ]
+          ],
+        }
+      } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+          payload.tutorialCards = {
+            title: isSubchapterCreating
+              ? {
+                  text: '',
+                  isValid: true,
+                }
+              : undefined,
+            items: [
+              {
+                value: { id: undefined, title: '', isValid: true },
+                proposedList: [],
+              },
+            ],
+          }
         } else {
           console.error(error)
         }

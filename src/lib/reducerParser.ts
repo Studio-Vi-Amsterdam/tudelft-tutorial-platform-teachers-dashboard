@@ -438,7 +438,13 @@ export const reducerParser = {
               }
 
               return {
-                tutorialCards,
+                tutorialCards: {
+                  title:
+                    block.block_data.title !== undefined
+                      ? { text: block.block_data.title, isValid: true }
+                      : undefined,
+                  items: tutorialCards,
+                },
               }
             case 'tu-delft-video-url':
               return {
@@ -1070,7 +1076,7 @@ export const reducerParser = {
               }
             }
             if (item.tutorialCards) {
-              const transformedData: TransformedDataTutorialCards = item.tutorialCards.reduce(
+              const transformedData: TransformedDataTutorialCards = item.tutorialCards.items.reduce(
                 (acc: TransformedDataTutorialCards, card, index) => {
                   const isCustomLink = card.value.url !== undefined ? '_custom' : ''
                   acc[`content_card_row_${index}_card_title`] = card.value.title
@@ -1084,11 +1090,17 @@ export const reducerParser = {
                     card.value.url !== undefined
                   return acc
                 },
-                { content_card_row: item.tutorialCards.length },
+                { content_card_row: item.tutorialCards.items.length },
               )
               return {
                 block_name: 'tu-delft-content-card',
-                block_data: transformedData,
+                block_data: {
+                  title:
+                    item.tutorialCards.title !== undefined
+                      ? item.tutorialCards.title.text
+                      : undefined,
+                  ...transformedData,
+                },
               }
             }
             if (item.h5pElement) {
