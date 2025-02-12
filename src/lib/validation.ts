@@ -132,11 +132,18 @@ const validateElements = (
         },
       }
     } else if (element.h5pElement) {
+      const isTitleValid = element.h5pElement?.title
+        ? element.h5pElement.title.text.trim().length > 0
+        : true
+      !isTitleValid && count++
       const isValid = element.h5pElement.text.trim().length > 0
       !isValid && count++
       return {
         h5pElement: {
           ...element.h5pElement,
+          title: element.h5pElement?.title
+            ? { ...element.h5pElement.title, isValid: isTitleValid }
+            : undefined,
           isValid,
         },
       }

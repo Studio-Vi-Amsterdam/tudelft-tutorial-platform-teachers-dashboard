@@ -93,6 +93,12 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       dispatch(addTutorialElements(payload))
     } else if (val === 'h5p element') {
       payload.h5pElement = {
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         text: '',
         error: '',
         isValid: true,

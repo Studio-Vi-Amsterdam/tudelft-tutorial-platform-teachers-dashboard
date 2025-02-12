@@ -85,8 +85,15 @@ const ChapterSection = (props: ChapterSectionProps) => {
       }
     } else if (val === 'h5p element') {
       payload.h5pElement = {
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         text: '',
         error: '',
+        isValid: true,
       }
       delete payload['h5p element']
     } else if (val === 'tutorial cards') {

@@ -188,6 +188,7 @@ export interface h5pElementInterface {
   text: string
   error: string
   isValid: boolean
+  title?: TextElementInterface
 }
 export interface ElementH5PActionInterface extends ElementActionBase {
   h5pElement: h5pElementInterface

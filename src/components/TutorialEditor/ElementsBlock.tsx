@@ -5,6 +5,7 @@ import {
   changeSubchapterTitle,
   setElementText,
   setFileSubchapterTitle,
+  setH5PElementTitle,
   setImageTitle,
   setInfoboxText,
   setInfoboxTitle,
@@ -128,6 +129,20 @@ const ElementsBlock = (props: ElementsBlockProps) => {
     if (block !== undefined && index !== undefined) {
       dispatch(
         setFileSubchapterTitle({
+          block,
+          index,
+          value,
+          nestedIndex: chapterIndex,
+          subchapterIndex,
+        }),
+      )
+    }
+  }
+
+  const handleH5PElementTitleChange = (value: string, index?: number, block?: string): void => {
+    if (block !== undefined && index !== undefined) {
+      dispatch(
+        setH5PElementTitle({
           block,
           index,
           value,
@@ -682,6 +697,17 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               subchapterIndex={subchapterIndex}
               elementIndex={index}
             >
+              {element.h5pElement?.title !== undefined && (
+                <div className="relative w-full mt-4 mb-5 ">
+                  <input
+                    type="text"
+                    className={`${element.h5pElement.title.isValid ? '' : 'border border-red-500 rounded-md'} w-full rounded-[4px] border border-inputBorder bg-background-seasalt px-2 py-[10px] text-xl leading-8 placeholder:text-tertiary-grey-stone`}
+                    value={element.h5pElement.title.text}
+                    placeholder={'Subchapter Title'}
+                    onChange={(e) => handleH5PElementTitleChange(e.target.value, index, block)}
+                  />
+                </div>
+              )}
               <H5pElement
                 block={props.block}
                 chapterIndex={props.chapterIndex}

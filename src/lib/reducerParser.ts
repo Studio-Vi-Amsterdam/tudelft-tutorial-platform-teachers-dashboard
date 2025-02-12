@@ -244,6 +244,10 @@ export const reducerParser = {
             case 'tu-delft-h5p':
               return {
                 h5pElement: {
+                  title:
+                    block.block_data.title !== undefined
+                      ? { text: block.block_data.title, isValid: true }
+                      : undefined,
                   text: block.block_data.source,
                   isValid: true,
                 },
@@ -1111,6 +1115,8 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-h5p',
                 block_data: {
+                  title:
+                    item.h5pElement.title !== undefined ? item.h5pElement.title.text : undefined,
                   source: item.h5pElement.text,
                 },
               }
