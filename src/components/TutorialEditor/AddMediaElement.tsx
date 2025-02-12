@@ -302,6 +302,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
           layout: props.layout,
           listIndex: props.listIndex,
           media: {
+            subchapterTitle: mediaDataState.subchapterTitle,
             id: mediaDataState.id ?? undefined,
             format: mediaDataState.format,
             link: mediaDataState.url ?? mediaDataState.link,
@@ -324,6 +325,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
             layout: props.layout,
             nestedIndex: props.chapterIndex,
             image: {
+              subchapterTitle: mediaDataState.subchapterTitle,
               id: mediaDataState.id ?? undefined,
               format: mediaDataState.format,
               link: mediaDataState.url ?? mediaDataState.link,

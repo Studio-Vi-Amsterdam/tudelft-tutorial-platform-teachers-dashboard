@@ -260,6 +260,10 @@ export const reducerParser = {
                       ]
                     : 'unknown',
                   title: block.block_data.content ? block.block_data.content : '',
+                  subchapterTitle:
+                    block.block_data.title !== undefined
+                      ? { text: block.block_data.title, isValid: true }
+                      : undefined,
                   publishDate: 'hardcode',
                   hasZoom: block.block_data.has_image_zoom ?? false,
                 },
@@ -1095,6 +1099,10 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-image',
                 block_data: {
+                  title:
+                    item.image.subchapterTitle !== undefined
+                      ? item.image.subchapterTitle.text
+                      : undefined,
                   image: item.image.id,
                   image_url: item.image.url,
                   has_image_zoom: item.image.hasZoom ?? false,

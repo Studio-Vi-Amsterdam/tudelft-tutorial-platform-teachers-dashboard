@@ -91,7 +91,14 @@ interface MediaObjectParent {
 
 export interface ThumbnailInterface extends MediaObjectParent {}
 
+export interface TextElementInterface {
+  text: string
+  isValid: boolean
+  hidden?: boolean
+}
+
 export interface MediaObjectInterface {
+  subchapterTitle?: TextElementInterface
   id?: number
   link: string
   url?: string
@@ -105,12 +112,6 @@ export interface MediaObjectInterface {
   subtitles?: MediaObjectParent
   isOwner?: boolean
   hasZoom?: boolean
-}
-
-export interface TextElementInterface {
-  text: string
-  isValid: boolean
-  hidden?: boolean
 }
 
 interface TextLayoutInterface {

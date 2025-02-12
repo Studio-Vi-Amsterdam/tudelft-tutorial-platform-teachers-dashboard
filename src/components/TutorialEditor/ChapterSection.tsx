@@ -125,6 +125,12 @@ const ChapterSection = (props: ChapterSectionProps) => {
       delete payload['download file']
     } else if (val === 'image') {
       payload.image = {
+        subchapterTitle: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         format: '',
         link: '',
         url: '',

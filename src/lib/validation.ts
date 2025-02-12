@@ -141,11 +141,18 @@ const validateElements = (
         },
       }
     } else if (element.image) {
+      const isTitleValid = element.image?.subchapterTitle
+        ? element.image.subchapterTitle.text.trim().length > 0
+        : true
+      !isTitleValid && count++
       const isValid = !!element.image.id
       !isValid && count++
       return {
         image: {
           ...element.image,
+          subchapterTitle: element.image?.subchapterTitle
+            ? { ...element.image.subchapterTitle, isValid: isTitleValid }
+            : undefined,
           isValid,
         },
       }

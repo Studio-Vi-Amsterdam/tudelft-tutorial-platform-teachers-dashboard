@@ -72,33 +72,54 @@ const setElementProperty = (state: any, action: PayloadAction<any>, property: ke
 
   if (block === 'tutorialElements' && index !== undefined) {
     if (layout) {
-      state.tutorialTop.elements[index][layout][property] = value
+      state.tutorialTop.elements[index][layout][property] = {
+        ...state.tutorialTop.elements[index][layout][property],
+        ...value,
+      }
     } else {
-      state.tutorialTop.elements[index][property] = value
+      state.tutorialTop.elements[index][property] = {
+        ...state.tutorialTop.elements[index][property],
+        ...value,
+      }
     }
   } else if (block === 'tutorialBottomElements' && index !== undefined) {
     if (layout) {
-      state.tutorialBottomContent[index][layout][property] = value
+      state.tutorialBottomContent[index][layout][property] = {
+        ...state.tutorialBottomContent[index][layout][property],
+        ...value,
+      }
     } else {
-      state.tutorialBottomContent[index][property] = value
+      state.tutorialBottomContent[index][property] = {
+        ...state.tutorialBottomContent[index][property],
+        ...value,
+      }
     }
   } else if (block === 'chapterElements' && index !== undefined && nestedIndex !== undefined) {
-    state.chapters[nestedIndex].elements[index][property] = value
+    state.chapters[nestedIndex].elements[index][property] = {
+      ...state.chapters[nestedIndex].elements[index][property],
+      ...value,
+    }
   } else if (
     block === 'subchapterElements' &&
     index !== undefined &&
     nestedIndex !== undefined &&
     subchapterIndex !== undefined
   ) {
-    state.chapters[nestedIndex].subchapters[subchapterIndex].elements[index][property] = value
+    state.chapters[nestedIndex].subchapters[subchapterIndex].elements[index][property] = {
+      ...state.chapters[nestedIndex].subchapters[subchapterIndex].elements[index][property],
+      ...value,
+    }
   } else if (block === 'chapterMedia' && nestedIndex !== undefined) {
-    state.chapters[nestedIndex][property] = value
+    state.chapters[nestedIndex][property] = { ...state.chapters[nestedIndex][property], ...value }
   } else if (
     block === 'subchapterMedia' &&
     nestedIndex !== undefined &&
     subchapterIndex !== undefined
   ) {
-    state.chapters[nestedIndex].subchapters[subchapterIndex][property] = value
+    state.chapters[nestedIndex].subchapters[subchapterIndex][property] = {
+      ...state.chapters[nestedIndex].subchapters[subchapterIndex][property],
+      ...value,
+    }
   }
 }
 
@@ -476,7 +497,6 @@ export const editorSlice = createSlice({
         }
       }
     },
-
     setInfoboxText: (state, action: PayloadAction<ElementInfoboxTitleActionInterface>) => {
       const payload = action.payload
       if (payload.index !== undefined) {
@@ -491,6 +511,33 @@ export const editorSlice = createSlice({
         if (payload.block === 'chapterElements' && payload.nestedIndex !== undefined) {
           if (state.chapters[payload.nestedIndex].elements[payload.index].infobox !== undefined) {
             state.chapters[payload.nestedIndex].elements[payload.index].infobox!.text = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+      }
+    },
+    setImageTitle: (state, action: PayloadAction<ElementInfoboxTitleActionInterface>) => {
+      const payload = action.payload
+      if (payload.index !== undefined) {
+        if (payload.block === 'tutorialElements') {
+          if (
+            state.tutorialTop.elements[payload.index].image &&
+            state.tutorialTop.elements[payload.index].image!.subchapterTitle !== undefined
+          ) {
+            state.tutorialTop.elements[payload.index].image!.subchapterTitle = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+        if (payload.block === 'chapterElements' && payload.nestedIndex !== undefined) {
+          if (
+            state.chapters[payload.nestedIndex].elements[payload.index].image!.subchapterTitle !==
+            undefined
+          ) {
+            state.chapters[payload.nestedIndex].elements[payload.index].image!.subchapterTitle = {
               text: payload.value,
               isValid: payload.value.trim().length > 0,
             }
@@ -1699,6 +1746,7 @@ export const {
   addTutorialBottomElements,
   setInfoboxTitle,
   setInfoboxText,
+  setImageTitle,
 } = editorSlice.actions
 
 export default editorSlice.reducer
