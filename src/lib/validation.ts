@@ -157,11 +157,18 @@ const validateElements = (
         },
       }
     } else if (element.video) {
+      const isTitleValid = element.video?.subchapterTitle
+        ? element.video.subchapterTitle.text.trim().length > 0
+        : true
+      !isTitleValid && count++
       const isValid = !!element.video.id
       !isValid && count++
       return {
         video: {
           ...element.video,
+          subchapterTitle: element.video?.subchapterTitle
+            ? { ...element.video.subchapterTitle, isValid: isTitleValid }
+            : undefined,
           isValid,
         },
       }

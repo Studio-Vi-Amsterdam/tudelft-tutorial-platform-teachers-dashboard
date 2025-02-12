@@ -545,6 +545,33 @@ export const editorSlice = createSlice({
         }
       }
     },
+    setVideoTitle: (state, action: PayloadAction<ElementInfoboxTitleActionInterface>) => {
+      const payload = action.payload
+      if (payload.index !== undefined) {
+        if (payload.block === 'tutorialElements') {
+          if (
+            state.tutorialTop.elements[payload.index].video &&
+            state.tutorialTop.elements[payload.index].video!.subchapterTitle !== undefined
+          ) {
+            state.tutorialTop.elements[payload.index].video!.subchapterTitle = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+        if (payload.block === 'chapterElements' && payload.nestedIndex !== undefined) {
+          if (
+            state.chapters[payload.nestedIndex].elements[payload.index].video!.subchapterTitle !==
+            undefined
+          ) {
+            state.chapters[payload.nestedIndex].elements[payload.index].video!.subchapterTitle = {
+              text: payload.value,
+              isValid: payload.value.trim().length > 0,
+            }
+          }
+        }
+      }
+    },
     setElementImage: (state, action: PayloadAction<ElementImageActionInterface>) => {
       setElementProperty(
         state,
@@ -1747,6 +1774,7 @@ export const {
   setInfoboxTitle,
   setInfoboxText,
   setImageTitle,
+  setVideoTitle,
 } = editorSlice.actions
 
 export default editorSlice.reducer

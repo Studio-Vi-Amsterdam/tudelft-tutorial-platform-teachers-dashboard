@@ -280,6 +280,10 @@ export const reducerParser = {
                       ]
                     : 'unknown',
                   title: block.block_data.content ? block.block_data.content : '',
+                  subchapterTitle:
+                    block.block_data.title !== undefined
+                      ? { text: block.block_data.title, isValid: true }
+                      : undefined,
                   publishDate: 'hardcode',
                   thumbnail: {
                     id: block.block_data.thumbnail,
@@ -1113,6 +1117,10 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-video',
                 block_data: {
+                  title:
+                    item.video.subchapterTitle !== undefined
+                      ? item.video.subchapterTitle.text
+                      : undefined,
                   video: item.video.id,
                   video_url: item.video.url,
                   thumbnail: item.video.thumbnail?.id ?? null,
