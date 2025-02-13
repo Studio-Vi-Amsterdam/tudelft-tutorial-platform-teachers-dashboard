@@ -1,3 +1,5 @@
+import React from 'react'
+
 interface IconsProps {
   color: string
   bgColor?: string
@@ -503,6 +505,68 @@ export const ChevronDown = () => (
       clipRule="evenodd"
       d="M0.845665 0.151496C1.04093 -0.0504988 1.35751 -0.0504988 1.55277 0.151496L5.99922 4.75127L10.4457 0.151496C10.6409 -0.0504988 10.9575 -0.0504988 11.1528 0.151496C11.348 0.353492 11.348 0.680991 11.1528 0.882986L6.35277 5.8485C6.259 5.9455 6.13183 6 5.99922 6C5.86661 6 5.73943 5.9455 5.64567 5.8485L0.845665 0.882986C0.650403 0.680991 0.650403 0.353492 0.845665 0.151496Z"
       fill="currentColor"
+    />
+  </svg>
+)
+
+export const Arrow = (props: any) => (
+  <svg
+    className={props?.className}
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M10 17L15 12"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M15 12L10 7"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+export const CheckIcon = (props: any) => (
+  <svg
+    width="24"
+    className={props?.className}
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M18.5 8L10.5 16L6.5 12"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+export const CloseIcon = (props: any) => (
+  <svg
+    width="21"
+    className={props?.className}
+    height="20"
+    viewBox="0 0 21 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M6.5 6L15.5 15M6.5 15L15.5 6"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 )

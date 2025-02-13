@@ -9,6 +9,7 @@ interface AuthContextType {
   logout: () => void
   username: string
   userEmail: string
+  userId: string
 }
 
 interface AuthProviderProps {
@@ -24,6 +25,7 @@ const AuthContext = createContext<AuthContextType>({
     console.log('Logout')
   },
   userEmail: '',
+  userId: '',
   username: 'there',
 })
 
@@ -31,6 +33,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   const [username, setUsername] = useState<string>('there')
   const [userEmail, setUserEmail] = useState<string>('')
+  const [userId, setUserId] = useState<string>('')
 
   const login = async (authKey: string) => {
     try {
@@ -60,6 +63,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUsername(res.data.first_name)
       }
 
+      if (res?.data?.id) {
+        setUserId(res?.data?.id)
+      }
+
       if (res?.data?.email) {
         setUserEmail(res.data.email)
       }
@@ -82,7 +89,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, username, userEmail }}>
+    <AuthContext.Provider value={{ isAuthenticated, userId, login, logout, username, userEmail }}>
       {children}
     </AuthContext.Provider>
   )

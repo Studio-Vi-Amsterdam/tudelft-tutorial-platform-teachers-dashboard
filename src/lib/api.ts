@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { ArtictesType, UserRoleType } from 'src/types/types'
 import { getAuthToken, removeAuthToken } from './cookies'
+import { FeedbackStatus } from '../components/TutorialEditor/Feedback'
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_BACKEND_URL,
@@ -151,5 +152,21 @@ export const userAPI = {
   },
   addUserToPost(postId: string, userId: number, role: UserRoleType) {
     return instance.post(`/users/post/${postId}`, { user_id: userId, role })
+  },
+}
+
+export const communityApi = {
+  getUserSuggestion(userId: number) {
+    return instance.get(
+      `/community/user/${userId}/all-posts/comments?status=pending&page_size=10&page=0`,
+    )
+  },
+  updateSuggestionStatus(commentId: number, status: FeedbackStatus) {
+    return instance.put(`/community/comment/${commentId}/status`, { status })
+  },
+  getPostSuggestion(postID: string, status: string, currentPage: number, pageSize: number) {
+    return instance.get(
+      `/community/post/${postID}/comments?status=${status}&page=${currentPage}&page_size=${pageSize}`,
+    )
   },
 }
