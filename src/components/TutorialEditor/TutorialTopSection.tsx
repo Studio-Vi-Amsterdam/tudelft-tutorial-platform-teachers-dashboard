@@ -11,14 +11,16 @@ import {
 import { RootState } from 'src/redux/store'
 import ElementsBlock from './ElementsBlock'
 import BundledEditor from './BundledEditor'
-import { TextElementInterface } from 'src/types/types'
+import { ArtictesType, TextElementInterface } from 'src/types/types'
 import { articlesAPI } from 'src/lib/api'
 import { Capitalize, RemoveLastSymbol } from '../../lib/capitalize'
 import AddSectionBlock from './AddSectionBlock'
+import { Feedback } from './Feedback'
 
 interface TutorialTopSectionProps {
   tutorialTitle: TextElementInterface
   articleType: string | null
+  articleId: string | null
 }
 
 const TutorialTopSection = (props: TutorialTopSectionProps) => {
@@ -329,6 +331,12 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
         extended
         notValid={!tutorialDescription.isValid}
       />
+
+      <Feedback
+        articleId={props.articleId as string}
+        articleType={props.articleType as ArtictesType}
+      />
+
       <Tip>
         <p>
           Learning outcomes clearly explain, with measurable verbs, what the learner will be able to

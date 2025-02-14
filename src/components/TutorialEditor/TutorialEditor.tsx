@@ -177,7 +177,11 @@ const BlogEditor = () => {
           {isFetched ? (
             <>
               <TutorialButtonsSection usersList={usersList} articleType={articleType} />
-              <TutorialTopSection tutorialTitle={tutorialTitle} articleType={articleType} />
+              <TutorialTopSection
+                tutorialTitle={tutorialTitle}
+                articleId={articleId}
+                articleType={articleType}
+              />
               {chapters.length > 0 &&
                 chapters.map((chapter: ChapterInterface, index: number) => (
                   <ChapterSection

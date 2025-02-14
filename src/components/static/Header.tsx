@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ProfilePill from './ProfilePill'
+import { Notification } from './Notification'
 
 const Header = () => {
   const location = useLocation()
@@ -64,6 +65,8 @@ const Header = () => {
                 </button>
               </li>
             </ul>
+
+            <Notification />
             <ProfilePill isMobileView={isMobileView} setIsShowNav={setIsShowNav} />
           </nav>
         )}
