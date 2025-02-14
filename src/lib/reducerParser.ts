@@ -457,9 +457,9 @@ export const reducerParser = {
             case 'tu-delft-video-url':
               return {
                 externalVideo: {
-                  subchapter_title:
-                    block.block_data.subchapter_title !== undefined
-                      ? { text: block.block_data.subchapter_title, isValid: true }
+                  subchapterTitle:
+                    block.block_data.subtitle !== undefined
+                      ? { text: block.block_data.subtitle, isValid: true }
                       : undefined,
                   title: { text: block.block_data.title ?? '', isValid: !!block.block_data.title },
                   url: { text: block.block_data.url ?? '', isValid: !!block.block_data.url },
@@ -525,15 +525,19 @@ export const reducerParser = {
               return {
                 file: {
                   subchapterTitle:
-                    block.block_data.subchapter_title !== undefined
-                      ? { text: block.block_data.subchapter_title, isValid: true }
+                    block.block_data.subtitle !== undefined
+                      ? { text: block.block_data.subtitle, isValid: true }
                       : undefined,
-                  title: block.block_data.title ? block.block_data.title : '',
+                  title: block.block_data.title
+                    ? { text: block.block_data.title, isValid: true }
+                    : '',
                   file: {
                     id: block.block_data.file,
                     url: block.block_data.file_url,
                   },
-                  description: block.block_data.description ? block.block_data.description : '',
+                  description: block.block_data.description
+                    ? { text: block.block_data.description, isValid: true }
+                    : '',
                 },
               }
             default:
@@ -1163,7 +1167,7 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-video-url',
                 block_data: {
-                  subchapter_title:
+                  subtitle:
                     item.externalVideo.subchapterTitle !== undefined
                       ? item.externalVideo.subchapterTitle.text
                       : undefined,
@@ -1242,14 +1246,14 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-download',
                 block_data: {
-                  subchapter_title:
+                  subtitle:
                     item.file.subchapterTitle !== undefined
                       ? item.file.subchapterTitle.text
                       : undefined,
                   file: item.file.file?.id,
                   file_url: item.file.file?.url,
-                  title: item.file.title,
-                  description: item.file.description,
+                  title: item.file.title.text,
+                  description: item.file.description.text,
                 },
               }
             }
