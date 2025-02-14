@@ -430,7 +430,7 @@ export const reducerParser = {
                         ? blockData[`content_card_row_${i}_card_title`]
                         : shortTutorials.find(
                             (item) => item.id === blockData[`content_card_row_${i}_card_link`],
-                          ).title,
+                          )?.title,
                       isValid: !!blockData[`content_card_row_${i}_card_link`],
                     },
                     proposedList: shortTutorials,

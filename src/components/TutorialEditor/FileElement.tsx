@@ -76,6 +76,7 @@ const FileElement = (props: QuizElementProps) => {
 
   useEffect(() => {
     if (fileData !== null) {
+      console.log(fileDescription)
       dispatch(
         setFileElement({
           block: props.block,
@@ -84,7 +85,10 @@ const FileElement = (props: QuizElementProps) => {
           subchapterIndex: props.subchapterIndex,
           file: {
             file: fileData,
-            description: { text: fileDescription, isValid: fileDescription?.trim()?.length > 0 },
+            description: {
+              text: fileDescription,
+              isValid: fileDescription?.trim()?.length > 0,
+            },
             title: { text: fileTitle, isValid: fileTitle?.trim()?.length > 0 },
           },
         }),
@@ -160,7 +164,9 @@ const FileElement = (props: QuizElementProps) => {
           <div className="w-9/12">
             <TextInput
               value={fileTitle}
-              handleChange={setFileTitle}
+              handleChange={(e) => {
+                setFileTitle(e)
+              }}
               placeholder={isFetching || fileData === null ? 'First select the file' : 'Title'}
               className="!text-base !p-4"
               disabled={isFetching || fileData === null}
@@ -173,7 +179,9 @@ const FileElement = (props: QuizElementProps) => {
           <div className="w-9/12">
             <TextInput
               value={fileDescription}
-              handleChange={setFileDescription}
+              handleChange={(e) => {
+                setFileDescription(e)
+              }}
               placeholder={
                 isFetching || fileData === null ? 'First select the file' : 'Description'
               }
