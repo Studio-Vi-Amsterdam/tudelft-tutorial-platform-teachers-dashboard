@@ -633,9 +633,9 @@ export interface ResponseBlockData {
   video_url?: string
   file?: number
   file_url?: string
-  title?: string
+  title?: any
   alt?: string
-  description?: string
+  description?: any
   question?: string
   answers_0_answer?: string
   answers_0_is_correct?: BoolString
