@@ -529,14 +529,18 @@ export const reducerParser = {
                       ? { text: block.block_data.subtitle, isValid: true }
                       : undefined,
                   title: block.block_data.title
-                    ? { text: block.block_data.title, isValid: true }
+                    ? block.block_data.title?.text !== undefined
+                      ? block.block_data.title
+                      : { text: block.block_data.title, isValid: true }
                     : '',
                   file: {
                     id: block.block_data.file,
                     url: block.block_data.file_url,
                   },
                   description: block.block_data.description
-                    ? { text: block.block_data.description, isValid: true }
+                    ? block.block_data.description?.text !== undefined
+                      ? block.block_data.description
+                      : { text: block.block_data.description, isValid: true }
                     : '',
                 },
               }
