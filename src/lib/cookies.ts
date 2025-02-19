@@ -11,5 +11,5 @@ export const getAuthToken = (): string | undefined => {
 
 export const removeAuthToken = () => {
   Cookies.remove('tuDelft-token')
-  window.location.replace(process.env.REACT_APP_WP_ADMIN_URL ?? '')
+  window.location.replace(process.env.REACT_APP_HOMEPAGE_URL ?? '')
 }
