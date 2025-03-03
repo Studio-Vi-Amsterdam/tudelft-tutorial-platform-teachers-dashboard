@@ -25,7 +25,7 @@ export const Notification = () => {
     }
 
     if (status === 'draft') {
-      return 'drafts'
+      return 'draft'
     }
     return status
   }
