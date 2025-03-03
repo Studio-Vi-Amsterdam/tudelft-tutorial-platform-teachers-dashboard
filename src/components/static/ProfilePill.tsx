@@ -3,19 +3,21 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/Popover'
 import { Button } from '../ui/Button'
 import { LogoutIcon } from '../ui/Icons'
 import { useAuth } from 'src/lib/AuthContext'
+import { cn } from '../../lib/utils'
 
 interface ProfilePillProps {
   isMobileView: boolean
+  className?: string
   setIsShowNav: (value: React.SetStateAction<boolean>) => void
 }
 
 const ProfilePill = (props: ProfilePillProps) => {
-  const { isMobileView, setIsShowNav } = props
+  const { isMobileView, setIsShowNav, className } = props
   const { username, logout } = useAuth()
   return (
     <Popover>
       <PopoverTrigger>
-        <div className="sm:ml-10 flex items-center justify-between ">
+        <div className={cn(className, 'sm:ml-10 flex items-center justify-between')}>
           <div className=" flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-secondary-navy text-white">
             {username !== 'there' ? username[0].toUpperCase() : 'U'}
           </div>

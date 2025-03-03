@@ -1,11 +1,24 @@
+export interface TitleIdentifierInterface {
+  id: number
+  title: string
+}
+
 export interface UsersItemInterface {
+  id: number
+  email: string
+  icon?: string
+  first_name: string
+  last_name: string
+}
+
+export interface OwnerItemInterface {
   id: number
   email: string
   first_name: string
   last_name: string
 }
 
-export type UserRoleType = 'editor' | 'viewer'
+export type UserRoleType = 'editor' | 'viewer' | 'owner'
 
 export interface TutorialCard {
   type: 'course' | 'subject' | 'software' | 'tutorial'
@@ -26,11 +39,12 @@ export type AddElementsType =
   | 'external video'
 
 export type ArtictesType = 'softwares' | 'courses' | 'tutorials' | 'subjects'
-export interface DashboardPublishedInterface {
-  id: number
+export interface DashboardPublishedInterface extends TitleIdentifierInterface {
   featured_image: null | boolean | string
   publish_date: string
-  title: string
+  editors: UsersItemInterface[]
+  owner: OwnerItemInterface
+  last_modified_data: string
   type: ArtictesType
   previewLink: string | null
   status: 'draft' | 'published' | 'new'
@@ -45,12 +59,16 @@ export interface WhoHaveAccessInterface {
 export interface DashboardSectionProps {
   items: DashboardPublishedInterface[]
   heading: string
+  type: string
   fetched: boolean
 }
+
+export type SubchapterLayout = 'textImage' | 'imageText' | 'textVideo' | 'videoText'
 
 interface ElementActionBase {
   block: string
   index: number | undefined
+  layout?: SubchapterLayout
   nestedIndex?: number
   subchapterIndex?: number
 }
@@ -73,7 +91,14 @@ interface MediaObjectParent {
 
 export interface ThumbnailInterface extends MediaObjectParent {}
 
+export interface TextElementInterface {
+  text: string
+  isValid: boolean
+  hidden?: boolean
+}
+
 export interface MediaObjectInterface {
+  subchapterTitle?: TextElementInterface
   id?: number
   link: string
   url?: string
@@ -89,17 +114,17 @@ export interface MediaObjectInterface {
   hasZoom?: boolean
 }
 
-export interface TextElementInterface {
-  text: string
-  isValid: boolean
+interface TextLayoutInterface {
+  text: TextElementInterface
+  title?: TextElementInterface
 }
 
 export interface ElementTextActionInterface extends ElementActionBase {
   text: TextElementInterface
 }
 
-export interface ElementInfoboxActionInterface extends ElementActionBase {
-  infobox: TextElementInterface
+export interface ElementInfoboxTitleActionInterface extends ElementActionBase {
+  value: string
 }
 
 export interface ElementImageActionInterface extends ElementActionBase {
@@ -110,13 +135,12 @@ export interface ElementVideoActionInterface extends ElementActionBase {
   video: MediaObjectInterface
 }
 
-export type SubchapterLayout = 'textImage' | 'imageText' | 'textVideo' | 'videoText'
-
 export interface ThumbnailActionInterface {
   index: number
   thumbnail: ThumbnailInterface
   chapterIndex?: number
   layout?: SubchapterLayout
+  block: string
 }
 
 export interface ChapterThumbnailActionInterface {
@@ -129,6 +153,7 @@ export interface SubtitlesActionInterface {
   subtitles: MediaObjectParent
   chapterIndex?: number
   layout?: SubchapterLayout
+  block: string
 }
 
 export interface ChapterSubtitlesActionInterface {
@@ -142,6 +167,7 @@ export interface QuizAnswer {
   isValid: boolean
 }
 export interface QuizElement {
+  title?: TextElementInterface
   question: TextElementInterface
   answers: QuizAnswer[]
   answersCount: number
@@ -163,6 +189,7 @@ export interface h5pElementInterface {
   text: string
   error: string
   isValid: boolean
+  title?: TextElementInterface
 }
 export interface ElementH5PActionInterface extends ElementActionBase {
   h5pElement: h5pElementInterface
@@ -173,6 +200,7 @@ export interface CustomFileInterface {
   isValid: boolean
 }
 interface ElementsFileInterface {
+  subchapterTitle?: TextElementInterface
   file: CustomFileInterface
   title: TextElementInterface
   description: TextElementInterface
@@ -196,9 +224,7 @@ export interface MoveChapterInterface {
   parentIndex?: number
 }
 
-export interface ProposedList {
-  id: number
-  title: string
+export interface ProposedList extends TitleIdentifierInterface {
   isValid: boolean
 }
 
@@ -207,9 +233,9 @@ export interface TutorialCardInterface {
   proposedList: ProposedList[] | []
 }
 
-interface TextLayoutInterface {
-  text: TextElementInterface
-  title: TextElementInterface
+export interface TutorialCardsBlockInterface {
+  title?: TextElementInterface
+  items: TutorialCardInterface[]
 }
 
 interface MediaTextImageInterface {
@@ -225,6 +251,7 @@ interface MediaTextVideoInterface {
 }
 
 export interface ExternalVideoInterface {
+  subchapterTitle?: TextElementInterface
   title: TextElementInterface
   url: TextElementInterface
   thumbnail: ThumbnailInterface | undefined
@@ -232,7 +259,7 @@ export interface ExternalVideoInterface {
 
 export interface TutorialTopElementsObject {
   text?: TextElementInterface
-  infobox?: TextElementInterface
+  infobox?: TextLayoutInterface
   image?: MediaObjectInterface
   video?: MediaObjectInterface
   externalVideo?: ExternalVideoInterface
@@ -240,12 +267,13 @@ export interface TutorialTopElementsObject {
   quiz?: QuizElement
   h5pElement?: h5pElementInterface
   tutorialCard?: TutorialCardInterface
-  tutorialCards?: TutorialCardInterface[]
+  tutorialCards?: TutorialCardsBlockInterface
   textLayout?: TextLayoutInterface
   textImage?: MediaTextImageInterface
   imageText?: MediaTextImageInterface
   textVideo?: MediaTextVideoInterface
   videoText?: MediaTextVideoInterface
+  defaultVal?: boolean
 }
 export interface AddChapterElementInterface {
   val: TutorialTopElementsObject
@@ -292,12 +320,12 @@ export interface TermDialogInterface {
 
 export interface ChapterElementsObject {
   text?: TextElementInterface
-  infobox?: TextElementInterface
+  infobox?: TextLayoutInterface
   image?: MediaObjectInterface
   video?: MediaObjectInterface
   externalVideo?: ExternalVideoInterface
   tutorialCard?: TutorialCardInterface
-  tutorialCards?: TutorialCardInterface[]
+  tutorialCards?: TutorialCardsBlockInterface
   file?: ElementsFileInterface
   quiz?: QuizElement
   h5pElement?: h5pElementInterface
@@ -307,6 +335,7 @@ export interface ChapterElementsObject {
   textVideo?: MediaTextVideoInterface
   videoText?: MediaTextVideoInterface
   column?: string
+  defaultVal?: boolean
 }
 
 export interface TransformedDataTutorialCards {
@@ -473,6 +502,7 @@ export interface EditorState {
   isEditorLoaded: boolean
   pageType: PageTypeType
   tutorialTop: TutorialTopInterface
+  tutorialBottomContent: [] | TutorialTopElementsObject[]
   chapters: ChapterInterface[] | []
   tutorialBottom: TutorialBottomInterface
   meta: TutorialMetaObject
@@ -540,15 +570,16 @@ export interface DashboardDraftsInterface {
 export interface DashboardInterface {
   isDraftsLoaded: boolean
   isPublishedLoaded: boolean
+  isArchivedLoaded: boolean
   username: string
   drafts: DashboardPublishedInterface[] | []
+  archived: DashboardPublishedInterface[] | []
   published: DashboardPublishedInterface[] | []
 }
 
-export interface ResponseArticleChapterInterface {
-  id: number
-  title: string
+export interface ResponseArticleChapterInterface extends TitleIdentifierInterface {
   permalink: string
+  content: null | string
 }
 
 export interface ResponseArticleInterface {
@@ -602,9 +633,9 @@ export interface ResponseBlockData {
   video_url?: string
   file?: number
   file_url?: string
-  title?: string
+  title?: any
   alt?: string
-  description?: string
+  description?: any
   question?: string
   answers_0_answer?: string
   answers_0_is_correct?: BoolString
@@ -623,11 +654,10 @@ export interface ResponseContentBlock {
   block_name: ResponseBlockName
   block_data: ResponseBlockData
 }
-export interface ResponseChapterInterface {
-  id: number
-  title: string
+export interface ResponseChapterInterface extends TitleIdentifierInterface {
   content: ResponseContentBlock[]
   belongs_to: boolean | number
+  hide_title?: boolean
 }
 
 export interface FileThumbnailInterface {

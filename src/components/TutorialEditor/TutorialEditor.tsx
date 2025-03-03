@@ -14,7 +14,6 @@ import {
 } from 'src/types/types'
 import ChapterSection from './ChapterSection'
 import EditorSidebar from './EditorSidebar'
-import TutorialBottomSection from './TutorialBottomSection'
 import { articlesAPI, taxonomiesAPI, userAPI } from 'src/lib/api'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getInfo, reducerParser } from 'src/lib/reducerParser'
@@ -177,15 +176,24 @@ const BlogEditor = () => {
         <div className="flex w-full flex-col items-start md:pl-12 lg:pl-28 bg-white">
           {isFetched ? (
             <>
-              <TutorialButtonsSection usersList={usersList} />
-              <TutorialTopSection tutorialTitle={tutorialTitle} />
+              <TutorialButtonsSection usersList={usersList} articleType={articleType} />
+              <TutorialTopSection
+                tutorialTitle={tutorialTitle}
+                articleId={articleId}
+                articleType={articleType}
+              />
               {chapters.length > 0 &&
                 chapters.map((chapter: ChapterInterface, index: number) => (
-                  <ChapterSection key={index} chapter={chapter} index={index} />
+                  <ChapterSection
+                    articleType={articleType}
+                    key={index}
+                    chapter={chapter}
+                    index={index}
+                  />
                 ))}
 
-              <AddChapterSection />
-              <TutorialBottomSection />
+              <AddChapterSection articleType={articleType} chapterIndex={chapters.length} />
+              {/* <TutorialBottomSection articleType={articleType} /> */}
               {articleType === 'tutorials' && <TutorialsMeta />}
               {articleType === 'courses' && <CoursesMeta />}
               {articleType === 'softwares' && <SoftwaresMeta />}

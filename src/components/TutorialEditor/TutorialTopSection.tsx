@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import EditorLabel from 'src/components/ui/EditorLabel'
 import TextInput from 'src/components/ui/TextInput'
 import Tip from 'src/components/ui/Tip'
@@ -9,18 +9,24 @@ import {
   setTutorialTitle,
 } from 'src/redux/features/editorSlice'
 import { RootState } from 'src/redux/store'
-import AddElementBlock from './AddElementBlock'
 import ElementsBlock from './ElementsBlock'
 import BundledEditor from './BundledEditor'
-import { AddElementsType, TextElementInterface } from 'src/types/types'
+import { ArtictesType, TextElementInterface } from 'src/types/types'
 import { articlesAPI } from 'src/lib/api'
+import { Capitalize, RemoveLastSymbol } from '../../lib/capitalize'
+import AddSectionBlock from './AddSectionBlock'
+import { Feedback } from './Feedback'
 
 interface TutorialTopSectionProps {
   tutorialTitle: TextElementInterface
+  articleType: string | null
+  articleId: string | null
 }
 
 const TutorialTopSection = (props: TutorialTopSectionProps) => {
   const { tutorialTitle } = props
+
+  const [isSubchapterCreating, setIsSubchapterCreating] = useState<boolean>(false)
 
   const tutorialDescription = useAppSelector(
     (state: RootState) => state.editor.tutorialTop.description,
@@ -40,37 +46,49 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
     dispatch(setTutorialDescription(value))
   }
 
-  const tutorialElements: AddElementsType[] = [
-    'text block',
-    'infobox block',
-    'image',
-    'video',
-    'tutorial cards',
-    'download file',
-    'quiz',
-    'h5p element',
-    'external video',
-  ]
-  const handleAddTutorialElement = async (val: string): Promise<void> => {
+  const handleAddTutorialElement = async (
+    val: string,
+    chapterIndex?: number,
+    subchapterIndex?: number,
+    showTitle?: boolean,
+  ): Promise<void> => {
     const payload: any = {}
-
     payload[val] = ''
     if (val === 'text block') {
-      payload.text = {
-        text: '',
-        isValid: true,
+      payload.textLayout = {
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
+        text: {
+          text: '',
+          isValid: true,
+        },
       }
       delete payload['text block']
       dispatch(addTutorialElements(payload))
     } else if (val === 'infobox block') {
       payload.infobox = {
-        text: '',
-        isValid: true,
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
+        text: { text: '', isValid: true },
       }
       delete payload['infobox block']
       dispatch(addTutorialElements(payload))
     } else if (val === 'quiz') {
       payload[val] = {
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         question: { text: '', isValid: true },
         answers: [
           { answer: '', isCorrect: '1', isValid: true },
@@ -83,6 +101,12 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       dispatch(addTutorialElements(payload))
     } else if (val === 'h5p element') {
       payload.h5pElement = {
+        title: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         text: '',
         error: '',
         isValid: true,
@@ -97,20 +121,36 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
           title: item.title,
           isValid: true,
         }))
-        payload.tutorialCards = [
-          {
-            value: { id: undefined, title: '', isValid: true },
-            proposedList: tutorials,
-          },
-        ]
-      } catch (error: any) {
-        if (error.response && error.response.status === 404) {
-          payload.tutorialCards = [
+        payload.tutorialCards = {
+          title: isSubchapterCreating
+            ? {
+                text: '',
+                isValid: true,
+              }
+            : undefined,
+          items: [
             {
               value: { id: undefined, title: '', isValid: true },
-              proposedList: [],
+              proposedList: tutorials,
             },
-          ]
+          ],
+        }
+      } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+          payload.tutorialCards = {
+            title: isSubchapterCreating
+              ? {
+                  text: '',
+                  isValid: true,
+                }
+              : undefined,
+            items: [
+              {
+                value: { id: undefined, title: '', isValid: true },
+                proposedList: [],
+              },
+            ],
+          }
         } else {
           console.error(error)
         }
@@ -119,6 +159,12 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       dispatch(addTutorialElements(payload))
     } else if (val === 'download file') {
       payload.file = {
+        subchapterTitle: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         file: { id: undefined, url: '', isValid: true },
         title: { text: '', isValid: true },
         description: { text: '', isValid: true },
@@ -127,6 +173,12 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       dispatch(addTutorialElements(payload))
     } else if (val === 'image') {
       payload.image = {
+        subchapterTitle: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         format: '',
         link: '',
         url: '',
@@ -141,6 +193,12 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       dispatch(addTutorialElements(payload))
     } else if (val === 'video') {
       payload.video = {
+        subchapterTitle: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         format: '',
         link: '',
         url: '',
@@ -154,11 +212,99 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
       dispatch(addTutorialElements(payload))
     } else if (val === 'external video') {
       payload.externalVideo = {
+        subchapterTitle: isSubchapterCreating
+          ? {
+              text: '',
+              isValid: true,
+            }
+          : undefined,
         title: { text: '', isValid: true },
         url: { text: '', isValid: true },
         thumbnail: undefined,
       }
       delete payload['external video']
+      dispatch(addTutorialElements(payload))
+    } else if (val === 'image left') {
+      payload.imageText = {
+        image: {
+          isValid: true,
+          format: '',
+          link: '',
+          publishDate: '',
+          title: '',
+          type: 'image',
+          description: '',
+        },
+        text: { text: '', isValid: true },
+        title: { text: '', isValid: true, hidden: !showTitle },
+      }
+      dispatch(addTutorialElements(payload))
+    } else if (val === 'image right') {
+      payload.textImage = {
+        image: {
+          isValid: true,
+          format: '',
+          link: '',
+          publishDate: '',
+          title: '',
+          type: 'image',
+          description: '',
+        },
+        text: { text: '', isValid: true },
+        title: { text: '', isValid: true, hidden: !showTitle },
+      }
+      dispatch(addTutorialElements(payload))
+    } else if (val === 'video left') {
+      payload.videoText = {
+        video: {
+          format: '',
+          link: '',
+          publishDate: '',
+          title: '',
+          isValid: true,
+          type: 'video',
+          description: '',
+          thumbnail: {
+            description: '',
+            format: '',
+            type: 'image',
+            link: '',
+            isValid: true,
+            publishDate: '',
+            title: '',
+          },
+        },
+        text: { text: '', isValid: true },
+        title: { text: '', isValid: true, hidden: !showTitle },
+      }
+      dispatch(addTutorialElements(payload))
+    } else if (val === 'video right') {
+      payload.textVideo = {
+        video: {
+          format: '',
+          link: '',
+          publishDate: '',
+          title: '',
+          isValid: true,
+          type: 'video',
+          description: '',
+          thumbnail: {
+            description: '',
+            format: '',
+            type: 'image',
+            link: '',
+            isValid: true,
+            publishDate: '',
+            title: '',
+          },
+        },
+        text: { text: '', isValid: true },
+        title: { text: '', isValid: true, hidden: !showTitle },
+      }
+      dispatch(addTutorialElements(payload))
+    } else if (val === '1 column') {
+      payload.defaultVal = true
+      delete payload['1 column']
       dispatch(addTutorialElements(payload))
     } else {
       dispatch(addTutorialElements(payload))
@@ -168,21 +314,29 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
   return (
     <section className="relative flex w-full flex-col gap-y-6 py-16 sm:py-20">
       <EditorLabel>
-        This section is mandatory for all tutorials and appears on top of the page.
+        This intro chapter is mandatory for all {props.articleType} and appears on top of a{' '}
+        {RemoveLastSymbol(props.articleType ?? '')} page.
       </EditorLabel>
       <TextInput
         handleChange={handleTutorialTitleInputChange}
         value={tutorialTitle.text}
-        placeholder="Page title"
+        placeholder={Capitalize(RemoveLastSymbol(props.articleType ?? '')) + ' title'}
         headingType="h1"
         notValid={!tutorialTitle.isValid}
       />
       <BundledEditor
+        placeholder={`Write a short description for the ${RemoveLastSymbol(props.articleType ?? '')} here.`}
         value={tutorialDescription.text}
         handleChange={handleTutorialDescriptionInputChange}
         extended
         notValid={!tutorialDescription.isValid}
       />
+
+      <Feedback
+        articleId={props.articleId as string}
+        articleType={props.articleType as ArtictesType}
+      />
+
       <Tip>
         <p>
           Learning outcomes clearly explain, with measurable verbs, what the learner will be able to
@@ -193,8 +347,27 @@ const TutorialTopSection = (props: TutorialTopSectionProps) => {
           <li>What new knowledge will they have obtained?</li>
         </ul>
       </Tip>
-      <ElementsBlock block="tutorialElements" elements={tutorialStateElements} />
-      <AddElementBlock elements={tutorialElements} handleAddElement={handleAddTutorialElement} />
+
+      <ElementsBlock
+        block="tutorialElements"
+        handleAddElement={handleAddTutorialElement}
+        elements={tutorialStateElements}
+      />
+
+      {!tutorialStateElements.find((el) => el.defaultVal) && (
+        <AddSectionBlock
+          variant="outline"
+          handleAddElement={handleAddTutorialElement}
+          setIsSubchapterCreating={setIsSubchapterCreating}
+        />
+      )}
+
+      <AddSectionBlock
+        variant="dashed"
+        handleAddElement={handleAddTutorialElement}
+        setIsSubchapterCreating={setIsSubchapterCreating}
+        isSubchapter={true}
+      />
     </section>
   )
 }

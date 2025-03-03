@@ -97,7 +97,6 @@ export const FileUpload = (props: FileUploadProps) => {
               description: `${res.data.data.title} uploaded with ID: ${res.data.data.id}`,
             })
             if (index + 1 === files.length) {
-              console.log('files length == index + 1 ')
               setTimeout(() => {
                 setIsFetching(false)
                 handleDeleteFiles()
@@ -139,6 +138,7 @@ export const FileUpload = (props: FileUploadProps) => {
         '.xlsx',
       ],
       'text/txt': ['.txt', '.csv'],
+      'text/vtt': ['.vtt'],
       'archive/zip': ['.zip', '.gz', '.rar'],
       'apple/doc': ['.keynote', '.numbers', '.pages'],
     },
@@ -176,12 +176,12 @@ export const FileUpload = (props: FileUploadProps) => {
         {files?.length === 1 && (
           <div className="w-full flex flex-col gap-y-2">
             <div>
-              <label className="mb-2 block">Title</label>
+              <label className="mb-2 block">Image Caption</label>
               <div className="w-full">
                 <TextInput
                   value={filesTitles !== undefined ? filesTitles[0].val : ''}
                   handleChange={(value) => handleSetFilesTitles(value, 0)}
-                  placeholder="Title"
+                  placeholder="Image Caption"
                   className="w-full block !border-[#67676B] rounded-lg !leading-5"
                 />
               </div>

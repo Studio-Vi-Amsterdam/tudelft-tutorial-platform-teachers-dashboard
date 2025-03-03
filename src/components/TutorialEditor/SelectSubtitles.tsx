@@ -13,6 +13,7 @@ interface ThumbProps {
   subchapterIndex: number | undefined
   listIndex: number | undefined
   layout?: SubchapterLayout
+  block?: string
 }
 
 const SelectSubtitles = (props: ThumbProps) => {
@@ -46,6 +47,7 @@ const SelectSubtitles = (props: ThumbProps) => {
             subtitles: selectedMedia,
             chapterIndex: props.chapterIndex,
             layout: props.layout,
+            block: props.block ?? '',
           }),
         )
       }
@@ -84,6 +86,7 @@ const SelectSubtitles = (props: ThumbProps) => {
           },
           chapterIndex: props.chapterIndex,
           layout: props.layout,
+          block: props.block ?? '',
         }),
       )
     }

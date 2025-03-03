@@ -251,3 +251,24 @@ select {
         transform: translate(24px, 0);
     }
 }
+
+[data-radix-popper-content-wrapper]{
+    z-index: 5555 !important;
+}
+
+.avatar-tooltip{
+    .arrow{
+        transform: translateX(-50%);
+    }
+    &[data-side="top"]{
+        .arrow{
+            bottom: -7px;
+            transform: rotate(180deg) translateX(50%);
+        }
+    }
+    &[data-side="bottom"]{
+        .arrow{
+            top: -7px;
+        }
+    }
+}

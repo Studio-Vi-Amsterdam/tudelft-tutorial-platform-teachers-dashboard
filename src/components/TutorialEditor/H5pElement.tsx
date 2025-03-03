@@ -9,17 +9,19 @@ const H5pElement = (props: QuizElementProps) => {
   const h5pElement = useAppSelector((state: RootState) =>
     props.block === 'tutorialElements' && props.listIndex !== undefined
       ? state.editor.tutorialTop.elements[props.listIndex].h5pElement
-      : props.block === 'chapterElements' &&
-          props.chapterIndex !== undefined &&
-          props.listIndex !== undefined
-        ? state.editor.chapters[props.chapterIndex].elements[props.listIndex].h5pElement
-        : props.block === 'subchapterElements' &&
-          props.chapterIndex !== undefined &&
-          props.subchapterIndex !== undefined &&
-          props.listIndex !== undefined &&
-          state.editor.chapters[props.chapterIndex].subchapters[props.subchapterIndex].elements[
-            props.listIndex
-          ].h5pElement,
+      : props.block === 'tutorialBottomElements' && props.listIndex !== undefined
+        ? state.editor.tutorialBottomContent[props.listIndex].h5pElement
+        : props.block === 'chapterElements' &&
+            props.chapterIndex !== undefined &&
+            props.listIndex !== undefined
+          ? state.editor.chapters[props.chapterIndex].elements[props.listIndex].h5pElement
+          : props.block === 'subchapterElements' &&
+            props.chapterIndex !== undefined &&
+            props.subchapterIndex !== undefined &&
+            props.listIndex !== undefined &&
+            state.editor.chapters[props.chapterIndex].subchapters[props.subchapterIndex].elements[
+              props.listIndex
+            ].h5pElement,
   )
   const [localH5PElement, setLocalH5PElement] = useState<h5pElementInterface>(
     h5pElement || { text: '', error: '', isValid: true },

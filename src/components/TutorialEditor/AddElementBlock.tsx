@@ -9,8 +9,8 @@ interface AddElementBlockProps {
 }
 
 const AddElementBlock = (props: AddElementBlockProps) => {
-  const [addElementsActive, setAddElementsActive] = useState<boolean>(false)
-  const { elements, subchapterIndex } = props
+  const [addElementsActive, setAddElementsActive] = useState<boolean>(true)
+  const { elements, subchapterIndex, index } = props
 
   const handleAddTutorialElementClick = (): void => {
     if (addElementsActive) {
@@ -22,7 +22,7 @@ const AddElementBlock = (props: AddElementBlockProps) => {
 
   const handleAddElement = (el: string) => {
     setAddElementsActive(false)
-    props.handleAddElement(el, props?.index, subchapterIndex)
+    props.handleAddElement(el, index, subchapterIndex)
   }
 
   return (

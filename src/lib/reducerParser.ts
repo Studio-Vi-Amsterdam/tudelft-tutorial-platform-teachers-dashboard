@@ -205,13 +205,20 @@ export const reducerParser = {
             case 'tu-delft-info-box':
               return {
                 infobox: {
-                  text: block.block_data.content,
-                  isValid: true,
+                  title:
+                    block.block_data.title !== undefined
+                      ? { text: block.block_data.title, isValid: true }
+                      : undefined,
+                  text: { text: block.block_data.content, isValid: true },
                 },
               }
             case 'tu-delft-quiz':
               return {
                 quiz: {
+                  title:
+                    block.block_data.title !== undefined
+                      ? { text: block.block_data.title, isValid: true }
+                      : undefined,
                   question: { text: block.block_data.question, isValid: true },
                   answers: [
                     {
@@ -241,6 +248,10 @@ export const reducerParser = {
             case 'tu-delft-h5p':
               return {
                 h5pElement: {
+                  title:
+                    block.block_data.title !== undefined
+                      ? { text: block.block_data.title, isValid: true }
+                      : undefined,
                   text: block.block_data.source,
                   isValid: true,
                 },
@@ -257,6 +268,10 @@ export const reducerParser = {
                       ]
                     : 'unknown',
                   title: block.block_data.content ? block.block_data.content : '',
+                  subchapterTitle:
+                    block.block_data.title !== undefined
+                      ? { text: block.block_data.title, isValid: true }
+                      : undefined,
                   publishDate: 'hardcode',
                   hasZoom: block.block_data.has_image_zoom ?? false,
                 },
@@ -273,6 +288,10 @@ export const reducerParser = {
                       ]
                     : 'unknown',
                   title: block.block_data.content ? block.block_data.content : '',
+                  subchapterTitle:
+                    block.block_data.title !== undefined
+                      ? { text: block.block_data.title, isValid: true }
+                      : undefined,
                   publishDate: 'hardcode',
                   thumbnail: {
                     id: block.block_data.thumbnail,
@@ -319,6 +338,7 @@ export const reducerParser = {
                   title: {
                     text: block.block_data.title ? block.block_data.title : '',
                     isValid: true,
+                    hidden: block.block_data.hide_title ?? false,
                   },
                   // block.block_data.title ? block.block_data.title : '',
                 },
@@ -346,6 +366,7 @@ export const reducerParser = {
                   title: {
                     text: block.block_data.title ? block.block_data.title : '',
                     isValid: true,
+                    hidden: block.block_data.hide_title ?? false,
                   },
                 },
               }
@@ -391,6 +412,7 @@ export const reducerParser = {
                   title: {
                     text: block.block_data.title ? block.block_data.title : '',
                     isValid: true,
+                    hidden: block.block_data.hide_title ?? false,
                   },
                 },
               }
@@ -408,7 +430,7 @@ export const reducerParser = {
                         ? blockData[`content_card_row_${i}_card_title`]
                         : shortTutorials.find(
                             (item) => item.id === blockData[`content_card_row_${i}_card_link`],
-                          ).title,
+                          )?.title,
                       isValid: !!blockData[`content_card_row_${i}_card_link`],
                     },
                     proposedList: shortTutorials,
@@ -424,11 +446,21 @@ export const reducerParser = {
               }
 
               return {
-                tutorialCards,
+                tutorialCards: {
+                  title:
+                    block.block_data.title !== undefined
+                      ? { text: block.block_data.title, isValid: true }
+                      : undefined,
+                  items: tutorialCards,
+                },
               }
             case 'tu-delft-video-url':
               return {
                 externalVideo: {
+                  subchapterTitle:
+                    block.block_data.subtitle !== undefined
+                      ? { text: block.block_data.subtitle, isValid: true }
+                      : undefined,
                   title: { text: block.block_data.title ?? '', isValid: !!block.block_data.title },
                   url: { text: block.block_data.url ?? '', isValid: !!block.block_data.url },
                   thumbnail: {
@@ -485,18 +517,31 @@ export const reducerParser = {
                   title: {
                     text: block.block_data.title ? block.block_data.title : '',
                     isValid: true,
+                    hidden: block.block_data.hide_title ?? false,
                   },
                 },
               }
             case 'tu-delft-download':
               return {
                 file: {
-                  title: block.block_data.title ? block.block_data.title : '',
+                  subchapterTitle:
+                    block.block_data.subtitle !== undefined
+                      ? { text: block.block_data.subtitle, isValid: true }
+                      : undefined,
+                  title: block.block_data.title
+                    ? block.block_data.title?.text !== undefined
+                      ? block.block_data.title
+                      : { text: block.block_data.title, isValid: true }
+                    : '',
                   file: {
                     id: block.block_data.file,
                     url: block.block_data.file_url,
                   },
-                  description: block.block_data.description ? block.block_data.description : '',
+                  description: block.block_data.description
+                    ? block.block_data.description?.text !== undefined
+                      ? block.block_data.description
+                      : { text: block.block_data.description, isValid: true }
+                    : '',
                 },
               }
             default:
@@ -514,95 +559,103 @@ export const reducerParser = {
 
     const parseChapters = async (responseChapters: ResponseArticleChapterInterface[]) => {
       const extendedChapters = await getExtendedChapters(responseChapters)
-
       const newChapters = extendedChapters.map((chapter: ResponseChapterInterface) => {
-        const chapterLayout = (): LayoutChapterType => {
-          switch (chapter.content[0].block_name) {
-            case 'tu-delft-image-text':
-              return 'image left'
-            case 'tu-delft-text-image':
-              return 'image right'
-            case 'tu-delft-video-text':
-              return 'video left'
-            case 'tu-delft-text-video':
-              return 'video right'
-            default:
-              return '1 column'
+        if (chapter?.content !== null) {
+          const chapterLayout = (): LayoutChapterType => {
+            switch (chapter.content[0].block_name) {
+              case 'tu-delft-image-text':
+                return 'image left'
+              case 'tu-delft-text-image':
+                return 'image right'
+              case 'tu-delft-video-text':
+                return 'video left'
+              case 'tu-delft-text-video':
+                return 'video right'
+              default:
+                return '1 column'
+            }
           }
+          const newChapter: ChapterInterface = {
+            id: chapter.id,
+            layout: chapterLayout(),
+            title: { text: chapter.title, isValid: true, hidden: chapter?.hide_title ?? false },
+            text: { text: chapter.content[0].block_data.content || '', isValid: true },
+            elements: chapter.content.length > 0 ? parsedElements(chapter.content.slice(1)) : [],
+            subchapters: [],
+            video:
+              chapterLayout() === 'video left' || chapterLayout() === 'video right'
+                ? {
+                    id: chapter.content[0].block_data.video,
+                    link: chapter.content[0].block_data.video_url || '',
+                    url: chapter.content[0].block_data.video_url || '',
+                    type: 'video',
+                    format: 'test',
+                    isValid: !!chapter.content[0].block_data.video,
+                    title: '',
+                    publishDate: '',
+                    description: chapter.content[0].block_data.description ?? '',
+                    thumbnail: {
+                      id: chapter.content[0].block_data.thumbnail ?? undefined,
+                      url: chapter.content[0].block_data.thumbnail_url,
+                      description: '',
+                      format: '',
+                      type: 'image',
+                      link: chapter.content[0].block_data.thumbnail_url ?? '',
+                      publishDate: '',
+                      title: '',
+                      isValid: true,
+                    },
+                    subtitles: {
+                      id: chapter.content[0].block_data.subtitles ?? undefined,
+                      url: chapter.content[0].block_data.subtitles_url,
+                      description: '',
+                      format: '',
+                      type: 'image',
+                      link: chapter.content[0].block_data.subtitles_url ?? '',
+                      publishDate: '',
+                      title: '',
+                      isValid: true,
+                    },
+                  }
+                : undefined,
+            image:
+              chapterLayout() === 'image left' || chapterLayout() === 'image right'
+                ? {
+                    id: chapter.content[0].block_data.image,
+                    url: chapter.content[0].block_data.image_url || '',
+                    link: chapter.content[0].block_data.image_url || '',
+                    type: 'image',
+                    format: 'test',
+                    isValid: !!chapter.content[0].block_data.image,
+                    title: '',
+                    publishDate: '',
+                    description: chapter.content[0].block_data.description ?? '',
+                    thumbnail: {
+                      id: chapter.content[0].block_data.thumbnail ?? undefined,
+                      url: chapter.content[0].block_data.thumbnail_url,
+                      description: '',
+                      format: '',
+                      type: 'image',
+                      link: chapter.content[0].block_data.thumbnail_url ?? '',
+                      publishDate: '',
+                      title: '',
+                      isValid: true,
+                    },
+                    hasZoom: chapter.content[0].block_data.hasZoom ?? false,
+                  }
+                : undefined,
+          }
+          return newChapter
         }
-        const newChapter: ChapterInterface = {
+        return {
           id: chapter.id,
-          layout: chapterLayout(),
+          layout: '1 column',
           title: { text: chapter.title, isValid: true },
-          text: { text: chapter.content[0].block_data.content || '', isValid: true },
-          elements: chapter.content.length > 0 ? parsedElements(chapter.content.slice(1)) : [],
+          text: { text: '', isValid: false },
+          elements: [],
           subchapters: [],
-          video:
-            chapterLayout() === 'video left' || chapterLayout() === 'video right'
-              ? {
-                  id: chapter.content[0].block_data.video,
-                  link: chapter.content[0].block_data.video_url || '',
-                  url: chapter.content[0].block_data.video_url || '',
-                  type: 'video',
-                  format: 'test',
-                  isValid: !!chapter.content[0].block_data.video,
-                  title: '',
-                  publishDate: '',
-                  description: chapter.content[0].block_data.description ?? '',
-                  thumbnail: {
-                    id: chapter.content[0].block_data.thumbnail ?? undefined,
-                    url: chapter.content[0].block_data.thumbnail_url,
-                    description: '',
-                    format: '',
-                    type: 'image',
-                    link: chapter.content[0].block_data.thumbnail_url ?? '',
-                    publishDate: '',
-                    title: '',
-                    isValid: true,
-                  },
-                  subtitles: {
-                    id: chapter.content[0].block_data.subtitles ?? undefined,
-                    url: chapter.content[0].block_data.subtitles_url,
-                    description: '',
-                    format: '',
-                    type: 'image',
-                    link: chapter.content[0].block_data.subtitles_url ?? '',
-                    publishDate: '',
-                    title: '',
-                    isValid: true,
-                  },
-                }
-              : undefined,
-          image:
-            chapterLayout() === 'image left' || chapterLayout() === 'image right'
-              ? {
-                  id: chapter.content[0].block_data.image,
-                  url: chapter.content[0].block_data.image_url || '',
-                  link: chapter.content[0].block_data.image_url || '',
-                  type: 'image',
-                  format: 'test',
-                  isValid: !!chapter.content[0].block_data.image,
-                  title: '',
-                  publishDate: '',
-                  description: chapter.content[0].block_data.description ?? '',
-                  thumbnail: {
-                    id: chapter.content[0].block_data.thumbnail ?? undefined,
-                    url: chapter.content[0].block_data.thumbnail_url,
-                    description: '',
-                    format: '',
-                    type: 'image',
-                    link: chapter.content[0].block_data.thumbnail_url ?? '',
-                    publishDate: '',
-                    title: '',
-                    isValid: true,
-                  },
-                  hasZoom: chapter.content[0].block_data.hasZoom ?? false,
-                }
-              : undefined,
         }
-        return newChapter
       })
-
       return newChapters
     }
     let reducerObject: EditorState | object = {}
@@ -1024,7 +1077,8 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-info-box',
                 block_data: {
-                  content: item.infobox.text,
+                  title: item.infobox.title !== undefined ? item.infobox.title.text : undefined,
+                  content: item.infobox.text.text,
                 },
               }
             }
@@ -1032,6 +1086,7 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-quiz',
                 block_data: {
+                  title: item.quiz.title !== undefined ? item.quiz.title.text : undefined,
                   question: item.quiz.question.text,
                   answers_0_answer: item.quiz.answers[0].answer,
                   answers_0_is_correct: item.quiz.answers[0].isCorrect,
@@ -1046,7 +1101,7 @@ export const reducerParser = {
               }
             }
             if (item.tutorialCards) {
-              const transformedData: TransformedDataTutorialCards = item.tutorialCards.reduce(
+              const transformedData: TransformedDataTutorialCards = item.tutorialCards.items.reduce(
                 (acc: TransformedDataTutorialCards, card, index) => {
                   const isCustomLink = card.value.url !== undefined ? '_custom' : ''
                   acc[`content_card_row_${index}_card_title`] = card.value.title
@@ -1060,17 +1115,25 @@ export const reducerParser = {
                     card.value.url !== undefined
                   return acc
                 },
-                { content_card_row: item.tutorialCards.length },
+                { content_card_row: item.tutorialCards.items.length },
               )
               return {
                 block_name: 'tu-delft-content-card',
-                block_data: transformedData,
+                block_data: {
+                  title:
+                    item.tutorialCards.title !== undefined
+                      ? item.tutorialCards.title.text
+                      : undefined,
+                  ...transformedData,
+                },
               }
             }
             if (item.h5pElement) {
               return {
                 block_name: 'tu-delft-h5p',
                 block_data: {
+                  title:
+                    item.h5pElement.title !== undefined ? item.h5pElement.title.text : undefined,
                   source: item.h5pElement.text,
                 },
               }
@@ -1079,6 +1142,10 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-image',
                 block_data: {
+                  title:
+                    item.image.subchapterTitle !== undefined
+                      ? item.image.subchapterTitle.text
+                      : undefined,
                   image: item.image.id,
                   image_url: item.image.url,
                   has_image_zoom: item.image.hasZoom ?? false,
@@ -1089,6 +1156,10 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-video',
                 block_data: {
+                  title:
+                    item.video.subchapterTitle !== undefined
+                      ? item.video.subchapterTitle.text
+                      : undefined,
                   video: item.video.id,
                   video_url: item.video.url,
                   thumbnail: item.video.thumbnail?.id ?? null,
@@ -1100,6 +1171,10 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-video-url',
                 block_data: {
+                  subtitle:
+                    item.externalVideo.subchapterTitle !== undefined
+                      ? item.externalVideo.subchapterTitle.text
+                      : undefined,
                   title: item.externalVideo.title.text,
                   url: item.externalVideo.url.text,
                   thumbnail: item.externalVideo.thumbnail
@@ -1113,7 +1188,7 @@ export const reducerParser = {
                 block_name: 'tu-delft-text',
                 block_data: {
                   content: item.textLayout.text.text,
-                  title: item.textLayout.title.text ?? undefined,
+                  title: item.textLayout?.title?.text ?? undefined,
                 },
               }
             }
@@ -1126,6 +1201,7 @@ export const reducerParser = {
                   has_image_zoom: item.imageText.image.hasZoom ?? false,
                   content: item.imageText.text.text,
                   title: item.imageText.title.text,
+                  hide_title: item.imageText.title.hidden,
                 },
               }
             }
@@ -1138,6 +1214,7 @@ export const reducerParser = {
                   has_image_zoom: item.textImage.image.hasZoom ?? false,
                   content: item.textImage.text.text,
                   title: item.textImage.title.text,
+                  hide_title: item.textImage.title.hidden,
                 },
               }
             }
@@ -1151,6 +1228,7 @@ export const reducerParser = {
                   subtitles: item.textVideo.video.subtitles?.id,
                   content: item.textVideo.text.text,
                   title: item.textVideo.title.text,
+                  hide_title: item.textVideo.title.hidden,
                 },
               }
             }
@@ -1164,6 +1242,7 @@ export const reducerParser = {
                   subtitles: item.videoText.video.subtitles?.id,
                   content: item.videoText.text.text,
                   title: item.videoText.title.text,
+                  hide_title: item.videoText.title.hidden,
                 },
               }
             }
@@ -1171,14 +1250,18 @@ export const reducerParser = {
               return {
                 block_name: 'tu-delft-download',
                 block_data: {
+                  subtitle:
+                    item.file.subchapterTitle !== undefined
+                      ? item.file.subchapterTitle.text
+                      : undefined,
                   file: item.file.file?.id,
                   file_url: item.file.file?.url,
-                  title: item.file.title,
-                  description: item.file.description,
+                  title: item.file.title.text,
+                  description: item.file.description.text,
                 },
               }
             }
-            return null
+            return {}
           })
           .filter(Boolean),
       )

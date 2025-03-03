@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,8 +6,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '../ui/Dropdown'
-import { AuthorIcon, MoreIcon, TrashCanIcon } from '../ui/Icons'
-import AddAuthorModal from './AddAuthorModal'
+import { AddFileIcon, ArrowRight, TrashCanIcon } from '../ui/Icons'
 import { useNavigate } from 'react-router-dom'
 import { useToast } from 'src/lib/use-toast'
 import {
@@ -21,26 +20,44 @@ import {
   AlertDialogTitle,
 } from '../ui/AlertDialog'
 import { articlesAPI } from 'src/lib/api'
-import { ArtictesType, UsersItemInterface } from 'src/types/types'
+import {
+  ArtictesType,
+  DashboardPublishedInterface,
+  EditorState,
+  UsersItemInterface,
+} from 'src/types/types'
+import OverwriteModal from './OverwriteModal'
+import { validateArticle } from 'src/lib/validation'
+import { reducerParser } from 'src/lib/reducerParser'
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
+import { RootState } from 'src/redux/store'
+import { sendArticle } from 'src/lib/sendArticle'
 
 interface TutorialActionsButtonProps {
+  editor: EditorState
   articleId: string | null
   articleType: ArtictesType
   usersList: UsersItemInterface[]
 }
 
+interface ArticlePreviewInterface {
+  id: number
+  title: string
+}
+
 const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
-  const [isAddAuthorDialogOpen, setIsAddAuthorDialogOpen] = useState<boolean>(false)
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState<boolean>(false)
+  const [isOverwritePopupOpen, setIsOverwritePopupOpen] = useState<boolean>(false)
   const [isFetching, setIsFetching] = useState<boolean>(false)
+  // Data
+  const [articlesList, setArticlesList] = useState<ArticlePreviewInterface[]>([])
+
+  // Store
+  const dispatch = useAppDispatch()
+  const tutorial = useAppSelector((state: RootState) => state.editor)
+
   const navigate = useNavigate()
   const { toast } = useToast()
-
-  const toggleAddAuthorDialogOpen = () => {
-    setTimeout(() => {
-      setIsAddAuthorDialogOpen(!isAddAuthorDialogOpen)
-    }, 300)
-  }
 
   const handleDeleteArticle = () => {
     if (props.articleId && props.articleId !== 'new') {
@@ -62,12 +79,112 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
     }
   }
 
+  const validationErrToast = () => {
+    toast({
+      title: 'Something went wrong!',
+      variant: 'destructive',
+      description: 'Check that all required fields are filled in noted by * and outlined in red',
+    })
+  }
+
+  const postDraftErrorToast = (error: string) => {
+    toast({
+      title: 'Something went wrong!',
+      variant: 'destructive',
+      description: error,
+    })
+  }
+
+  const openOverwriteModal = async () => {
+    const validationSucceed = validateArticle(
+      props.editor,
+      props.articleType,
+      dispatch,
+      validationErrToast,
+    )
+    if (validationSucceed) {
+      const parsedObject = await reducerParser.parseFromReducer(
+        tutorial,
+        'publish',
+        props.articleId !== 'new' ? props.articleId ?? undefined : undefined,
+        props.articleType,
+      )
+      sendArticle(
+        props.articleType,
+        props.articleId,
+        parsedObject,
+        navigate,
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        () => {},
+        postDraftErrorToast,
+        true,
+      ).finally(() => setIsOverwritePopupOpen(true))
+    } else {
+      toast({
+        title: 'Failed!',
+        description:
+          'Before migration please make sure all the fields in the current tutorial are valid',
+        variant: 'destructive',
+      })
+    }
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const articleTypes = [props.articleType]
+        const fetchArticles = async (
+          type: ArtictesType,
+        ): Promise<DashboardPublishedInterface[]> => {
+          try {
+            const response = await articlesAPI.getArticles(type)
+            return response.data.map((item: any) => ({
+              ...item,
+              type,
+              status: 'published',
+            }))
+          } catch (error: any) {
+            console.error(error)
+            return []
+          }
+        }
+        const fetchDraftArticles = async (
+          type: ArtictesType,
+        ): Promise<DashboardPublishedInterface[]> => {
+          try {
+            const response = await articlesAPI.getDraftArticles(type)
+            return response.data.map((item: any) => ({
+              ...item,
+              type,
+              status: 'draft',
+            }))
+          } catch (error) {
+            console.error(error)
+            return []
+          }
+        }
+
+        const [publishedArticles, draftArticles] = await Promise.all([
+          Promise.all(articleTypes.map(fetchArticles)).then((results) => results.flat()),
+          Promise.all(articleTypes.map(fetchDraftArticles)).then((results) => results.flat()),
+        ])
+
+        setArticlesList([...draftArticles, ...publishedArticles])
+      } catch (error) {
+        console.error(error)
+        setArticlesList([])
+      }
+    }
+    fetchData()
+  }, [])
+
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger className="data-[state='open']:bg-tertiary-skyBlue-20 border-primary-skyBlue rounded flex py-2 px-4 border  flex-row gap-x-2 text-primary-skyBlue">
-          Actions
-          <MoreIcon />
+        <DropdownMenuTrigger className="[&>span]:data-[state='open']:rotate-[-90deg] flex items-center rounded-l-none bg-primary-skyBlue rounded py-4 px-3 border-l-[1px] border-white text-white">
+          <span className="rotate-90 transition-all">
+            <ArrowRight className="w-[18px] h-[18px]" />
+          </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
@@ -76,6 +193,13 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
           <DropdownMenuLabel className="font-normal text-sm text-primary-skyBlue">
             Actions
           </DropdownMenuLabel>
+
+          <DropdownMenuItem onClick={openOverwriteModal}>
+            <span className="flex justify-center items-center w-6 h-6">
+              <AddFileIcon />
+            </span>
+            Overwrite to
+          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() =>
               setTimeout(() => {
@@ -84,33 +208,21 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
             }
           >
             <span className="flex justify-center items-center w-6 h-6">
-              <TrashCanIcon />
+              <TrashCanIcon className="w-[20px] h-[20px]" />
             </span>
             Delete
           </DropdownMenuItem>
-          {/* <DropdownMenuItem>
-            <span className="flex justify-center items-center w-6 h-6">
-              <AddFileIcon />
-            </span>
-            Migrate to
-          </DropdownMenuItem> */}
-          <DropdownMenuItem
-            disabled={props.articleId === null || props.articleId === 'new'}
-            onSelect={() => toggleAddAuthorDialogOpen()}
-          >
-            <span className="flex justify-center items-center w-6 h-6">
-              <AuthorIcon />
-            </span>
-            Add editor
-          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <AddAuthorModal
-        usersList={props.usersList}
-        isOpen={isAddAuthorDialogOpen}
-        setIsOpen={toggleAddAuthorDialogOpen}
+
+      <OverwriteModal
+        isOpen={isOverwritePopupOpen}
+        setIsOpen={setIsOverwritePopupOpen}
         articleId={props.articleId}
+        articleType={props.articleType}
+        articlesList={articlesList}
       />
+
       <AlertDialog open={isDeletePopupOpen} onOpenChange={setIsDeletePopupOpen}>
         <AlertDialogContent className="bg-white">
           <AlertDialogHeader>

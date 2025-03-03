@@ -8,11 +8,13 @@ import AutoCompleteInput from './AutoCompleteInput'
 import { Button } from '../ui/Button'
 import { userAPI } from 'src/lib/api'
 import { useToast } from 'src/lib/use-toast'
-import AuthorsAccesRow from './AuthorsAccesRow'
+import AuthorsAccessRow from './AuthorsAccessRow'
+import { Capitalize, RemoveLastSymbol } from '../../lib/capitalize'
 
 interface AddAuthorModalProps {
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  articleType: string | null
   usersList: UsersItemInterface[]
   articleId: string | null
 }
@@ -20,7 +22,7 @@ interface AddAuthorModalProps {
 const AddAuthorModal = (props: AddAuthorModalProps) => {
   const tutorialTitle = useAppSelector((state: RootState) => state.editor.tutorialTop.title)
   const tutorialTitleText = tutorialTitle.text.length > 0 ? tutorialTitle.text : 'Untitled article'
-  const hasAricleId = props.articleId !== null && props.articleId !== 'new'
+  const hasArticleId = props.articleId !== null && props.articleId !== 'new'
   const { toast } = useToast()
 
   const [step, setStep] = useState<number>(1)
@@ -28,9 +30,10 @@ const AddAuthorModal = (props: AddAuthorModalProps) => {
   const [emails, setEmails] = useState<UsersItemInterface[]>(props.usersList)
   const [listOfEditors, setListOfEditors] = useState<UsersItemInterface[]>([])
   const [listOfViewers, setListOfViewers] = useState<UsersItemInterface[]>([])
+  const [articleOwner, setArticleOwner] = useState<UsersItemInterface>()
 
   const removeEditor = async (id: number): Promise<boolean> => {
-    if (hasAricleId) {
+    if (hasArticleId) {
       const editorObjectToRemove = listOfEditors.find((item) => item.id === id)
       const viewerObjectToRemove = listOfViewers.find((item) => item.id === id)
 
@@ -71,7 +74,7 @@ const AddAuthorModal = (props: AddAuthorModalProps) => {
     role: UserRoleType = 'editor',
     id: number | undefined = undefined,
   ) => {
-    if (hasAricleId) {
+    if (hasArticleId) {
       const addedObject =
         id === undefined
           ? emails.find((item) => item.first_name === inputValue || item.email === inputValue)
@@ -114,25 +117,34 @@ const AddAuthorModal = (props: AddAuthorModalProps) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (hasAricleId) {
+      if (hasArticleId) {
         try {
           const response = await userAPI
             .getEditorsAndViewers(props.articleId as string)
             .then((res) => res.data)
-          response.editors ? setListOfEditors(response.editors) : setListOfEditors([])
+          response.owner ? setArticleOwner(response.owner) : setArticleOwner(undefined)
+          response.editors
+            ? setListOfEditors(
+                articleOwner
+                  ? response.editors.filter(
+                      (el: UsersItemInterface) =>
+                        el.id !== parseInt(articleOwner.id as unknown as string),
+                    )
+                  : response.editors,
+              )
+            : setListOfEditors([])
           response.viewers ? setListOfViewers(response.viewers) : setListOfViewers([])
+
           // deleting user that related to article from proposed list
           const idsToRemove = new Set([
             ...response.editors.map((item: UsersItemInterface) => item?.id),
             ...response.viewers.map((item: UsersItemInterface) => item?.id),
           ])
-
           const filteredArray = props.usersList.filter(
             (item: UsersItemInterface) => !idsToRemove.has(item.id),
           )
           setEmails(filteredArray)
         } catch (error) {
-          console.error(error)
           setListOfEditors([])
           setListOfViewers([])
         }
@@ -155,7 +167,7 @@ const AddAuthorModal = (props: AddAuthorModalProps) => {
                 <span className="flex justify-center items-center w-6 h-6">
                   <ArrowLeft />
                 </span>
-                {tutorialTitleText}
+                {Capitalize(RemoveLastSymbol(props.articleType ?? ''))} - {tutorialTitleText}
               </button>
             )}
           </DialogTitle>
@@ -165,6 +177,7 @@ const AddAuthorModal = (props: AddAuthorModalProps) => {
             <div className="flex flex-row max-sm:flex-col gap-4 justify-between items-center w-full">
               <AutoCompleteInput
                 possibleValues={emails}
+                placeholder="Add editor by name or email"
                 inputValue={inputValue}
                 setInputValue={setInputValue}
               />
@@ -186,7 +199,7 @@ const AddAuthorModal = (props: AddAuthorModalProps) => {
                     <SmallFileIcon />
                   </div>
                   <p className="font-normal font-inter text-xl leading-[1.875rem] ">
-                    {tutorialTitleText}
+                    {Capitalize(RemoveLastSymbol(props.articleType ?? ''))} - {tutorialTitleText}
                   </p>
                 </div>
                 <button
@@ -194,7 +207,7 @@ const AddAuthorModal = (props: AddAuthorModalProps) => {
                   className="flex flex-row items-center gap-x-2 text-tertiary-grey-dim"
                 >
                   <p className="font-inter font-normal text-xl leading-[1.875rem] text-tertiary-grey-dim">
-                    {listOfEditors.length + listOfViewers.length} person{' '}
+                    {listOfEditors.length + listOfViewers.length + (articleOwner ? 1 : 0)} person{' '}
                   </p>
                   <span className="w-3 h-3 flex justify-center items-center">
                     <ArrowRight />
@@ -208,23 +221,16 @@ const AddAuthorModal = (props: AddAuthorModalProps) => {
           <>
             <div className="flex flex-col gap-y-2">
               <p className="font-inter font-normal text-xl leading-[1.875rem] text-tertiary-grey-dim">
-                Who has acces
+                Who has access
               </p>
+              {articleOwner && <AuthorsAccessRow item={articleOwner} role="owner" />}
+
               {listOfEditors.map((item, index) => (
-                <AuthorsAccesRow
+                <AuthorsAccessRow
                   key={index}
                   item={item}
                   removeEditor={removeEditor}
                   role="editor"
-                  toggleRole={toggleRole}
-                />
-              ))}
-              {listOfViewers.map((item, index) => (
-                <AuthorsAccesRow
-                  key={index}
-                  item={item}
-                  removeEditor={removeEditor}
-                  role="viewer"
                   toggleRole={toggleRole}
                 />
               ))}

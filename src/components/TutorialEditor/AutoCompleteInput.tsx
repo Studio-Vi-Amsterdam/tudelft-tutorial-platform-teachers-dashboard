@@ -4,6 +4,7 @@ import { UsersItemInterface } from 'src/types/types'
 interface AutoCompleteInputProps {
   possibleValues: UsersItemInterface[]
   inputValue: string
+  placeholder?: string
   setInputValue: React.Dispatch<React.SetStateAction<string>>
 }
 
@@ -35,6 +36,7 @@ const AutoCompleteInput = (props: AutoCompleteInputProps) => {
     <div className="relative w-full">
       <input
         type="text"
+        placeholder={props.placeholder}
         className={`w-full text-base rounded-[4px] border focus:outline-none border-DIM bg-background-seasalt p-4 text-tertiary-grey-stone ${suggestions.length > 0 ? 'border-b-transparent rounded-b-none !p-2 !pb-4' : ''}`}
         value={inputValue}
         onChange={handleInputChange}
@@ -44,7 +46,7 @@ const AutoCompleteInput = (props: AutoCompleteInputProps) => {
       {suggestions.length > 0 && (
         <ul
           id="autocomplete-list"
-          className="custom-vertical-scrollbar absolute top-full left-0 right-0 border pt-4 p-2 list-none rounded-b border-t-0 bg-background-seasalt max-h-40 overflow-y-auto before:absolute before:left-[4%] before:w-[92%] before:h-[1px] before:bg-tertiary-grey-dim before:bg-black before:top-0 flex flex-col gap-y-4"
+          className="custom-vertical-scrollbar absolute top-full left-0 right-0 border pt-4 p-2 list-none rounded-b border-t-0 bg-background-seasalt max-h-40 overflow-y-auto before:absolute before:left-[0] before:w-[100%] before:h-[1px] before:bg-tertiary-grey-dim before:bg-black before:top-0 flex flex-col gap-y-4"
           role="listbox"
         >
           {suggestions.map((suggestion, index) => (

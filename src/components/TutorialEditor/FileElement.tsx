@@ -51,17 +51,19 @@ const FileElement = (props: QuizElementProps) => {
   const fileState = useAppSelector((state: RootState) =>
     props.block === 'tutorialElements' && props.listIndex !== undefined
       ? state.editor.tutorialTop.elements[props.listIndex].file
-      : props.block === 'chapterElements' &&
-          props.chapterIndex !== undefined &&
-          props.listIndex !== undefined
-        ? state.editor.chapters[props.chapterIndex].elements[props.listIndex].file
-        : props.block === 'subchapterElements' &&
-          props.chapterIndex !== undefined &&
-          props.subchapterIndex !== undefined &&
-          props.listIndex !== undefined &&
-          state.editor.chapters[props.chapterIndex].subchapters[props.subchapterIndex].elements[
-            props.listIndex
-          ].file,
+      : props.block === 'tutorialBottomElements' && props.listIndex !== undefined
+        ? state.editor.tutorialBottomContent[props.listIndex].file
+        : props.block === 'chapterElements' &&
+            props.chapterIndex !== undefined &&
+            props.listIndex !== undefined
+          ? state.editor.chapters[props.chapterIndex].elements[props.listIndex].file
+          : props.block === 'subchapterElements' &&
+            props.chapterIndex !== undefined &&
+            props.subchapterIndex !== undefined &&
+            props.listIndex !== undefined &&
+            state.editor.chapters[props.chapterIndex].subchapters[props.subchapterIndex].elements[
+              props.listIndex
+            ].file,
   )
 
   useEffect(() => {
@@ -74,6 +76,7 @@ const FileElement = (props: QuizElementProps) => {
 
   useEffect(() => {
     if (fileData !== null) {
+      console.log(fileDescription)
       dispatch(
         setFileElement({
           block: props.block,
@@ -82,8 +85,11 @@ const FileElement = (props: QuizElementProps) => {
           subchapterIndex: props.subchapterIndex,
           file: {
             file: fileData,
-            description: { text: fileDescription, isValid: fileDescription.trim().length > 0 },
-            title: { text: fileTitle, isValid: fileTitle.trim().length > 0 },
+            description: {
+              text: fileDescription,
+              isValid: fileDescription?.trim()?.length > 0,
+            },
+            title: { text: fileTitle, isValid: fileTitle?.trim()?.length > 0 },
           },
         }),
       )
@@ -158,7 +164,9 @@ const FileElement = (props: QuizElementProps) => {
           <div className="w-9/12">
             <TextInput
               value={fileTitle}
-              handleChange={setFileTitle}
+              handleChange={(e) => {
+                setFileTitle(e)
+              }}
               placeholder={isFetching || fileData === null ? 'First select the file' : 'Title'}
               className="!text-base !p-4"
               disabled={isFetching || fileData === null}
@@ -171,7 +179,9 @@ const FileElement = (props: QuizElementProps) => {
           <div className="w-9/12">
             <TextInput
               value={fileDescription}
-              handleChange={setFileDescription}
+              handleChange={(e) => {
+                setFileDescription(e)
+              }}
               placeholder={
                 isFetching || fileData === null ? 'First select the file' : 'Description'
               }

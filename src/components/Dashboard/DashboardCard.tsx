@@ -2,7 +2,11 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { articlesAPI } from 'src/lib/api'
 import { localFormatDate } from 'src/lib/localFormatDate'
-import { deleteFromDrafts, deleteFromPublished } from 'src/redux/features/dashboardSlice'
+import {
+  deleteFromArchived,
+  deleteFromDrafts,
+  deleteFromPublished,
+} from 'src/redux/features/dashboardSlice'
 import { useAppDispatch } from 'src/redux/hooks'
 import { DashboardPublishedInterface } from 'src/types/types'
 import {
@@ -17,14 +21,16 @@ import {
   AlertDialogTrigger,
 } from 'src/components/ui/AlertDialog'
 import { useToast } from 'src/lib/use-toast'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/Tooltip'
+import { cn } from '../../lib/utils'
 
 interface DashboardCardProps {
   item: DashboardPublishedInterface
-  draft?: boolean
+  type: string
 }
 
 const DashboardCard = (props: DashboardCardProps) => {
-  const { item, draft } = props
+  const { item, type } = props
   const { toast } = useToast()
   const [isFetching, setIsFetching] = useState<boolean>(false)
   const dispatch = useAppDispatch()
@@ -35,13 +41,19 @@ const DashboardCard = (props: DashboardCardProps) => {
   const handleOpenDeletePopup = async () => {
     setIsFetching(true)
     const afterDeleteAction = () => {
-      if (draft) {
-        dispatch(deleteFromDrafts(item.id))
-      } else {
-        dispatch(deleteFromPublished(item.id))
+      switch (type) {
+        case 'draft':
+          dispatch(deleteFromDrafts(item.id))
+          break
+        case 'archived':
+          dispatch(deleteFromArchived(item.id))
+          break
+        default:
+          dispatch(deleteFromPublished(item.id))
+          break
       }
       toast({
-        title: `${draft ? 'Draft' : 'Article'} with id: ${item.id} deleted`,
+        title: `Article with id: ${item.id} deleted`,
         description: 'Successfully!',
       })
       setIsFetching(false)
@@ -50,9 +62,18 @@ const DashboardCard = (props: DashboardCardProps) => {
       .deleteArticle(item.type, item.id)
       .then((res) => res.status === 200 && afterDeleteAction())
   }
-  const openPreviewTab = () => {
-    item.previewLink && window.open(item.previewLink, '_blank', 'noopener,noreferrer')
+  const openPreviewTab = async () => {
+    try {
+      const response = await articlesAPI.getPreviewLink(item.type, item.id)
+      response.data &&
+        response.data.preview_link &&
+        window.open(response.data.preview_link, '_blank', 'noopener,noreferrer')
+    } catch (error) {
+      console.error(`Error fetching preview link for ${type} with id ${item.id}:`, error)
+      return null
+    }
   }
+
   return (
     <div className="flex  flex-col gap-y-4 rounded-[4px] bg-background-aliceBlue p-4">
       <div className="flex flex-row items-center justify-between">
@@ -93,15 +114,92 @@ const DashboardCard = (props: DashboardCardProps) => {
       </div>
       <div className="flex flex-col gap-y-6">
         <h4 className="text-xl leading-8">{item.title}</h4>
-        <div className="flex flex-col gap-y-2 pb-16 [&>div]:flex [&>div]:flex-row">
+        <div className="flex flex-col gap-y-2 pb-8 [&>div]:flex [&>div]:flex-row">
           <div className="text-sm">
             <p className="text-[#666666] w-20 text-left text-sm">Published</p>
             {localFormatDate(item.publish_date)}
           </div>
           <div className="text-sm">
             <p className="text-[#666666] w-20 text-left text-sm">Last Edit</p>
-            {'no data'}
+            {localFormatDate(item.last_modified_data)}
           </div>
+          {item.editors.length > 0 && (
+            <div className="text-sm items-center flex">
+              <p className="text-[#666666] w-20 text-left text-sm">Editor(s):</p>
+              <TooltipProvider delayDuration={0}>
+                {item.editors.map((el, i) => (
+                  <Tooltip key={i + el.email + el.first_name}>
+                    <TooltipTrigger className={cn({ 'ml-[-8px]': i > 0 }, `z-[${100 - i}]`)}>
+                      <div className="w-8 h-8 flex text-[11px] items-center justify-center border text-white rounded-full bg-[#0C2340] border-[#EFF1F3]">
+                        {el.first_name || el.last_name
+                          ? el.first_name.substring(0, 1) + el.last_name.substring(0, 1)
+                          : el.email.substring(0, 1)}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent align="center" side="bottom" className="avatar-tooltip">
+                      <div className="bg-[#525252] relative p-[6px] rounded-[4px]">
+                        {el.first_name || el.last_name
+                          ? el.first_name + ' ' + el.last_name
+                          : el.email}
+                        <span className="arrow absolute left-[50%]">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="11"
+                            height="7"
+                            viewBox="0 0 11 7"
+                            fill="none"
+                          >
+                            <path
+                              d="M-9.53674e-07 7L11 7L7.14808 1.39721C6.35339 0.24129 4.64661 0.24129 3.85192 1.39721L-9.53674e-07 7Z"
+                              fill="#525252"
+                            />
+                          </svg>
+                        </span>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                ))}
+              </TooltipProvider>
+            </div>
+          )}
+          {item.owner && (
+            <div className="text-sm items-center flex">
+              <p className="text-[#666666] w-20 text-left text-sm">Owner:</p>
+              <TooltipProvider delayDuration={0}>
+                <Tooltip key={item.owner.email + item.owner.first_name}>
+                  <TooltipTrigger>
+                    <div className="w-8 h-8 flex text-[11px] items-center justify-center border text-white rounded-full bg-[#0C2340] border-[#EFF1F3]">
+                      {item.owner.first_name || item.owner.last_name
+                        ? item.owner.first_name.substring(0, 1) +
+                          item.owner.last_name.substring(0, 1)
+                        : item.owner.email.substring(0, 1)}
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent align="center" side="bottom" className="avatar-tooltip">
+                    <div className="bg-[#525252] relative p-[6px] rounded-[4px]">
+                      {item.owner.first_name || item.owner.last_name
+                        ? item.owner.first_name + ' ' + item.owner.last_name
+                        : item.owner.email}
+                      <span className="arrow absolute left-[50%]">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="11"
+                          height="7"
+                          viewBox="0 0 11 7"
+                          fill="none"
+                        >
+                          <path
+                            d="M-9.53674e-07 7L11 7L7.14808 1.39721C6.35339 0.24129 4.64661 0.24129 3.85192 1.39721L-9.53674e-07 7Z"
+                            fill="#525252"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          )}
         </div>
       </div>
     </div>
