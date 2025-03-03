@@ -93,7 +93,7 @@ export const Notification = () => {
                 </div>
                 <div className="text-sm">
                   <p className="text-tertiary-grey-dim">
-                    {el.user} made an suggestion on <b>{el.post_title}</b>
+                    {el.user} made a suggestion on <b>{el.post_title}</b>
                   </p>
                   <p className="text-tertiary-grey-stone mt-1">
                     {formatRelativeTime(el.created_at)}
@@ -111,7 +111,7 @@ export const Notification = () => {
 
           {suggestion.length === 0 && (
             <p className="text-tertiary-grey-dim text-[13px]">
-              Currently their are no new comments
+              Currently there are no new comments
             </p>
           )}
         </PopoverContent>
