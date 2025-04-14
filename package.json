@@ -30,7 +30,7 @@
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.378.0",
     "mathjax": "^3.2.2",
-    "prismjs": "^1.29.0",
+    "prismjs": "^1.30.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@types/prismjs": "^1.26.4",
+    "@types/prismjs": "^1.26.5",
     "@types/tinymce": "^4.6.9",
     "autoprefixer": "^10.4.14",
     "eslint": "8.38.0",
