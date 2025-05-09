@@ -102,7 +102,7 @@ const TutorialButtonsSection = (props: TutorialButtonsProps) => {
       const parsedObject = await reducerParser.parseFromReducer(
         tutorial,
         'publish',
-        articleId !== 'new' ? articleId ?? undefined : undefined,
+        articleId !== 'new' ? (articleId ?? undefined) : undefined,
         articleType,
       )
       sendArticle(
@@ -122,7 +122,7 @@ const TutorialButtonsSection = (props: TutorialButtonsProps) => {
       const parsedObject = await reducerParser.parseFromReducer(
         tutorial,
         'draft',
-        articleId !== 'new' ? articleId ?? undefined : undefined,
+        articleId !== 'new' ? (articleId ?? undefined) : undefined,
         articleType,
       )
       sendRequest(parsedObject, true)

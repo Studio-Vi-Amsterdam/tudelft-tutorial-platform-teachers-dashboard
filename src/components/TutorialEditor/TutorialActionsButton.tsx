@@ -106,7 +106,7 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
       const parsedObject = await reducerParser.parseFromReducer(
         tutorial,
         'publish',
-        props.articleId !== 'new' ? props.articleId ?? undefined : undefined,
+        props.articleId !== 'new' ? (props.articleId ?? undefined) : undefined,
         props.articleType,
       )
       sendArticle(
