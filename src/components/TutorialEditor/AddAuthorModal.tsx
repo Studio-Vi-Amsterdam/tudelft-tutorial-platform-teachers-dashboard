@@ -207,7 +207,8 @@ const AddAuthorModal = (props: AddAuthorModalProps) => {
                   className="flex flex-row items-center gap-x-2 text-tertiary-grey-dim"
                 >
                   <p className="font-inter font-normal text-xl leading-[1.875rem] text-tertiary-grey-dim">
-                    {listOfEditors.length + listOfViewers.length + (articleOwner ? 1 : 0)} person{' '}
+                    {listOfEditors.length + listOfViewers.length + (articleOwner ? 1 : 0)}{' '}
+                    person{' '}
                   </p>
                   <span className="w-3 h-3 flex justify-center items-center">
                     <ArrowRight />

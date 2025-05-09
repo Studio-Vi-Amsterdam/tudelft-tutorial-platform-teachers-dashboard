@@ -691,10 +691,10 @@ export const reducerParser = {
               list: info.data.courses.length > 0 ? info.data.courses : [],
               isValid: true,
               value: response.course
-                ? info.data.courses.find((item: any) => item.id === response.course) ?? {
+                ? (info.data.courses.find((item: any) => item.id === response.course) ?? {
                     id: undefined,
                     title: '',
-                  }
+                  })
                 : { id: undefined, title: '' },
             },
             primary: {
@@ -703,9 +703,9 @@ export const reducerParser = {
               list: info.data.softwares.length > 0 ? info.data.softwares : [],
               isValid: !!response.primary_software,
               value: response.primary_software
-                ? info.data.softwares.find(
+                ? (info.data.softwares.find(
                     (item: any) => item.id === response.primary_software,
-                  ) ?? { id: undefined, title: '' }
+                  ) ?? { id: undefined, title: '' })
                 : { id: undefined, title: '' },
             },
             version: {
@@ -1031,9 +1031,9 @@ export const reducerParser = {
               required: true,
               isValid: !!response.category,
               value: response.category
-                ? info.categories.find(
+                ? (info.categories.find(
                     (item: any) => item.id === parseInt(response.category as string),
-                  ) ?? { id: undefined, title: '' }
+                  ) ?? { id: undefined, title: '' })
                 : { id: undefined, title: '' },
             },
             secondaryCategory: {
@@ -1042,9 +1042,9 @@ export const reducerParser = {
               isValid: true,
               list: info.secondary_categories ?? [],
               value: info.secondary_categories
-                ? info.secondary_categories.find(
+                ? (info.secondary_categories.find(
                     (item: any) => item.id === parseInt(response.secondary_category as string),
-                  ) ?? { id: undefined, title: '' }
+                  ) ?? { id: undefined, title: '' })
                 : { id: undefined, title: '' },
             },
           },
