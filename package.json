@@ -40,7 +40,7 @@
     "sass": "^1.77.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
-    "tinymce": "^7.5.1",
+    "tinymce": "^7.8.0",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
@@ -88,5 +88,8 @@
   },
   "overrides": {
     "nth-check": "2.1.1"
+  },
+  "resolutions": {
+    "postcss": "^8.4.21"
   }
 }
