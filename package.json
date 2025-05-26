@@ -48,7 +48,6 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/prismjs": "^1.26.4",
     "@types/tinymce": "^4.6.9",
-    "@typescript-eslint/eslint-plugin": "^8.32.1",
     "autoprefixer": "^10.4.14",
     "eslint": "8.38.0",
     "eslint-config-prettier": "^9.1.0",
