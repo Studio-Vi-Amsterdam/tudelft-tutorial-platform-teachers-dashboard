@@ -20,7 +20,7 @@ body {
     /* === Fonts === */
     --font-sans: Arial, sans-serif;
     --font-inter: Inter, sans-serif;
-    --font-roboto-slab: "Roboto Slab", sans-serif;
+    --font-robotoSlab: "Roboto Slab", sans-serif;
 
     /* === Font Sizes & Line Heights === */
     --text-h2-size: 44px;
@@ -39,7 +39,7 @@ body {
     --radius-md: calc(var(--radius-lg) - 2px);
     --radius-sm: calc(var(--radius-lg) - 4px);
 
-    /* === Timing Functions & Durations === */
+    /* === Timing & Animation === */
     --ease-in-expo: cubic-bezier(0.15, 0.00, 0.00, 1.00);
     --duration-170: 170ms;
     --duration-330: 330ms;
@@ -47,29 +47,7 @@ body {
     /* === Height === */
     --h-auto: auto;
 
-    /* === Brand & UI Colors === */
-    --color-primary: #000;
-    --color-primary-sky-blue: #00A6D6;
-    --color-primary-sky-blue-10: #E0F5FE;
-    --color-primary-sky-blue-20: #B9EEFE;
-
-    --color-secondary-navy: #0C2340;
-    --color-secondary-corn-yellow: #FFB81C;
-    --color-secondary-corn-yellow-10: #FFF1D2;
-    --color-secondary-palatinate-purple: #6F1D77;
-    --color-secondary-jungle-green: #009B77;
-
-    --color-tertiary-navy-40: rgba(12, 35, 64, 0.4);
-    --color-grey-dim: #67676B;
-    --color-grey-stone: #96969B;
-    --color-grey-silver: #E5E5E5;
-
-    --color-seasalt: #FAFAFA;
-    --color-alice-blue: #EFF1F3;
-    --color-subtext: #666666;
-    --color-input-border: #525252;
-
-    /* === Background images === */
+    /* === Background Images === */
     --bg-lamp: url('assets/lamp.svg');
     --bg-play: url('assets/play.svg');
     --bg-arrow: url('assets/arrow.svg');
@@ -79,34 +57,59 @@ body {
     --bg-elipsis: url('assets/elipsis.svg');
     --bg-check: url('assets/check.svg');
 
-    /* === Light Mode Tokens === */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    /* === Color Tokens (Hierarchical) === */
+    --color-primary: #000;
+    --color-primary-foreground: hsl(0 0% 98%);
+    --color-primary-white: #fff;
+    --color-primary-skyBlue: #00A6D6;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --color-secondary: hsl(0 0% 14.9%);
+    --color-secondary-foreground: hsl( 0 0% 98%);
+    --color-secondary-navy: #0C2340;
+    --color-secondary-cornYellow: #FFB81C;
+    --color-secondary-palatinatePurple: #6F1D77;
+    --color-secondary-jungleGreen: #009B77;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
+    --color-tertiary-skyBlue-10: #E0F5FE;
+    --color-tertiary-skyBlue-20: #B9EEFE;
+    --color-tertiary-jungleGreen: #009B77;
+    --color-tertiary-cornYellow: #FFF1D2;
+    --color-tertiary-navy: rgba(12, 35, 64, 0.4);
+    --color-tertiary-grey-dim: #67676B;
+    --color-tertiary-grey-stone: #96969B;
+    --color-tertiary-grey-silver: #E5E5E5;
 
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
+    --color-destructive: hsl(0 62.8% 30.6%);
+    --color-destructive-foreground: hsl(0 0% 98%);
 
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
+    --color-muted: hsl(0 0% 14.9%);
+    --color-muted-foreground: hsl(0 0% 63.9%);
 
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
+    --color-accent: hsl(0 0% 14.9%);
+    --color-accent-foreground: hsl(0 0% 98%);
 
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
+    --color-popover: hsl(0 0% 3.9%);
+    --color-popover-foreground: hsl(0 0% 98%);
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    --color-card: hsl( 0 0% 3.9%);
+    --color-card-foreground: hsl(0 0% 98%);
 
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
+    --color-background: hsl(0 0% 3.9%);
+    --color-background-foreground: hsl(0 0% 98%);
+    --color-background-seasalt: #FAFAFA;
+    --color-background-aliceBlue: #EFF1F3;
+
+    /* === Flat Colors from theme root === */
+    --color-dim: #67676B;
+    --color-stone: #96969B;
+    --color-seasalt: #FAFAFA;
+    --color-aliceBlue: #EFF1F3;
+    --color-subtext: #666666;
+    --color-inputBorder: #525252;
+
+    --color-border: hsl(0 0% 14.9%);
+    --color-input: hsl(0 0% 14.9%);
+    --color-ring: hsl(0 0% 83.1%);
   }
 
   .dark {
