@@ -115,7 +115,7 @@ const PickMediaDialog = (props: PickMediaDialogProps) => {
         </DialogContent>
       </Dialog>
       <Dialog open={isOpenUpload} onOpenChange={(val) => setIsOpenUpload(val)}>
-        <DialogContent className="bg-white max-w-7xl !rounded p-8 sm:p-10">
+        <DialogContent className="bg-white max-w-7xl !rounded-sm p-8 sm:p-10">
           <FileUpload
             onFetching={setIsFetching}
             setIsOpen={(val: boolean) => setIsOpenUpload(val)}

@@ -425,7 +425,7 @@ const AddMediaElement = (props: AddMediaElementProps) => {
           <div className="flex flex-row gap-x-2">
             <input
               type="checkbox"
-              className="w-6 h-6 border-2 bg-white rounded-sm border-stone after:!bg-primary-skyBlue after:!border-primary-skyBlue after:!opacity-90 after:!bg-check after:!bg-center after:!bg-no-repeat"
+              className="w-6 h-6 border-2 bg-white rounded-xs border-stone after:!bg-primary-skyBlue after:!border-primary-skyBlue after:!opacity-90 after:!bg-check after:!bg-center after:!bg-no-repeat"
               checked={mediaDataState.hasZoom || false}
               onChange={(e) => handleChangeZoomFlag(e)}
             />

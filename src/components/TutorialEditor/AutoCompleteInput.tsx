@@ -37,7 +37,7 @@ const AutoCompleteInput = (props: AutoCompleteInputProps) => {
       <input
         type="text"
         placeholder={props.placeholder}
-        className={`w-full text-base rounded-[4px] border focus:outline-none border-DIM bg-background-seasalt p-4 text-tertiary-grey-stone ${suggestions.length > 0 ? 'border-b-transparent rounded-b-none !p-2 !pb-4' : ''}`}
+        className={`w-full text-base rounded-[4px] border focus:outline-hidden border-DIM bg-background-seasalt p-4 text-tertiary-grey-stone ${suggestions.length > 0 ? 'border-b-transparent rounded-b-none !p-2 !pb-4' : ''}`}
         value={inputValue}
         onChange={handleInputChange}
         aria-autocomplete="list"

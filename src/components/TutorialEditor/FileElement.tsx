@@ -11,7 +11,7 @@ import Preloader from '../ui/Preloader'
 
 const FileElement = (props: QuizElementProps) => {
   const [fileData, setFileData] = useState<CustomFileInterface | null>(null)
-  const errValidationStyle = 'border border-red-500 rounded-sm'
+  const errValidationStyle = 'border border-red-500 rounded-xs'
   const [isFetching, setIsFetching] = useState<boolean>(false)
   const { toast } = useToast()
   const [fileTitle, setFileTitle] = useState<string>('')

@@ -181,14 +181,14 @@ const TutorialActionsButton = (props: TutorialActionsButtonProps) => {
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger className="[&>span]:data-[state='open']:rotate-[-90deg] flex items-center rounded-l-none bg-primary-skyBlue rounded py-4 px-3 border-l-[1px] border-white text-white">
+        <DropdownMenuTrigger className="[&>span]:data-[state='open']:rotate-[-90deg] flex items-center rounded-l-none bg-primary-skyBlue rounded-sm py-4 px-3 border-l-[1px] border-white text-white">
           <span className="rotate-90 transition-all">
             <ArrowRight className="w-[18px] h-[18px]" />
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
-          className="p-4 mt-2 pt-2 flex flex-col gap-y-4 bg-background-aliceBlue rounded border-none"
+          className="p-4 mt-2 pt-2 flex flex-col gap-y-4 bg-background-aliceBlue rounded-sm border-none"
         >
           <DropdownMenuLabel className="font-normal text-sm text-primary-skyBlue">
             Actions

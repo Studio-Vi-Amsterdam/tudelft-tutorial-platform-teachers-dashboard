@@ -43,7 +43,7 @@ const ChangeVideoThumbnail = (props: ChangeVideoThumbnailProps) => {
         <div className="flex w-1/2 bg-tertiary-grey-silver flex-col items-center justify-center border border-dashed border-tertiary-grey-stone gap-y-2">
           <div
             {...getRootProps({})}
-            className="flex w-full px-4 flex-col items-center justify-center gap-y-2 rounded py-4 text-center text-tertiary-grey-dim"
+            className="flex w-full px-4 flex-col items-center justify-center gap-y-2 rounded-sm py-4 text-center text-tertiary-grey-dim"
           >
             <input {...getInputProps()} />
             <p className="cursor-pointer text-center text-base">

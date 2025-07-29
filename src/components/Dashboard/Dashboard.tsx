@@ -145,7 +145,7 @@ const Dashboard = () => {
               {hardcodeTestData.onboarding.map((item, index) => (
                 <div
                   key={index}
-                  className="flex sm:flex-row flex-col-reverse justify-between gap-x-8 bg-background-aliceBlue p-6 sm:p-8 rounded"
+                  className="flex sm:flex-row flex-col-reverse justify-between gap-x-8 bg-background-aliceBlue p-6 sm:p-8 rounded-sm"
                 >
                   <div className="flex flex-col">
                     <div className="flex flex-col gap-y-4 ">

@@ -15,7 +15,7 @@ interface TextInputProps {
 }
 
 const TextInput = (props: TextInputProps) => {
-  const errValidStyle = 'border border-red-500 rounded-sm'
+  const errValidStyle = 'border border-red-500 rounded-xs'
   // This switch/case for future fucntionality
   const getHeadingType = (): string | undefined => {
     switch (props?.headingType) {
