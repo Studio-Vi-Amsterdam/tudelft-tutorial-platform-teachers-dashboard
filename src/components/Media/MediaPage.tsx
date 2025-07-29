@@ -137,7 +137,7 @@ export const MediaPage = () => {
       />
 
       <Dialog open={isOpenUpload} onOpenChange={(val) => setIsOpenUpload(val)}>
-        <DialogContent className="bg-white max-w-7xl !rounded p-8 sm:p-10">
+        <DialogContent className="bg-white max-w-7xl !rounded-sm p-8 sm:p-10">
           <FileUpload
             onFetching={handleFetching}
             setIsOpen={(val: boolean) => setIsOpenUpload(val)}
@@ -145,7 +145,7 @@ export const MediaPage = () => {
         </DialogContent>
       </Dialog>
       <Dialog open={isOpenDelete} onOpenChange={setIsOpenDelete}>
-        <DialogContent className="bg-white max-w-[600px] !rounded p-10">
+        <DialogContent className="bg-white max-w-[600px] !rounded-sm p-10">
           <h3 className="sm:pt-16 pt-10 text-2xl sm:text-h3">
             Are you sure to delete selected files?
           </h3>

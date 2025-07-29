@@ -86,7 +86,7 @@ const OverwriteModal = (props: RewriteModalProps) => {
         </DialogHeader>
         {isSecondStep ? (
           <>
-            <div className="px-4 py-6 bg-tertiary-skyBlue-10 rounded-sm flex flex-col items-start gap-y-4 [&>div]:flex [&>div]:flex-col [&>div]:items-start [&>div]:gap-y-2">
+            <div className="px-4 py-6 bg-tertiary-skyBlue-10 rounded-xs flex flex-col items-start gap-y-4 [&>div]:flex [&>div]:flex-col [&>div]:items-start [&>div]:gap-y-2">
               <div>
                 <p className="text-dim text-lg font-inter font-normal">
                   You’re about to migrate this {stringArticleType}:

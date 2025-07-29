@@ -61,7 +61,7 @@ const FileEdit = (props: FileEditProps) => {
   }
 
   return selectedMedia ? (
-    <DialogContent className="bg-white max-w-7xl !rounded p-8 sm:p-10">
+    <DialogContent className="bg-white max-w-7xl !rounded-sm p-8 sm:p-10">
       <div className="grid md:grid-cols-2 gap-8 mt-14">
         <div className="w-full">
           <MediaPreviewTemplate item={selectedMedia} styles="w-full" />

@@ -94,7 +94,7 @@ const PaginationBar = (props: PaginationBarProps) => {
             </Button>
             <input
               type="number"
-              className="focus:outline-none text-xl leading-[30px] py-2 px-4 rounded border-stone bg-background-aliceBlue"
+              className="focus:outline-hidden text-xl leading-[30px] py-2 px-4 rounded-sm border-stone bg-background-aliceBlue"
               min={1}
               max={totalPages}
               readOnly={totalPages === 1}

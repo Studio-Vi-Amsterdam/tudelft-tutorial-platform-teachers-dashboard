@@ -23,7 +23,7 @@ import MetaIdSelect from './MetaIdSelect'
 import AddMediaElement from './AddMediaElement'
 
 const TutorialsMeta = () => {
-  const errValidationStyle = 'border border-red-500 rounded-sm'
+  const errValidationStyle = 'border border-red-500 rounded-xs'
 
   const belongsFields = useAppSelector((state: RootState) => state.editor.meta.tutorialBelongs)
   const responsibleFields = useAppSelector(
@@ -302,7 +302,7 @@ const TutorialsMeta = () => {
                 <div className={`w-9/12 ${!belongsFields.level.isValid && errValidationStyle}`}>
                   <select
                     value={belongsFields.level.value}
-                    className="w-full p-4 rounded text-[#96969B] border text-base bg-seasalt border-dim"
+                    className="w-full p-4 rounded-sm text-[#96969B] border text-base bg-seasalt border-dim"
                     onChange={(e) =>
                       handleMetaInputChange(e.target.value, 'tutorialBelongs', 'level', undefined)
                     }
@@ -327,7 +327,7 @@ const TutorialsMeta = () => {
                       <input
                         type="text"
                         placeholder="Search keyword"
-                        className={`w-full p-4 rounded placeholder:text-[#96969B] border text-base bg-seasalt border-dim ${!belongsFields.keywords.isValid && errValidationStyle}`}
+                        className={`w-full p-4 rounded-sm placeholder:text-[#96969B] border text-base bg-seasalt border-dim ${!belongsFields.keywords.isValid && errValidationStyle}`}
                         value={belongsFields.keywords.value}
                         onChange={(e) => handleKeywordInputChange(e.target.value)}
                         onFocus={() => setShowDropdown(true)}
@@ -342,7 +342,7 @@ const TutorialsMeta = () => {
                         belongsFields.keywords.value.length > 0 && (
                           <div
                             className={
-                              ' absolute top-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
+                              ' absolute top-full rounded-sm left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
                             }
                           >
                             {displayedKeywords &&
@@ -479,7 +479,7 @@ const TutorialsMeta = () => {
                         <input
                           type="text"
                           placeholder="Search teacher"
-                          className={`w-full p-4 rounded border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible ${!responsibleFields.teachers.isValid && errValidationStyle}`}
+                          className={`w-full p-4 rounded-sm border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible ${!responsibleFields.teachers.isValid && errValidationStyle}`}
                           value={responsibleFields.teachers.value}
                           onChange={(e) => handleTeacherInputChange(e.target.value)}
                           onFocus={() => setShowDropdownTeacher(true)}
@@ -494,7 +494,7 @@ const TutorialsMeta = () => {
                           responsibleFields.teachers.value.length > 0 && (
                             <div
                               className={
-                                'absolute top-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
+                                'absolute top-full rounded-sm left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
                               }
                             >
                               {displayedTeachers &&

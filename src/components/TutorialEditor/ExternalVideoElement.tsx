@@ -41,7 +41,7 @@ const ExternalVideoElement = (props: ExternalVideoElementProps) => {
       <div className="flex w-full flex-row items-center justify-between gap-2">
         <div className="min-h-14 min-w-[104px] max-w-[104px]">Title</div>
         <div
-          className={`w-9/12 ${!props.attributes.title.isValid ? 'border border-red-500 rounded-sm' : ''}`}
+          className={`w-9/12 ${!props.attributes.title.isValid ? 'border border-red-500 rounded-xs' : ''}`}
         >
           <input
             value={props.attributes.title.text}
@@ -54,7 +54,7 @@ const ExternalVideoElement = (props: ExternalVideoElementProps) => {
       <div className="flex w-full flex-row items-center justify-between gap-2">
         <div className="min-h-14 min-w-[104px] max-w-[104px]">Url:</div>
         <div
-          className={`w-9/12 ${!props.attributes.url.isValid ? 'border border-red-500 rounded-sm' : ''}`}
+          className={`w-9/12 ${!props.attributes.url.isValid ? 'border border-red-500 rounded-xs' : ''}`}
         >
           <input
             value={props.attributes.url.text}

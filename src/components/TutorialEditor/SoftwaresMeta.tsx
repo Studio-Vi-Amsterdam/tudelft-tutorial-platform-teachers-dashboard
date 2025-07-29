@@ -18,7 +18,7 @@ import { taxonomiesAPI } from '@/lib/api'
 import AddMediaElement from './AddMediaElement'
 
 const SoftwaresMeta = () => {
-  const errValidationStyle = 'border border-red-500 rounded-sm'
+  const errValidationStyle = 'border border-red-500 rounded-xs'
 
   const belongsFields = useAppSelector((state: RootState) => state.editor.meta.softwareBelongs)
   const [showDropdown, setShowDropdown] = useState<boolean>(true)
@@ -179,7 +179,7 @@ const SoftwaresMeta = () => {
                         belongsFields.keywords.value.length > 0 && (
                           <div
                             className={
-                              ' absolute top-full w-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
+                              ' absolute top-full w-full rounded-sm left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
                             }
                           >
                             {displayedKeywords.map((item, index) => (

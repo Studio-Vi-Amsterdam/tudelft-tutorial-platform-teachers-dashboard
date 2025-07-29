@@ -60,7 +60,7 @@ const AutoCompleteSelect = <T,>({
     <div className="flex w-full flex-col rounded-[4px] border border-dim bg-background-seasalt">
       <button
         className={clsx(
-          'w-full relative font-[Arial] text-base text-left rounded-[4px] focus:outline-none bg-background-seasalt text-tertiary-grey-stone',
+          'w-full relative font-[Arial] text-base text-left rounded-[4px] focus:outline-hidden bg-background-seasalt text-tertiary-grey-stone',
           {
             'p-2': !isSelectOpen,
             'pt-2 px-2 pb-4 border-b-transparent rounded-b-none': isSelectOpen,

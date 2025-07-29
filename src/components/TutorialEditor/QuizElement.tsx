@@ -75,7 +75,7 @@ const QuizElement = (props: QuizElementProps) => {
             setLocalQuestion({ text: e.target.value, isValid: e.target.value.trim().length > 0 })
           }
           placeholder="Please write your question here."
-          className="focus-visible:outline-none"
+          className="focus-visible:outline-hidden"
         />
       </div>
       <div className="flex flex-col px-2 !gap-y-4 [&>div>p]:text-xs [&>div]:gap-y-2 ">
@@ -95,7 +95,7 @@ const QuizElement = (props: QuizElementProps) => {
                 value={answer.answer}
                 onChange={(e) => handleChangeLocalAnswer(index, e.target.value)}
                 placeholder={'Please write your answer here.'}
-                className={`focus-visible:outline-none bg-transparent ${answer.isValid ? ' border-b border-[#999999]' : ''}`}
+                className={`focus-visible:outline-hidden bg-transparent ${answer.isValid ? ' border-b border-[#999999]' : ''}`}
               />
             </div>
           ))}

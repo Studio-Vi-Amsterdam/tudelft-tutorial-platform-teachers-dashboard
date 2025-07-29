@@ -50,7 +50,7 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
     dispatch(addTutorialCard({ block, listIndex, chapterIndex }))
   }
 
-  const errValidationStyle = 'border border-red-500 rounded-sm'
+  const errValidationStyle = 'border border-red-500 rounded-xs'
 
   return (
     <div className="flex w-full flex-col items-start justify-between gap-5 bg-transparent pt-10">
@@ -64,7 +64,7 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
                 name={`use-custom-url-${chapterIndex}-${index}-${nestedIndex}`}
                 checked={checkedCustomTutorialCard[nestedIndex] || false}
                 onChange={(e) => handleChangeCustomTutorialCard(e, nestedIndex)}
-                className="w-6 h-6 border-2 bg-white rounded-sm border-stone after:!bg-primary-skyBlue after:!border-primary-skyBlue after:!opacity-90 after:!bg-check after:!bg-center after:!bg-no-repeat"
+                className="w-6 h-6 border-2 bg-white rounded-xs border-stone after:!bg-primary-skyBlue after:!border-primary-skyBlue after:!opacity-90 after:!bg-check after:!bg-center after:!bg-no-repeat"
               />
               Use custom url
             </label>
@@ -106,7 +106,7 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
               <div className="flex flex-col gap-y-3">
                 <input
                   type="text"
-                  className={`${el.value.isValid || el.value.title?.trim().length > 0 ? '' : errValidationStyle} w-full p-4 rounded border placeholder:text-[#96969B] text-base bg-seasalt border-dim`}
+                  className={`${el.value.isValid || el.value.title?.trim().length > 0 ? '' : errValidationStyle} w-full p-4 rounded-sm border placeholder:text-[#96969B] text-base bg-seasalt border-dim`}
                   value={el.value.title}
                   placeholder="Title"
                   onChange={(e) =>
@@ -123,7 +123,7 @@ const TutorialCardsElement = (props: TutorialCarsElementProps) => {
                 />
                 <input
                   type="text"
-                  className={`${el.value.isValid || (el.value.url && el.value.url?.trim().length > 0) ? '' : errValidationStyle} w-full p-4 rounded border placeholder:text-[#96969B] text-base bg-seasalt border-dim`}
+                  className={`${el.value.isValid || (el.value.url && el.value.url?.trim().length > 0) ? '' : errValidationStyle} w-full p-4 rounded-sm border placeholder:text-[#96969B] text-base bg-seasalt border-dim`}
                   value={el.value.url}
                   placeholder="Url"
                   onChange={(e) =>

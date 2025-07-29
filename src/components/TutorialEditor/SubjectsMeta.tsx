@@ -5,7 +5,7 @@ import { RootState } from '@/redux/store'
 import { changeSubjectsIdListField } from '@/redux/features/editorSlice'
 
 const SubjectsMeta = () => {
-  const errValidationStyle = 'border border-red-500 rounded-sm'
+  const errValidationStyle = 'border border-red-500 rounded-xs'
 
   const belongsFields = useAppSelector((state: RootState) => state.editor.meta.subjectsInvolve)
   const dispatch = useAppDispatch()

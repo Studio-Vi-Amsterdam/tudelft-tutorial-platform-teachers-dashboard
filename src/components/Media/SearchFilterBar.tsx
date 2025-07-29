@@ -83,7 +83,7 @@ const SearchFilterBar = (props: SearchFilterBarProps) => {
       <div className="pr-6 relative flex flex-row group items-center hover:!bg-transparent">
         {searchValue !== undefined && (
           <input
-            className={`absolute ${isInputOpen ? 'bg-background-aliceBlue' : 'bg-white group-hover:bg-tertiary-skyBlue-10 placeholder:text-black'} right-full px-4 py-2 h-10 transition-all duration-300 bg-background-aliceBlue focus:outline-none outline-none top-0 ${isInputOpen ? 'w-48' : 'w-20 pr-0'}`}
+            className={`absolute ${isInputOpen ? 'bg-background-aliceBlue' : 'bg-white group-hover:bg-tertiary-skyBlue-10 placeholder:text-black'} right-full px-4 py-2 h-10 transition-all duration-300 bg-background-aliceBlue focus:outline-hidden outline-hidden top-0 ${isInputOpen ? 'w-48' : 'w-20 pr-0'}`}
             type="text"
             value={searchValue}
             onFocus={() => setIsInputOpen(true)}
@@ -107,7 +107,7 @@ const SearchFilterBar = (props: SearchFilterBarProps) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
-            className="p-4 mt-2 flex flex-col gap-y-4 bg-background-aliceBlue rounded border-none"
+            className="p-4 mt-2 flex flex-col gap-y-4 bg-background-aliceBlue rounded-sm border-none"
           >
             <DropdownMenuRadioGroup value={selectedSortKey?.name} onValueChange={changeSortKey}>
               {sortKeys.map((item, index) => (
@@ -131,7 +131,7 @@ const SearchFilterBar = (props: SearchFilterBarProps) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
-            className="p-4 mt-2 flex flex-col gap-y-4 bg-background-aliceBlue rounded border-none"
+            className="p-4 mt-2 flex flex-col gap-y-4 bg-background-aliceBlue rounded-sm border-none"
           >
             {filters.map((item, index) => (
               <DropdownMenuCheckboxItem

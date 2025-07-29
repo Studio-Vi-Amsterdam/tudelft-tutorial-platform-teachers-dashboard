@@ -56,7 +56,7 @@ const AuthorsAccessRow = (props: AuthorsAccessRowProps) => {
         {role !== 'owner' && (
           <DropdownMenuContent
             align="end"
-            className="p-4 mt-2 flex flex-col gap-y-4 bg-background-aliceBlue rounded border-none"
+            className="p-4 mt-2 flex flex-col gap-y-4 bg-background-aliceBlue rounded-sm border-none"
           >
             {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
             <DropdownMenuItem onClick={() => (removeEditor ? removeEditor(item.id) : () => {})}>

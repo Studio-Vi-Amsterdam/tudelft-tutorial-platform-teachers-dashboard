@@ -22,7 +22,7 @@ import { taxonomiesAPI } from '@/lib/api'
 import AddMediaElement from './AddMediaElement'
 
 const CoursesMeta = () => {
-  const errValidationStyle = 'border border-red-500 rounded-sm'
+  const errValidationStyle = 'border border-red-500 rounded-xs'
 
   const belongsFields = useAppSelector((state: RootState) => state.editor.meta.courseBelongs)
   const responsibleFields = useAppSelector(
@@ -295,7 +295,7 @@ const CoursesMeta = () => {
               {/*  <div className="w-9/12"> */}
               {/*    <select */}
               {/*      value={belongsFields.secondaryStudy.value.title} */}
-              {/*      className="w-full p-4 rounded border text-[#96969B] text-base bg-seasalt border-dim" */}
+              {/*      className="w-full p-4 rounded-sm border text-[#96969B] text-base bg-seasalt border-dim" */}
               {/*      onChange={(e) => */}
               {/*        handleMetaIdInputChange(e.target.value, 'courseBelongs', 'secondaryStudy') */}
               {/*      } */}
@@ -320,7 +320,7 @@ const CoursesMeta = () => {
                       <input
                         type="text"
                         placeholder="Search keyword"
-                        className={`w-full p-4 rounded placeholder:text-[#96969B] border text-base bg-seasalt border-dim ${!belongsFields.keywords.isValid && errValidationStyle}`}
+                        className={`w-full p-4 rounded-sm placeholder:text-[#96969B] border text-base bg-seasalt border-dim ${!belongsFields.keywords.isValid && errValidationStyle}`}
                         value={belongsFields.keywords.value}
                         onChange={(e) => handleKeywordInputChange(e.target.value)}
                         onFocus={() => setShowDropdown(true)}
@@ -335,7 +335,7 @@ const CoursesMeta = () => {
                         belongsFields.keywords.value.length > 0 && (
                           <div
                             className={
-                              ' absolute top-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
+                              ' absolute top-full rounded-sm left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
                             }
                           >
                             {displayedKeywords &&
@@ -467,7 +467,7 @@ const CoursesMeta = () => {
                         <input
                           type="text"
                           placeholder="search teacher"
-                          className={`w-full p-4 rounded border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible ${!responsibleFields.teachers.isValid && errValidationStyle}`}
+                          className={`w-full p-4 rounded-sm border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible ${!responsibleFields.teachers.isValid && errValidationStyle}`}
                           value={responsibleFields.teachers.value}
                           onChange={(e) => handleTeacherInputChange(e.target.value)}
                           onFocus={() => setShowDropdownTeacher(true)}
@@ -482,7 +482,7 @@ const CoursesMeta = () => {
                           responsibleFields.teachers.value.length > 0 && (
                             <div
                               className={
-                                'absolute top-full rounded left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
+                                'absolute top-full rounded-sm left-0 flex max-h-28 w-full flex-col gap-y-2 overflow-y-auto border bg-seasalt border-dim  [&>button]:py-2'
                               }
                             >
                               {displayedTeachers &&
