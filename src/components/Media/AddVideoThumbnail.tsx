@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDropzone } from 'react-dropzone'
 import MediaPreviewTemplate from './MediaPreviewTemplate'
-import { FileThumbnailInterface } from 'src/types/types'
+import { FileThumbnailInterface } from '@/types/types'
 
 interface AddVideoThumbnailProps {
   file: FileThumbnailInterface | null

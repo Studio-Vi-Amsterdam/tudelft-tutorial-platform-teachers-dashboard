@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
-import { RootState } from 'src/redux/store'
-import { h5pElementInterface, QuizElementProps } from 'src/types/types'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { RootState } from '@/redux/store'
+import { h5pElementInterface, QuizElementProps } from '@/types/types'
 import TextInput from '../ui/TextInput'
-import { setElementH5P } from 'src/redux/features/editorSlice'
+import { setElementH5P } from '@/redux/features/editorSlice'
 
 const H5pElement = (props: QuizElementProps) => {
   const h5pElement = useAppSelector((state: RootState) =>

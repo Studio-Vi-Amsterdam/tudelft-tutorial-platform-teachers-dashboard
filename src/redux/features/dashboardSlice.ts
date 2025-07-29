@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { DashboardInterface, DashboardPublishedInterface } from 'src/types/types'
+import { DashboardInterface, DashboardPublishedInterface } from '@/types/types'
 
 const initialState: DashboardInterface = {
   isDraftsLoaded: false,

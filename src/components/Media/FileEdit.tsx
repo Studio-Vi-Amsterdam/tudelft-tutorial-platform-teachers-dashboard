@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { DialogContent, DialogFooter } from '../ui/Dialog'
-import { MediaObjectInterface } from 'src/types/types'
+import { MediaObjectInterface } from '@/types/types'
 import MediaPreviewTemplate from './MediaPreviewTemplate'
 import TextInput from '../ui/TextInput'
 import { Button } from '../ui/Button'
-import { mediaAPI } from 'src/lib/api'
-import { useToast } from 'src/lib/use-toast'
+import { mediaAPI } from '@/lib/api'
+import { useToast } from '@/lib/use-toast'
 // import ChangeVideoThumbnail from './ChangeVideoThumbnail'
 
 interface FileEditProps {

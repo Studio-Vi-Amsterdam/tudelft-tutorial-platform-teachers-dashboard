@@ -1,8 +1,8 @@
 import React from 'react'
 import EditorLabel from '../ui/EditorLabel'
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
-import { RootState } from 'src/redux/store'
-import { changeSubjectsIdListField } from 'src/redux/features/editorSlice'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { RootState } from '@/redux/store'
+import { changeSubjectsIdListField } from '@/redux/features/editorSlice'
 
 const SubjectsMeta = () => {
   const errValidationStyle = 'border border-red-500 rounded-sm'

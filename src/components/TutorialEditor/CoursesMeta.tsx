@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import EditorLabel from '../ui/EditorLabel'
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
-import { RootState } from 'src/redux/store'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { RootState } from '@/redux/store'
 import {
   addKeywordsToList,
   addKeywordsToProposed,
@@ -13,12 +13,12 @@ import {
   deleteTeacher,
   removeKeywordFromProposed,
   removeTeacherFromProposed,
-} from 'src/redux/features/editorSlice'
-import { ObjectNameType, TutorialMetaObject, TutorialResponsibleInterface } from 'src/types/types'
+} from '@/redux/features/editorSlice'
+import { ObjectNameType, TutorialMetaObject, TutorialResponsibleInterface } from '@/types/types'
 import { Button } from '../ui/Button'
 import { Dialog, DialogContent, DialogFooter } from '../ui/Dialog'
 import TextInput from '../ui/TextInput'
-import { taxonomiesAPI } from 'src/lib/api'
+import { taxonomiesAPI } from '@/lib/api'
 import AddMediaElement from './AddMediaElement'
 
 const CoursesMeta = () => {

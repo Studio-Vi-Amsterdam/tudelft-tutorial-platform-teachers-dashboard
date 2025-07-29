@@ -4,9 +4,9 @@ import TextInput from '../ui/TextInput'
 import { Button } from '../ui/Button'
 import GalleryFileView from './GalleryFileView'
 import { mediaAPI } from '../../lib/api'
-import { useToast } from 'src/lib/use-toast'
+import { useToast } from '@/lib/use-toast'
 import MediaPreviewTemplate from './MediaPreviewTemplate'
-import { FileThumbnailInterface } from 'src/types/types'
+import { FileThumbnailInterface } from '@/types/types'
 
 interface FileUploadProps {
   setIsOpen: (arg0: boolean) => void

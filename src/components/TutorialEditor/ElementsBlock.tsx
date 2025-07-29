@@ -1,5 +1,5 @@
 import React from 'react'
-import { useAppDispatch } from 'src/redux/hooks'
+import { useAppDispatch } from '@/redux/hooks'
 import {
   changeSubchapterText,
   changeSubchapterTitle,
@@ -13,8 +13,8 @@ import {
   setQuizElementTitle,
   setTutorialCardsTitle,
   setVideoTitle,
-} from 'src/redux/features/editorSlice'
-import { AddElementsType, ChapterElementsObject } from 'src/types/types'
+} from '@/redux/features/editorSlice'
+import { AddElementsType, ChapterElementsObject } from '@/types/types'
 import AddMediaElement from './AddMediaElement'
 import DeleteElementWraper from './DeleteElementWraper'
 import QuizElement from './QuizElement'

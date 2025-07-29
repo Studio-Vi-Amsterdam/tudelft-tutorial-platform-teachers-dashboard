@@ -9,7 +9,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '../ui/Dropdown'
-import { SortedObjectInterface } from 'src/types/types'
+import { SortedObjectInterface } from '@/types/types'
 
 interface SearchFilterBarProps {
   searchValue: string

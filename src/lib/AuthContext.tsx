@@ -49,7 +49,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = () => {
     removeAuthToken()
-    window.location.replace(process.env.REACT_APP_HOMEPAGE_URL ?? '')
+    window.location.replace(import.meta.env.VITE_HOMEPAGE_URL ?? '')
     setIsAuthenticated(false)
   }
   const searchParams = new URLSearchParams(window.location.search)
@@ -76,7 +76,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         await login(authKey)
         getUsername()
       } else {
-        window.location.replace(process.env.REACT_APP_WP_ADMIN_URL ?? '')
+        const wpAdminUrl = import.meta.env.VITE_API_KEY;
+        window.location.replace(wpAdminUrl ?? '')
       }
     }
     const token = getAuthToken()

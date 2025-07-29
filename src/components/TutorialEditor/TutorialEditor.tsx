@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
-import { RootState } from 'src/redux/store'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { RootState } from '@/redux/store'
 import TutorialTopSection from './TutorialTopSection'
 import TutorialButtonsSection from './TutorialButtonsSection'
 import AddChapterSection from './AddChapterSection'
@@ -11,24 +11,24 @@ import {
   EditorState,
   ResponseKeyword,
   UsersItemInterface,
-} from 'src/types/types'
+} from '@/types/types'
 import ChapterSection from './ChapterSection'
 import EditorSidebar from './EditorSidebar'
-import { articlesAPI, taxonomiesAPI, userAPI } from 'src/lib/api'
+import { articlesAPI, taxonomiesAPI, userAPI } from '@/lib/api'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { getInfo, reducerParser } from 'src/lib/reducerParser'
+import { getInfo, reducerParser } from '@/lib/reducerParser'
 import {
   setEditorLoaded,
   setKeywordsProposedList,
   setNewState,
-} from 'src/redux/features/editorSlice'
-import { useAuth } from 'src/lib/AuthContext'
+} from '@/redux/features/editorSlice'
+import { useAuth } from '@/lib/AuthContext'
 import TutorialsMeta from './TutorialsMeta'
 import CoursesMeta from './CoursesMeta'
 import SoftwaresMeta from './SoftwaresMeta'
 import SubjectsMeta from './SubjectsMeta'
 import Preloader from '../ui/Preloader'
-import { useToast } from 'src/lib/use-toast'
+import { useToast } from '@/lib/use-toast'
 
 const BlogEditor = () => {
   const dispatch = useAppDispatch()

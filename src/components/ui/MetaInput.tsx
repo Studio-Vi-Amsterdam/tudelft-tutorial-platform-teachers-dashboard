@@ -3,7 +3,7 @@ import {
   EditorBelongsInterface,
   ObjectNameType,
   TutorialResponsibleInterface,
-} from 'src/types/types'
+} from '@/types/types'
 
 interface MetaInputProps {
   value: string

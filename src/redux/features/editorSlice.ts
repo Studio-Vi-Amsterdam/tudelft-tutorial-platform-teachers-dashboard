@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { urlPattern } from 'src/lib/regex/externalVideo'
+import { urlPattern } from '@/lib/regex/externalVideo'
 import {
   AddChapterElementInterface,
   AddSubchapterElementInterface,
@@ -31,7 +31,7 @@ import {
   TutorialMetaObject,
   TutorialResponsibleInterface,
   TutorialTopElementsObject,
-} from 'src/types/types'
+} from '@/types/types'
 
 const initialState: EditorState = {
   isEditorLoaded: false,

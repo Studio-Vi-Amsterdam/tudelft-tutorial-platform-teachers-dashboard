@@ -1,5 +1,5 @@
 import React from 'react'
-import { GalleryViewProps } from 'src/types/types'
+import { GalleryViewProps } from '@/types/types'
 import MediaPreviewTemplate from '../Media/MediaPreviewTemplate'
 
 const GalleryBlockView = (props: GalleryViewProps) => {

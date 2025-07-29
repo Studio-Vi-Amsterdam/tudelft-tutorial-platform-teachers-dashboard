@@ -1,9 +1,9 @@
 import React from 'react'
 import EditorLabel from '../ui/EditorLabel'
-import { AddElementsType, SubchapterInterface } from 'src/types/types'
+import { AddElementsType, SubchapterInterface } from '@/types/types'
 import TextInput from '../ui/TextInput'
 import ChapterMenu from './ChapterMenu'
-import { deleteChapter, duplicateChapter, moveChapter } from 'src/redux/features/editorSlice'
+import { deleteChapter, duplicateChapter, moveChapter } from '@/redux/features/editorSlice'
 import AddMediaElement from './AddMediaElement'
 import BundledEditor from './BundledEditor'
 

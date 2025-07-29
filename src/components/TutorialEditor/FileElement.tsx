@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { appendMediaToArray, setFileElement } from 'src/redux/features/editorSlice'
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
-import { RootState } from 'src/redux/store'
-import { CustomFileInterface, QuizElementProps } from 'src/types/types'
+import { appendMediaToArray, setFileElement } from '@/redux/features/editorSlice'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { RootState } from '@/redux/store'
+import { CustomFileInterface, QuizElementProps } from '@/types/types'
 import TextInput from '../ui/TextInput'
-import { mediaAPI } from 'src/lib/api'
-import { useToast } from 'src/lib/use-toast'
+import { mediaAPI } from '@/lib/api'
+import { useToast } from '@/lib/use-toast'
 import Preloader from '../ui/Preloader'
 
 const FileElement = (props: QuizElementProps) => {

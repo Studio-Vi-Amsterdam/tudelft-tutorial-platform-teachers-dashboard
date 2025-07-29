@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import EditorLabel from '../ui/EditorLabel'
-import { ObjectNameType, TutorialResponsibleInterface } from 'src/types/types'
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
-import { RootState } from 'src/redux/store'
+import { ObjectNameType, TutorialResponsibleInterface } from '@/types/types'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { RootState } from '@/redux/store'
 import {
   addKeywordsToList,
   addKeywordsToProposed,
@@ -14,11 +14,11 @@ import {
   deleteTeacher,
   removeKeywordFromProposed,
   removeTeacherFromProposed,
-} from 'src/redux/features/editorSlice'
+} from '@/redux/features/editorSlice'
 import { Button } from '../ui/Button'
 import TextInput from '../ui/TextInput'
 import { Dialog, DialogContent, DialogFooter } from '../ui/Dialog'
-import { taxonomiesAPI } from 'src/lib/api'
+import { taxonomiesAPI } from '@/lib/api'
 import MetaIdSelect from './MetaIdSelect'
 import AddMediaElement from './AddMediaElement'
 

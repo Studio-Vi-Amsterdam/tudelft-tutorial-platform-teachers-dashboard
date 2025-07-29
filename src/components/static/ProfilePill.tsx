@@ -2,7 +2,7 @@ import React from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/Popover'
 import { Button } from '../ui/Button'
 import { LogoutIcon } from '../ui/Icons'
-import { useAuth } from 'src/lib/AuthContext'
+import { useAuth } from '@/lib/AuthContext'
 import { cn } from '../../lib/utils'
 
 interface ProfilePillProps {

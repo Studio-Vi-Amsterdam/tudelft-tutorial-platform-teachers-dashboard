@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { LayoutChapterType } from 'src/types/types'
+import { LayoutChapterType } from '@/types/types'
 import { Button } from '../ui/Button'
 
 interface AddSectionBlockProps {

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button } from 'src/components/ui/Button'
+import { Button } from '@/components/ui/Button'
 import {
   Dialog,
   DialogContent,
@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from 'src/components/ui/Dialog'
+} from '@/components/ui/Dialog'
 
 const AddNewTutorialButton = () => {
   const [activeButton, setActiveButton] = useState<string | undefined>(undefined)

@@ -1,4 +1,4 @@
-import { MediaObjectInterface } from 'src/types/types'
+import { MediaObjectInterface } from '@/types/types'
 import { mediaAPI } from './api'
 
 interface HandleGetMediaArguments {

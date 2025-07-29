@@ -1,6 +1,6 @@
 import React from 'react'
 import TextInput from '../ui/TextInput'
-import { AddElementsType, ChapterInterface, SubchapterLayout } from 'src/types/types'
+import { AddElementsType, ChapterInterface, SubchapterLayout } from '@/types/types'
 import ElementsBlock from './ElementsBlock'
 import AddMediaElement from './AddMediaElement'
 import BundledEditor from './BundledEditor'

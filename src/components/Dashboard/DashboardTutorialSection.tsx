@@ -1,4 +1,4 @@
-import { DashboardSectionProps } from 'src/types/types'
+import { DashboardSectionProps } from '@/types/types'
 import DashboardCard from './DashboardCard'
 import Preloader from '../ui/Preloader'
 

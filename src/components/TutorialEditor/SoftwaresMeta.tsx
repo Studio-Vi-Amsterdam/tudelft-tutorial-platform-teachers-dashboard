@@ -3,8 +3,8 @@ import { Dialog, DialogContent, DialogFooter } from '../ui/Dialog'
 import EditorLabel from '../ui/EditorLabel'
 import TextInput from '../ui/TextInput'
 import { Button } from '../ui/Button'
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
-import { RootState } from 'src/redux/store'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { RootState } from '@/redux/store'
 import {
   addKeywordsToList,
   addKeywordsToProposed,
@@ -12,9 +12,9 @@ import {
   changeSoftwareIdListField,
   deleteKeyword,
   removeKeywordFromProposed,
-} from 'src/redux/features/editorSlice'
-import { ObjectNameType } from 'src/types/types'
-import { taxonomiesAPI } from 'src/lib/api'
+} from '@/redux/features/editorSlice'
+import { ObjectNameType } from '@/types/types'
+import { taxonomiesAPI } from '@/lib/api'
 import AddMediaElement from './AddMediaElement'
 
 const SoftwaresMeta = () => {

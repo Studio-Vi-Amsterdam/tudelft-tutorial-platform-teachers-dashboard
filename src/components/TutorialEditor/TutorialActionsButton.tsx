@@ -8,7 +8,7 @@ import {
 } from '../ui/Dropdown'
 import { AddFileIcon, ArrowRight, TrashCanIcon } from '../ui/Icons'
 import { useNavigate } from 'react-router-dom'
-import { useToast } from 'src/lib/use-toast'
+import { useToast } from '@/lib/use-toast'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,19 +19,19 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '../ui/AlertDialog'
-import { articlesAPI } from 'src/lib/api'
+import { articlesAPI } from '@/lib/api'
 import {
   ArtictesType,
   DashboardPublishedInterface,
   EditorState,
   UsersItemInterface,
-} from 'src/types/types'
+} from '@/types/types'
 import OverwriteModal from './OverwriteModal'
-import { validateArticle } from 'src/lib/validation'
-import { reducerParser } from 'src/lib/reducerParser'
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
-import { RootState } from 'src/redux/store'
-import { sendArticle } from 'src/lib/sendArticle'
+import { validateArticle } from '@/lib/validation'
+import { reducerParser } from '@/lib/reducerParser'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { RootState } from '@/redux/store'
+import { sendArticle } from '@/lib/sendArticle'
 
 interface TutorialActionsButtonProps {
   editor: EditorState

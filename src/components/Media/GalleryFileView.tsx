@@ -1,7 +1,7 @@
 import React from 'react'
 import TextInput from '../ui/TextInput'
 import MediaPreviewTemplate from './MediaPreviewTemplate'
-import { FileThumbnailInterface } from 'src/types/types'
+import { FileThumbnailInterface } from '@/types/types'
 import AddVideoThumbnail from './AddVideoThumbnail'
 
 interface GalleryFileViewProps {

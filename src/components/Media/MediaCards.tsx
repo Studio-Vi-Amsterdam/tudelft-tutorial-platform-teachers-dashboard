@@ -1,5 +1,5 @@
 import React from 'react'
-import { MediaObjectInterface, MediaViewType } from 'src/types/types'
+import { MediaObjectInterface, MediaViewType } from '@/types/types'
 import Preloader from '../ui/Preloader'
 import GalleryBlockView from '../TutorialEditor/GalleryBlockView'
 import GalleryListView from '../TutorialEditor/GalleryListView'

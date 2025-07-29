@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import EditorLabel from '../ui/EditorLabel'
 import BundledEditor from './BundledEditor'
 import Tip from '../ui/Tip'
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
-import { RootState } from 'src/redux/store'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { RootState } from '@/redux/store'
 import {
   addTutorialBottomElements,
   setTutorialBottomText,
   setTutorialBottomTitle,
-} from 'src/redux/features/editorSlice'
+} from '@/redux/features/editorSlice'
 import TextInput from '../ui/TextInput'
 import { RemoveLastSymbol } from '../../lib/capitalize'
 import AddSectionBlock from './AddSectionBlock'

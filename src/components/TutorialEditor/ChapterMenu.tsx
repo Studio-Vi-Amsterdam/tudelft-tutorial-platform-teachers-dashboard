@@ -1,7 +1,7 @@
 import { UnknownAction } from '@reduxjs/toolkit'
 import React, { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
-import { RootState } from 'src/redux/store'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { RootState } from '@/redux/store'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,7 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from 'src/components/ui/AlertDialog'
+} from '@/components/ui/AlertDialog'
 
 interface MoveChapterArgs {
   index: number

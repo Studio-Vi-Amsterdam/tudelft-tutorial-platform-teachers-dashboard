@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { deleteElement, deleteMediaFromArray, moveElement } from 'src/redux/features/editorSlice'
-import { useAppDispatch } from 'src/redux/hooks'
-import { ElementProps } from 'src/types/types'
+import { deleteElement, deleteMediaFromArray, moveElement } from '@/redux/features/editorSlice'
+import { useAppDispatch } from '@/redux/hooks'
+import { ElementProps } from '@/types/types'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,7 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from 'src/components/ui/AlertDialog'
+} from '@/components/ui/AlertDialog'
 
 interface DeleteElementWraperProps extends ElementProps {
   children: React.ReactNode

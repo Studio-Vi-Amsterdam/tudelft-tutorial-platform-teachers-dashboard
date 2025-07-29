@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import EditorLabel from '../ui/EditorLabel'
-import { AddElementsType, ChapterInterface } from 'src/types/types'
-import { useAppDispatch } from 'src/redux/hooks'
+import { AddElementsType, ChapterInterface } from '@/types/types'
+import { useAppDispatch } from '@/redux/hooks'
 import {
   addChapterElement,
   deleteChapter,
@@ -9,10 +9,10 @@ import {
   moveChapter,
   setChapterText,
   setChapterTitle,
-} from 'src/redux/features/editorSlice'
+} from '@/redux/features/editorSlice'
 import ChapterContent from './ChapterContent'
 import ChapterMenu from './ChapterMenu'
-import { articlesAPI } from 'src/lib/api'
+import { articlesAPI } from '@/lib/api'
 import AddSectionBlock from './AddSectionBlock'
 
 interface ChapterSectionProps {

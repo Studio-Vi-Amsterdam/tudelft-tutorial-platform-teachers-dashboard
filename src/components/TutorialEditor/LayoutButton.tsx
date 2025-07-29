@@ -1,5 +1,5 @@
 import React from 'react'
-import { LayoutChapterType } from 'src/types/types'
+import { LayoutChapterType } from '@/types/types'
 
 interface LayoutButtonProps {
   layoutType: LayoutChapterType
