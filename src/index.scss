@@ -16,87 +16,128 @@ body {
 }
 
 @layer base {
-    :root {
-        --roboto-slab: "Roboto Slab";
+  :root {
+    /* === Fonts === */
+    --font-sans: Arial, sans-serif;
+    --font-inter: Inter, sans-serif;
+    --font-roboto-slab: "Roboto Slab", sans-serif;
 
-        --background: 0 0% 100%;
-        --foreground: 0 0% 3.9%;
+    /* === Font Sizes & Line Heights === */
+    --text-h2-size: 44px;
+    --text-h2-line: 48px;
+    --text-h3-size: 28px;
+    --text-h3-line: 40px;
+    --text-small-size: 12px;
+    --text-small-line: 16px;
 
-        --card: 0 0% 100%;
-        --card-foreground: 0 0% 3.9%;
+    /* === Letter Spacing === */
+    --tracking--6: -0.06em;
+    --tracking--1: -0.01em;
 
-        --popover: 0 0% 100%;
-        --popover-foreground: 0 0% 3.9%;
+    /* === Border Radius === */
+    --radius-lg: 0.5rem;
+    --radius-md: calc(var(--radius-lg) - 2px);
+    --radius-sm: calc(var(--radius-lg) - 4px);
 
-        --primary: 0 0% 9%;
-        --primary-foreground: 0 0% 98%;
+    /* === Timing Functions & Durations === */
+    --ease-in-expo: cubic-bezier(0.15, 0.00, 0.00, 1.00);
+    --duration-170: 170ms;
+    --duration-330: 330ms;
 
-        --secondary: 0 0% 96.1%;
-        --secondary-foreground: 0 0% 9%;
+    /* === Height === */
+    --h-auto: auto;
 
-        --muted: 0 0% 96.1%;
-        --muted-foreground: 0 0% 45.1%;
+    /* === Brand & UI Colors === */
+    --color-primary: #000;
+    --color-primary-sky-blue: #00A6D6;
+    --color-primary-sky-blue-10: #E0F5FE;
+    --color-primary-sky-blue-20: #B9EEFE;
 
-        --accent: 0 0% 96.1%;
-        --accent-foreground: 0 0% 9%;
+    --color-secondary-navy: #0C2340;
+    --color-secondary-corn-yellow: #FFB81C;
+    --color-secondary-corn-yellow-10: #FFF1D2;
+    --color-secondary-palatinate-purple: #6F1D77;
+    --color-secondary-jungle-green: #009B77;
 
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 0 0% 98%;
+    --color-tertiary-navy-40: rgba(12, 35, 64, 0.4);
+    --color-grey-dim: #67676B;
+    --color-grey-stone: #96969B;
+    --color-grey-silver: #E5E5E5;
 
-        --border: 0 0% 89.8%;
-        --input: 0 0% 89.8%;
-        --ring: 0 0% 3.9%;
+    --color-seasalt: #FAFAFA;
+    --color-alice-blue: #EFF1F3;
+    --color-subtext: #666666;
+    --color-input-border: #525252;
 
-        --radius: 0.5rem;
-        --primary: #000;
-        --sky-blue: #00A6D6;
-        --sky-blue-10: #E0F5FE;
-        --sky-blue-20: #B9EEFE;
-        --navy: #0C2340;
-        --navy-40: rgba(12, 35, 64, 40%);
-        --corn-yellow: #FFB81C;
-        --corn-yellow-10: #FFF1D2;
-        --palatinate-purple: #6F1D77;
-        --jungle-green: #009B77;
-        --jungle-green-10: #009B77;
-        --dim-grey: #67676B;
-        --stone-grey: #96969B;
-        --silver-grey: #E5E5E5;
-        --seasalt: #FAFAFA;
-        --alice-blue: #EFF1F3;
-        --subtext: #666666;
-        --input-border: #525252;
-    }
+    /* === Background images === */
+    --bg-lamp: url('assets/lamp.svg');
+    --bg-play: url('assets/play.svg');
+    --bg-arrow: url('assets/arrow.svg');
+    --bg-duplicate: url('assets/duplicate.svg');
+    --bg-delete: url('assets/delete.svg');
+    --bg-cross: url('assets/cross.svg');
+    --bg-elipsis: url('assets/elipsis.svg');
+    --bg-check: url('assets/check.svg');
 
-    .dark {
-        --background: 0 0% 3.9%;
-        --foreground: 0 0% 98%;
+    /* === Light Mode Tokens === */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
 
-        --card: 0 0% 3.9%;
-        --card-foreground: 0 0% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
 
-        --popover: 0 0% 3.9%;
-        --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
 
-        --primary: 0 0% 98%;
-        --primary-foreground: 0 0% 9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
 
-        --secondary: 0 0% 14.9%;
-        --secondary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
 
-        --muted: 0 0% 14.9%;
-        --muted-foreground: 0 0% 63.9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
 
-        --accent: 0 0% 14.9%;
-        --accent-foreground: 0 0% 98%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
 
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
 
-        --border: 0 0% 14.9%;
-        --input: 0 0% 14.9%;
-        --ring: 0 0% 83.1%;
-    }
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+  }
 }
 
 @layer base {
