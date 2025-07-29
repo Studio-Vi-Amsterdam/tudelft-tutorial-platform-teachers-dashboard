@@ -1,6 +1,6 @@
 import React from 'react'
 import { ArrowRight, AvatarIcon } from '../ui/Icons'
-import { UserRoleType, UsersItemInterface } from 'src/types/types'
+import { UserRoleType, UsersItemInterface } from '@/types/types'
 import {
   DropdownMenu,
   DropdownMenuContent,

@@ -1,6 +1,6 @@
 import { Editor } from '@tinymce/tinymce-react'
 import { useEffect, useState } from 'react'
-import { CommandDialogInterface, TermDialogInterface } from 'src/types/types'
+import { CommandDialogInterface, TermDialogInterface } from '@/types/types'
 import CommandDialog from './CommandDialog'
 import TermDialog from './TermDialog'
 // Required imports for Editor

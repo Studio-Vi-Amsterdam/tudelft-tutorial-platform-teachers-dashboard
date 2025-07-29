@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { articlesAPI } from 'src/lib/api'
-import { localFormatDate } from 'src/lib/localFormatDate'
+import { articlesAPI } from '@/lib/api'
+import { localFormatDate } from '@/lib/localFormatDate'
 import {
   deleteFromArchived,
   deleteFromDrafts,
   deleteFromPublished,
-} from 'src/redux/features/dashboardSlice'
-import { useAppDispatch } from 'src/redux/hooks'
-import { DashboardPublishedInterface } from 'src/types/types'
+} from '@/redux/features/dashboardSlice'
+import { useAppDispatch } from '@/redux/hooks'
+import { DashboardPublishedInterface } from '@/types/types'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,8 +19,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from 'src/components/ui/AlertDialog'
-import { useToast } from 'src/lib/use-toast'
+} from '@/components/ui/AlertDialog'
+import { useToast } from '@/lib/use-toast'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/Tooltip'
 import { cn } from '../../lib/utils'
 

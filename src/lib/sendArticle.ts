@@ -1,6 +1,6 @@
 import { NavigateFunction } from 'react-router-dom'
 import { articlesAPI } from './api'
-import { ArtictesType } from 'src/types/types'
+import { ArtictesType } from '@/types/types'
 
 export const sendArticle = async (
   articleType: ArtictesType,

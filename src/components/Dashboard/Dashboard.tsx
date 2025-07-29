@@ -4,18 +4,18 @@ import {
   ArtictesType,
   DashboardPublishedInterface,
   HardcodeTestDataInterface,
-} from 'src/types/types'
+} from '@/types/types'
 import { useEffect } from 'react'
-import { articlesAPI } from 'src/lib/api'
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
+import { articlesAPI } from '@/lib/api'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import {
   setDashboardFetched,
   setDrafts,
   setPublished,
   setArchived,
-} from 'src/redux/features/dashboardSlice'
-import { RootState } from 'src/redux/store'
-import { useAuth } from 'src/lib/AuthContext'
+} from '@/redux/features/dashboardSlice'
+import { RootState } from '@/redux/store'
+import { useAuth } from '@/lib/AuthContext'
 
 const Dashboard = () => {
   const hardcodeTestData: HardcodeTestDataInterface = {

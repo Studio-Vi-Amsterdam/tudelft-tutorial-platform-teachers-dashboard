@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { UsersItemInterface } from 'src/types/types'
+import { UsersItemInterface } from '@/types/types'
 
 interface AutoCompleteInputProps {
   possibleValues: UsersItemInterface[]

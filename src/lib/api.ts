@@ -1,10 +1,10 @@
 import axios from 'axios'
-import { ArtictesType, UserRoleType } from 'src/types/types'
+import { ArtictesType, UserRoleType } from '@/types/types'
 import { getAuthToken, removeAuthToken } from './cookies'
 import { FeedbackStatus } from '../components/TutorialEditor/Feedback'
 
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_BASE_BACKEND_URL,
+  baseURL: import.meta.env.VITE_BASE_BACKEND_URL,
 })
 
 instance.interceptors.request.use(

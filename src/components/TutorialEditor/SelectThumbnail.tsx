@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { MediaObjectInterface, SubchapterLayout, ThumbnailInterface } from 'src/types/types'
+import { MediaObjectInterface, SubchapterLayout, ThumbnailInterface } from '@/types/types'
 import { Button } from '../ui/Button'
 import { Dialog, DialogContent, DialogFooter } from '../ui/Dialog'
 import { MediaLibrary } from '../Media/MediaLibrary'
-import { useAppDispatch } from 'src/redux/hooks'
-import { setChapterVideoThumbnail, setVideoThumbnail } from 'src/redux/features/editorSlice'
+import { useAppDispatch } from '@/redux/hooks'
+import { setChapterVideoThumbnail, setVideoThumbnail } from '@/redux/features/editorSlice'
 
 interface ThumbProps {
   video: MediaObjectInterface

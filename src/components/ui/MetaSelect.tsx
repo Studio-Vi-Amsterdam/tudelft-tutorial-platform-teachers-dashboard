@@ -4,7 +4,7 @@ import {
   IdTitleObject,
   ObjectNameType,
   TutorialResponsibleInterface,
-} from 'src/types/types'
+} from '@/types/types'
 
 interface MetaSelectProps {
   objectType: ObjectNameType

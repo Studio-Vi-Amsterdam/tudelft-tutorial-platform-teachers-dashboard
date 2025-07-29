@@ -1,5 +1,5 @@
 import React from 'react'
-import { MediaObjectInterface } from 'src/types/types'
+import { MediaObjectInterface } from '@/types/types'
 import { FileIcon } from '../ui/Icons'
 
 interface MediaPreviewTemplateProps {

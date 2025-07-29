@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { MediaState } from 'src/types/types'
+import { MediaState } from '@/types/types'
 
 const initialState: MediaState = {
   media: [],

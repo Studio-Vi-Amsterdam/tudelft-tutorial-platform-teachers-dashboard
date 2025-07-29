@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useAppSelector } from 'src/redux/hooks'
-import { RootState } from 'src/redux/store'
+import { useAppSelector } from '@/redux/hooks'
+import { RootState } from '@/redux/store'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/Accordion'
 import Preloader from '../ui/Preloader'
 import { TriangleArrow } from '../ui/Icons'

@@ -1,7 +1,7 @@
 import React from 'react'
-import { useAppDispatch } from 'src/redux/hooks'
-import { ExternalVideoInterface } from 'src/types/types'
-import { setExternalVideoTitle, setExternalVideoUrl } from 'src/redux/features/editorSlice'
+import { useAppDispatch } from '@/redux/hooks'
+import { ExternalVideoInterface } from '@/types/types'
+import { setExternalVideoTitle, setExternalVideoUrl } from '@/redux/features/editorSlice'
 import { convertToEmbedUrl } from '../../lib/regex/externalVideo'
 
 interface ExternalVideoElementProps {

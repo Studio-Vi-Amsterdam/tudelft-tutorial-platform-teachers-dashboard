@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from '../ui/Button'
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
-import { RootState } from 'src/redux/store'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { RootState } from '@/redux/store'
 import PickMediaDialog from './PickMediaDialog'
-import { AddMediaElementProps } from 'src/types/types'
+import { AddMediaElementProps } from '@/types/types'
 import {
   deleteMediaFromArray,
   setElementImage,
   setElementVideo,
   setFeaturedImage,
   setSubchapterMedia,
-} from 'src/redux/features/editorSlice'
+} from '@/redux/features/editorSlice'
 import MediaPreviewTemplate from '../Media/MediaPreviewTemplate'
 import {
   AlertDialog,

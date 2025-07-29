@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { LayoutChapterType } from 'src/types/types'
+import { LayoutChapterType } from '@/types/types'
 import { Button } from '../ui/Button'
-import { useAppDispatch } from 'src/redux/hooks'
-import { addBlankSubchapterToEls } from 'src/redux/features/editorSlice'
+import { useAppDispatch } from '@/redux/hooks'
+import { addBlankSubchapterToEls } from '@/redux/features/editorSlice'
 import LayoutButton from './LayoutButton'
 
 interface NewAddSubchapterProps {

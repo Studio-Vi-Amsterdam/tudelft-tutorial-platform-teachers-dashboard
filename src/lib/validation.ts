@@ -5,15 +5,15 @@ import {
   EditorState,
   TutorialMetaObject,
   TutorialTopElementsObject,
-} from 'src/types/types'
-import { urlPattern } from 'src/lib/regex/externalVideo'
+} from '@/types/types'
+import { urlPattern } from '@/lib/regex/externalVideo'
 import {
   setMetafieldsValidationErrors,
   setTutorialDescriptionValid,
   setTutorialTitleValid,
   setValidatedChapters,
   setValidatedTutorialTopElements,
-} from 'src/redux/features/editorSlice'
+} from '@/redux/features/editorSlice'
 import { Dispatch, UnknownAction } from '@reduxjs/toolkit'
 
 interface ValidatedElements {

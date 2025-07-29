@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { MediaObjectInterface } from 'src/types/types'
+import { MediaObjectInterface } from '@/types/types'
 // import MediaPreviewTemplate from './MediaPreviewTemplate'
 import { useDropzone } from 'react-dropzone'
 

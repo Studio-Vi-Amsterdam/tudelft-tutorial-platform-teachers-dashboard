@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
-import EditorLabel from 'src/components/ui/EditorLabel'
-import TextInput from 'src/components/ui/TextInput'
-import Tip from 'src/components/ui/Tip'
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
+import EditorLabel from '@/components/ui/EditorLabel'
+import TextInput from '@/components/ui/TextInput'
+import Tip from '@/components/ui/Tip'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import {
   addTutorialElements,
   setTutorialDescription,
   setTutorialTitle,
-} from 'src/redux/features/editorSlice'
-import { RootState } from 'src/redux/store'
+} from '@/redux/features/editorSlice'
+import { RootState } from '@/redux/store'
 import ElementsBlock from './ElementsBlock'
 import BundledEditor from './BundledEditor'
-import { ArtictesType, TextElementInterface } from 'src/types/types'
-import { articlesAPI } from 'src/lib/api'
+import { ArtictesType, TextElementInterface } from '@/types/types'
+import { articlesAPI } from '@/lib/api'
 import { Capitalize, RemoveLastSymbol } from '../../lib/capitalize'
 import AddSectionBlock from './AddSectionBlock'
 import { Feedback } from './Feedback'

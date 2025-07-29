@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import EditorLabel from '../ui/EditorLabel'
-import { LayoutChapterType } from 'src/types/types'
+import { LayoutChapterType } from '@/types/types'
 import { Button } from '../ui/Button'
-import { useAppDispatch } from 'src/redux/hooks'
+import { useAppDispatch } from '@/redux/hooks'
 import {
   addBlankChapter,
   addBlankSubchapter,
   addChapterElement,
-} from 'src/redux/features/editorSlice'
+} from '@/redux/features/editorSlice'
 import { RemoveLastSymbol } from '../../lib/capitalize'
 
 interface AddChapterSectionProps {

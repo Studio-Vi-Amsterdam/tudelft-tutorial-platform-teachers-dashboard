@@ -1,4 +1,4 @@
-import { ArtictesType } from 'src/types/types'
+import { ArtictesType } from '@/types/types'
 
 export const getStringArticleType = (articleType: ArtictesType) => {
   switch (articleType) {

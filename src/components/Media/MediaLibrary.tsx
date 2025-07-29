@@ -9,7 +9,7 @@ import {
 import { Dialog } from '../ui/Dialog'
 import FileEdit from './FileEdit'
 import SearchFilterBar from './SearchFilterBar'
-import { handleGetMedia } from 'src/lib/handleGetMedia'
+import { handleGetMedia } from '@/lib/handleGetMedia'
 import MediaCards from './MediaCards'
 
 interface MediaLibraryProps {

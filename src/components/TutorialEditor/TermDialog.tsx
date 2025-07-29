@@ -3,9 +3,9 @@ import { Dialog, DialogContent, DialogFooter } from '../ui/Dialog'
 import EditorLabel from '../ui/EditorLabel'
 import TextInput from '../ui/TextInput'
 import { Button } from '../ui/Button'
-import { ArtictesType, TermDialogInterface } from 'src/types/types'
+import { ArtictesType, TermDialogInterface } from '@/types/types'
 import { useSearchParams } from 'react-router-dom'
-import { articlesAPI } from 'src/lib/api'
+import { articlesAPI } from '@/lib/api'
 
 interface TermDialogProps {
   setTermDialog: React.Dispatch<React.SetStateAction<TermDialogInterface>>

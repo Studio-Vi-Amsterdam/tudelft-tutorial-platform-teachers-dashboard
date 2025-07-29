@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import { Dialog, DialogContent, DialogFooter } from '../ui/Dialog'
-import { MediaObjectInterface, PickMediaDialogProps } from 'src/types/types'
+import { MediaObjectInterface, PickMediaDialogProps } from '@/types/types'
 import { MediaLibrary } from '../Media/MediaLibrary'
 import { Button } from '../ui/Button'
-import { useAppDispatch } from 'src/redux/hooks'
+import { useAppDispatch } from '@/redux/hooks'
 import {
   appendMediaToArray,
   setElementImage,
   setElementVideo,
   setFeaturedImage,
   setSubchapterMedia,
-} from 'src/redux/features/editorSlice'
+} from '@/redux/features/editorSlice'
 import { FileUpload } from '../Media/FileUpload'
 
 const PickMediaDialog = (props: PickMediaDialogProps) => {

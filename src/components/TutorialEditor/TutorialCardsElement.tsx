@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { addTutorialCard, changeTutorialCard } from 'src/redux/features/editorSlice'
-import { useAppDispatch } from 'src/redux/hooks'
-import { TutorialCardInterface } from 'src/types/types'
+import { addTutorialCard, changeTutorialCard } from '@/redux/features/editorSlice'
+import { useAppDispatch } from '@/redux/hooks'
+import { TutorialCardInterface } from '@/types/types'
 import { Button } from '../ui/Button'
 
 interface TutorialCarsElementProps {

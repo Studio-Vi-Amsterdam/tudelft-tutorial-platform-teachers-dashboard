@@ -1,5 +1,5 @@
 import React from 'react'
-import { MetaFieldIdListInterface, ObjectNameType } from 'src/types/types'
+import { MetaFieldIdListInterface, ObjectNameType } from '@/types/types'
 
 interface MetaIdSelectProps {
   selectedObject: MetaFieldIdListInterface

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button } from 'src/components/ui/Button'
+import { Button } from '@/components/ui/Button'
 
 interface AddElementBlockProps {
   elements: Array<string>

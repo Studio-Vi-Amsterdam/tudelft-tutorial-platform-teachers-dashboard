@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { setElementQuiz } from 'src/redux/features/editorSlice'
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
-import { RootState } from 'src/redux/store'
-import { QuizAnswer, QuizElementProps, TextElementInterface } from 'src/types/types'
+import { setElementQuiz } from '@/redux/features/editorSlice'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { RootState } from '@/redux/store'
+import { QuizAnswer, QuizElementProps, TextElementInterface } from '@/types/types'
 
 const QuizElement = (props: QuizElementProps) => {
   const quiz = useAppSelector((state: RootState) =>

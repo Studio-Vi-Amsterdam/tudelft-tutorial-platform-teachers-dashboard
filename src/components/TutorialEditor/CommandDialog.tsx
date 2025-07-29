@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogFooter } from '../ui/Dialog'
 import EditorLabel from '../ui/EditorLabel'
 import TextInput from '../ui/TextInput'
 import { Button } from '../ui/Button'
-import { CommandDialogInterface } from 'src/types/types'
+import { CommandDialogInterface } from '@/types/types'
 
 interface CommandDialogProps {
   setCommandDialog: React.Dispatch<React.SetStateAction<CommandDialogInterface>>

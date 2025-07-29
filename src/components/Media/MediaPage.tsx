@@ -3,9 +3,9 @@ import { MediaLibrary } from './MediaLibrary'
 import { Button } from '../ui/Button'
 import { Dialog, DialogContent, DialogFooter } from '../ui/Dialog'
 import { FileUpload } from './FileUpload'
-import { MediaObjectInterface } from 'src/types/types'
-import { mediaAPI } from 'src/lib/api'
-import { useToast } from 'src/lib/use-toast'
+import { MediaObjectInterface } from '@/types/types'
+import { mediaAPI } from '@/lib/api'
+import { useToast } from '@/lib/use-toast'
 
 export const MediaPage = () => {
   const [isOpenUpload, setIsOpenUpload] = useState<boolean>(false)

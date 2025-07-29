@@ -13,7 +13,7 @@ import {
   TransformedDataTutorialCards,
   TutorialCardInterface,
   TutorialTopElementsObject,
-} from 'src/types/types'
+} from '@/types/types'
 import { articlesAPI, chaptersAPI, taxonomiesAPI } from './api'
 
 export const getSoftwares = async () => {
