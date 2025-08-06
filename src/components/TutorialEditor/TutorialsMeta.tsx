@@ -376,7 +376,7 @@ const TutorialsMeta = () => {
                     {belongsFields.keywords.list.map((keyword, index) => (
                       <button
                         key={index}
-                        className="relative rounded-[4px] bg-tertiary-skyBlue-10 py-1 pl-2 pr-8 before:absolute before:right-2 before:top-1/2 before:h-4 before:w-4 before:-translate-y-1/2 before:bg-cross before:bg-center before:bg-no-repeat"
+                        className="relative rounded-[4px] bg-tertiary-skyBlue-10 py-1 pl-2 pr-8 before:absolute before:right-2 before:top-1/2 before:h-4 before:w-4 before:-translate-y-1/2 pseudo-bg-cross before:bg-center before:bg-no-repeat"
                         onClick={() => deleteKeywordFromList(keyword)}
                       >
                         {keyword}
@@ -520,7 +520,7 @@ const TutorialsMeta = () => {
                     responsibleFields.teachers.list.map((keyword, index) => (
                       <button
                         key={index}
-                        className="relative rounded-[4px] bg-tertiary-skyBlue-10 py-1 pl-2 pr-8 before:absolute before:right-2 before:top-1/2 before:h-4 before:w-4 before:-translate-y-1/2 before:bg-cross before:bg-center before:bg-no-repeat"
+                        className="relative rounded-[4px] bg-tertiary-skyBlue-10 py-1 pl-2 pr-8 before:absolute before:right-2 before:top-1/2 before:h-4 before:w-4 before:-translate-y-1/2 pseudo-bg-cross before:bg-center before:bg-no-repeat"
                         onClick={() => deleteTeacherFromList(keyword)}
                       >
                         {keyword}

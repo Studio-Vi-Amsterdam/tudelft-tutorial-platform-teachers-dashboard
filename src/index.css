@@ -1,7 +1,6 @@
-@use "tailwindcss";
-@config "../tailwind.config.js";
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import "tailwindcss";
 
 html,
 body {
@@ -22,16 +21,16 @@ body {
     --font-robotoSlab: "Roboto Slab", sans-serif;
 
     /* === Font Sizes & Line Heights === */
-    --text-h2-size: 44px;
-    --text-h2-line: 48px;
-    --text-h3-size: 28px;
-    --text-h3-line: 40px;
-    --text-small-size: 12px;
-    --text-small-line: 16px;
+    --text-h2: 44px;
+    --text-h2--line-height: 48px;
+    --text-h3: 28px;
+    --text-h3--line-height: 40px;
+    --text-small: 12px;
+    --text-small--line-height: 16px;
 
     /* === Letter Spacing === */
-    --tracking--6: -0.06em;
-    --tracking--1: -0.01em;
+    --tracking-6: 0.06em;
+    --tracking-1: 0.01em;
 
     /* === Border Radius === */
     --radius-lg: 0.5rem;
@@ -45,16 +44,6 @@ body {
 
     /* === Height === */
     --h-auto: auto;
-
-    /* === Background Images === */
-    --bg-lamp: url('assets/lamp.svg');
-    --bg-play: url('assets/play.svg');
-    --bg-arrow: url('assets/arrow.svg');
-    --bg-duplicate: url('assets/duplicate.svg');
-    --bg-delete: url('assets/delete.svg');
-    --bg-cross: url('assets/cross.svg');
-    --bg-elipsis: url('assets/elipsis.svg');
-    --bg-check: url('assets/check.svg');
 
     /* === Color Tokens (Hierarchical) === */
     --color-primary: #000;
@@ -78,23 +67,23 @@ body {
     --color-tertiary-grey-stone: #96969B;
     --color-tertiary-grey-silver: #E5E5E5;
 
-    --color-destructive: hsl(0 62.8% 30.6%);
+    --color-destructive: hsl(0 84.2% 60.2%);
     --color-destructive-foreground: hsl(0 0% 98%);
 
     --color-muted: hsl(0 0% 14.9%);
     --color-muted-foreground: hsl(0 0% 63.9%);
 
-    --color-accent: hsl(0 0% 14.9%);
-    --color-accent-foreground: hsl(0 0% 98%);
+    --color-accent: hsl(0 0% 96.1%);
+    --color-accent-foreground: hsl(0 0% 9%);
 
-    --color-popover: hsl(0 0% 3.9%);
-    --color-popover-foreground: hsl(0 0% 98%);
+    --color-popover: hsl(0 0% 100%);
+    --color-popover-foreground: hsl(0 0% 3.9%);
 
-    --color-card: hsl( 0 0% 3.9%);
-    --color-card-foreground: hsl(0 0% 98%);
+    --color-card: hsl( 0 0% 100%);
+    --color-card-foreground: hsl(0 0% 3.9%);
 
-    --color-background: hsl(0 0% 3.9%);
-    --color-background-foreground: hsl(0 0% 98%);
+    --color-background: hsl(0 0% 100%);
+    --color-background-foreground: hsl(0 0% 3.9%);
     --color-background-seasalt: #FAFAFA;
     --color-background-aliceBlue: #EFF1F3;
 
@@ -106,52 +95,53 @@ body {
     --color-subtext: #666666;
     --color-inputBorder: #525252;
 
-    --color-border: hsl(0 0% 14.9%);
-    --color-input: hsl(0 0% 14.9%);
-    --color-ring: hsl(0 0% 83.1%);
-//   }
+    --color-border: hsl(0 0% 89.8%);
+    --color-input: hsl(0 0% 89.8%);
+    --color-ring: hsl(0 0% 3.9%);
+}
 
-//   .dark {
-//     --background: 0 0% 3.9%;
-//     --foreground: 0 0% 98%;
 
-//     --card: 0 0% 3.9%;
-//     --card-foreground: 0 0% 98%;
+@layer utilities {
+    .bg-lamp, .pseudo-bg-lamb:before { background-image: url('assets/lamp.svg'); }
+    .bg-play, .pseudo-bg-play:before { background-image: url('assets/play.svg'); }
+    .bg-arrow, .pseudo-bg-arrow:before { background-image: url('assets/arrow.svg'); }
+    .bg-duplicate, .pseudo-bg-duplicate:before { background-image: url('assets/duplicate.svg'); }
+    .bg-delete, .pseudo-bg-delete:before { background-image: url('assets/delete.svg'); }
+    .bg-cross, .pseudo-bg-cross:before { background-image: url('assets/cross.svg'); }
+    .bg-elipsis, .pseudo-bg-elispsis:before { background-image: url('assets/elipsis.svg'); }
+    .bg-check, .pseudo-bg-check:before { background-image: url('assets/check.svg'); }
 
-//     --popover: 0 0% 3.9%;
-//     --popover-foreground: 0 0% 98%;
+    .animate-accordion-down {
+        animation: accordion-down 0.2s ease-out;
+    }
+    .animate-accordion-up {
+        animation: accordion-up 0.2s ease-out;
+    }
+}
 
-//     --primary: 0 0% 98%;
-//     --primary-foreground: 0 0% 9%;
+@keyframes accordion-down {
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height); }
+}
 
-//     --secondary: 0 0% 14.9%;
-//     --secondary-foreground: 0 0% 98%;
-
-//     --muted: 0 0% 14.9%;
-//     --muted-foreground: 0 0% 63.9%;
-
-//     --accent: 0 0% 14.9%;
-//     --accent-foreground: 0 0% 98%;
-
-//     --destructive: 0 62.8% 30.6%;
-//     --destructive-foreground: 0 0% 98%;
-
-//     --border: 0 0% 14.9%;
-//     --input: 0 0% 14.9%;
-//     --ring: 0 0% 83.1%;
-  }
+@keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; }
+}
 
 @layer base {
     * {
         @apply border-border;
     }
-
 }
+
+
 p,li {
     a {
         color: #00A6D6;
     }
 }
+
 .container {
     @media (max-width: 639px) {
         padding-left: 24px;
@@ -262,7 +252,7 @@ select {
 {
 	background-color: #B9EEFE;
 }
-  
+
 @keyframes lds-ellipsis1 {
     0% {
         transform: scale(0);

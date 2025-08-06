@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client'
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import './index.scss'
+import './index.css'
 import reportWebVitals from './reportWebVitals'
 import Header from './components/static/Header'
 import Footer from './components/static/Footer'
