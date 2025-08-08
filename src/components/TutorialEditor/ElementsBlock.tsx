@@ -671,7 +671,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               chapterIndex={props.chapterIndex}
               subchapterIndex={subchapterIndex}
               elementIndex={index}
-              styles="bg-white top-3 right-1 w-6 h-6"
+              styles="bg-white top-1 right-1"
             >
               {element.externalVideo?.subchapterTitle !== undefined && (
                 <div className="relative w-full mt-4 mb-5 ">
@@ -700,7 +700,7 @@ const ElementsBlock = (props: ElementsBlockProps) => {
               chapterIndex={props.chapterIndex}
               subchapterIndex={subchapterIndex}
               elementIndex={index}
-              styles="bg-white top-3 right-1 w-6 h-6"
+              styles="bg-white top-1 right-1"
               file={element.file.file?.id}
             >
               {element.file?.subchapterTitle !== undefined && (
