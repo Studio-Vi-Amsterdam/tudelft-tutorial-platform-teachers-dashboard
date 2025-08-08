@@ -37,7 +37,7 @@ const ExternalVideoElement = (props: ExternalVideoElementProps) => {
   }
 
   return (
-    <div className="py-10 flex flex-col gap-y-8">
+    <div className="py-14 flex flex-col gap-y-8">
       <div className="flex w-full flex-row items-center justify-between gap-2">
         <div className="min-h-14 min-w-[104px] max-w-[104px]">Title</div>
         <div
