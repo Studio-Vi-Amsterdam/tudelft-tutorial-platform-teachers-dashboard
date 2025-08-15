@@ -236,7 +236,7 @@ const CoursesMeta = () => {
                     onChange={(e) =>
                       handleChangeInput(e.target.value, 'courseBelongs', 'courseCode')
                     }
-                    className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
+                    className="w-full p-4 rounded-sm text-[#96969B] border text-base bg-seasalt border-dim"
                   />
                 </div>
               </div>
@@ -249,7 +249,7 @@ const CoursesMeta = () => {
                 >
                   <select
                     value={belongsFields.primaryStudy.value.title}
-                    className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
+                    className="w-full p-4 rounded-sm text-[#96969B] border text-base bg-seasalt border-dim"
                     onChange={(e) =>
                       handleMetaIdInputChange(e.target.value, 'courseBelongs', 'primaryStudy')
                     }
@@ -273,7 +273,7 @@ const CoursesMeta = () => {
                 >
                   <select
                     value={belongsFields.secondaryStudy.value.title}
-                    className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
+                    className="w-full p-4 rounded-sm text-[#96969B] border text-base bg-seasalt border-dim"
                     onChange={(e) =>
                       handleMetaIdInputChange(e.target.value, 'courseBelongs', 'secondaryStudy')
                     }
@@ -441,7 +441,7 @@ const CoursesMeta = () => {
                 >
                   <select
                     value={responsibleFields.faculty.value}
-                    className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
+                    className="w-full p-4 rounded-sm text-[#96969B] border text-base bg-seasalt border-dim"
                     onChange={(e) =>
                       handleMetaInputChange(e.target.value, 'courseResponsible', 'faculty')
                     }
