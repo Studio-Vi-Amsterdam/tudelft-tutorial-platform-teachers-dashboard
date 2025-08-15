@@ -448,7 +448,7 @@ const TutorialsMeta = () => {
                 >
                   <select
                     value={responsibleFields.faculty.value}
-                    className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
+                    className="w-full p-4 rounded-sm text-[#96969B] border text-base bg-seasalt border-dim"
                     onChange={(e) =>
                       handleMetaInputChange(
                         e.target.value,

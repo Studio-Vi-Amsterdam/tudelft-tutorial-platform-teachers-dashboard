@@ -47,7 +47,7 @@ const ExternalVideoElement = (props: ExternalVideoElementProps) => {
             value={props.attributes.title.text}
             placeholder="Title"
             onChange={(e) => handleChangeTitle(e.target.value)}
-            className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
+            className="w-full p-4 rounded-sm text-[#96969B] border text-base bg-seasalt border-dim"
           />
         </div>
       </div>
@@ -60,7 +60,7 @@ const ExternalVideoElement = (props: ExternalVideoElementProps) => {
             value={props.attributes.url.text}
             placeholder="Url"
             onChange={(e) => handleChangeUrl(e.target.value)}
-            className="w-full rounded-[4px] border border-DIM bg-background-seasalt p-4  text-tertiary-grey-stone"
+            className="w-full p-4 rounded-sm text-[#96969B] border text-base bg-seasalt border-dim"
           />
         </div>
       </div>
