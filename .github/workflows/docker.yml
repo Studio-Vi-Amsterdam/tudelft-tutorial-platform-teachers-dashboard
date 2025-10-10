@@ -5,8 +5,7 @@ name: Build and Push Docker image
 on:
   push:
     branches:
-      - main
-      - feat/docker_build_and_cicd
+      - development
 
 jobs:
   build-and-push:
