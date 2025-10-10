@@ -44,10 +44,10 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.repository }}:${{ github.sha }}
-            ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.repository }}:latest
+            ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:${{ github.sha }}
+            ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:latest
           build-args: |
             NODE_ENV=production
           labels: |
             org.opencontainers.image.revision=${{ github.sha }}
-            org.opencontainers.image.source=${{ github.repository }}
+            org.opencontainers.image.source=${{ github.event.repository.name }}
