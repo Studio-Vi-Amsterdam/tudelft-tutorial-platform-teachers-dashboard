@@ -5,8 +5,7 @@ name: Build and Push Docker image
 on:
   push:
     branches:
-      - main
-      - feat/docker_build_and_cicd
+      - development
 
 jobs:
   build-and-push:
@@ -42,12 +41,12 @@ jobs:
           context: .
           file: ./deploy/Dockerfile
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           tags: |
-            ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.repository }}:${{ github.sha }}
-            ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.repository }}:latest
+            ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:${{ github.sha }}
+            ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:latest
           build-args: |
             NODE_ENV=production
           labels: |
             org.opencontainers.image.revision=${{ github.sha }}
-            org.opencontainers.image.source=${{ github.repository }}
+            org.opencontainers.image.source=${{ github.event.repository.name }}
