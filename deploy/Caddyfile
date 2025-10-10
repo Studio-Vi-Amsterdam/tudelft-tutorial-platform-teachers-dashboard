@@ -1,0 +1,8 @@
+:80 {
+    root * /usr/share/caddy
+    
+    file_server
+
+    # every request goes to path/ or index.html
+    try_files {path} {path}/ /index.html
+}
