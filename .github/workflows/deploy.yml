@@ -1,0 +1,55 @@
+name: Deploy to staging
+
+on:
+  repository_dispatch:
+    types: [ image-pushed ]
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: 'Commit SHA to deploy (full registry path). If empty and triggered by repo_dispatch, uses payload.'
+        required: false
+      action:
+        description: 'deploy or rollback'
+        required: false
+        default: 'deploy'
+
+jobs:
+  deploy:
+    runs-on: staging
+    steps:
+      - name: Confirm event payload
+        run: |
+          echo "Repository dispatch payload:"
+          echo "$GITHUB_EVENT_NAME"
+          cat $GITHUB_EVENT_PATH
+
+      - name: Resolve image to deploy
+        id: resolve
+        run: |
+          if [ -n "${{ github.event.client_payload.sha }}" ]; then
+            SHA="${{ github.event.client_payload.sha }}"
+          elif [ -n "${{ github.event.inputs.sha }}" ]; then
+            SHA="${{ github.event.inputs.sha }}"
+          else
+            echo "No hash specified; failing."
+            exit 1
+          fi
+          echo "SHA=$SHA" >> $GITHUB_ENV
+          echo "Deployed commit will be $SHA"
+
+      - name: Log in to Harbor
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.HARBOR_REGISTRY }}
+          username: ${{ secrets.HARBOR_USERNAME }}
+          password: ${{ secrets.HARBOR_PASSWORD }}
+
+      - name: Pull image from Harbor
+        env:
+            SHA: ${{ env.sha }}
+        run: docker pull ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:$SHA
+
+
+      - name: Start container
+        run: docker run -d --restart unless-stopped -p 8080:80 ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:${{ github.sha }}
+
