@@ -45,11 +45,9 @@ jobs:
           password: ${{ secrets.HARBOR_PASSWORD }}
 
       - name: Pull image from Harbor
-        env:
-            SHA: ${{ env.sha }}
         run: docker pull ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:$SHA
 
 
       - name: Start container
-        run: docker run -d --restart unless-stopped -p 8080:80 ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:${{ github.sha }}
+        run: docker run -d --restart unless-stopped -p 8080:80 ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:$SHA
 
