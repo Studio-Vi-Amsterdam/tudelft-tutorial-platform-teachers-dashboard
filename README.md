@@ -40,3 +40,6 @@ The image build is pretty simple and is in two steps:
 
 Refer to the GitHub action in [.github/workflows/docker.yml]() or, if you want to test things locally, follow (and execute) [./deploy/build.sh]().
 
+### Deploy on staging machine
+
+The deploy workflow is defined in [.github/workflows/deploy.yml](), and runs on the target machine. It is possible to deploy an old version (rollback) running manually the workflow.
