@@ -1,21 +1,18 @@
-name: Deploy to staging
+name: Deploy to Staging
 
 on:
   repository_dispatch:
-    types: [ image-pushed ]
+    types: [ deploy-staging ]
   workflow_dispatch:
     inputs:
       sha:
         description: 'Commit SHA to deploy (full registry path). If empty and triggered by repo_dispatch, uses payload.'
-        required: false
-      action:
-        description: 'deploy or rollback'
-        required: false
-        default: 'deploy'
+        required: true
 
 jobs:
   deploy:
-    runs-on: staging
+    environment: Staging
+    runs-on: ${{ vars.RUNNER_NAME }}
     steps:
       - name: Confirm event payload
         run: |
@@ -47,7 +44,9 @@ jobs:
       - name: Pull image from Harbor
         run: docker pull ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:$SHA
 
-
       - name: Start container
-        run: docker run -d --restart unless-stopped -p 8080:80 ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:$SHA
+        run: |
+          docker stop teacher-dashboard
+          docker rm teacher-dashboard
+          docker run -d --name teacher-dashboard --restart unless-stopped -p 8080:80 ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:$SHA
 
