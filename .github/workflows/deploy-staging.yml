@@ -12,7 +12,7 @@ on:
 jobs:
   deploy:
     environment: Staging
-    runs-on: ${{ vars.RUNNER_NAME }}
+    runs-on: staging
     steps:
       - name: Confirm event payload
         run: |
