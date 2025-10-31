@@ -6,20 +6,16 @@ on:
   workflow_dispatch:
     inputs:
       sha:
-        description: 'Commit SHA to deploy (full registry path). If empty and triggered by repo_dispatch, uses payload.'
+        description: 'Commit SHA to deploy (image tag)'
         required: true
 
 jobs:
   deploy:
-    environment: Staging
+    environment: 
+      name: Staging
+      url: http://staging.dashboard.digipedia.tudelft.nl
     runs-on: ${{ vars.RUNNER_NAME }}
     steps:
-      - name: Confirm event payload
-        run: |
-          echo "Repository dispatch payload:"
-          echo "$GITHUB_EVENT_NAME"
-          cat $GITHUB_EVENT_PATH
-
       - name: Resolve image to deploy
         id: resolve
         run: |
