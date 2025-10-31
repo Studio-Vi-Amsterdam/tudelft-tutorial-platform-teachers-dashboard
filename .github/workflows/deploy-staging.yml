@@ -11,7 +11,9 @@ on:
 
 jobs:
   deploy:
-    environment: Staging
+    environment: 
+      name: Staging
+      url: https://staging.dashboard.digipedia.tudelft.nl
     runs-on: staging
     steps:
       - name: Confirm event payload
