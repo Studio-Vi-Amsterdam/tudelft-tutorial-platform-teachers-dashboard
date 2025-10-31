@@ -13,7 +13,7 @@ jobs:
   deploy:
     environment: 
       name: Staging
-      url: http://staging.dashboard.digipedia.tudelft.nl
+      url: https://staging.dashboard.digipedia.tudelft.nl
     runs-on: staging
     steps:
       - name: Resolve image to deploy
