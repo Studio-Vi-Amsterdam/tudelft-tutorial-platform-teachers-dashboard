@@ -42,7 +42,9 @@ jobs:
 
       - name: Start container
         run: |
-          docker stop teacher-dashboard
-          docker rm teacher-dashboard
+          if [ -n "$(docker ps -aq -f name=teacher-dashboard)" ]; then
+            docker stop teacher-dashboard || true
+            docker rm teacher-dashboard || true
+          fi
           docker run -d --name teacher-dashboard --restart unless-stopped -p 8080:80 ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:$SHA
 
