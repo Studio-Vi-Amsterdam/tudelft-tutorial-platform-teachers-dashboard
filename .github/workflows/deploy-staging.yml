@@ -14,7 +14,7 @@ jobs:
     environment: 
       name: Staging
       url: http://staging.dashboard.digipedia.tudelft.nl
-    runs-on: ${{ vars.RUNNER_NAME }}
+    runs-on: staging
     steps:
       - name: Resolve image to deploy
         id: resolve
