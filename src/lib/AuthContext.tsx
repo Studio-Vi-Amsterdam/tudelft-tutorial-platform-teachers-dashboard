@@ -76,7 +76,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         await login(authKey)
         getUsername()
       } else {
-        const wpAdminUrl = import.meta.env.VITE_API_KEY;
+        const wpAdminUrl = import.meta.env.VITE_WP_ADMIN_URL;
         window.location.replace(wpAdminUrl ?? '')
       }
     }
