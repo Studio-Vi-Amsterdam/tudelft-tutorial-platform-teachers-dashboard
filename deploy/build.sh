@@ -2,6 +2,8 @@
 
 set -e
 
+source .env
+
 echo "Installing dependencies..."
 npm install
 

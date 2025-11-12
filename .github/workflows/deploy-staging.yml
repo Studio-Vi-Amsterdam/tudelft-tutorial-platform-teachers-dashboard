@@ -48,8 +48,5 @@ jobs:
           fi
           docker run -d --name teacher-dashboard --restart unless-stopped \
             -p 8080:80 \
-            -e VITE_WP_ADMIN_URL=${{ vars.VITE_WP_ADMIN_URL }} \
-            -e VITE_HOMEPAGE_URL=${{ vars.VITE_HOMEPAGE_URL }} \
-            -e VITE_BASE_BACKEND_URL=${{ vars.VITE_BASE_BACKEND_URL }} \
             ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:$SHA
 
