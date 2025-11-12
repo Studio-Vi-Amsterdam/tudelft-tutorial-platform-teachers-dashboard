@@ -10,7 +10,7 @@ jobs:
   # an environment is to duplicate the flow for now
   build-and-push-staging:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/head/staging'
+    if: github.ref == 'refs/heads/staging'
     environment: Staging
     steps:
       - name: Checkout repository
