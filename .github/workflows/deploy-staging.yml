@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       sha:
-        description: 'Commit SHA to deploy (full registry path). If empty and triggered by repo_dispatch, uses payload.'
+        description: 'Commit SHA to deploy (image tag)'
         required: true
 
 jobs:
@@ -16,12 +16,6 @@ jobs:
       url: https://staging.dashboard.digipedia.tudelft.nl
     runs-on: staging
     steps:
-      - name: Confirm event payload
-        run: |
-          echo "Repository dispatch payload:"
-          echo "$GITHUB_EVENT_NAME"
-          cat $GITHUB_EVENT_PATH
-
       - name: Resolve image to deploy
         id: resolve
         run: |
@@ -52,5 +46,7 @@ jobs:
             docker stop teacher-dashboard || true
             docker rm teacher-dashboard || true
           fi
-          docker run -d --name teacher-dashboard --restart unless-stopped -p 8080:80 ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:$SHA
+          docker run -d --name teacher-dashboard --restart unless-stopped \
+            -p 8080:80 \
+            ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:$SHA
 

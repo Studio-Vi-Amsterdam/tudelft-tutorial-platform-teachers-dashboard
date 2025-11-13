@@ -6,8 +6,12 @@ on:
       - staging
 
 jobs:
-  build-and-push:
+  # Note: GH does not support YAML anchors, the only way to select  
+  # an environment is to duplicate the flow for now
+  build-and-push-staging:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/staging'
+    environment: Staging
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,7 +28,7 @@ jobs:
       - name: Build
         env:
           NODE_ENV: production
-        run: npm run build
+        run: VITE_WP_ADMIN_URL=${{ vars.VITE_WP_ADMIN_URL }} VITE_HOMEPAGE_URL=${{ vars.VITE_HOMEPAGE_URL }} VITE_BASE_BACKEND_URL=${{ vars.VITE_BASE_BACKEND_URL }} npm run build
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -58,10 +62,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-            ENVIRONMENT=$(if [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then echo "staging"; elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then echo "production"; else echo "Unknown"; fi)
             echo "Calling deploy-$ENVIRONMENT action."
             curl -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer $GH_TOKEN" \
             https://api.github.com/repos/${{ github.repository }}/dispatches \
-            -d '{"event_type":"deploy-'$ENVIRONMENT'","client_payload":{"sha":"'${{ github.sha }}'"}}'
+            -d '{"event_type":"deploy-staging","client_payload":{"sha":"'${{ github.sha }}'"}}'
