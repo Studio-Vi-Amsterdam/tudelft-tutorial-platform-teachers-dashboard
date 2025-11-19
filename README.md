@@ -29,6 +29,20 @@ export default {
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
 
+## Current Architecture
+
+The stack is composed as follows:
+<img src="./assets/scheme.svg"/>
+
+- Apache handles inbound traffic, acting as a reverse proxy
+  - HTTP requests are forwarded to 443
+  - HTTPS request are TLS terminated and forwarded to NGINX
+  - certificates are locally installed
+- Caddy listens on its internal 80 port, serving the app
+### Configuration
+
+- Apache is consuming the `/etc/apache2/sites-available/reverse-proxy.conf` file on the machine.
+- Caddy configuration is under `./deploy/Caddyfile`
 
 ## Deploy and CI/CD
 
