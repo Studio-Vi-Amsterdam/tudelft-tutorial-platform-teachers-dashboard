@@ -46,7 +46,23 @@ The stack is composed as follows:
 
 ## Deploy and CI/CD
 
-### Build the Docker image
+### 1. Install the GitHub runner on the target machine
+
+> Note: this has to be done only once
+
+1. To add a new self-hosted GitHub runner open the **Settings** page of the repository and follow the instructions available on (Sidebar) Actions > Runners > "New self-hosted runner".
+  - after launching `./run.sh` and verified that everything is ok, kill the process with CTRL+C.
+  - install the runner as a service executing `./svc.sh install $USER`, then start it with `./svc.sh start`
+  - if everything went ok you should see the new runner in the repo settings.
+  - add a tag to identify the runner. This tag will be used by the deployment action to pick the right machine.
+2. if needed, head over the **Environment** section (sidebar) and create a new environment.
+  - in the page, be sure to have set:
+    - `RUNNER_NAME`: the env name (e.g. `staging`)
+    - `VITE_WP_ADMIN_URL_DEV`: WP Admin page URL (e.g. `https://dev.digipedia.tudelft.nl/wp/wp-admin/`)
+    - `VITE_HOMEPAGE_URL_DEV`: Platform homepage ULR (e.g. `https://dev.digipedia.tudelft.nl/`)
+    - `VITE_BASE_BACKEND_URL`: Backend URL (e.g. `https://dev.digipedia.tudelft.nl/wp-json/tutorial-platform/v1`)
+
+### 2. Build the Docker image
 
 The image build is pretty simple and is in two steps:
 1. produces a production build with `npm run build`
@@ -54,6 +70,6 @@ The image build is pretty simple and is in two steps:
 
 Refer to the GitHub action in [.github/workflows/docker.yml]() or, if you want to test things locally, follow (and execute) [./deploy/build.sh]().
 
-### Deploy on staging machine
+### 3. Deploy on staging machine
 
 The deploy workflow is defined in [.github/workflows/deploy.yml](), and runs on the target machine. It is possible to deploy an old version (rollback) running manually the workflow.
