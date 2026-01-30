@@ -10,7 +10,7 @@ import { ArtictesType, UsersItemInterface } from '@/types/types'
 import { AuthorIcon, EyeIcon, LocationIcon, SmallFileIcon } from '../ui/Icons'
 import TutorialActionsButton from './TutorialActionsButton'
 import { validateArticle } from '@/lib/validation'
-import { sendArticle } from '@/lib/sendArticle'
+import { sendArticle, sendResource } from '@/lib/sendArticle'
 import AddAuthorModal from './AddAuthorModal'
 
 interface TutorialButtonsProps {
@@ -20,6 +20,7 @@ interface TutorialButtonsProps {
 
 const TutorialButtonsSection = (props: TutorialButtonsProps) => {
   const tutorial = useAppSelector((state: RootState) => state.editor)
+  const resource = useAppSelector((state: RootState) => state.resource)
   const [isAddAuthorDialogOpen, setIsAddAuthorDialogOpen] = useState<boolean>(false)
   const params = new URLSearchParams(useLocation().search)
   const articleType = params.get('type') as ArtictesType
@@ -116,6 +117,18 @@ const TutorialButtonsSection = (props: TutorialButtonsProps) => {
     }
   }
 
+  const handleSendResource = async (draft: boolean) => {
+    const res = await sendResource(
+      articleType,
+      articleId,
+      resource,
+      navigate,
+      sendArticleSuccessToast,
+      sendArticleErrorToast,
+      draft
+    )
+  }
+
   const handleDraftClick = async () => {
     const validationSucceed = validateArticle(tutorial, articleType, dispatch, validationErrAlert)
     if (validationSucceed) {
@@ -160,7 +173,9 @@ const TutorialButtonsSection = (props: TutorialButtonsProps) => {
           variant={'outline'}
           size={'lg'}
           className="max-w-[170px] gap-2 px-4"
-          onClick={handleDraftClick}
+          onClick={() => {
+            articleType === 'resources' ? handleSendResource(true) : handleDraftClick()
+          }}
         >
           <SmallFileIcon />
           {status === 'new' ? (
@@ -172,7 +187,13 @@ const TutorialButtonsSection = (props: TutorialButtonsProps) => {
           )}
         </Button>
         <div className="flex">
-          <Button size={'lg'} className="px-4 gap-2 rounded-r-none" onClick={testPublishClick}>
+          <Button
+            size={'lg'}
+            className="px-4 gap-2 rounded-r-none"
+            onClick={() => {
+              articleType === 'resources' ? handleSendResource(false) : testPublishClick()
+            }}
+          >
             <span className="flex justify-center items-center w-6 h-6">
               <LocationIcon />
             </span>
