@@ -7,6 +7,7 @@ import { taxonomiesAPI } from '@/lib/api'
 
 interface KeywordsProps {
   keywords: any[]
+  invalid: boolean
   selectedKeywords: any[]
   onAddKeyword: () => void
   onUpdateSelectedKeywords: (next: { id: number; title: string }[]) => void
@@ -90,7 +91,7 @@ export const Keywords = (props: KeywordsProps) => {
               <input
                 type="text"
                 placeholder="Search keyword"
-                className={`w-full p-4 rounded-sm placeholder:text-[#96969B] border text-base bg-seasalt border-dim`}
+                className={`${props.invalid ? 'border-red-500' : ''} w-full p-4 rounded-sm placeholder:text-[#96969B] border text-base bg-seasalt border-dim`}
                 onChange={(e) => setSearch(e.target.value)}
                 onFocus={() => setShowDropdown(true)}
               />

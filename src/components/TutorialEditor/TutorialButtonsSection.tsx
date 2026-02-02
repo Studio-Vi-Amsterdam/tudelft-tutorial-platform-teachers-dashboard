@@ -16,6 +16,7 @@ import AddAuthorModal from './AddAuthorModal'
 interface TutorialButtonsProps {
   usersList: UsersItemInterface[]
   articleType: string | null
+  isValid?: boolean
 }
 
 const TutorialButtonsSection = (props: TutorialButtonsProps) => {
@@ -118,15 +119,19 @@ const TutorialButtonsSection = (props: TutorialButtonsProps) => {
   }
 
   const handleSendResource = async (draft: boolean) => {
-    const res = await sendResource(
-      articleType,
-      articleId,
-      resource,
-      navigate,
-      sendArticleSuccessToast,
-      sendArticleErrorToast,
-      draft
-    )
+    if(props.isValid) {
+      const res = await sendResource(
+        articleType,
+        articleId,
+        resource,
+        navigate,
+        sendArticleSuccessToast,
+        sendArticleErrorToast,
+        draft
+      )
+    } else {
+      sendArticleErrorToast('Fill required fields')
+    }
   }
 
   const handleDraftClick = async () => {

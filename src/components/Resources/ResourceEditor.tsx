@@ -16,13 +16,58 @@ import BundledEditor from '@/components/TutorialEditor/BundledEditor'
 import AuthorsRepeater from '@/components/TutorialEditor/AuthorsRepeater'
 import FileElement from '@/components/Resources/FileElement'
 import {
-  hydrateResourceAcf,
+  hydrateResourceAcf, resetResourceAcf,
   selectResource,
   setContentField,
   setField,
 } from '@/redux/features/resourceSlice'
 import { MultiSelect } from '@/components/ui/MultiSelect'
 import { Keywords } from '@/components/Resources/Keywords'
+
+type ResourceErrors = Partial<Record<
+  | "title"
+  | "pdf"
+  | "publication_date"
+  | "keywords"
+  | "doi_title"
+  | "authors",
+  string
+>>
+
+const validateResource = (resource: any): ResourceErrors => {
+  const errors: ResourceErrors = {}
+
+  if (!resource.title?.trim()) errors.title = "Title is required"
+
+  if (!resource.resource__pdf?.id) errors.pdf = "File is required"
+
+  if (!resource.resource__content?.publication_date) {
+    errors.publication_date = "Publication date is required"
+  }
+
+  if (!resource.keywords || resource.keywords.length === 0) {
+    errors.keywords = "Select at least one keyword"
+  }
+
+  if (!Array.isArray(resource.resource__authors) || resource.resource__authors.length === 0) {
+    errors.authors = "At least one author is required"
+  } else {
+    const hasEmptyAuthor = resource.resource__authors.some(
+      (a: any) => !a.author || !a.author.trim()
+    )
+    if (hasEmptyAuthor) {
+      errors.authors = "Author name is required"
+    }
+  }
+
+  const doiTitle = resource.resource__doi?.title?.trim()
+
+  if (!doiTitle) {
+    errors.doi_title = "DOI title is required"
+  }
+
+  return errors
+}
 
 export const ResourceEditor = () => {
   const [usersList, setUsersList] = useState<UsersItemInterface[]>([])
@@ -34,11 +79,11 @@ export const ResourceEditor = () => {
   const articleType = params.get('type')
   const articleId = params.get('id')
   const { toast } = useToast()
-
   const [keywords, setKeywords] = useState([])
   const [faculties, setFaculties] = useState<[]>([])
   const resource = useAppSelector(selectResource)
-
+  const errors = validateResource(resource)
+  const errValidStyle = 'border border-red-500 rounded-xs'
   const handleGetTaxonomiesInfo = async () => {
     const data = await getInfo(articleType as ArtictesType).catch(() => {
       return {
@@ -83,6 +128,8 @@ export const ResourceEditor = () => {
           if (response) {
             dispatch(hydrateResourceAcf(response.data))
           }
+        } else {
+          dispatch(resetResourceAcf())
         }
         dispatch(setEditorLoaded(true))
       }
@@ -103,14 +150,14 @@ export const ResourceEditor = () => {
       <div className="flex w-full flex-col items-start md:pl-12 lg:pl-28 bg-white">
         {isFetched ? (
           <>
-            <TutorialButtonsSection usersList={usersList} articleType={articleType} />
+            <TutorialButtonsSection isValid={Object.keys(errors).length === 0} usersList={usersList} articleType={articleType} />
 
             <TextInput
               placeholder="OER title"
               headingType="h1"
               value={resource.title}
               handleChange={(val) => dispatch(setField({key: 'title', value: val}))}
-              notValid={!resource.title}
+              notValid={!!errors.title}
             />
 
             <div className="mt-6 w-full">
@@ -146,7 +193,7 @@ export const ResourceEditor = () => {
                       type="date"
                       placeholder="Publication date"
                       onChange={(e) => dispatch(setContentField({ key: 'publication_date', value: e.target.value }))}
-                      className={`w-full p-4 rounded-sm border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible`}
+                      className={`${!!errors.publication_date ? errValidStyle : ''} w-full p-4 rounded-sm border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible`}
                       value={resource.resource__content.publication_date}
                     />
                   </div>
@@ -245,6 +292,7 @@ export const ResourceEditor = () => {
               <h3 className="font-bold mb-6">Information</h3>
 
               <Keywords
+                invalid={!!errors.keywords}
                 keywords={keywords}
                 onAddKeyword={handleGetTaxonomiesInfo}
                 selectedKeywords={resource.keywords}
@@ -277,7 +325,7 @@ export const ResourceEditor = () => {
                     <input
                       type="text"
                       placeholder="DOI"
-                      className={`w-full p-4 rounded-sm border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible`}
+                      className={`${errors.doi_title ? '!border-red-500' : ''} w-full p-4 rounded-sm border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible`}
                       value={resource.resource__doi?.title}
                       onChange={(e) => dispatch(setField({
                         key: 'resource__doi',

@@ -63,7 +63,7 @@ const AuthorsRepeater: React.FC<AuthorsRepeaterProps> = ({
               </label>
               <input
                 type="text"
-                className="w-full rounded border px-4 py-3"
+                className={`${!item.author ? 'border-red-500' : ''} w-full rounded border px-4 py-3`}
                 placeholder={labelAuthor}
                 value={item.author}
                 onChange={(e) =>
@@ -74,7 +74,7 @@ const AuthorsRepeater: React.FC<AuthorsRepeaterProps> = ({
               <label className="text-sm">ORCID ID</label>
               <input
                 type="text"
-                className="w-full rounded border px-4 py-3"
+                className={`w-full rounded border px-4 py-3`}
                 placeholder="ORCID ID"
                 value={item.orcid?.title}
                 onChange={(e) =>

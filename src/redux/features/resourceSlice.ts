@@ -69,6 +69,7 @@ export const resourceSlice = createSlice({
 
 export const {
   hydrateResourceAcf,
+  resetResourceAcf,
   setContentField,
   setField,
 } = resourceSlice.actions
