@@ -76,7 +76,7 @@ const FileElement = (props: QuizElementProps) => {
 
   useEffect(() => {
     if (fileData !== null) {
-      console.log(fileDescription)
+      //console.log(fileDescription)
       dispatch(
         setFileElement({
           block: props.block,

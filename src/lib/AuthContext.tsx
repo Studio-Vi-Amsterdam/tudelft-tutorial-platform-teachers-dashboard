@@ -19,10 +19,10 @@ interface AuthProviderProps {
 const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   login: async () => {
-    console.log('Login')
+    // console.log('Login')
   },
   logout: () => {
-    console.log('Logout')
+    // console.log('Logout')
   },
   userEmail: '',
   userId: '',

@@ -112,7 +112,7 @@ const Dashboard = () => {
       const sortedDraftArticles = draftArticles.sort(sortByDate)
       const sortedArchivedArticles = archivedArticles.sort(sortByDate)
 
-      console.log(publishedArticles)
+      // console.log(publishedArticles)
       dispatch(setPublished(sortedPublishedArticles))
       dispatch(setDashboardFetched({ row: 'published', value: true }))
 
@@ -128,7 +128,7 @@ const Dashboard = () => {
     }
   }, [isAuthenticated, dispatch])
 
-  console.log(published)
+  // console.log(published)
 
   if (isAuthenticated) {
     return (
