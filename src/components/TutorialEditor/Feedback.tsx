@@ -86,7 +86,7 @@ export const Feedback = (props: FeedbackProps) => {
       try {
         setIsLoading(true)
         const res = await communityApi.updateSuggestionStatus(id, status)
-        console.log('Updated comment:', res)
+        // console.log('Updated comment:', res)
         getSuggestion(props.articleId)
       } catch (err) {
         console.error('Error updating comment status:', err)
