@@ -1,0 +1,52 @@
+name: Deploy to Development
+
+on:
+  repository_dispatch:
+    types: [ deploy-development ]
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: 'Commit SHA to deploy (image tag)'
+        required: true
+
+jobs:
+  deploy:
+    environment: 
+      name: Development
+      url: https://dev.dashboard.digipedia.tudelft.nl
+    runs-on: development
+    steps:
+      - name: Resolve image to deploy
+        id: resolve
+        run: |
+          if [ -n "${{ github.event.client_payload.sha }}" ]; then
+            SHA="${{ github.event.client_payload.sha }}"
+          elif [ -n "${{ github.event.inputs.sha }}" ]; then
+            SHA="${{ github.event.inputs.sha }}"
+          else
+            echo "No hash specified; failing."
+            exit 1
+          fi
+          echo "SHA=$SHA" >> $GITHUB_ENV
+          echo "Deployed commit will be $SHA"
+
+      - name: Log in to Harbor
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.HARBOR_REGISTRY }}
+          username: ${{ secrets.HARBOR_USERNAME }}
+          password: ${{ secrets.HARBOR_PASSWORD }}
+
+      - name: Pull image from Harbor
+        run: docker pull ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:$SHA
+
+      - name: Start container
+        run: |
+          if [ -n "$(docker ps -aq -f name=teacher-dashboard)" ]; then
+            docker stop teacher-dashboard || true
+            docker rm teacher-dashboard || true
+          fi
+          docker run -d --name teacher-dashboard --restart unless-stopped \
+            -p 8080:80 \
+            ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:$SHA
+
