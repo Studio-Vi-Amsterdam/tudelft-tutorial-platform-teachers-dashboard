@@ -673,7 +673,7 @@ export type LinkField = {
 
 export type ResourcePerson = {
   author: string
-  orcid?: LinkField | null
+  orcid?: string
 }
 
 export type ResourceContent = {
@@ -696,7 +696,7 @@ export interface ResourceAcfPayload {
   resource__publisher: string
   resource__license: string
 
-  resource__doi: LinkField | null
+  resource__doi: string
 
   resource__content: ResourceContent
 }

@@ -4,11 +4,7 @@ import type { ResourceAcfPayload, ResourcePerson } from '@/types/types'
 
 const emptyPerson = (): ResourcePerson => ({
   author: '',
-  orcid: {
-    title: '',
-    url: '',
-    target: '_blank'
-  },
+  orcid: '',
 })
 
 const initialState: ResourceAcfPayload = {
@@ -24,7 +20,7 @@ const initialState: ResourceAcfPayload = {
   },
   resource__publisher: '',
   resource__license: '',
-  resource__doi: { title: '', url: '#', target: '_blank' },
+  resource__doi: '',
   resource__content: {
     subtitle: '',
     publication_date: '',
