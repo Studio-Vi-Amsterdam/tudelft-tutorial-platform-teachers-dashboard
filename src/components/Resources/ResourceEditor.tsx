@@ -60,10 +60,10 @@ const validateResource = (resource: any): ResourceErrors => {
     }
   }
 
-  const doiTitle = resource.resource__doi?.title?.trim()
+  const doiTitle = resource?.resource__doi?.trim()
 
   if (!doiTitle) {
-    errors.doi_title = "DOI title is required"
+    errors.doi_title = "DOI is required"
   }
 
   return errors
@@ -326,28 +326,10 @@ export const ResourceEditor = () => {
                       type="text"
                       placeholder="DOI"
                       className={`${errors.doi_title ? '!border-red-500' : ''} w-full p-4 rounded-sm border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible`}
-                      value={resource.resource__doi?.title}
+                      value={resource.resource__doi}
                       onChange={(e) => dispatch(setField({
                         key: 'resource__doi',
-                        value: { ...resource.resource__doi, ...{ title: e.target.value } as LinkField }
-                      }))}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 flex w-full flex-row items-center justify-between gap-2">
-                <div className="min-w-[104px] max-w-[104px]">DOI Url</div>
-                <div className="w-9/12">
-                  <div className="w-full">
-                    <input
-                      type="text"
-                      placeholder="DOI Url"
-                      className={`w-full p-4 rounded-sm border placeholder:text-stone text-base bg-seasalt border-dim [&+div]:focus:opacity-100 [&+div]:focus:visible`}
-                      value={resource.resource__doi?.url !== '#' ? resource.resource__doi?.url : ''}
-                      onChange={(e) => dispatch(setField({
-                        key: 'resource__doi',
-                        value: { ...resource.resource__doi, ...{ url: e.target.value } as LinkField }
+                        value: e.target.value
                       }))}
                     />
                   </div>

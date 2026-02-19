@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Button } from "../ui/Button"
-import { LinkField, ResourcePerson } from '@/types/types'
+import { ResourcePerson } from '@/types/types'
 
 
 interface AuthorsRepeaterProps {
@@ -33,19 +33,18 @@ const AuthorsRepeater: React.FC<AuthorsRepeaterProps> = ({
     emitChange(next)
   }
 
-  const setOrcidField = (index: number, field: keyof LinkField, val: string) => {
+  const setOrcidField = (index: number, val: string) => {
     const next = [...authors]
     const current = next[index]
-    const orcid = current.orcid
     next[index] = {
       ...current,
-      orcid: { ...orcid, [field]: val } as LinkField,
+      orcid: val,
     }
     emitChange(next)
   }
 
   const onAdd = () => {
-    emitChange([...authors, { author: "", orcid: { title: '', url: '#', target: '' } }])
+    emitChange([...authors, { author: "", orcid: '' }])
   }
 
   const onRemove = (index: number) => {
@@ -76,20 +75,9 @@ const AuthorsRepeater: React.FC<AuthorsRepeaterProps> = ({
                 type="text"
                 className={`w-full rounded border px-4 py-3`}
                 placeholder="ORCID ID"
-                value={item.orcid?.title}
+                value={item.orcid}
                 onChange={(e) =>
-                  setOrcidField(idx, 'title', e.target.value)
-                }
-              />
-
-              <label className="text-sm">ORCID Url</label>
-              <input
-                type="text"
-                className="w-full rounded border px-4 py-3"
-                placeholder="ORCID Url"
-                value={item.orcid?.url !== '#' ? item.orcid?.url : ''}
-                onChange={(e) =>
-                  setOrcidField(idx, 'url', e.target.value)
+                  setOrcidField(idx, e.target.value)
                 }
               />
             </div>
