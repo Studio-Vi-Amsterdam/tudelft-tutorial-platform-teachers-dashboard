@@ -38,7 +38,7 @@ export type AddElementsType =
   | 'tutorial cards'
   | 'external video'
 
-export type ArtictesType = 'softwares' | 'courses' | 'tutorials' | 'subjects'
+export type ArtictesType = 'softwares' | 'courses' | 'tutorials' | 'subjects' | 'resources'
 export interface DashboardPublishedInterface extends TitleIdentifierInterface {
   featured_image: null | boolean | string
   publish_date: string
@@ -663,4 +663,40 @@ export interface ResponseChapterInterface extends TitleIdentifierInterface {
 export interface FileThumbnailInterface {
   index: number
   file: File | null
+}
+
+export type LinkField = {
+  title: string
+  url: string
+  target: '_blank' | '_self' | string
+}
+
+export type ResourcePerson = {
+  author: string
+  orcid?: string
+}
+
+export type ResourceContent = {
+  subtitle: string
+  publication_date: string // yyyy-mm-dd
+  abstract: string // html
+  recommended_citation: string // html
+  references: string // html
+}
+
+export interface ResourceAcfPayload {
+  title: string
+  faculty: string[]
+  keywords: {id: number, title: string}[]
+
+  resource__authors: ResourcePerson[]
+  resource__editors: ResourcePerson[]
+
+  resource__pdf: CustomFileInterface
+  resource__publisher: string
+  resource__license: string
+
+  resource__doi: string
+
+  resource__content: ResourceContent
 }

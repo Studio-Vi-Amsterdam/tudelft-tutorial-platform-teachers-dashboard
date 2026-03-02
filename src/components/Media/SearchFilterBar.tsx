@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { FilterIcon, SearchIcon, SortIcon } from '../ui/Icons'
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
@@ -16,8 +15,8 @@ interface SearchFilterBarProps {
   handleChangeSearchValue: (val: string) => Promise<void>
   setSelectedSortKey: React.Dispatch<React.SetStateAction<SortedObjectInterface | undefined>>
   selectedSortKey: SortedObjectInterface | undefined
-  selectedFilters: SortedObjectInterface[]
-  setSelectedFilters: React.Dispatch<React.SetStateAction<SortedObjectInterface[]>>
+  selectedFilters: SortedObjectInterface | undefined
+  setSelectedFilters: React.Dispatch<React.SetStateAction<SortedObjectInterface | undefined>>
 }
 
 const SearchFilterBar = (props: SearchFilterBarProps) => {
@@ -46,19 +45,15 @@ const SearchFilterBar = (props: SearchFilterBarProps) => {
       title: 'My uploads',
       name: 'my-uploads',
     },
+    {
+      title: 'All uploads',
+      name: 'all-uploads',
+    },
   ])
 
   const changeFilterChecked = (filterName: string) => {
-    const searchableObject = selectedFilters.find((item) => item.name === filterName)
-    if (searchableObject === undefined) {
-      // Adding filter to array
-      const newFilter = filters.find((item) => item.name === filterName)
-      newFilter && setSelectedFilters((prevState) => [...prevState, newFilter])
-    } else {
-      // deleting filter from array
-      const newfiltersArray = selectedFilters.filter((item) => item.name !== filterName)
-      setSelectedFilters(newfiltersArray)
-    }
+    const keyObject = filters.find((item) => item.name === filterName)
+    setSelectedFilters(keyObject)
   }
 
   const changeSortKey = (keyName: string) => {
@@ -133,18 +128,17 @@ const SearchFilterBar = (props: SearchFilterBarProps) => {
             align="end"
             className="p-4 mt-2 flex flex-col gap-y-4 bg-background-aliceBlue rounded-sm border-none"
           >
-            {filters.map((item, index) => (
-              <DropdownMenuCheckboxItem
-                key={item.name + index}
-                className="text-tertiary-grey-dim"
-                checked={
-                  !!selectedFilters.find((selectedFilter) => selectedFilter.name === item.name)
-                }
-                onCheckedChange={() => changeFilterChecked(item.name)}
-              >
-                {item.title}
-              </DropdownMenuCheckboxItem>
-            ))}
+            <DropdownMenuRadioGroup value={selectedFilters?.name} onValueChange={changeFilterChecked}>
+              {filters.map((item, index) => (
+                <DropdownMenuRadioItem
+                  key={item.name + index}
+                  className="text-tertiary-grey-dim"
+                  value={item.name}
+                >
+                  {item.title}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
