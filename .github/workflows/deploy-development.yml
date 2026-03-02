@@ -1,5 +1,8 @@
 name: Deploy to Development
 
+permissions:
+  contents: read
+
 on:
   repository_dispatch:
     types: [ deploy-development ]
