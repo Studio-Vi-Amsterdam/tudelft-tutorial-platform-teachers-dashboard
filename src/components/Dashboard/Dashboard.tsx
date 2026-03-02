@@ -93,7 +93,7 @@ const Dashboard = () => {
         }
       }
 
-      const articleTypes: ArtictesType[] = ['tutorials', 'courses', 'softwares', 'subjects']
+      const articleTypes: ArtictesType[] = ['tutorials', 'courses', 'softwares', 'subjects', 'resources']
 
       dispatch(setDashboardFetched({ row: 'published', value: false }))
       dispatch(setDashboardFetched({ row: 'drafts', value: false }))
@@ -112,6 +112,7 @@ const Dashboard = () => {
       const sortedDraftArticles = draftArticles.sort(sortByDate)
       const sortedArchivedArticles = archivedArticles.sort(sortByDate)
 
+      // console.log(publishedArticles)
       dispatch(setPublished(sortedPublishedArticles))
       dispatch(setDashboardFetched({ row: 'published', value: true }))
 
@@ -126,6 +127,8 @@ const Dashboard = () => {
       fetchData()
     }
   }, [isAuthenticated, dispatch])
+
+  // console.log(published)
 
   if (isAuthenticated) {
     return (

@@ -1,23 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { appendMediaToArray, setFileElement } from '@/redux/features/editorSlice'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { RootState } from '@/redux/store'
-import { CustomFileInterface, QuizElementProps } from '@/types/types'
-import TextInput from '../ui/TextInput'
+import { CustomFileInterface } from '@/types/types'
 import { mediaAPI } from '@/lib/api'
 import { useToast } from '@/lib/use-toast'
 import Preloader from '../ui/Preloader'
 
-const FileElement = (props: QuizElementProps) => {
-  const [fileData, setFileData] = useState<CustomFileInterface | null>(null)
+interface FileElementProps {
+  file: CustomFileInterface | null
+  onSetFile: (file: CustomFileInterface) => void
+}
+
+const FileElement = (props: FileElementProps) => {
+  const [fileData, setFileData] = useState<CustomFileInterface | null>(props.file)
   const errValidationStyle = 'border border-red-500 rounded-xs'
   const [isFetching, setIsFetching] = useState<boolean>(false)
   const { toast } = useToast()
-  const [fileTitle, setFileTitle] = useState<string>('')
-  const [fileDescription, setFileDescription] = useState<string>('')
-
-  const dispatch = useAppDispatch()
 
   const handleSetFileData = async (file: any) => {
     setIsFetching(true)
@@ -32,7 +29,6 @@ const FileElement = (props: QuizElementProps) => {
           url: res.data.data.url,
           isValid: !!res.data.data.id,
         })
-        dispatch(appendMediaToArray(res.data.data.id))
         toast({
           title: 'Success!',
           description: `File uploaded with ID: ${res.data.data.id}`,
@@ -48,53 +44,11 @@ const FileElement = (props: QuizElementProps) => {
     })
   }
 
-  const fileState = useAppSelector((state: RootState) =>
-    props.block === 'tutorialElements' && props.listIndex !== undefined
-      ? state.editor.tutorialTop.elements[props.listIndex].file
-      : props.block === 'tutorialBottomElements' && props.listIndex !== undefined
-        ? state.editor.tutorialBottomContent[props.listIndex].file
-        : props.block === 'chapterElements' &&
-            props.chapterIndex !== undefined &&
-            props.listIndex !== undefined
-          ? state.editor.chapters[props.chapterIndex].elements[props.listIndex].file
-          : props.block === 'subchapterElements' &&
-            props.chapterIndex !== undefined &&
-            props.subchapterIndex !== undefined &&
-            props.listIndex !== undefined &&
-            state.editor.chapters[props.chapterIndex].subchapters[props.subchapterIndex].elements[
-              props.listIndex
-            ].file,
-  )
-
-  useEffect(() => {
-    if (fileState) {
-      setFileData(fileState.file)
-      setFileTitle(fileState.title.text)
-      setFileDescription(fileState.description.text)
-    }
-  }, [fileState])
-
   useEffect(() => {
     if (fileData !== null) {
-      //console.log(fileDescription)
-      dispatch(
-        setFileElement({
-          block: props.block,
-          index: props.listIndex,
-          nestedIndex: props.chapterIndex,
-          subchapterIndex: props.subchapterIndex,
-          file: {
-            file: fileData,
-            description: {
-              text: fileDescription,
-              isValid: fileDescription?.trim()?.length > 0,
-            },
-            title: { text: fileTitle, isValid: fileTitle?.trim()?.length > 0 },
-          },
-        }),
-      )
+      props.onSetFile(fileData)
     }
-  }, [fileData, fileTitle, fileDescription])
+  }, [fileData])
 
   const onDrop = useCallback((acceptedFiles: any) => {
     handleSetFileData(acceptedFiles[0])
@@ -126,6 +80,7 @@ const FileElement = (props: QuizElementProps) => {
   })
 
   const [errorMessage] = useState<string>('')
+
   return (
     <div className="flex w-full flex-col gap-y-2">
       {!fileData?.id && !isFetching ? (
@@ -152,46 +107,13 @@ const FileElement = (props: QuizElementProps) => {
           <div className="relative flex w-9/12 flex-col">
             <p className="text-sm leading-5">{fileData.url.split('/').pop()}</p>
           </div>
+          <button onClick={() => setFileData(null)} className="text-sm text-red-600 hover:underline">Remove</button>
         </div>
       ) : (
         <div className="mb-8 mt-4 flex w-full flex-row items-center justify-between">
           <Preloader color="primary" />
         </div>
       )}
-      <div className="flex flex-col gap-y-8">
-        <div className="flex w-full flex-row items-center justify-between">
-          <div>Title</div>
-          <div className="w-9/12">
-            <TextInput
-              value={fileTitle}
-              handleChange={(e) => {
-                setFileTitle(e)
-              }}
-              placeholder={isFetching || fileData === null ? 'First select the file' : 'Title'}
-              className="!text-base !p-4"
-              disabled={isFetching || fileData === null}
-              notValid={fileState ? !fileState.title.isValid : true}
-            />
-          </div>
-        </div>
-        <div className="flex w-full flex-row items-center justify-between">
-          <div>Description</div>
-          <div className="w-9/12">
-            <TextInput
-              value={fileDescription}
-              handleChange={(e) => {
-                setFileDescription(e)
-              }}
-              placeholder={
-                isFetching || fileData === null ? 'First select the file' : 'Description'
-              }
-              disabled={isFetching || fileData === null}
-              className="!text-base !p-4"
-              notValid={fileState ? !fileState.description.isValid : true}
-            />
-          </div>
-        </div>
-      </div>
     </div>
   )
 }

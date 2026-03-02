@@ -36,7 +36,10 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [searchValue, setSearchValue] = useState<string>('')
   const [selectedSortKey, setSelectedSortKey] = useState<SortedObjectInterface | undefined>()
-  const [selectedFilters, setSelectedFilters] = useState<SortedObjectInterface[]>([])
+  const [selectedFilters, setSelectedFilters] = useState<SortedObjectInterface | undefined>(    {
+    title: 'My uploads',
+    name: 'my-uploads',
+  })
   const [mediaEditOpen, setMediaEditOpen] = useState<boolean>(false)
   const [selectedMedia, setSelectedMedia] = useState<MediaObjectInterface | undefined>(undefined)
   const requestTimout = useRef<NodeJS.Timeout | null>(null)
@@ -44,14 +47,13 @@ export const MediaLibrary = (props: MediaLibraryProps) => {
   const query = searchValue.length > 0 ? `&query=${searchValue}` : ''
 
   const setFiltersForRequest = (): string => {
-    if (selectedFilters.length > 0) {
-      return `&filters=${selectedFilters.map((item) => item.name).join(',')},${props.mediaTypeFilter ?? ''}`
+    if (selectedFilters) {
+      return `&filters=${selectedFilters.name},${props.mediaTypeFilter ?? ''}`
     } else {
       if (props.mediaTypeFilter) {
         return `&filters=${props.mediaTypeFilter}`
       }
     }
-    // if has not selected filters and filters from props
     return ''
   }
 

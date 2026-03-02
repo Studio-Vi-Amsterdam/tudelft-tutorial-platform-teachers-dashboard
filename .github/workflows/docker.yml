@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - staging
+      - development
 
 jobs:
   # Note: GH does not support YAML anchors, the only way to select  
@@ -58,7 +59,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       
-      - name: Remote deploy on target machine
+      - name: Remote deploy on target machine [TuDelft]
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -68,3 +69,137 @@ jobs:
             -H "Authorization: Bearer $GH_TOKEN" \
             https://api.github.com/repos/${{ github.repository }}/dispatches \
             -d '{"event_type":"deploy-staging","client_payload":{"sha":"'${{ github.sha }}'"}}'
+
+      - name: Remote deploy on target machine [NEBA]
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+            echo "Calling deploy-neba-staging action."
+            curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            https://api.github.com/repos/${{ github.repository }}/dispatches \
+            -d '{"event_type":"deploy-neba-staging","client_payload":{"sha":"'${{ github.sha }}'"}}'
+      
+  build-and-push-development:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/development'
+    environment: Development
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        env:
+          NODE_ENV: production
+        run: VITE_WP_ADMIN_URL=${{ vars.VITE_WP_ADMIN_URL }} VITE_HOMEPAGE_URL=${{ vars.VITE_HOMEPAGE_URL }} VITE_BASE_BACKEND_URL=${{ vars.VITE_BASE_BACKEND_URL }} npm run build
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Harbor
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.HARBOR_REGISTRY }}
+          username: ${{ secrets.HARBOR_USERNAME }}
+          password: ${{ secrets.HARBOR_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./deploy/Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: |
+            ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:${{ github.sha }}
+            ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:latest
+          build-args: |
+            NODE_ENV=production
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.source=${{ github.event.repository.name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Remote deploy on target machine
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+            echo "Calling deploy-development action."
+            curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            https://api.github.com/repos/${{ github.repository }}/dispatches \
+            -d '{"event_type":"deploy-development","client_payload":{"sha":"'${{ github.sha }}'"}}'
+
+  build-and-push-production:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/production'
+    environment: NEBA - Production
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        env:
+          NODE_ENV: production
+        run: VITE_WP_ADMIN_URL=${{ vars.VITE_WP_ADMIN_URL }} VITE_HOMEPAGE_URL=${{ vars.VITE_HOMEPAGE_URL }} VITE_BASE_BACKEND_URL=${{ vars.VITE_BASE_BACKEND_URL }} npm run build
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Harbor
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.HARBOR_REGISTRY }}
+          username: ${{ secrets.HARBOR_USERNAME }}
+          password: ${{ secrets.HARBOR_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./deploy/Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: |
+            ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:${{ github.sha }}
+            ${{ secrets.HARBOR_REGISTRY }}/${{ secrets.HARBOR_PROJECT }}/${{ github.event.repository.name }}:latest
+          build-args: |
+            NODE_ENV=production
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.source=${{ github.event.repository.name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Remote deploy on target machine [NEBA]
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+            echo "Calling deploy-neba-production action."
+            curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            https://api.github.com/repos/${{ github.repository }}/dispatches \
+            -d '{"event_type":"deploy-neba-production","client_payload":{"sha":"'${{ github.sha }}'"}}'
+  

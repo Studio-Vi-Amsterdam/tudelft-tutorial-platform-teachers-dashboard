@@ -11,9 +11,30 @@ import {
 } from '@/components/ui/Dialog'
 
 const AddNewTutorialButton = () => {
-  const [activeButton, setActiveButton] = useState<string | undefined>(undefined)
+  const [activeButton, setActiveButton] = useState<any>(undefined)
   const navigate = useNavigate()
-  const buttons: Array<string> = ['Course page', 'Subject page', 'Software page', 'Tutorial page']
+  const buttons: Array<any> = [
+    {
+      title: 'Course page',
+      type: 'courses'
+    },
+    {
+      title: 'Subject page',
+      type: 'subjects'
+    },
+    {
+      title: 'Software page',
+      type: 'softwares'
+    },
+    {
+      title: 'Tutorial page',
+      type: 'tutorials'
+    },
+    {
+      title: 'OER Page',
+      type: 'resources'
+    },
+  ]
   const handleChangeButton = (item: string) => {
     if (activeButton === item) {
       setActiveButton(undefined)
@@ -24,8 +45,9 @@ const AddNewTutorialButton = () => {
 
   const handleSubmit = () => {
     if (activeButton) {
+      const type = activeButton.type !== 'resources' ? 'my-tutorials' : 'my-resources'
       navigate(
-        `/dashboard/my-tutorials?type=${activeButton.split(' ')[0].toLowerCase() + 's'}&id=new&status=new`,
+        `/dashboard/${type}?type=${activeButton?.type}&id=new&status=new`,
       )
     }
   }
@@ -48,10 +70,10 @@ const AddNewTutorialButton = () => {
               key={index}
               onClick={() => handleChangeButton(item)}
               className={`${
-                item === activeButton ? 'border-primary-skyBlue' : 'border-transparent'
+                item.type === activeButton?.type ? 'border-primary-skyBlue' : 'border-transparent'
               }  border bg-background-aliceBlue p-6 sm:py-11 text-left text-xl leading-8 transition-colors duration-200`}
             >
-              {item}
+              {item.title}
             </button>
           ))}
         </div>

@@ -41,3 +41,38 @@ export const sendArticle = async (
     }
   }
 }
+
+export const sendResource = async (
+  articleType: ArtictesType,
+  articleId: string | null,
+  data: any,
+  navigate: NavigateFunction,
+  successToast: (message: string) => void,
+  errorToast: (error: string) => void,
+  draft?: boolean,
+) => {
+  try {
+    if (articleId === 'new') {
+      const payload = {...data, ...{ id: articleId, status: draft ? 'draft' : 'publish' }}
+      const res = await articlesAPI.postArticle(articleType, payload)
+      if (res.data.data.id) {
+        navigate(
+          `/dashboard/my-resources?type=${articleType}&id=${res.data.data.id}&status=${draft ? 'draft' : 'published'}`,
+        )
+        successToast(`Resource created in "${articleType}"${draft ? ' as draft' : ''}`)
+      }
+    } else {
+      const payload = {...data, ...{ id: articleId, status: draft ? 'draft' : 'publish' }}
+      const res = await articlesAPI.updateArticle(articleType, payload)
+      if (res.data) {
+        navigate(
+          `/dashboard/my-resources?type=${articleType}&id=${articleId}&status=${draft ? 'draft' : 'published'}`,
+        )
+        successToast(`Resource updated in "${articleType}"${draft ? ' as draft' : ''}`)
+      }
+    }
+  } catch (error: any) {
+    console.error(error)
+    errorToast(error.message as string)
+  }
+}
