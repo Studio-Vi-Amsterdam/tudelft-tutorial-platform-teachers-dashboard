@@ -1,5 +1,8 @@
 name: Deploy to NEBA Production
 
+permissions:
+  contents: read
+
 on:
   repository_dispatch:
     types: [ deploy-neba-production ]
