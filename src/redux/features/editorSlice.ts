@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, current } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { urlPattern } from 'src/lib/regex/externalVideo'
 import {
@@ -1209,19 +1209,21 @@ export const editorSlice = createSlice({
       }
     },
     duplicateChapter: (state, action: PayloadAction<{ index: number; parentIndex?: number }>) => {
-      const index = action.payload.index
-      const parentIndex = action.payload.parentIndex
-      if (!parentIndex) {
+      const { index, parentIndex } = action.payload
+      const deepClone = <T>(value: T): T => JSON.parse(JSON.stringify(current(value as never)))
+      if (parentIndex === undefined) {
         if (index >= 0 && index < state.chapters.length) {
-          const newChapter = { ...state.chapters[index] }
+          const newChapter: ChapterInterface = {
+            ...deepClone(state.chapters[index]),
+            id: undefined,
+          }
           state.chapters.splice(index + 1, 0, newChapter)
         }
       } else {
-        if (index >= 0 && index < state.chapters[parentIndex].subchapters.length) {
-          const newChapter = {
-            ...state.chapters[parentIndex].subchapters[index],
-          }
-          state.chapters[parentIndex].subchapters.splice(index + 1, 0, newChapter)
+        const parent = state.chapters[parentIndex]
+        if (parent && index >= 0 && index < parent.subchapters.length) {
+          const newSubchapter = deepClone(parent.subchapters[index])
+          parent.subchapters.splice(index + 1, 0, newSubchapter)
         }
       }
     },
