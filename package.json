@@ -46,7 +46,7 @@
     "tinymce": "^7.8.0",
     "typescript": "^4.9.5",
     "vite-plugin-svgr": "^4.3.0",
-    "vite-tsconfig-paths": "^5.1.4",
+    "vite-tsconfig-paths": "^6.1.1",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
